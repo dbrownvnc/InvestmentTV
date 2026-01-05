@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>투자는 인생TV 시청 가이드 & 2026년 신규 프로그램</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans KR', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #e8e8e8;
+            line-height: 1.8;
+            padding: 16px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .header {
+            text-align: center;
+            padding: 24px 16px;
+            background: linear-gradient(135deg, #0f3460 0%, #533483 100%);
+            border-radius: 16px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+        }
+        .header h1 {
+            font-size: 1.5rem;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+        .header .subtitle {
+            font-size: 0.9rem;
+            color: #b8b8b8;
+        }
+        .meta-info {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-top: 12px;
+            flex-wrap: wrap;
+        }
+        .meta-tag {
+            background: rgba(255,255,255,0.1);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: #a8d8ea;
+        }
+        .section {
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
+            border-left: 4px solid #e94560;
+        }
+        .section h2 {
+            font-size: 1.2rem;
+            color: #e94560;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .section h3 {
+            font-size: 1rem;
+            color: #ffd460;
+            margin: 16px 0 12px 0;
+        }
+        .section p {
+            margin-bottom: 12px;
+            font-size: 0.95rem;
+            color: #d0d0d0;
+        }
+        .highlight {
+            background: linear-gradient(90deg, rgba(233,69,96,0.2) 0%, transparent 100%);
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin: 12px 0;
+            border-left: 3px solid #e94560;
+        }
+        .highlight strong {
+            color: #e94560;
+        }
+        .membership-card {
+            background: linear-gradient(135deg, #1e3a5f 0%, #2d4a6f 100%);
+            border-radius: 12px;
+            padding: 16px;
+            margin: 12px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        .membership-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 80px;
+            height: 80px;
+            background: radial-gradient(circle, rgba(255,212,96,0.2) 0%, transparent 70%);
+        }
+        .membership-card .level {
+            font-size: 1.1rem;
+            color: #ffd460;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        .membership-card .desc {
+            font-size: 0.9rem;
+            color: #b8d4e8;
+        }
+        .membership-card .badge {
+            display: inline-block;
+            background: #e94560;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            margin-top: 8px;
+        }
+        .chart-container {
+            background: rgba(0,0,0,0.2);
+            border-radius: 12px;
+            padding: 16px;
+            margin: 16px 0;
+        }
+        .chart-title {
+            text-align: center;
+            color: #ffd460;
+            font-size: 0.95rem;
+            margin-bottom: 16px;
+        }
+        .bar-chart {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .bar-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .bar-label {
+            width: 80px;
+            font-size: 0.8rem;
+            color: #a8d8ea;
+            text-align: right;
+        }
+        .bar-track {
+            flex: 1;
+            height: 24px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .bar-fill {
+            height: 100%;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 8px;
+            font-size: 0.75rem;
+            color: white;
+            font-weight: bold;
+        }
+        .timeline {
+            position: relative;
+            padding-left: 24px;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 8px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(180deg, #e94560, #533483);
+        }
+        .timeline-item {
+            position: relative;
+            margin-bottom: 20px;
+            padding: 12px 16px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 8px;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -20px;
+            top: 16px;
+            width: 12px;
+            height: 12px;
+            background: #e94560;
+            border-radius: 50%;
+            border: 2px solid #1a1a2e;
+        }
+        .timeline-date {
+            color: #ffd460;
+            font-size: 0.85rem;
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+        .timeline-content {
+            color: #d0d0d0;
+            font-size: 0.9rem;
+        }
+        .rule-box {
+            background: linear-gradient(135deg, #2d3436 0%, #1e272e 100%);
+            border-radius: 12px;
+            padding: 16px;
+            margin: 12px 0;
+            border: 1px solid rgba(255,212,96,0.3);
+        }
+        .rule-box .rule-name {
+            color: #ffd460;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+        }
+        .rule-box .rule-desc {
+            color: #b8b8b8;
+            font-size: 0.9rem;
+        }
+        .pie-chart-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 16px;
+        }
+        .pie-chart {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            position: relative;
+            margin-bottom: 16px;
+        }
+        .pie-legend {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.8rem;
+        }
+        .legend-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 3px;
+        }
+        .warning-box {
+            background: linear-gradient(135deg, #4a1c1c 0%, #2d1515 100%);
+            border: 1px solid #e94560;
+            border-radius: 12px;
+            padding: 16px;
+            margin: 16px 0;
+        }
+        .warning-box .icon {
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+        }
+        .warning-box .title {
+            color: #e94560;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin: 16px 0;
+        }
+        .info-card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+        }
+        .info-card .value {
+            font-size: 1.5rem;
+            color: #ffd460;
+            font-weight: bold;
+        }
+        .info-card .label {
+            font-size: 0.8rem;
+            color: #a8d8ea;
+            margin-top: 4px;
+        }
+        .schedule-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+        }
+        .schedule-table th {
+            background: rgba(233,69,96,0.3);
+            color: #fff;
+            padding: 12px 8px;
+            text-align: left;
+            font-size: 0.85rem;
+        }
+        .schedule-table td {
+            padding: 12px 8px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            font-size: 0.9rem;
+        }
+        .schedule-table tr:hover {
+            background: rgba(255,255,255,0.05);
+        }
+        .tag {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            margin-right: 4px;
+        }
+        .tag-public { background: #27ae60; color: white; }
+        .tag-member { background: #e94560; color: white; }
+        .tag-new { background: #ffd460; color: #1a1a2e; }
+        .location-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 12px 0;
+        }
+        .location-chip {
+            background: linear-gradient(135deg, #0f3460 0%, #533483 100%);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+        }
+        .quote-box {
+            background: linear-gradient(135deg, #1e3a5f 0%, #16213e 100%);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 16px 0;
+            text-align: center;
+            font-style: italic;
+            border: 1px solid rgba(168,216,234,0.2);
+        }
+        .quote-box .quote {
+            font-size: 1.1rem;
+            color: #a8d8ea;
+            margin-bottom: 12px;
+        }
+        .quote-box .author {
+            color: #ffd460;
+            font-size: 0.9rem;
+        }
+        .checklist {
+            margin: 12px 0;
+        }
+        .checklist-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 12px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+        .checklist-item .check {
+            width: 20px;
+            height: 20px;
+            background: #27ae60;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+        .checklist-item .check::after {
+            content: '✓';
+            color: white;
+            font-size: 0.8rem;
+        }
+        .footer {
+            text-align: center;
+            padding: 24px 16px;
+            color: #666;
+            font-size: 0.8rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📺 투자는 인생TV 시청 가이드</h1>
+            <p class="subtitle">2026년 신규 프로그램 & 채널 활용법</p>
+            <div class="meta-info">
+                <span class="meta-tag">📅 2026.01.05</span>
+                <span class="meta-tag">🎯 신규 멤버용</span>
+                <span class="meta-tag">🇺🇸 미국 증시</span>
+            </div>
+        </div>
+
+        <!-- 채널 소개 -->
+        <div class="section">
+            <h2>📌 채널 운영 철학</h2>
+            <p>이 채널은 미국 자산운용사에서 <strong>26년간 현역으로 활동 중인 CIO</strong>가 운영하는 투자 교육 채널입니다. 일반 유튜버와 달리 현직에서 실시간으로 시장을 분석하며, 기관 투자자의 시각에서 개인 투자자들에게 인사이트를 제공합니다.</p>
+            
+            <div class="highlight">
+                <strong>핵심 원칙:</strong> 방송은 반드시 미국 뉴욕증권거래소가 종결된 후에만 진행됩니다. 장중 방송은 미국 현행법 위반에 해당하기 때문입니다.
+            </div>
+
+            <p>"<strong>Pay It Forward</strong>" 정신을 강조하며, 기존 멤버들이 신규 멤버들의 성장을 도와주는 선순환 커뮤니티를 지향합니다.</p>
+        </div>
+
+        <!-- 멤버십 레벨 -->
+        <div class="section">
+            <h2>🎖️ 멤버십 레벨 구조</h2>
+            <p>채널은 4가지 멤버십 레벨로 운영되며, 각 레벨별로 제공되는 혜택이 다릅니다. 대부분의 멤버(90% 이상)는 일반 멤버십만으로도 충분한 혜택을 받을 수 있습니다.</p>
+
+            <div class="membership-card">
+                <div class="level">Level 1. 일반 멤버십</div>
+                <div class="desc">대부분의 콘텐츠에 접근 가능합니다. 90% 이상의 정보가 이 레벨에서 제공되며, 이것만으로도 투자에 충분한 인사이트를 얻을 수 있습니다.</div>
+                <span class="badge">90%+ 콘텐츠 접근</span>
+            </div>
+
+            <div class="membership-card">
+                <div class="level">Level 2. 1:1 포트폴리오 리뷰 멤버십</div>
+                <div class="desc">분기별(1월, 4월, 7월, 10월) 1:1 면담을 통해 포트폴리오를 점검받을 수 있습니다. 자산 규모가 커지기 시작하는 분들에게 적합합니다.</div>
+                <span class="badge">분기별 1:1 면담</span>
+            </div>
+
+            <div class="membership-card">
+                <div class="level">Level 3. 15억 클럽</div>
+                <div class="desc">자산 10억 이상인 분들을 위한 멤버십입니다. 일반 멤버십보다 투자 리스크가 높은 고급 정보와 추가 혜택이 제공됩니다.</div>
+                <span class="badge">고급 리스크 정보</span>
+            </div>
+
+            <div class="membership-card">
+                <div class="level">Level 4. 법인 멤버십</div>
+                <div class="desc">법인 투자자를 위한 별도 멤버십입니다. 하나의 계정으로 법인 내 여러 담당자가 접근할 수 있도록 배려된 구조입니다.</div>
+                <span class="badge">다중 접근 가능</span>
+            </div>
+
+            <div class="chart-container">
+                <div class="chart-title">📊 멤버십별 정보 제공 범위</div>
+                <div class="bar-chart">
+                    <div class="bar-item">
+                        <span class="bar-label">일반 멤버</span>
+                        <div class="bar-track">
+                            <div class="bar-fill" style="width: 90%; background: linear-gradient(90deg, #27ae60, #2ecc71);">90%</div>
+                        </div>
+                    </div>
+                    <div class="bar-item">
+                        <span class="bar-label">1:1 리뷰</span>
+                        <div class="bar-track">
+                            <div class="bar-fill" style="width: 95%; background: linear-gradient(90deg, #3498db, #5dade2);">95%</div>
+                        </div>
+                    </div>
+                    <div class="bar-item">
+                        <span class="bar-label">15억 클럽</span>
+                        <div class="bar-track">
+                            <div class="bar-fill" style="width: 100%; background: linear-gradient(90deg, #e94560, #ff6b6b);">100%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="warning-box">
+                <div class="icon">⚠️</div>
+                <div class="title">1:1 면담 시 주의사항</div>
+                <p style="font-size: 0.9rem; color: #d0d0d0;">멤버십 가입 직후 바로 1:1 포트폴리오 리뷰는 불가능합니다. <strong>최소 3개월(2분기)</strong> 동안 채널의 투자 철학, 30대 그룹 기업, 포트폴리오 구성 방법 등을 충분히 학습한 후에 리뷰가 가능합니다.</p>
+            </div>
+        </div>
+
+        <!-- 방송 일정 -->
+        <div class="section">
+            <h2>📅 주간 방송 일정</h2>
+            <p>채널은 주 2회 정기 방송을 진행하며, 두 방송은 서로 <strong>연결성</strong>을 가지고 있습니다. 멤버십 구독자는 반드시 두 방송을 모두 시청해야 전체 맥락을 이해할 수 있습니다.</p>
+
+            <table class="schedule-table">
+                <thead>
+                    <tr>
+                        <th>요일</th>
+                        <th>프로그램</th>
+                        <th>대상</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>월요일</strong></td>
+                        <td>시장 포커스 <span class="tag tag-public">공개</span></td>
+                        <td>전체 구독자</td>
+                    </tr>
+                    <tr>
+                        <td><strong>목요일</strong></td>
+                        <td>멤버 온리 방송 <span class="tag tag-member">멤버</span></td>
+                        <td>멤버십 구독자</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>🔗 두 방송의 연결성</h3>
+            <div class="highlight">
+                <p><strong>시장 포커스 (월요일)</strong></p>
+                <p style="font-size: 0.9rem;">거시경제, 미국 현재 상황, 각종 지수, 시장 변화의 힌트가 담겨 있습니다. 미국에서 경제 데이터가 가장 많이 발표되는 월요일에 진행됩니다.</p>
+            </div>
+            <div class="highlight">
+                <p><strong>멤버 온리 (목요일)</strong></p>
+                <p style="font-size: 0.9rem;">월요일 시장 포커스의 내용을 바탕으로 일주일간의 시장 흐름을 분석합니다. 시장 포커스를 보지 않으면 맥락이 끊기게 됩니다.</p>
+            </div>
+        </div>
+
+        <!-- 포트폴리오 법칙 -->
+        <div class="section">
+            <h2>📐 핵심 포트폴리오 법칙</h2>
+            <p>채널에서 가장 강조하는 것은 <strong>개별 종목이 아닌 포트폴리오의 완성도</strong>입니다. 아무리 좋은 주식도 비중 조절에 실패하면 큰 손실을 볼 수 있습니다.</p>
+
+            <div class="rule-box">
+                <div class="rule-name">📏 3-3-3 법칙</div>
+                <div class="rule-desc">포트폴리오를 3등분하여 분산 투자하는 기본 원칙</div>
+            </div>
+
+            <div class="rule-box">
+                <div class="rule-name">📏 4-1-1 법칙</div>
+                <div class="rule-desc">핵심 자산 40%, 성장 자산 10%, 현금/안전자산 10% 등으로 구성</div>
+            </div>
+
+            <div class="rule-box">
+                <div class="rule-name">📏 5-2-5 법칙</div>
+                <div class="rule-desc">변동성 관리를 위한 비중 조절 원칙</div>
+            </div>
+
+            <div class="chart-container">
+                <div class="chart-title">📊 포트폴리오 구성 예시 (5-2-5 법칙)</div>
+                <div class="pie-chart-container">
+                    <svg width="180" height="180" viewBox="0 0 180 180">
+                        <circle cx="90" cy="90" r="80" fill="none" stroke="#27ae60" stroke-width="20" stroke-dasharray="251.2 502.4" transform="rotate(-90 90 90)"/>
+                        <circle cx="90" cy="90" r="80" fill="none" stroke="#3498db" stroke-width="20" stroke-dasharray="100.48 502.4" stroke-dashoffset="-251.2" transform="rotate(-90 90 90)"/>
+                        <circle cx="90" cy="90" r="80" fill="none" stroke="#e94560" stroke-width="20" stroke-dasharray="251.2 502.4" stroke-dashoffset="-351.68" transform="rotate(-90 90 90)"/>
+                        <text x="90" y="90" text-anchor="middle" fill="white" font-size="14" dy=".3em">비중 관리</text>
+                    </svg>
+                    <div class="pie-legend">
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #27ae60;"></div>
+                            <span>핵심 자산 50%</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #3498db;"></div>
+                            <span>성장 자산 20%</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #e94560;"></div>
+                            <span>기회 자산 30%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="warning-box">
+                <div class="icon">🚨</div>
+                <div class="title">비중 조절 실패 사례</div>
+                <p style="font-size: 0.9rem; color: #d0d0d0;">방송에서 "0.5% 넣어두라"고 한 종목에 50~100%를 몰빵하여 반토막 나는 사례가 있습니다. <strong>포트폴리오 원칙 없이 개별 종목 중심으로 투자하면 8~10년 주기로 오는 40~50% 폭락장에서 큰 피해를 봅니다.</strong></p>
+            </div>
+        </div>
+
+        <!-- 30대 그룹 -->
+        <div class="section">
+            <h2>🏢 30대 그룹 기업</h2>
+            <p>채널에서 긍정적으로 평가하는 기업 그룹으로, 실제로는 30개가 아닌 <strong>약 40개 정도</strong>의 기업이 포함됩니다. 시장 상황에 따라 빠지는 기업도 있고 새로 들어오는 기업도 있습니다.</p>
+
+            <div class="info-grid">
+                <div class="info-card">
+                    <div class="value">~40개</div>
+                    <div class="label">실제 기업 수</div>
+                </div>
+                <div class="info-card">
+                    <div class="value">동적</div>
+                    <div class="label">수시 업데이트</div>
+                </div>
+            </div>
+
+            <div class="highlight">
+                <strong>주의:</strong> 30대 그룹 기업이라고 해서 무조건 매수하면 안 됩니다. 반드시 자신의 포트폴리오 상황과 투자 목적에 맞게 비중을 조절해야 합니다. 같은 기업이라도 어떤 분은 10%, 어떤 분은 30%를 보유할 수 있으며, 이에 따라 변동성 노출도가 달라집니다.
+            </div>
+        </div>
+
+        <!-- 2026년 신규 프로그램 -->
+        <div class="section">
+            <h2>🆕 2026년 신규 프로그램</h2>
+            <p>기존 월요일 시장 포커스와 목요일 멤버 온리 방송 외에 새로운 프로그램이 추가됩니다.</p>
+
+            <h3>1️⃣ 쇼트 교육 방송</h3>
+            <div class="membership-card">
+                <div class="level">5~10분 핵심 교육 콘텐츠</div>
+                <div class="desc">
+                    투자 아카데미 40여 편(30분~1시간 30분)의 핵심 내용을 짧은 영상으로 제공합니다. 현재 트렌드에 맞는 내용을 빠르게 학습할 수 있습니다.
+                </div>
+                <span class="badge tag-new">NEW</span>
+            </div>
+            
+            <div class="highlight">
+                <strong>예시 콘텐츠:</strong> EPS vs Diluted EPS의 차이점과 투자 판단법
+                <p style="font-size: 0.85rem; margin-top: 8px;">Diluted EPS와 EPS의 차이가 크면 클수록 해당 기업은 투자 대상에서 제외해야 합니다. CFO의 역할이 과도하게 커지는 시그널이기 때문입니다.</p>
+            </div>
+
+            <h3>2️⃣ 지역별 오프라인 모임</h3>
+            <p>미국 내 한인이 많이 거주하는 지역을 방문하여 멤버들과 직접 소통하는 프로그램입니다.</p>
+
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-date">✅ 완료</div>
+                    <div class="timeline-content">뉴욕 모임 - 40여 명 참가, 단체 카톡방 운영 중</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">🎯 1차 방문 예정</div>
+                    <div class="timeline-content">텍사스 - 2박 3일 예정</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">📅 2차 방문 예정</div>
+                    <div class="timeline-content">조지아 (애틀랜타)</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">📅 추후 계획</div>
+                    <div class="timeline-content">시애틀, 시카고, 뉴욕(재방문)</div>
+                </div>
+            </div>
+
+            <div class="location-list">
+                <span class="location-chip">🗽 뉴욕</span>
+                <span class="location-chip">🤠 텍사스</span>
+                <span class="location-chip">🍑 조지아</span>
+                <span class="location-chip">☕ 시애틀</span>
+                <span class="location-chip">🏙️ 시카고</span>
+            </div>
+        </div>
+
+        <!-- 2026년 시장 전망 -->
+        <div class="section">
+            <h2>🔮 2026년 주요 이벤트 & 리스크</h2>
+            <p>올해는 <strong>AI 슈퍼사이클의 원년</strong>입니다. M7(매그니피센트 세븐)만 쫓아가다가는 큰일날 수 있으며, M3와 나머지 4~5개 기업을 잘 선별해야 합니다.</p>
+
+            <h3>⚠️ 주요 리스크 요인</h3>
+
+            <div class="warning-box">
+                <div class="title">📌 1차 변곡점: 1월 15일 전후</div>
+                <p style="font-size: 0.9rem; color: #d0d0d0;">멤버십 방송에서 상세 내용 공개 예정</p>
+            </div>
+
+            <div class="warning-box">
+                <div class="title">📌 2차 변곡점: 4~5월 (연준 의장 교체)</div>
+                <p style="font-size: 0.9rem; color: #d0d0d0;">
+                    새로운 연준 의장 선출이 예상되며, 연준 독립성 훼손 우려가 시장에 큰 부담이 될 수 있습니다.
+                </p>
+                <ul style="font-size: 0.85rem; color: #b8b8b8; margin-top: 8px; margin-left: 16px;">
+                    <li>금리 인하 시 단기적 호재 가능</li>
+                    <li>그러나 인플레이션 재발 시 경제 위기 우려</li>
+                    <li>국제 사회의 미국 채권 신뢰도 하락 가능성</li>
+                    <li>10년물 국채 금리 상승 지속 우려</li>
+                </ul>
+            </div>
+
+            <div class="chart-container">
+                <div class="chart-title">📊 2026년 주요 이벤트 타임라인</div>
+                <div class="bar-chart">
+                    <div class="bar-item">
+                        <span class="bar-label">1월</span>
+                        <div class="bar-track">
+                            <div class="bar-fill" style="width: 60%; background: linear-gradient(90deg, #f39c12, #f1c40f);">변곡점 주의</div>
+                        </div>
+                    </div>
+                    <div class="bar-item">
+                        <span class="bar-label">4~5월</span>
+                        <div class="bar-track">
+                            <div class="bar-fill" style="width: 90%; background: linear-gradient(90deg, #e74c3c, #c0392b);">연준 이슈</div>
+                        </div>
+                    </div>
+                    <div class="bar-item">
+                        <span class="bar-label">연중</span>
+                        <div class="bar-track">
+                            <div class="bar-fill" style="width: 75%; background: linear-gradient(90deg, #3498db, #2980b9);">AI 슈퍼사이클</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="highlight">
+                <strong>폭락장에 대한 관점:</strong> 8~10년 주기로 40~50% 폭락장이 옵니다. 이것은 위기가 아닌 <strong>기회</strong>입니다. 폭락장에서 자산 규모가 1.5배, 2배, 심지어 4배 이상 늘어나는 경우도 있습니다.
+            </div>
+        </div>
+
+        <!-- 필수 시청 콘텐츠 -->
+        <div class="section">
+            <h2>📚 신규 멤버 필수 시청 콘텐츠</h2>
+            <p>멤버십 가입 후 첫 3개월간 반드시 학습해야 할 콘텐츠입니다. 이 내용을 모르면 1:1 포트폴리오 리뷰도 진행되지 않습니다.</p>
+
+            <div class="checklist">
+                <div class="checklist-item">
+                    <div class="check"></div>
+                    <div>
+                        <strong>투자 아카데미 40편</strong>
+                        <p style="font-size: 0.85rem; color: #a8d8ea;">30분~1시간 30분 분량, 최소 1회 이상 필수 시청<br>2~4회 반복 시청하는 멤버들이 자산 증가폭이 큼</p>
+                    </div>
+                </div>
+                <div class="checklist-item">
+                    <div class="check"></div>
+                    <div>
+                        <strong>30대 그룹 기업 학습</strong>
+                        <p style="font-size: 0.85rem; color: #a8d8ea;">채널에서 추천하는 핵심 기업군 이해</p>
+                    </div>
+                </div>
+                <div class="checklist-item">
+                    <div class="check"></div>
+                    <div>
+                        <strong>포트폴리오 구성 원칙</strong>
+                        <p style="font-size: 0.85rem; color: #a8d8ea;">333, 411, 525 법칙 숙지</p>
+                    </div>
+                </div>
+                <div class="checklist-item">
+                    <div class="check"></div>
+                    <div>
+                        <strong>투자 목적 설정</strong>
+                        <p style="font-size: 0.85rem; color: #a8d8ea;">보수적/공격적 투자 성향에 따른 비중 조절 이해</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 투자 마인드셋 -->
+        <div class="section">
+            <h2>🧠 투자 마인드셋</h2>
+            
+            <div class="quote-box">
+                <div class="quote">"부자는 세상을 보는 시각이 굉정적이기 때문에 어려움을 극복했고, 어려움을 극복했기 때문에 자산이 늘어난 것이다. 돈이 많아서 행복해지는 게 아니다."</div>
+            </div>
+
+            <h3>🌱 성공 투자를 위한 토양</h3>
+            <p>투자에서 성공하려면 먼저 <strong>마음의 토양</strong>이 좋아야 합니다. 씨앗(투자)을 뿌리기 전에 토양(성격, 성향)이 좋아야 곡식이 풍성하게 자랄 수 있습니다.</p>
+
+            <div class="highlight">
+                <strong>핵심 메시지:</strong>
+                <ul style="margin-top: 8px; margin-left: 16px; font-size: 0.9rem;">
+                    <li>내 인생을 망칠 사람은 나밖에 없다</li>
+                    <li>남을 탓하기 전에 자신을 돌아볼 것</li>
+                    <li>긍정적 시각의 전환이 부자 되기의 기본 소양</li>
+                    <li>나 자신을 사랑해야 투자도, 가족도 있다</li>
+                </ul>
+            </div>
+
+            <div class="quote-box">
+                <div class="quote">"미국 장기 투자하는 방법은 오래 참는 법입니다. 아주 재미없는 주식들도 추천할 수 있습니다."</div>
+            </div>
+        </div>
+
+        <!-- 멤버십 가입 방법 -->
+        <div class="section">
+            <h2>💳 멤버십 가입 방법</h2>
+            
+            <div class="warning-box" style="background: linear-gradient(135deg, #1e3a5f 0%, #16213e 100%); border-color: #3498db;">
+                <div class="title" style="color: #3498db;">📱 아이폰에서는 멤버십 가입 불가</div>
+                <p style="font-size: 0.9rem; color: #d0d0d0;">반드시 PC 또는 노트북에서 유튜브에 접속해야 합니다.</p>
+            </div>
+
+            <div class="checklist">
+                <div class="checklist-item">
+                    <div class="check"></div>
+                    <div>PC/노트북에서 유튜브 채널 접속</div>
+                </div>
+                <div class="checklist-item">
+                    <div class="check"></div>
+                    <div>구독 버튼 아래 "가입" 버튼 클릭</div>
+                </div>
+                <div class="checklist-item">
+                    <div class="check"></div>
+                    <div>원하는 멤버십 레벨 선택</div>
+                </div>
+                <div class="checklist-item">
+                    <div class="check"></div>
+                    <div>결제 정보 입력 후 완료</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 요약 -->
+        <div class="section">
+            <h2>📋 핵심 요약</h2>
+            
+            <div class="info-grid">
+                <div class="info-card">
+                    <div class="value">26년</div>
+                    <div class="label">현역 운용 경력</div>
+                </div>
+                <div class="info-card">
+                    <div class="value">4년+</div>
+                    <div class="label">채널 운영 기간</div>
+                </div>
+                <div class="info-card">
+                    <div class="value">주 2회</div>
+                    <div class="label">정기 방송</div>
+                </div>
+                <div class="info-card">
+                    <div class="value">40편</div>
+                    <div class="label">투자 아카데미</div>
+                </div>
+            </div>
+
+            <div class="highlight">
+                <strong>신규 멤버를 위한 핵심 조언:</strong>
+                <ol style="margin-top: 8px; margin-left: 20px; font-size: 0.9rem;">
+                    <li>월요일 시장 포커스 + 목요일 멤버 온리 <strong>둘 다</strong> 시청</li>
+                    <li>투자 아카데미 40편 최소 1회 이상 시청</li>
+                    <li>개별 종목보다 <strong>포트폴리오 완성도</strong>에 집중</li>
+                    <li>3개월간 학습 후 1:1 포트폴리오 리뷰 신청</li>
+                    <li>방송 1시간을 성실히 시청 (슬쩍 넘어가는 부분에 힌트 多)</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>📺 투자는 인생TV | 2026년 1월 5일 방송 요약</p>
+            <p style="margin-top: 8px;">본 문서는 방송 내용을 정리한 것으로, 투자 권유가 아닙니다.</p>
+            <p>투자의 책임은 본인에게 있습니다.</p>
+        </div>
+    </div>
+</body>
+</html>
