@@ -1,0 +1,1278 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>2026년 새로운 투자 트렌드 분석 - 미국 증시/경제 관점</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background: linear-gradient(135deg, #0a0f1c 0%, #1a1f35 50%, #0d1220 100%);
+            color: #e8e8e8;
+            line-height: 1.8;
+            font-size: 16px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 680px;
+            margin: 0 auto;
+            padding: 20px 16px;
+        }
+        
+        header {
+            text-align: center;
+            padding: 30px 0 40px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 30px;
+        }
+        
+        .date-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            color: white;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 16px;
+        }
+        
+        h1 {
+            font-size: 26px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 12px;
+            line-height: 1.4;
+        }
+        
+        .subtitle {
+            font-size: 14px;
+            color: #8892a6;
+        }
+        
+        .source-link {
+            display: inline-block;
+            margin-top: 12px;
+            color: #64b5f6;
+            text-decoration: none;
+            font-size: 13px;
+        }
+        
+        .market-summary {
+            background: linear-gradient(135deg, rgba(100,181,246,0.15), rgba(66,165,245,0.05));
+            border: 1px solid rgba(100,181,246,0.3);
+            border-radius: 16px;
+            padding: 24px 20px;
+            margin-bottom: 30px;
+        }
+        
+        .market-summary h2 {
+            font-size: 18px;
+            color: #64b5f6;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .index-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        
+        .index-card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            padding: 14px;
+            text-align: center;
+        }
+        
+        .index-name {
+            font-size: 12px;
+            color: #8892a6;
+            margin-bottom: 4px;
+        }
+        
+        .index-value {
+            font-size: 20px;
+            font-weight: 700;
+            color: #4ade80;
+        }
+        
+        .index-change {
+            font-size: 12px;
+            color: #4ade80;
+            margin-top: 2px;
+        }
+        
+        .index-change.negative {
+            color: #f87171;
+        }
+        
+        section {
+            margin-bottom: 36px;
+        }
+        
+        h2 {
+            font-size: 20px;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 16px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid;
+            border-image: linear-gradient(90deg, #ff6b6b, transparent) 1;
+        }
+        
+        h3 {
+            font-size: 17px;
+            font-weight: 600;
+            color: #fbbf24;
+            margin: 24px 0 12px;
+        }
+        
+        p {
+            margin-bottom: 14px;
+            color: #d1d5db;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(251,191,36,0.15), rgba(251,191,36,0.05));
+            border-left: 4px solid #fbbf24;
+            padding: 16px;
+            margin: 20px 0;
+            border-radius: 0 12px 12px 0;
+        }
+        
+        .highlight-box p {
+            margin: 0;
+            color: #fef3c7;
+        }
+        
+        .warning-box {
+            background: linear-gradient(135deg, rgba(239,68,68,0.15), rgba(239,68,68,0.05));
+            border-left: 4px solid #ef4444;
+            padding: 16px;
+            margin: 20px 0;
+            border-radius: 0 12px 12px 0;
+        }
+        
+        .warning-box p {
+            margin: 0;
+            color: #fecaca;
+        }
+        
+        .info-box {
+            background: linear-gradient(135deg, rgba(59,130,246,0.15), rgba(59,130,246,0.05));
+            border-left: 4px solid #3b82f6;
+            padding: 16px;
+            margin: 20px 0;
+            border-radius: 0 12px 12px 0;
+        }
+        
+        .info-box p {
+            margin: 0;
+            color: #bfdbfe;
+        }
+        
+        strong {
+            color: #ffffff;
+            font-weight: 600;
+        }
+        
+        .emphasis {
+            color: #fbbf24;
+            font-weight: 600;
+        }
+        
+        .chart-container {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px;
+            padding: 20px;
+            margin: 24px 0;
+        }
+        
+        .chart-title {
+            font-size: 14px;
+            color: #8892a6;
+            text-align: center;
+            margin-bottom: 16px;
+        }
+        
+        .bar-chart {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .bar-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .bar-label {
+            width: 100px;
+            font-size: 13px;
+            color: #9ca3af;
+            flex-shrink: 0;
+        }
+        
+        .bar-track {
+            flex: 1;
+            height: 24px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 4px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .bar-fill {
+            height: 100%;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            color: white;
+        }
+        
+        .bar-fill.energy { background: linear-gradient(90deg, #f97316, #ea580c); }
+        .bar-fill.industrial { background: linear-gradient(90deg, #8b5cf6, #7c3aed); }
+        .bar-fill.material { background: linear-gradient(90deg, #06b6d4, #0891b2); }
+        .bar-fill.financial { background: linear-gradient(90deg, #22c55e, #16a34a); }
+        .bar-fill.tech { background: linear-gradient(90deg, #3b82f6, #2563eb); }
+        .bar-fill.healthcare { background: linear-gradient(90deg, #ec4899, #db2777); }
+        
+        .trend-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+        
+        .trend-table th {
+            background: rgba(255,255,255,0.1);
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+            color: #ffffff;
+        }
+        
+        .trend-table td {
+            padding: 12px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            color: #d1d5db;
+        }
+        
+        .trend-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .up { color: #4ade80; }
+        .down { color: #f87171; }
+        
+        .etf-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin: 20px 0;
+        }
+        
+        .etf-stat-card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+        }
+        
+        .etf-stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: #fbbf24;
+        }
+        
+        .etf-stat-label {
+            font-size: 12px;
+            color: #8892a6;
+            margin-top: 4px;
+        }
+        
+        .timeline {
+            position: relative;
+            padding-left: 24px;
+            margin: 20px 0;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(180deg, #fbbf24, #ef4444, #8b5cf6);
+        }
+        
+        .timeline-item {
+            position: relative;
+            padding-bottom: 20px;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -28px;
+            top: 6px;
+            width: 10px;
+            height: 10px;
+            background: #fbbf24;
+            border-radius: 50%;
+        }
+        
+        .timeline-date {
+            font-size: 13px;
+            color: #fbbf24;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        
+        .timeline-content {
+            font-size: 14px;
+            color: #d1d5db;
+        }
+        
+        .risk-meter {
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .risk-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: #8892a6;
+            margin-bottom: 8px;
+        }
+        
+        .risk-bar {
+            height: 12px;
+            background: linear-gradient(90deg, #22c55e, #fbbf24, #ef4444);
+            border-radius: 6px;
+            position: relative;
+        }
+        
+        .risk-indicator {
+            position: absolute;
+            top: -4px;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+        
+        .pie-chart-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+        }
+        
+        .pie-chart {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: conic-gradient(
+                #f97316 0deg 100deg,
+                #8b5cf6 100deg 165deg,
+                #06b6d4 165deg 220deg,
+                #22c55e 220deg 270deg,
+                #3b82f6 270deg 310deg,
+                #ec4899 310deg 360deg
+            );
+            position: relative;
+        }
+        
+        .pie-chart::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80px;
+            height: 80px;
+            background: #1a1f35;
+            border-radius: 50%;
+        }
+        
+        .pie-legend {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            font-size: 12px;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .legend-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+        
+        .donut-chart-wrapper {
+            position: relative;
+            width: 220px;
+            height: 220px;
+            margin: 0 auto;
+        }
+        
+        .donut-center-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 10;
+        }
+        
+        .donut-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: #ffffff;
+        }
+        
+        .donut-label {
+            font-size: 12px;
+            color: #8892a6;
+        }
+        
+        .comparison-card {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin: 20px 0;
+        }
+        
+        .compare-item {
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+        }
+        
+        .compare-item.positive {
+            border: 1px solid rgba(74,222,128,0.3);
+        }
+        
+        .compare-item.negative {
+            border: 1px solid rgba(248,113,113,0.3);
+        }
+        
+        .compare-title {
+            font-size: 14px;
+            color: #8892a6;
+            margin-bottom: 8px;
+        }
+        
+        .compare-value {
+            font-size: 20px;
+            font-weight: 700;
+        }
+        
+        .compare-item.positive .compare-value { color: #4ade80; }
+        .compare-item.negative .compare-value { color: #f87171; }
+        
+        .key-points {
+            background: linear-gradient(135deg, rgba(139,92,246,0.15), rgba(139,92,246,0.05));
+            border: 1px solid rgba(139,92,246,0.3);
+            border-radius: 16px;
+            padding: 20px;
+            margin: 24px 0;
+        }
+        
+        .key-points h3 {
+            color: #a78bfa;
+            margin-top: 0;
+        }
+        
+        .key-points ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .key-points li {
+            padding: 8px 0 8px 24px;
+            position: relative;
+            color: #d1d5db;
+            font-size: 14px;
+        }
+        
+        .key-points li::before {
+            content: '▶';
+            position: absolute;
+            left: 0;
+            color: #a78bfa;
+            font-size: 10px;
+        }
+        
+        .stock-analysis {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px;
+            padding: 20px;
+            margin: 24px 0;
+        }
+        
+        .stock-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        
+        .stock-logo {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #00a4ef, #0078d4);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: white;
+            font-size: 14px;
+        }
+        
+        .stock-name {
+            font-size: 18px;
+            font-weight: 600;
+            color: #ffffff;
+        }
+        
+        .stock-type {
+            font-size: 12px;
+            color: #8892a6;
+        }
+        
+        .stock-metrics {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+        
+        .metric-item {
+            background: rgba(255,255,255,0.05);
+            border-radius: 8px;
+            padding: 12px;
+        }
+        
+        .metric-label {
+            font-size: 11px;
+            color: #8892a6;
+            margin-bottom: 4px;
+        }
+        
+        .metric-value {
+            font-size: 16px;
+            font-weight: 600;
+            color: #ffffff;
+        }
+        
+        .conclusion-box {
+            background: linear-gradient(135deg, rgba(34,197,94,0.15), rgba(34,197,94,0.05));
+            border: 1px solid rgba(34,197,94,0.3);
+            border-radius: 16px;
+            padding: 24px;
+            margin: 30px 0;
+        }
+        
+        .conclusion-box h2 {
+            color: #4ade80;
+            border: none;
+            padding: 0;
+            margin-bottom: 16px;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 30px 0;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            margin-top: 40px;
+        }
+        
+        .disclaimer {
+            font-size: 12px;
+            color: #6b7280;
+            line-height: 1.6;
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: 16px 12px;
+            }
+            
+            h1 {
+                font-size: 22px;
+            }
+            
+            .index-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+            }
+            
+            .index-card {
+                padding: 10px;
+            }
+            
+            .index-value {
+                font-size: 16px;
+            }
+            
+            .etf-stats {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            .comparison-card {
+                grid-template-columns: 1fr;
+            }
+            
+            .stock-metrics {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="date-badge">📅 2026년 1월 6일</div>
+            <h1>2026년 새로운 투자 트렌드</h1>
+            <p class="subtitle">미국 증시 및 경제 관점 심층 분석</p>
+            <a href="https://www.youtube.com/watch?v=de6FuFI3TUM" class="source-link" target="_blank">📺 원본 영상 보기 →</a>
+        </header>
+
+        <!-- 시장 요약 섹션 -->
+        <div class="market-summary">
+            <h2>📊 주요 지수 현황</h2>
+            <div class="index-grid">
+                <div class="index-card">
+                    <div class="index-name">다우존스</div>
+                    <div class="index-value">최고치 근접</div>
+                    <div class="index-change">+1.41%</div>
+                </div>
+                <div class="index-card">
+                    <div class="index-name">S&P 500</div>
+                    <div class="index-value">6,900+</div>
+                    <div class="index-change">상승 마감</div>
+                </div>
+                <div class="index-card">
+                    <div class="index-name">나스닥</div>
+                    <div class="index-value">23,000+</div>
+                    <div class="index-change">상승세</div>
+                </div>
+                <div class="index-card">
+                    <div class="index-name">10년 국채</div>
+                    <div class="index-value">4.169%</div>
+                    <div class="index-change">안정 유지</div>
+                </div>
+                <div class="index-card">
+                    <div class="index-name">금 (Gold)</div>
+                    <div class="index-value">$5,000 향해</div>
+                    <div class="index-change">천정 지속</div>
+                </div>
+                <div class="index-card">
+                    <div class="index-name">비트코인</div>
+                    <div class="index-value">$93,000+</div>
+                    <div class="index-change">상승 돌파</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 핵심 요약 -->
+        <section>
+            <h2>📌 2026년 핵심 투자 트렌드</h2>
+            
+            <div class="key-points">
+                <h3>🎯 올해 기억해야 할 5가지 포인트</h3>
+                <ul>
+                    <li><strong>반도체 vs 소프트웨어</strong> - 각자의 길로 분리되는 트렌드</li>
+                    <li><strong>ETF 시장 폭발</strong> - 전년 대비 2배 이상 증가 (1,143개 신규)</li>
+                    <li><strong>고변동성 시장 예고</strong> - 레버리지·인버스 ETF 급증</li>
+                    <li><strong>AI 슈퍼사이클 원년</strong> - 소프트웨어 마진율 압박 우려</li>
+                    <li><strong>섹터 로테이션</strong> - 에너지·금융·기초소재 강세</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 산타랠리 분석 -->
+        <section>
+            <h2>🎅 산타 랠리 분석</h2>
+            
+            <p>산타 랠리의 정확한 정의는 <strong class="emphasis">12월 26일부터 1월 3일까지</strong>의 기간입니다. 많은 투자자들이 크리스마스 전후로 착각하지만, 이는 명확한 개념 정립이 필요한 부분입니다.</p>
+            
+            <div class="highlight-box">
+                <p>💡 <strong>2026년 산타 랠리 결과:</strong> 4일 정도는 하락했지만 5~6일째 반등하며 S&P 500 기준 6,900 이상으로 마무리 → <strong>산타 랠리 발생 확인</strong></p>
+            </div>
+            
+            <p>산타 랠리라는 용어가 '산타클로스가 오는 날'이라고 단순 추측(assumption)하여 25~27일로 판단하면 매번 손해를 볼 수 있습니다. <strong>개념 정리의 중요성</strong>을 강조하는 대목입니다.</p>
+        </section>
+
+        <!-- 베네수엘라 사태 영향 -->
+        <section>
+            <h2>🌎 베네수엘라 마두로 체포와 시장 영향</h2>
+            
+            <p>베네수엘라 마두로 대통령 체포 사건은 미 증시에서 <strong>리스크 인식이 전혀 없으며</strong>, 오히려 리스크를 줄였다는 평가를 받고 있습니다.</p>
+            
+            <h3>시장 영향 분석</h3>
+            
+            <p><strong>다우존스 상승 배경:</strong> 트럼프 대통령은 "미국 정유 회사가 베네수엘라 석유 수출에 도움을 주겠다"고 공식 발표했으며, 이는 쉐브론(Chevron) 등 에너지 기업 주가 상승으로 이어졌습니다.</p>
+            
+            <div class="info-box">
+                <p>📍 <strong>지정학적 함의:</strong> 중국의 베네수엘라 관계 개선 시도에 대한 미국의 대응. 향후 대만에 대한 강력한 발언과 무기 지원 확대 가능성 시사</p>
+            </div>
+            
+            <h3>주의해야 할 불확실성</h3>
+            <p>포스트-마두로 시대의 새 지도자가 누가 될지, 미국과의 관계가 어떻게 형성될지에 따라 변화 가능성이 있습니다. 민주당과 법조계에서는 "불법적인 체포"라는 비판도 제기되고 있어, 미 내부적 갈등 요소로 작용할 수 있습니다.</p>
+        </section>
+
+        <!-- 섹터별 분석 -->
+        <section>
+            <h2>📈 섹터별 트렌드 분석</h2>
+            
+            <p>2026년 새해 첫 거래 주간, 섹터별로 뚜렷한 <strong>차별화 현상</strong>이 나타나고 있습니다.</p>
+            
+            <div class="chart-container">
+                <div class="chart-title">📊 주간 섹터 퍼포먼스 (상위 순)</div>
+                <div class="bar-chart">
+                    <div class="bar-item">
+                        <div class="bar-label">에너지</div>
+                        <div class="bar-track">
+                            <div class="bar-fill energy" style="width: 95%;">1위</div>
+                        </div>
+                    </div>
+                    <div class="bar-item">
+                        <div class="bar-label">산업재</div>
+                        <div class="bar-track">
+                            <div class="bar-fill industrial" style="width: 80%;">2위</div>
+                        </div>
+                    </div>
+                    <div class="bar-item">
+                        <div class="bar-label">기초소재</div>
+                        <div class="bar-track">
+                            <div class="bar-fill material" style="width: 70%;">3위</div>
+                        </div>
+                    </div>
+                    <div class="bar-item">
+                        <div class="bar-label">금융</div>
+                        <div class="bar-track">
+                            <div class="bar-fill financial" style="width: 60%;">반등</div>
+                        </div>
+                    </div>
+                    <div class="bar-item">
+                        <div class="bar-label">기술</div>
+                        <div class="bar-track">
+                            <div class="bar-fill tech" style="width: 40%;">부진</div>
+                        </div>
+                    </div>
+                    <div class="bar-item">
+                        <div class="bar-label">헬스케어</div>
+                        <div class="bar-track">
+                            <div class="bar-fill healthcare" style="width: 25%;">어려움</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <h3>주요 섹터 동향</h3>
+            
+            <p><strong>🔥 에너지 섹터:</strong> 베네수엘라 사태로 인한 모멘텀. 단, 장기 투자 관점에서는 아직 확정적으로 판단하기 어려움. 특히 오일 섹터는 단기 이벤트성 상승일 가능성</p>
+            
+            <p><strong>💰 금융 섹터:</strong> 최근 며칠 하락 후 급반등. 12월부터 가장 큰 상승세. 다음 주부터 은행 실적 발표 시작</p>
+            
+            <p><strong>💎 기초소재 (Materials):</strong> 금, 은, 동 등 귀금속 강세. 금값은 $2,000 돌파 후 $5,000을 향해 상승 중</p>
+            
+            <p><strong>⚡ 원자력/우라늄:</strong> 다우존스 30대 종목 중 포함. 편입 이후 30% 이상 상승</p>
+            
+            <div class="warning-box">
+                <p>⚠️ <strong>주의:</strong> 이번 섹터 트렌드는 단기(short-term) 현상일 수 있습니다. 에너지 섹터를 "당장 더 사라"는 의미가 아니며, 시그널이 나올 때 대응해야 합니다.</p>
+            </div>
+        </section>
+
+        <!-- 반도체 vs 소프트웨어 -->
+        <section>
+            <h2>🔀 2026년 첫 트렌드: 반도체 vs 소프트웨어 분리</h2>
+            
+            <p>2026년 미 증시 첫 번째 트렌드로 <strong class="emphasis">반도체와 소프트웨어의 분리 현상</strong>이 뚜렷하게 나타났습니다.</p>
+            
+            <div class="comparison-card">
+                <div class="compare-item positive">
+                    <div class="compare-title">반도체 (칩)</div>
+                    <div class="compare-value">↑ 상승</div>
+                </div>
+                <div class="compare-item negative">
+                    <div class="compare-title">소프트웨어</div>
+                    <div class="compare-value">↓ 지지부진</div>
+                </div>
+            </div>
+            
+            <h3>왜 이런 현상이 발생하는가?</h3>
+            
+            <p>AI가 소프트웨어 도구에 대한 수요를 <strong>감소시키거나 해칠 것</strong>이라는 전망이 확산되고 있습니다.</p>
+            
+            <div class="info-box">
+                <p>🤖 <strong>AI 영향:</strong> ChatGPT 등 AI를 이용한 기본적인 소프트웨어 개발이 가능해지면서, 대학 졸업자 수준의 소프트웨어 개발자 수요가 감소. 디버깅까지 AI가 수행하는 시대 → 소프트웨어 기업 마진율 하락 우려</p>
+            </div>
+            
+            <h3>마진율 비교</h3>
+            
+            <table class="trend-table">
+                <tr>
+                    <th>기업 유형</th>
+                    <th>Profit Margin (Before Tax)</th>
+                </tr>
+                <tr>
+                    <td>칩 제조사 (예: 마이크론)</td>
+                    <td class="up">66~70%</td>
+                </tr>
+                <tr>
+                    <td>소프트웨어 기업</td>
+                    <td>약 60%</td>
+                </tr>
+            </table>
+            
+            <p>소프트웨어 기업의 마진율이 칩 제조사보다 낮아지는 현상이 이미 나타나고 있으며, 이는 <strong>가이던스 하향 조정</strong> 가능성을 시사합니다.</p>
+            
+            <h3>주목해야 할 기업들</h3>
+            
+            <p><strong class="up">상승세:</strong> 마이크론(10%+ 상승), 웨스턴 디지털, AMD, Intel, LAM Research</p>
+            
+            <p><strong class="down">하락세/지지부진:</strong> Adobe, Salesforce, Microsoft (최근 하락세 진입)</p>
+            
+            <div class="highlight-box">
+                <p>💡 <strong>장기 전망:</strong> 2~4분기에 소프트웨어 섹터가 망가질 가능성도 있다는 기관들의 내부 우려. 이것이 롱텀 트렌드가 될 수 있다는 "첫 시그널"</p>
+            </div>
+        </section>
+
+        <!-- ETF 시장 분석 -->
+        <section>
+            <h2>📦 ETF 시장 폭발적 성장</h2>
+            
+            <p>2026년 두 번째 핵심 트렌드는 <strong class="emphasis">ETF 시장의 폭발적 성장</strong>입니다.</p>
+            
+            <div class="etf-stats">
+                <div class="etf-stat-card">
+                    <div class="etf-stat-value">1,143개</div>
+                    <div class="etf-stat-label">신규 ETF 출시</div>
+                </div>
+                <div class="etf-stat-card">
+                    <div class="etf-stat-value">2배+</div>
+                    <div class="etf-stat-label">전년 대비 증가율</div>
+                </div>
+                <div class="etf-stat-card">
+                    <div class="etf-stat-value">0.76%</div>
+                    <div class="etf-stat-label">평균 수수료(Fee)</div>
+                </div>
+                <div class="etf-stat-card">
+                    <div class="etf-stat-value">12/19</div>
+                    <div class="etf-stat-label">기준일</div>
+                </div>
+            </div>
+            
+            <h3>ETF 트렌드의 핵심 변화</h3>
+            
+            <p>새로 출시된 ETF의 대부분이 <strong>패시브 인컴이 아닌 액티브 매니지먼트</strong> 상품입니다. 이는 섹터 로테이션과 리밸런싱 전략이 주류가 되고 있음을 의미합니다.</p>
+            
+            <div class="chart-container">
+                <div class="chart-title">📊 신규 ETF 유형별 분포</div>
+                <div class="bar-chart">
+                    <div class="bar-item">
+                        <div class="bar-label">레버리지</div>
+                        <div class="bar-track">
+                            <div class="bar-fill energy" style="width: 100%;">319개</div>
+                        </div>
+                    </div>
+                    <div class="bar-item">
+                        <div class="bar-label">버퍼 ETF</div>
+                        <div class="bar-track">
+                            <div class="bar-fill industrial" style="width: 36%;">116개</div>
+                        </div>
+                    </div>
+                    <div class="bar-item">
+                        <div class="bar-label">옵션 ETF</div>
+                        <div class="bar-track">
+                            <div class="bar-fill material" style="width: 32%;">101개</div>
+                        </div>
+                    </div>
+                    <div class="bar-item">
+                        <div class="bar-label">크립토 ETF</div>
+                        <div class="bar-track">
+                            <div class="bar-fill tech" style="width: 24%;">78개</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <h3>ETF 트렌드가 말해주는 시장 전망</h3>
+            
+            <div class="warning-box">
+                <p>⚠️ <strong>기관들의 예측:</strong> 2026년은 <strong>고변동성, 고위험</strong> 시장이 될 것. 꾸준히 7~8% 오르는 편안한 시장이 아님</p>
+            </div>
+            
+            <p><strong>레버리지·인버스 ETF 급증의 의미:</strong></p>
+            <ul style="margin-left: 20px; color: #d1d5db;">
+                <li>위든 아래든 변동성이 커질 것으로 기관들이 예측</li>
+                <li>올라가도 2~3배, 떨어져도 2~3배 움직이는 상품 수요 증가</li>
+                <li>급등락이 반복되는 트렌드 예상</li>
+            </ul>
+            
+            <p><strong>버퍼 ETF 증가의 의미:</strong></p>
+            <ul style="margin-left: 20px; color: #d1d5db;">
+                <li>Upside는 더하고 Downside 리스크는 줄이는 옵션 내장</li>
+                <li>투자 상황의 불안감을 반영</li>
+                <li>변동성 헤지 수요 급증</li>
+            </ul>
+            
+            <div class="highlight-box">
+                <p>💡 <strong>투자 시사점:</strong> 매수 후 보유(Buy & Hold) 전략만으로는 큰 손해를 볼 수 있는 종목이 분명히 생길 것. 10~30% 급등락하는 종목이 빈번해질 전망</p>
+            </div>
+        </section>
+
+        <!-- 1월 투자 리스크 -->
+        <section>
+            <h2>⚡ 1월 주요 투자 리스크 요인</h2>
+            
+            <p>1월은 <strong class="emphasis">"산 넘어 산"</strong>처럼 다양한 리스크 요인이 산재해 있습니다.</p>
+            
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-date">🔴 핵심 리스크 1</div>
+                    <div class="timeline-content"><strong>관세 합법성 대법원 판결</strong> - 관세가 불법 판정 시 인플레이션 요인 제거 가능성</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">🔴 핵심 리스크 2</div>
+                    <div class="timeline-content"><strong>새 연준(Fed) 의장 후보 언급</strong> - 금리 인하 2~4회 주장 등 발언에 따른 변동성</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">🔴 핵심 리스크 3</div>
+                    <div class="timeline-content"><strong>베네수엘라 사태 후속 영향</strong> - 불확실성(Uncertainty) 고조</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">🔴 핵심 리스크 4</div>
+                    <div class="timeline-content"><strong>기업 실적 발표 시즌</strong> - 다음 주부터 은행 실적 시작</div>
+                </div>
+            </div>
+            
+            <h3>📅 이번 주 주요 경제 지표</h3>
+            
+            <table class="trend-table">
+                <tr>
+                    <th>지표</th>
+                    <th>중요도</th>
+                </tr>
+                <tr>
+                    <td>공장 주문량 (Factory Orders)</td>
+                    <td>🔸 중간</td>
+                </tr>
+                <tr>
+                    <td>실업수당 신청건수</td>
+                    <td>🔸 중간</td>
+                </tr>
+                <tr>
+                    <td>Job Openings (구인 건수)</td>
+                    <td>🔸 중간</td>
+                </tr>
+                <tr>
+                    <td>Consumer Sentiment (소비자 심리)</td>
+                    <td>🔸 중간</td>
+                </tr>
+                <tr>
+                    <td><strong>금요일 고용보고서</strong></td>
+                    <td>🔴 매우 중요</td>
+                </tr>
+            </table>
+            
+            <div class="info-box">
+                <p>📊 <strong>고용보고서 예상:</strong> 12월 일자리 창출 55,000개 예상. 예상치 미달 시 주가 하락 가능성 높음</p>
+            </div>
+            
+            <h3>VIX 지수 전망</h3>
+            
+            <div class="risk-meter">
+                <div class="risk-label">
+                    <span>낮음</span>
+                    <span>현재: 14</span>
+                    <span>높음</span>
+                </div>
+                <div class="risk-bar">
+                    <div class="risk-indicator" style="left: 30%;"></div>
+                </div>
+            </div>
+            
+            <p>현재 VIX 지수는 연말 최저치인 14 수준이나, 1월 중 <strong>18~20 이상</strong>으로 상승할 가능성이 있습니다.</p>
+        </section>
+
+        <!-- 10년 국채 분석 -->
+        <section>
+            <h2>📉 10년 국채 금리 분석</h2>
+            
+            <p>10년 국채 금리는 <strong>4.169%</strong>로 마무리했습니다.</p>
+            
+            <div class="highlight-box">
+                <p>✅ <strong>긍정적 신호:</strong> 10년 국채 금리가 더 이상 올라가지 않고 있다는 것은 시장에 긍정적인 효과. 달러 인덱스도 약간 상승하며 안정적인 모습</p>
+            </div>
+            
+            <h3>회사채 시장 분석</h3>
+            
+            <p>미 기업 이익률이 2021년부터 계속 상승 중이며, 회사채 시장에서 안정적인 매매가 이루어지고 있습니다.</p>
+            
+            <p><strong>회사채 일드 커브:</strong> 미 국채 일드 커브보다 회사채의 일드 커브가 정상적입니다. 10년물 > 5년물 > 2년물 순으로 금리가 형성되어 있어, 은행 융자보다 회사채에 더 긍정적인 환경입니다.</p>
+            
+            <div class="warning-box">
+                <p>⚠️ <strong>주의점:</strong> CAPEX(자본지출)가 더 늘어나면 안 됨. 올해는 증가 속도가 줄어들어야 함. "작년에 돈 빌려서 데이터센터 짓고 엔비디아 칩 샀는데, 올해 얼마 벌었어?" - 기관들이 따지기 시작</p>
+            </div>
+        </section>
+
+        <!-- 기업 실적 전망 -->
+        <section>
+            <h2>🏢 기업 실적 발표 시즌 전망</h2>
+            
+            <p>다음 주부터 은행을 시작으로 하이테크 기업들의 분기 실적 발표가 이어집니다.</p>
+            
+            <h3>올해 실적 시즌의 특징</h3>
+            
+            <p>2024~2025년에 AI 관련 CAPEX(자본지출)가 크게 증가했습니다. 올해 기관들은 <strong>"너희들 돈 많이 썼으니까 얼마 벌었는지 딱 까봐"</strong>라는 자세로 접근할 것입니다.</p>
+            
+            <div class="warning-box">
+                <p>⚠️ <strong>높은 P/E Ratio 리스크:</strong> 현재 P/E 비율이 34 수준으로 정상 범위(22~23) 대비 높음. 조금이라도 뭔가 잘못된 게 나오면 <strong>폭락 가능성</strong> 존재</p>
+            </div>
+            
+            <h3>투자 의견 변화 추이</h3>
+            
+            <div class="comparison-card">
+                <div class="compare-item positive">
+                    <div class="compare-title">업그레이드</div>
+                    <div class="compare-value">59개</div>
+                </div>
+                <div class="compare-item negative">
+                    <div class="compare-title">다운그레이드</div>
+                    <div class="compare-value">86개</div>
+                </div>
+            </div>
+            
+            <p>1월 5일 기준으로 다운그레이드된 기업이 업그레이드된 기업보다 많은 상황입니다. 이 추세를 지속적으로 모니터링해야 합니다.</p>
+        </section>
+
+        <!-- 마이크로소프트 분석 -->
+        <section>
+            <h2>💼 마이크로소프트(MSFT) 심층 분석</h2>
+            
+            <div class="stock-analysis">
+                <div class="stock-header">
+                    <div class="stock-logo">MSFT</div>
+                    <div>
+                        <div class="stock-name">Microsoft Corporation</div>
+                        <div class="stock-type">Large Cap Blend (성장+배당)</div>
+                    </div>
+                </div>
+                
+                <div class="stock-metrics">
+                    <div class="metric-item">
+                        <div class="metric-label">2026년 매출 성장</div>
+                        <div class="metric-value">+16%</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">2027년 매출 성장</div>
+                        <div class="metric-value">+14%</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">Operating Margin</div>
+                        <div class="metric-value">49%</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">EPS (2026E)</div>
+                        <div class="metric-value">$15.70</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">EPS (2027E)</div>
+                        <div class="metric-value">$18.31</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">배당금</div>
+                        <div class="metric-value">$3.64</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">CAPEX 비중</div>
+                        <div class="metric-value class="down">34%</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">기관 보유량</div>
+                        <div class="metric-value">72%+</div>
+                    </div>
+                </div>
+            </div>
+            
+            <h3>핵심 성장 동력</h3>
+            <p>Microsoft 365 Commercial Cloud와 <strong>Azure 모멘텀</strong>에서 40% 이상의 매출 성장이 예상됩니다. 특히 Azure AI 관련 사업이 핵심입니다.</p>
+            
+            <h3>⚠️ 주요 리스크 요인</h3>
+            
+            <div class="warning-box">
+                <p>🔴 <strong>EPS 희석(Dilution) 12.5%:</strong> AI CAPEX 투자로 인해 우선주(Preferred Stock) 발행 증가. "돈을 꼬았다"는 표현처럼, OpenAI 등에 대한 대규모 투자로 자본 희석 발생</p>
+            </div>
+            
+            <p><strong>우선주 발행의 의미:</strong> 회사가 자금이 급할 때 은행에 "이자 9% 줄 테니까 돈 빌려줘, 그리고 언제든 주식으로 전환 가능해"라고 하는 것. 이는 기존 주주의 가치를 희석시킵니다.</p>
+            
+            <h3>투자 판단 포인트</h3>
+            
+            <p>좋은 회사이지만, 분기 실적에서 <strong>가이던스 이상을 치지 못하면</strong> 단기적인 변동성에 노출될 수 있습니다. P/E 34 수준에서 조금이라도 기대에 못 미치는 실적이 나오면 급락 가능성이 있습니다.</p>
+            
+            <div class="highlight-box">
+                <p>💡 <strong>핵심 메시지:</strong> 마이크로소프트라는 '주식 자체'보다 <strong>포트폴리오 내 비중</strong>과 <strong>베타 노출</strong>이 더 중요. 전체 포트폴리오의 베타 평균값을 계산하고, MSFT가 차지하는 비중이 본인의 투자 리스크 성향에 맞는지 분석해야 함</p>
+            </div>
+        </section>
+
+        <!-- CES 2026 관련 -->
+        <section>
+            <h2>🎪 CES 2026 - 투자와의 연결성</h2>
+            
+            <p>CES 2026에서 주목받는 5가지 트렌드:</p>
+            
+            <ol style="margin-left: 20px; color: #d1d5db;">
+                <li><strong>가정용 청소/가사 로봇</strong> - 밥, 설거지, 청소 대행</li>
+                <li><strong>스마트 글래스</strong> - 메타 레이밴 2.0 (안경 내 컴퓨터)</li>
+                <li><strong>차세대 디스플레이</strong> - 마이크로 RGB TV (삼성 주도)</li>
+                <li><strong>온디바이스 AI</strong> - 클라우드 → 디바이스 내장 AI (아이폰 등)</li>
+                <li><strong>헬스테크</strong> - AI 기반 원격 의료, 혈압/혈당/심장 모니터링</li>
+            </ol>
+            
+            <div class="warning-box">
+                <p>⚠️ <strong>투자 주의사항:</strong> CES를 보고 주가를 평가하지 마십시오. 이벤트성 전시회와 실제 투자는 전혀 다릅니다. 10억, 20억, 100억, 1조 달러가 CES를 보고 투자 결정을 하지 않습니다.</p>
+            </div>
+            
+            <p>기술 트렌드를 파악하고 정보를 얻는 것에서 끝나야 합니다. 원인과 결과를 연결해서 투자하다가는 큰 코 다칠 수 있습니다. 특히 엔지니어 출신들이 "이 트렌드니까 주가도 이렇게 될 것"이라고 헛다리 짚는 경우가 많습니다.</p>
+        </section>
+
+        <!-- 레버리지 ETF 경고 -->
+        <section>
+            <h2>🚨 레버리지 ETF 투자 경고</h2>
+            
+            <p>한국에서 2배, 3배, 4배 레버리지 ETF 인기가 높지만, 이에 대한 <strong>강력한 경고</strong>가 필요합니다.</p>
+            
+            <div class="warning-box">
+                <p>🔴 <strong>핵심 경고:</strong> 2배, 3배, 4배 레버리지 상품은 <strong>투자가 아니라 투기</strong>입니다. 전 재산의 10% 이상 투자하면 안 됩니다.</p>
+            </div>
+            
+            <h3>왜 위험한가?</h3>
+            
+            <p>현재 P/E Ratio가 정상(22~23) 대비 34 수준으로 높습니다. 앞으로 30% 하락해도 "폭락"이 아니라 "원래 수준으로 복귀"하는 것입니다.</p>
+            
+            <p>30% 하락 시 레버리지 ETF 손실:</p>
+            <ul style="margin-left: 20px; color: #d1d5db;">
+                <li>2배 레버리지: <strong class="down">-60%</strong></li>
+                <li>3배 레버리지: <strong class="down">-90%</strong> (거의 전액 손실)</li>
+            </ul>
+            
+            <h3>망한 사례의 패턴</h3>
+            
+            <p>26년간 수많은 사례를 봤습니다:</p>
+            <ol style="margin-left: 20px; color: #d1d5db;">
+                <li>몇 번 성공해서 자신감 상승</li>
+                <li>"나보다 전문가가 낫다"는 오만</li>
+                <li>대규모 손실 발생</li>
+                <li>손실 만회하려고 더 무리수</li>
+                <li>10억 → 7억 → 6억 → 2억으로 추락</li>
+                <li>인생 자체가 날아감 (이혼 사례 다수)</li>
+            </ol>
+            
+            <div class="highlight-box">
+                <p>💡 <strong>결론:</strong> 레버리지 ETF 없이도 섹터 로테이션, 리밸런싱, 적절한 법칙(4.11, 5.25, 3.11)을 적용하면 충분히 자산을 늘릴 수 있습니다. 무리수를 두지 마세요.</p>
+            </div>
+        </section>
+
+        <!-- 은퇴자 투자 조언 -->
+        <section>
+            <h2>👴 은퇴자 투자 전략</h2>
+            
+            <p>은퇴자가 채권 투자를 고려할 때 먼저 생각해야 할 것:</p>
+            
+            <h3>1. 월 필요 금액 계산이 최우선</h3>
+            <p>전체 자산보다 <strong>한 달에 얼마가 필요한지</strong>를 먼저 계산해야 합니다. 그 금액이 은퇴자산에서 나오는지 확인하세요.</p>
+            
+            <h3>2. 채권의 한계</h3>
+            <p>채권은 변동성을 싫어하는 투자자에게 적합하지만, <strong>인플레이션 리스크</strong>에 노출됩니다. 채권 수익률 2~4%로는 인플레이션을 감안하면 실질 수익이 없을 수 있습니다.</p>
+            
+            <h3>3. 주식:채권 비중 결정</h3>
+            <p>월 필요 금액을 기준으로 주식과 채권의 노출 비율을 정해야 합니다:</p>
+            <ul style="margin-left: 20px; color: #d1d5db;">
+                <li>보수적: 30:70 (주식:채권)</li>
+                <li>균형적: 50:50</li>
+                <li>적극적: 70:30</li>
+            </ul>
+            
+            <div class="info-box">
+                <p>📌 <strong>핵심:</strong> 배당금처럼 매달 나오는 수입이 확보되어야 합니다. 본인의 월 필요 금액을 모르면 적절한 조언이 어렵습니다.</p>
+            </div>
+        </section>
+
+        <!-- 결론 -->
+        <div class="conclusion-box">
+            <h2>📋 종합 결론 및 투자 시사점</h2>
+            
+            <h3>2026년 시장 특징</h3>
+            <ul style="margin-left: 20px; color: #d1d5db; margin-bottom: 16px;">
+                <li><strong>고변동성 시장</strong> - 급등락이 빈번할 전망</li>
+                <li><strong>섹터 분화</strong> - 반도체↑ vs 소프트웨어↓ 명확한 분리</li>
+                <li><strong>실적 검증의 해</strong> - AI 투자 대비 수익 증명 요구</li>
+                <li><strong>ETF 시장 성숙</strong> - 액티브 전략 주류화</li>
+            </ul>
+            
+            <h3>투자 전략 권고</h3>
+            <ul style="margin-left: 20px; color: #d1d5db; margin-bottom: 16px;">
+                <li>매수 후 장기 보유만으로는 위험 - <strong>적극적 관리 필요</strong></li>
+                <li>레버리지 상품 지양 - 전 재산의 10% 이하로 제한</li>
+                <li>섹터 로테이션 모니터링 - 에너지, 금융, 기초소재 주목</li>
+                <li>실적 시즌 대비 - 가이던스 미달 시 급락 가능성 인지</li>
+                <li>포트폴리오 베타 관리 - 개별 종목보다 전체 리스크 관리</li>
+            </ul>
+            
+            <h3>1월 핵심 일정</h3>
+            <ul style="margin-left: 20px; color: #d1d5db;">
+                <li>📅 이번 주 금요일: 고용보고서 (55,000개 일자리 예상)</li>
+                <li>📅 다음 주: 은행 실적 발표 시작</li>
+                <li>📅 1월 중: 관세 대법원 판결, 연준 의장 후보 언급</li>
+                <li>📅 1월 15일: 주요 변동성 예상일</li>
+            </ul>
+        </div>
+
+        <footer>
+            <p class="disclaimer">
+                ⚠️ 본 문서는 투자 참고 자료로 작성되었으며, 특정 종목에 대한 매수/매도 권유가 아닙니다.<br>
+                투자의 최종 결정은 본인의 판단과 책임 하에 이루어져야 합니다.<br>
+                과거 수익률이 미래 수익을 보장하지 않습니다.<br><br>
+                📺 원본 출처: 투자는인생TV (2026년 1월 6일)
+            </p>
+        </footer>
+    </div>
+</body>
+</html>
