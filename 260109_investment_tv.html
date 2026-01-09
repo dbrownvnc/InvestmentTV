@@ -1,0 +1,1149 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>M7 시대 마감 & 섹터 로테이션 분석 (2025.01.08)</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.7;
+            color: #333;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 100%;
+            padding: 20px 16px;
+        }
+        .header {
+            background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
+            color: white;
+            padding: 28px 20px;
+            border-radius: 20px;
+            margin-bottom: 24px;
+            box-shadow: 0 10px 40px rgba(220, 38, 38, 0.3);
+        }
+        .header h1 {
+            font-size: 1.6rem;
+            font-weight: 800;
+            margin-bottom: 8px;
+            line-height: 1.3;
+        }
+        .header .subtitle {
+            font-size: 0.95rem;
+            opacity: 0.95;
+        }
+        .date-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin-top: 12px;
+        }
+        .alert-box {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border-left: 5px solid #f59e0b;
+            padding: 18px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+        .alert-box.critical {
+            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+            border-left-color: #dc2626;
+        }
+        .alert-box.positive {
+            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+            border-left-color: #10b981;
+        }
+        .alert-box h3 {
+            font-size: 1rem;
+            color: #92400e;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .alert-box.critical h3 { color: #991b1b; }
+        .alert-box.positive h3 { color: #065f46; }
+        .alert-box p {
+            font-size: 0.95rem;
+            color: #78350f;
+        }
+        .alert-box.critical p { color: #7f1d1d; }
+        .alert-box.positive p { color: #064e3b; }
+        .section {
+            background: white;
+            border-radius: 16px;
+            padding: 24px 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+        .section h2 {
+            font-size: 1.25rem;
+            color: #1e3a5f;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 3px solid #3b82f6;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .section h3 {
+            font-size: 1.1rem;
+            color: #374151;
+            margin: 20px 0 12px 0;
+        }
+        .section p {
+            margin-bottom: 14px;
+            font-size: 0.95rem;
+            color: #4b5563;
+        }
+        .highlight {
+            background: linear-gradient(120deg, #fef3c7 0%, #fde68a 100%);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+        .highlight.red {
+            background: linear-gradient(120deg, #fee2e2 0%, #fecaca 100%);
+            color: #dc2626;
+        }
+        .highlight.green {
+            background: linear-gradient(120deg, #d1fae5 0%, #a7f3d0 100%);
+            color: #059669;
+        }
+        .highlight.blue {
+            background: linear-gradient(120deg, #dbeafe 0%, #bfdbfe 100%);
+            color: #2563eb;
+        }
+        .chart-container {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 16px;
+            margin: 20px 0;
+        }
+        .chart-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #475569;
+            text-align: center;
+            margin-bottom: 12px;
+        }
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+            font-size: 0.9rem;
+        }
+        .data-table th {
+            background: linear-gradient(135deg, #1e3a5f 0%, #1e40af 100%);
+            color: white;
+            padding: 14px 12px;
+            text-align: left;
+            font-weight: 600;
+        }
+        .data-table td {
+            padding: 12px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        .data-table tr:nth-child(even) {
+            background: #f8fafc;
+        }
+        .data-table tr:hover {
+            background: #f1f5f9;
+        }
+        .status-up {
+            color: #dc2626;
+            font-weight: 700;
+        }
+        .status-down {
+            color: #059669;
+            font-weight: 700;
+        }
+        .stock-card {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            border-radius: 12px;
+            padding: 16px;
+            margin: 12px 0;
+            border-left: 4px solid #3b82f6;
+        }
+        .stock-card.warning {
+            border-left-color: #f59e0b;
+            background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+        }
+        .stock-card.danger {
+            border-left-color: #dc2626;
+            background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+        }
+        .stock-card.success {
+            border-left-color: #10b981;
+            background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+        }
+        .stock-card h4 {
+            font-size: 1rem;
+            color: #1f2937;
+            margin-bottom: 8px;
+        }
+        .stock-card p {
+            font-size: 0.9rem;
+            color: #4b5563;
+            margin-bottom: 6px;
+        }
+        .tier-grid {
+            display: grid;
+            gap: 12px;
+            margin: 16px 0;
+        }
+        .tier-item {
+            padding: 16px;
+            border-radius: 12px;
+            text-align: center;
+        }
+        .tier-strong {
+            background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+            border: 2px solid #22c55e;
+        }
+        .tier-medium {
+            background: linear-gradient(135deg, #fef9c3 0%, #fef08a 100%);
+            border: 2px solid #eab308;
+        }
+        .tier-weak {
+            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+            border: 2px solid #ef4444;
+        }
+        .tier-item h4 {
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+            color: #374151;
+        }
+        .tier-item .stocks {
+            font-size: 1rem;
+            font-weight: 700;
+        }
+        .tier-strong .stocks { color: #15803d; }
+        .tier-medium .stocks { color: #a16207; }
+        .tier-weak .stocks { color: #dc2626; }
+        .key-date {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 16px;
+            margin: 16px 0;
+            text-align: center;
+        }
+        .key-date .date {
+            font-size: 2rem;
+            font-weight: 800;
+        }
+        .key-date .label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin-top: 8px;
+        }
+        .metric-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        .metric-row:last-child {
+            border-bottom: none;
+        }
+        .metric-label {
+            font-size: 0.9rem;
+            color: #6b7280;
+        }
+        .metric-value {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #1f2937;
+        }
+        .summary-box {
+            background: linear-gradient(135deg, #1e3a5f 0%, #1e40af 100%);
+            color: white;
+            padding: 24px 20px;
+            border-radius: 16px;
+            margin-top: 20px;
+        }
+        .summary-box h3 {
+            font-size: 1.1rem;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .summary-box ul {
+            list-style: none;
+        }
+        .summary-box li {
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            font-size: 0.95rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+        .summary-box li:last-child {
+            border-bottom: none;
+        }
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .badge-red {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+        .badge-green {
+            background: #d1fae5;
+            color: #059669;
+        }
+        .badge-blue {
+            background: #dbeafe;
+            color: #2563eb;
+        }
+        .badge-yellow {
+            background: #fef3c7;
+            color: #d97706;
+        }
+        .footer {
+            text-align: center;
+            padding: 24px 16px;
+            color: rgba(255,255,255,0.6);
+            font-size: 0.85rem;
+        }
+        .divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #cbd5e1, transparent);
+            margin: 20px 0;
+        }
+        .new-addition {
+            background: linear-gradient(135deg, #fef3c7 0%, #fcd34d 100%);
+            padding: 20px;
+            border-radius: 16px;
+            margin: 16px 0;
+            border: 2px dashed #f59e0b;
+        }
+        .new-addition h4 {
+            color: #92400e;
+            font-size: 1rem;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .quote-box {
+            background: #f8fafc;
+            border-left: 4px solid #6366f1;
+            padding: 16px;
+            margin: 16px 0;
+            border-radius: 0 12px 12px 0;
+            font-style: italic;
+            color: #475569;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>🔴 M7 시대 마감 선언 & 형님 30대 추가</h1>
+            <p class="subtitle">기술주 → 가치주 대전환, 섹터 로테이션 본격화</p>
+            <span class="date-badge">📅 2025년 1월 8일 분석</span>
+        </div>
+
+        <!-- Critical Alert -->
+        <div class="alert-box critical">
+            <h3>⚠️ 핵심 경고: M7 시대 공식 마감</h3>
+            <p>오늘부터 매그니피센트 세븐(M7) 시대가 공식적으로 마감되었습니다. IT 섹터에서 자금이 이탈하고 가치주 중심의 다우지수로 자금이 이동하고 있습니다. <strong>10년 국채 금리 4.3% 도달 시 증시 위험 구간</strong>에 진입합니다.</p>
+        </div>
+
+        <!-- Key Date -->
+        <div class="key-date">
+            <div class="date">1월 15일</div>
+            <div class="label">TSMC 실적 발표 + Morgan Stanley 실적<br>AI 투자심리 확인의 날</div>
+        </div>
+
+        <!-- Market Overview -->
+        <div class="section">
+            <h2>📊 시장 개요 및 지수 동향</h2>
+            
+            <p>현재 시장은 <span class="highlight red">IT 섹터에서 자금 이탈</span>이 진행 중이며, <span class="highlight green">가치주 중심의 다우지수</span>가 3일 연속 상승하고 있습니다. 이는 기관투자자들이 고PE(주가수익비율) 성장주에서 펀더멘털이 강한 가치주로 포트폴리오를 재조정하고 있음을 의미합니다.</p>
+
+            <div class="chart-container">
+                <div class="chart-title">📈 주요 지수 흐름 비교</div>
+                <canvas id="indexChart"></canvas>
+            </div>
+
+            <table class="data-table">
+                <tr>
+                    <th>지표</th>
+                    <th>현재값</th>
+                    <th>변동</th>
+                </tr>
+                <tr>
+                    <td>10년 국채 금리</td>
+                    <td><strong>4.17%</strong></td>
+                    <td class="status-up">▲ 4bp (4.13% → 4.17%)</td>
+                </tr>
+                <tr>
+                    <td>위험 경고선</td>
+                    <td><strong>4.30%</strong></td>
+                    <td><span class="badge badge-red">13bp 여유</span></td>
+                </tr>
+                <tr>
+                    <td>다우존스</td>
+                    <td>상승</td>
+                    <td class="status-down">▲ 3일 연속 상승</td>
+                </tr>
+                <tr>
+                    <td>나스닥</td>
+                    <td>하락</td>
+                    <td class="status-up">▼ IT 섹터 매도 압박</td>
+                </tr>
+                <tr>
+                    <td>S&P 500 Top 100</td>
+                    <td>하락</td>
+                    <td class="status-up">▼ 성장주 비중 축소</td>
+                </tr>
+            </table>
+
+            <div class="alert-box">
+                <h3>💡 10년 국채 금리 상승의 의미</h3>
+                <p>10년 국채 금리가 4.3%에 도달하면 기관투자자들이 은행권에서 자금을 빼기 시작합니다. 이는 주식시장에 대한 유동성 감소로 이어져 특히 AI·기술주에 큰 부담을 줍니다. 현재 4.17%로 위험 구간까지 13bp 여유가 있습니다.</p>
+            </div>
+        </div>
+
+        <!-- Economic Indicators -->
+        <div class="section">
+            <h2>📈 경제지표 및 연준 정책 영향</h2>
+
+            <h3>🔴 고용보고서 충격 (1월 9일 발표 예정)</h3>
+            <p>오늘 발표된 <span class="highlight">실업수당 신청건수가 예상보다 감소</span>하여 노동시장이 여전히 견조함을 보여주었습니다. 이는 역설적으로 <span class="highlight red">금리 인하 지연</span> 가능성을 높이는 요인입니다.</p>
+
+            <div class="chart-container">
+                <div class="chart-title">🔄 금리 인하 시나리오 변화</div>
+                <canvas id="rateChart"></canvas>
+            </div>
+
+            <div class="stock-card warning">
+                <h4>⚡ 금리 동결 가능성 증가 배경</h4>
+                <p>• 실업률 하락 → 임금 상승 압박 지속</p>
+                <p>• 고용률 상승 → 소비 지속 → 인플레이션 하방 경직</p>
+                <p>• <strong>1월 FOMC(28-29일)</strong>: 금리 동결 가능성 높음</p>
+                <p>• 올해 예상 금리 인하: <strong>1.25~1.50%</strong> (기존 예상보다 축소)</p>
+            </div>
+
+            <h3>🏠 주택시장 동향</h3>
+            <p>30년 고정 모기지 금리가 <span class="highlight green">6.16%로 하락</span>했으며, 모기지 신청건수는 지난주 대비 9.7% 감소했습니다. 캘리포니아 등 고가 주택시장에서는 가격 협상 여지가 커지고 있어 주택시장 조정 신호가 감지됩니다.</p>
+
+            <table class="data-table">
+                <tr>
+                    <th>주요 일정</th>
+                    <th>날짜</th>
+                    <th>중요도</th>
+                </tr>
+                <tr>
+                    <td>비농업 고용지표(NFP)</td>
+                    <td>1월 9일</td>
+                    <td><span class="badge badge-red">매우 높음</span></td>
+                </tr>
+                <tr>
+                    <td>주택착공·건축허가</td>
+                    <td>1월 10일</td>
+                    <td><span class="badge badge-yellow">보통</span></td>
+                </tr>
+                <tr>
+                    <td>12월 CPI</td>
+                    <td>1월 13일</td>
+                    <td><span class="badge badge-red">매우 높음</span></td>
+                </tr>
+                <tr>
+                    <td>12월 PPI</td>
+                    <td>1월 14일</td>
+                    <td><span class="badge badge-yellow">높음</span></td>
+                </tr>
+                <tr>
+                    <td>TSMC 실적</td>
+                    <td>1월 15일</td>
+                    <td><span class="badge badge-red">매우 높음</span></td>
+                </tr>
+                <tr>
+                    <td>트럼프 관세 판단</td>
+                    <td>1월 15일</td>
+                    <td><span class="badge badge-red">매우 높음</span></td>
+                </tr>
+                <tr>
+                    <td>FOMC 회의</td>
+                    <td>1월 28-29일</td>
+                    <td><span class="badge badge-red">매우 높음</span></td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- M7 Restructuring -->
+        <div class="section">
+            <h2>🔄 M7 재편: 3강 1중 3약 체제</h2>
+            
+            <p>매그니피센트 세븐(Magnificent Seven)의 시대가 마감되고, 새로운 <span class="highlight">3강 1중 3약</span> 체제로 재편되고 있습니다. 이는 AI 인프라 투자의 실질적 수혜 여부에 따른 차별화입니다.</p>
+
+            <div class="tier-grid">
+                <div class="tier-item tier-strong">
+                    <h4>💪 3강 (Strong)</h4>
+                    <div class="stocks">구글 · 아마존 · 메타</div>
+                    <p style="font-size: 0.85rem; color: #166534; margin-top: 8px;">AI 인프라 투자 수혜 + 광고/클라우드 성장</p>
+                </div>
+                <div class="tier-item tier-medium">
+                    <h4>⚖️ 1중 (Neutral)</h4>
+                    <div class="stocks">엔비디아</div>
+                    <p style="font-size: 0.85rem; color: #854d0e; margin-top: 8px;">AI 반도체 독점이나 밸류에이션 부담</p>
+                </div>
+                <div class="tier-item tier-weak">
+                    <h4>⚠️ 3약 (Weak)</h4>
+                    <div class="stocks">애플 · 테슬라 · 마이크로소프트</div>
+                    <p style="font-size: 0.85rem; color: #991b1b; margin-top: 8px;">성장 둔화 / 정책 리스크 / 마진 압박</p>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <div class="chart-title">📊 M7 종목별 리스크 요인</div>
+                <canvas id="m7Chart"></canvas>
+            </div>
+
+            <h3>🍎 애플 (AAPL) - 비중 축소 권고</h3>
+            <div class="stock-card danger">
+                <h4>주요 리스크 요인</h4>
+                <p>• <strong>시가총액</strong>: 구글 밑으로 하락 (트렌드 악화 신호)</p>
+                <p>• <strong>워런 버펫</strong>: 2024년 보유분 80% 매각</p>
+                <p>• <strong>트럼프 정책</strong>: 미국 내 공장 없이 자사주 매입하는 기업 제재 예고</p>
+                <p>• <strong>핵심 문제</strong>: 주가 상승이 아이폰 판매가 아닌 자사주 매입에 의존</p>
+                <p>• 자사주 매입 제한 시 주가 상승 동력 상실 우려</p>
+            </div>
+
+            <h3>🚗 테슬라 (TSLA) - 비중 축소 권고</h3>
+            <div class="stock-card warning">
+                <h4>잠재적 리스크</h4>
+                <p>• <strong>SpaceX 상장 시</strong>: 일론 머스크 투자자 관심 분산</p>
+                <p>• 테슬라에서 SpaceX로 자금 이동 예상</p>
+                <p>• 현재 밸류에이션 정당화 어려움</p>
+            </div>
+
+            <h3>💻 마이크로소프트 (MSFT) - 비중 유지 (목표가 하향)</h3>
+            <div class="stock-card">
+                <h4>투자 의견 변화</h4>
+                <p>• <strong>목표주가</strong>: $700 → $665 하향 조정</p>
+                <p>• <strong>우려</strong>: 소프트웨어 마진율 축소 전망</p>
+                <p>• 여전히 괜찮으나 과도한 비중은 권장하지 않음</p>
+                <p>• 10% 보유 시 → 5% 수준으로 비중 조절 권고</p>
+            </div>
+        </div>
+
+        <!-- New Addition -->
+        <div class="section">
+            <h2>🆕 형님 30대 그룹 신규 추가</h2>
+            
+            <div class="new-addition">
+                <h4>⭐ Morgan Stanley (MS) 추가</h4>
+                <p style="color: #78350f; font-size: 0.95rem;">Investment Banking 부문 성장 + SpaceX IPO 수혜 기대</p>
+            </div>
+
+            <div class="chart-container">
+                <div class="chart-title">📈 Morgan Stanley 핵심 지표</div>
+                <canvas id="msChart"></canvas>
+            </div>
+
+            <table class="data-table">
+                <tr>
+                    <th>지표</th>
+                    <th>수치</th>
+                    <th>평가</th>
+                </tr>
+                <tr>
+                    <td>분류</td>
+                    <td>Large Cap Value</td>
+                    <td><span class="badge badge-green">안정적</span></td>
+                </tr>
+                <tr>
+                    <td>섹터</td>
+                    <td>Financial / Investment Banking</td>
+                    <td><span class="badge badge-green">핫 섹터</span></td>
+                </tr>
+                <tr>
+                    <td>매출</td>
+                    <td>$70B+ (연간)</td>
+                    <td><span class="badge badge-green">안정적 성장</span></td>
+                </tr>
+                <tr>
+                    <td>지난 분기 실적</td>
+                    <td>예상 대비 +18%</td>
+                    <td><span class="badge badge-green">서프라이즈</span></td>
+                </tr>
+                <tr>
+                    <td>Investment Banking 성장</td>
+                    <td>+43% (전년비)</td>
+                    <td><span class="badge badge-green">고성장</span></td>
+                </tr>
+                <tr>
+                    <td>P/E Ratio</td>
+                    <td>18배</td>
+                    <td><span class="badge badge-green">시장 평균(24) 이하</span></td>
+                </tr>
+                <tr>
+                    <td>EPS</td>
+                    <td>약 $9.75</td>
+                    <td><span class="badge badge-green">견조</span></td>
+                </tr>
+                <tr>
+                    <td>배당수익률</td>
+                    <td>2.25%</td>
+                    <td><span class="badge badge-blue">인컴 확보</span></td>
+                </tr>
+                <tr>
+                    <td>목표주가</td>
+                    <td>$212</td>
+                    <td><span class="badge badge-yellow">상승여력 존재</span></td>
+                </tr>
+                <tr>
+                    <td>내재가치</td>
+                    <td>$402</td>
+                    <td><span class="badge badge-green">54% 저평가</span></td>
+                </tr>
+                <tr>
+                    <td>기관 보유율 변화</td>
+                    <td>38% → 60%</td>
+                    <td><span class="badge badge-green">기관 매수 증가</span></td>
+                </tr>
+            </table>
+
+            <div class="alert-box positive">
+                <h3>🚀 SpaceX IPO 수혜 시나리오</h3>
+                <p><strong>Morgan Stanley가 SpaceX IPO 주관사(Lead Manager)</strong>가 될 가능성이 높습니다. 일론 머스크와의 오랜 거래 관계가 있으며, SpaceX 예상 기업가치는 <strong>$1.8조(약 2,400조원)</strong>에 달합니다. IPO 성사 시 Morgan Stanley의 Investment Banking 수익이 급증하여 EPS가 현재 전망($10.25)의 2배까지 상승할 수 있습니다.</p>
+            </div>
+        </div>
+
+        <!-- Sector Rotation -->
+        <div class="section">
+            <h2>🔀 섹터 로테이션 전략</h2>
+            
+            <p>현재 시장은 <span class="highlight">IT 섹터 → 금융/헬스케어/산업재</span>로의 자금 이동이 진행 중입니다. 기관투자자들이 고PE 성장주에서 펀더멘털이 강한 가치주로 포트폴리오를 재조정하고 있습니다.</p>
+
+            <div class="chart-container">
+                <div class="chart-title">🎯 섹터별 투자 매력도</div>
+                <canvas id="sectorChart"></canvas>
+            </div>
+
+            <h3>✅ 매수 권장 섹터</h3>
+            <div class="stock-card success">
+                <h4>1. Financial (금융)</h4>
+                <p>• JP Morgan, Bank of America, Goldman Sachs, Morgan Stanley</p>
+                <p>• 은행주 실적 시즌 (1/9~1/15) 호실적 기대</p>
+                <p>• 금리 환경 수혜 + M&A/IPO 활성화</p>
+            </div>
+
+            <div class="stock-card success">
+                <h4>2. Communication Services (커뮤니케이션 서비스)</h4>
+                <p>• <strong>구글</strong>: 현재 저평가 구간, 매수 적기</p>
+                <p>• <strong>메타</strong>: 조정 중이나 펀더멘털 견조</p>
+            </div>
+
+            <div class="stock-card success">
+                <h4>3. Healthcare (헬스케어)</h4>
+                <p>• 건강보험 보조금 연장 법안 통과 → UNH 등 수혜</p>
+                <p>• Merck(MRK): 기관 투자의견 및 목표가 상향</p>
+            </div>
+
+            <div class="stock-card success">
+                <h4>4. Industrial (산업재)</h4>
+                <p>• 국방예산 $2조(2천조원) 편성 예고</p>
+                <p>• Lockheed Martin 등 방산주 +6% 상승</p>
+            </div>
+
+            <h3>⚠️ 비중 축소/주의 섹터</h3>
+            <div class="stock-card danger">
+                <h4>IT 섹터 (소프트웨어 특히 주의)</h4>
+                <p>• 소프트웨어 기업 목표주가 일제 하향</p>
+                <p>• ServiceNow(NOW): $265 → $228</p>
+                <p>• 마진율 축소 우려 확산</p>
+            </div>
+
+            <div class="stock-card warning">
+                <h4>에너지 섹터</h4>
+                <p>• 트럼프 정책과 연동, 정치적 변동성 높음</p>
+                <p>• 형님 30대 그룹 외 종목은 비추천</p>
+            </div>
+        </div>
+
+        <!-- Specific Stock Recommendations -->
+        <div class="section">
+            <h2>📋 개별 종목 투자 전략</h2>
+
+            <h3>💾 Micron (MU) - 333 법칙으로 매수</h3>
+            <div class="stock-card success">
+                <h4>미보유자는 반드시 편입</h4>
+                <p>• 최근 20% 급등 후 4% 조정 → 매수 기회</p>
+                <p>• AI 메모리 수요 수혜 지속</p>
+                <p>• <strong>333 법칙</strong>: 3일에 걸쳐, 목표 비중의 30%씩 분할 매수</p>
+            </div>
+
+            <h3>🛒 Amazon (AMZN) - 진입 시점</h3>
+            <div class="stock-card success">
+                <h4>금요일부터 상승폭 확대</h4>
+                <p>• 마이크로소프트 비중 축소 → 아마존으로 전환</p>
+                <p>• AWS 클라우드 + AI 인프라 + 리테일 시너지</p>
+                <p>• 현금 보유 중인 신규 멤버 진입 적기</p>
+            </div>
+
+            <h3>🏪 Costco (COST) - 신규 관심</h3>
+            <div class="stock-card">
+                <h4>실적 서프라이즈 + 기관 목표가 상향</h4>
+                <p>• 형님 30대 그룹은 아니나 트렌드 변화 주목</p>
+                <p>• 소비 관련 방어주 성격</p>
+                <p>• 무리하지 않는 선에서 소량 편입 고려</p>
+            </div>
+
+            <h3>🥇 Gold (금) - 프로핏 테이킹</h3>
+            <div class="stock-card warning">
+                <h4>70% 상승 후 비중 조절 필요</h4>
+                <p>• 초기 5% → 현재 10%+ 비중 상승</p>
+                <p>• 나쁜 자산이 아니라 수익 실현 후 재배치</p>
+                <p>• 줄인 자금으로 금융주 등 편입</p>
+            </div>
+
+            <h3>❌ SanDisk (SNDK) - 매각 권고</h3>
+            <div class="stock-card danger">
+                <h4>EPS 마이너스 $11.98</h4>
+                <p>• 펀더멘털 악화로 보유 부적합</p>
+                <p>• 즉시 정리 권고</p>
+            </div>
+        </div>
+
+        <!-- Trump Policy Risks -->
+        <div class="section">
+            <h2>🏛️ 트럼프 정책 리스크</h2>
+
+            <h3>⚖️ 연준 독립성 위협 (1월 9일 대법원 결정)</h3>
+            <div class="alert-box critical">
+                <h3>🚨 리사 쿡 연준 의장 해고 건</h3>
+                <p>대법원이 트럼프의 손을 들어주면 <strong>연준의 독립성</strong>에 심각한 의문이 제기됩니다. 국제 투자자들은 트럼프 행정부는 믿지 않아도 연준의 통화정책은 신뢰하기 때문에, 연준 독립성 훼손 시 외국인 국채 매도(특히 중국) → 금리 급등 → 증시 폭락 시나리오가 현실화될 수 있습니다.</p>
+            </div>
+
+            <h3>📦 관세 정책 (1월 15일 결정)</h3>
+            <div class="stock-card warning">
+                <h4>관세 = 인플레이션 상승 요인</h4>
+                <p>• 대법원이 관세를 <span class="highlight green">위헌</span> 판정 시 → 인플레이션 리스크 감소 (호재)</p>
+                <p>• <span class="highlight red">합헌</span> 판정 시 → 인플레이션 압박 지속 (악재)</p>
+                <p>• 단, 관세 수입으로 미국 부채 축소 기대도 있어 양면성 존재</p>
+            </div>
+
+            <h3>🛡️ 국방예산 $2조(2천조원)</h3>
+            <div class="stock-card success">
+                <h4>방산주 수혜 확대</h4>
+                <p>• 우주군 확대 등 역대 최대 국방비 편성</p>
+                <p>• Lockheed Martin 등 방산 섹터 6%+ 상승</p>
+                <p>• 형님 30대 그룹 내 방산 종목 보유자 축하</p>
+            </div>
+        </div>
+
+        <!-- Banking Earnings Preview -->
+        <div class="section">
+            <h2>🏦 은행주 실적 시즌 관전 포인트</h2>
+
+            <div class="chart-container">
+                <div class="chart-title">📅 은행주 실적 발표 일정</div>
+                <canvas id="bankChart"></canvas>
+            </div>
+
+            <table class="data-table">
+                <tr>
+                    <th>날짜</th>
+                    <th>발표 기업</th>
+                </tr>
+                <tr>
+                    <td>1월 13일</td>
+                    <td>JP Morgan, Bank of America, Delta</td>
+                </tr>
+                <tr>
+                    <td>1월 14일</td>
+                    <td>Bank of America, Wells Fargo, Citi Group</td>
+                </tr>
+                <tr>
+                    <td>1월 15일</td>
+                    <td><strong>Goldman Sachs, Morgan Stanley</strong> (클라이맥스)</td>
+                </tr>
+            </table>
+
+            <h3>📌 핵심 관전 포인트 3가지</h3>
+            
+            <div class="stock-card">
+                <h4>1️⃣ 대출 태도 변화</h4>
+                <p>은행들이 경기 침체를 감지하면 대출을 꺼리게 됩니다. 기업 채권 수익률과 10년 국채 수익률 간 스프레드가 커지면 자금 조달 비용 상승을 의미합니다.</p>
+            </div>
+
+            <div class="stock-card success">
+                <h4>2️⃣ Investment Banking 실적</h4>
+                <p>M&A, IPO 수수료 수입이 핵심입니다. 특히 <strong>SpaceX IPO 신디케이트(주관사단) 구성</strong> 소식에 주목해야 합니다. Morgan Stanley가 Lead Manager가 될 가능성이 높습니다.</p>
+            </div>
+
+            <div class="stock-card">
+                <h4>3️⃣ 금리 인하 전망</h4>
+                <p>올해 2회 이상, 최대 1.5% 금리 인하 가능성이 있습니다. 이는 은행 순이자마진(NIM)에 영향을 주지만, Investment Banking 활성화로 상쇄 가능합니다.</p>
+            </div>
+        </div>
+
+        <!-- TSMC Preview -->
+        <div class="section">
+            <h2>🔬 TSMC 실적 (1월 15일) - AI 투자심리 바로미터</h2>
+
+            <div class="alert-box">
+                <h3>💡 왜 TSMC가 중요한가?</h3>
+                <p>TSMC는 AI 반도체를 실제로 '제조'하는 파운드리 기업입니다. TSMC 실적을 통해 투자자들의 AI 투자 심리(Sentiment)가 변하는지 확인할 수 있습니다. <strong>실적 자체보다 가이던스와 수주 동향이 더 중요</strong>합니다.</p>
+            </div>
+
+            <table class="data-table">
+                <tr>
+                    <th>지표</th>
+                    <th>예상치</th>
+                </tr>
+                <tr>
+                    <td>EPS (분기)</td>
+                    <td>$2.84 ~ $2.92</td>
+                </tr>
+                <tr>
+                    <td>EPS (연간)</td>
+                    <td>약 $10.44</td>
+                </tr>
+                <tr>
+                    <td>매출</td>
+                    <td>$32B+ (320억 달러 이상)</td>
+                </tr>
+                <tr>
+                    <td>실적 전망</td>
+                    <td><span class="badge badge-green">예상 상회 가능성 높음</span></td>
+                </tr>
+            </table>
+
+            <div class="stock-card warning">
+                <h4>⚠️ 주의사항</h4>
+                <p>실적은 좋을 것으로 예상되나, <strong>구체적인 내용</strong>(어디서, 무엇을, 어떻게)에 따라 시장 반응이 달라질 수 있습니다. AI 수요 확산으로 기대치가 이미 높아진 상태이므로, 기대치를 충족하더라도 주가 상승폭은 제한적일 수 있습니다.</p>
+            </div>
+        </div>
+
+        <!-- 333 Rule -->
+        <div class="section">
+            <h2>📐 333 법칙 요약</h2>
+            
+            <div class="quote-box">
+                "333 법칙은 분할 매수의 기본 원칙입니다. 3일에 걸쳐, 목표 비중의 30%씩 나누어 매수하는 방식으로, 변동성 리스크를 줄이면서 평균 단가를 안정화시킵니다."
+            </div>
+
+            <div class="stock-card">
+                <h4>적용 예시: Micron 10% 편입 목표 시</h4>
+                <p>• <strong>1일차</strong>: 전체 포트폴리오의 3% 매수 (목표의 30%)</p>
+                <p>• <strong>2일차</strong>: 추가 3% 매수 (누적 6%, 목표의 60%)</p>
+                <p>• <strong>3일차</strong>: 추가 4% 매수 (누적 10%, 목표 달성)</p>
+                <p>※ 시장 상황에 따라 매수 간격 조절 가능</p>
+            </div>
+        </div>
+
+        <!-- Investment Summary -->
+        <div class="summary-box">
+            <h3>📌 핵심 투자 전략 요약</h3>
+            <ul>
+                <li>
+                    <span>1️⃣</span>
+                    <span><strong>M7 시대 마감</strong> - 기술주 비중 축소, 가치주 중심 재편 진행 중</span>
+                </li>
+                <li>
+                    <span>2️⃣</span>
+                    <span><strong>10년 국채 금리 4.3%</strong> 도달 시 위험 구간 - 현재 4.17%로 13bp 여유</span>
+                </li>
+                <li>
+                    <span>3️⃣</span>
+                    <span><strong>Morgan Stanley 신규 편입</strong> - SpaceX IPO 수혜 + Investment Banking 성장</span>
+                </li>
+                <li>
+                    <span>4️⃣</span>
+                    <span><strong>애플·테슬라 비중 축소</strong> - 자사주 매입 제한 리스크 + SpaceX 분산 우려</span>
+                </li>
+                <li>
+                    <span>5️⃣</span>
+                    <span><strong>1월 15일 집중</strong> - TSMC 실적 + 관세 판단 + Morgan Stanley 실적</span>
+                </li>
+                <li>
+                    <span>6️⃣</span>
+                    <span><strong>섹터 로테이션</strong> - 금융 / 커뮤니케이션 서비스 / 헬스케어 / 산업재 편입</span>
+                </li>
+                <li>
+                    <span>7️⃣</span>
+                    <span><strong>미보유 시 필수 편입</strong> - Micron, Amazon, 구글 (333 법칙 적용)</span>
+                </li>
+                <li>
+                    <span>8️⃣</span>
+                    <span><strong>금(Gold) 프로핏 테이킹</strong> - 70% 상승분 일부 실현 후 재배치</span>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>📺 출처: NOVA Real Invest 멤버십 방송 (2025.01.08)</p>
+            <p>⚠️ 본 자료는 투자 참고용이며, 투자 결정은 본인 책임입니다.</p>
+            <p style="margin-top: 12px;">© 2025 US Stock Analysis</p>
+        </div>
+    </div>
+
+    <script>
+        // Index Comparison Chart
+        const indexCtx = document.getElementById('indexChart').getContext('2d');
+        new Chart(indexCtx, {
+            type: 'bar',
+            data: {
+                labels: ['다우존스', 'S&P 500', '나스닥', 'S&P Top 100', '러셀 2000'],
+                datasets: [{
+                    label: '최근 추세',
+                    data: [3, 0.5, -2, -1.5, 1.5],
+                    backgroundColor: [
+                        'rgba(34, 197, 94, 0.8)',
+                        'rgba(251, 191, 36, 0.8)',
+                        'rgba(239, 68, 68, 0.8)',
+                        'rgba(239, 68, 68, 0.8)',
+                        'rgba(34, 197, 94, 0.8)'
+                    ],
+                    borderRadius: 8
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.raw > 0 ? `+${context.raw}% 상승` : `${context.raw}% 하락`;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: { color: 'rgba(0,0,0,0.05)' }
+                    },
+                    x: {
+                        grid: { display: false }
+                    }
+                }
+            }
+        });
+
+        // Rate Expectations Chart
+        const rateCtx = document.getElementById('rateChart').getContext('2d');
+        new Chart(rateCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['1월 동결', '3월 인하', '5월 인하', '하반기 추가'],
+                datasets: [{
+                    data: [85, 40, 60, 50],
+                    backgroundColor: [
+                        'rgba(239, 68, 68, 0.8)',
+                        'rgba(251, 191, 36, 0.8)',
+                        'rgba(34, 197, 94, 0.8)',
+                        'rgba(59, 130, 246, 0.8)'
+                    ],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: { padding: 15, font: { size: 11 } }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return `${context.label}: ${context.raw}% 확률`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // M7 Risk Chart
+        const m7Ctx = document.getElementById('m7Chart').getContext('2d');
+        new Chart(m7Ctx, {
+            type: 'radar',
+            data: {
+                labels: ['밸류에이션', '성장성', '정책리스크', '경쟁우위', '수익성'],
+                datasets: [
+                    {
+                        label: '3강 (구글/아마존/메타)',
+                        data: [75, 85, 30, 90, 80],
+                        backgroundColor: 'rgba(34, 197, 94, 0.2)',
+                        borderColor: 'rgba(34, 197, 94, 1)',
+                        borderWidth: 2
+                    },
+                    {
+                        label: '3약 (애플/테슬라/MS)',
+                        data: [50, 55, 70, 65, 70],
+                        backgroundColor: 'rgba(239, 68, 68, 0.2)',
+                        borderColor: 'rgba(239, 68, 68, 1)',
+                        borderWidth: 2
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    r: {
+                        beginAtZero: true,
+                        max: 100,
+                        ticks: { stepSize: 20 }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: { padding: 15, font: { size: 11 } }
+                    }
+                }
+            }
+        });
+
+        // Morgan Stanley Chart
+        const msCtx = document.getElementById('msChart').getContext('2d');
+        new Chart(msCtx, {
+            type: 'bar',
+            data: {
+                labels: ['P/E', '시장평균P/E', 'EPS성장률', '배당률', '기관보유율'],
+                datasets: [{
+                    label: 'Morgan Stanley',
+                    data: [18, 24, 18, 2.25, 60],
+                    backgroundColor: [
+                        'rgba(34, 197, 94, 0.8)',
+                        'rgba(156, 163, 175, 0.8)',
+                        'rgba(59, 130, 246, 0.8)',
+                        'rgba(251, 191, 36, 0.8)',
+                        'rgba(139, 92, 246, 0.8)'
+                    ],
+                    borderRadius: 8
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: { color: 'rgba(0,0,0,0.05)' }
+                    },
+                    x: {
+                        grid: { display: false }
+                    }
+                }
+            }
+        });
+
+        // Sector Rotation Chart
+        const sectorCtx = document.getElementById('sectorChart').getContext('2d');
+        new Chart(sectorCtx, {
+            type: 'polarArea',
+            data: {
+                labels: ['금융', '커뮤니케이션', '헬스케어', '산업재', '에너지', 'IT(소프트웨어)'],
+                datasets: [{
+                    data: [90, 85, 80, 75, 50, 40],
+                    backgroundColor: [
+                        'rgba(34, 197, 94, 0.7)',
+                        'rgba(59, 130, 246, 0.7)',
+                        'rgba(139, 92, 246, 0.7)',
+                        'rgba(251, 191, 36, 0.7)',
+                        'rgba(251, 146, 60, 0.7)',
+                        'rgba(239, 68, 68, 0.7)'
+                    ],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: { padding: 12, font: { size: 11 } }
+                    }
+                },
+                scales: {
+                    r: {
+                        beginAtZero: true,
+                        max: 100
+                    }
+                }
+            }
+        });
+
+        // Bank Earnings Timeline
+        const bankCtx = document.getElementById('bankChart').getContext('2d');
+        new Chart(bankCtx, {
+            type: 'bar',
+            data: {
+                labels: ['1/13 (월)', '1/14 (화)', '1/15 (수)'],
+                datasets: [{
+                    label: '주요 발표 건수',
+                    data: [3, 3, 2],
+                    backgroundColor: [
+                        'rgba(59, 130, 246, 0.8)',
+                        'rgba(59, 130, 246, 0.8)',
+                        'rgba(34, 197, 94, 0.8)'
+                    ],
+                    borderRadius: 8
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            afterLabel: function(context) {
+                                const details = {
+                                    0: 'JP Morgan, BoA, Delta',
+                                    1: 'BoA, Wells Fargo, Citi',
+                                    2: 'Goldman Sachs, Morgan Stanley'
+                                };
+                                return details[context.dataIndex];
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        max: 5,
+                        grid: { color: 'rgba(0,0,0,0.05)' }
+                    },
+                    y: {
+                        grid: { display: false }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
