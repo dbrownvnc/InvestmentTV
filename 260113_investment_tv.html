@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>2026년 달라지는 증시 분석 - 나스닥100에 월마트가?</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans KR', sans-serif;
+            line-height: 1.7;
+            color: #333;
+            background: #f8f9fa;
+            padding: 16px;
+            max-width: 100%;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #1a237e 0%, #3949ab 100%);
+            color: white;
+            padding: 24px 20px;
+            text-align: center;
+        }
+        .header h1 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        .header .date {
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+        .header .source {
+            font-size: 0.75rem;
+            opacity: 0.7;
+            margin-top: 4px;
+        }
+        .content {
+            padding: 20px;
+        }
+        h2 {
+            font-size: 1.15rem;
+            color: #1a237e;
+            margin: 28px 0 16px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #e8eaf6;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        h2:first-of-type {
+            margin-top: 0;
+        }
+        h3 {
+            font-size: 1rem;
+            color: #3949ab;
+            margin: 20px 0 12px;
+        }
+        p {
+            margin-bottom: 14px;
+            text-align: justify;
+            word-break: keep-all;
+        }
+        .highlight-box {
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            border-left: 4px solid #1976d2;
+            padding: 16px;
+            margin: 16px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        .warning-box {
+            background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+            border-left: 4px solid #f57c00;
+            padding: 16px;
+            margin: 16px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        .danger-box {
+            background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
+            border-left: 4px solid #d32f2f;
+            padding: 16px;
+            margin: 16px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        .success-box {
+            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+            border-left: 4px solid #388e3c;
+            padding: 16px;
+            margin: 16px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        .key-point {
+            font-weight: 600;
+            color: #1565c0;
+        }
+        strong {
+            color: #c62828;
+        }
+        .chart-container {
+            margin: 20px 0;
+            padding: 16px;
+            background: #fafafa;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+        }
+        .chart-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #424242;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+        .bar-chart {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .bar-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .bar-label {
+            width: 100px;
+            font-size: 0.8rem;
+            text-align: right;
+            flex-shrink: 0;
+        }
+        .bar-wrapper {
+            flex: 1;
+            background: #e0e0e0;
+            border-radius: 4px;
+            height: 24px;
+            overflow: hidden;
+        }
+        .bar {
+            height: 100%;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 8px;
+            font-size: 0.75rem;
+            color: white;
+            font-weight: 600;
+        }
+        .bar.positive { background: linear-gradient(90deg, #43a047, #66bb6a); }
+        .bar.negative { background: linear-gradient(90deg, #e53935, #ef5350); }
+        .bar.neutral { background: linear-gradient(90deg, #1976d2, #42a5f5); }
+        .bar.highlight { background: linear-gradient(90deg, #7b1fa2, #ab47bc); }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+            font-size: 0.85rem;
+        }
+        th, td {
+            padding: 10px 8px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        th {
+            background: #e8eaf6;
+            color: #1a237e;
+            font-weight: 600;
+        }
+        tr:hover {
+            background: #f5f5f5;
+        }
+        
+        .timeline {
+            position: relative;
+            padding-left: 24px;
+            margin: 16px 0;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 8px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #c5cae9;
+        }
+        .timeline-item {
+            position: relative;
+            margin-bottom: 16px;
+            padding: 12px;
+            background: #f5f5f5;
+            border-radius: 8px;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -20px;
+            top: 16px;
+            width: 10px;
+            height: 10px;
+            background: #3949ab;
+            border-radius: 50%;
+        }
+        .timeline-date {
+            font-size: 0.75rem;
+            color: #757575;
+            margin-bottom: 4px;
+        }
+        
+        .summary-card {
+            background: linear-gradient(135deg, #ede7f6 0%, #d1c4e9 100%);
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+        }
+        .summary-card h3 {
+            color: #4527a0;
+            margin-top: 0;
+        }
+        
+        ul {
+            margin: 12px 0;
+            padding-left: 20px;
+        }
+        li {
+            margin-bottom: 8px;
+        }
+        
+        .metric-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin: 16px 0;
+        }
+        .metric-card {
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 14px;
+            text-align: center;
+        }
+        .metric-value {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #1a237e;
+        }
+        .metric-label {
+            font-size: 0.75rem;
+            color: #757575;
+            margin-top: 4px;
+        }
+        .metric-card.gold .metric-value { color: #ffa000; }
+        .metric-card.up .metric-value { color: #388e3c; }
+        .metric-card.down .metric-value { color: #d32f2f; }
+        
+        .footer {
+            background: #263238;
+            color: #b0bec5;
+            padding: 20px;
+            text-align: center;
+            font-size: 0.75rem;
+        }
+        
+        .pill {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin: 2px;
+        }
+        .pill.red { background: #ffcdd2; color: #c62828; }
+        .pill.green { background: #c8e6c9; color: #2e7d32; }
+        .pill.blue { background: #bbdefb; color: #1565c0; }
+        .pill.orange { background: #ffe0b2; color: #e65100; }
+        .pill.purple { background: #e1bee7; color: #7b1fa2; }
+        
+        .divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #c5cae9, transparent);
+            margin: 24px 0;
+        }
+
+        .quote-box {
+            background: #f5f5f5;
+            border-left: 3px solid #9e9e9e;
+            padding: 14px;
+            margin: 16px 0;
+            font-style: italic;
+            color: #616161;
+        }
+
+        .sector-comparison {
+            margin: 16px 0;
+        }
+        .sector-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .sector-name {
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+        .sector-value {
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+        .sector-value.positive { color: #388e3c; }
+        .sector-value.negative { color: #d32f2f; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📊 2026년 달라지는 증시</h1>
+            <div style="font-size: 1.1rem; margin: 8px 0;">나스닥100에 월마트가?</div>
+            <div class="date">📅 2026년 1월 13일 (화요일)</div>
+            <div class="source">출처: 시장포커스</div>
+        </div>
+        
+        <div class="content">
+            <!-- 핵심 지표 -->
+            <div class="metric-grid">
+                <div class="metric-card gold">
+                    <div class="metric-value">$4,500+</div>
+                    <div class="metric-label">금 가격 (역대 최고)</div>
+                </div>
+                <div class="metric-card up">
+                    <div class="metric-value">70%</div>
+                    <div class="metric-label">50일 이평선 상회 종목</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">14%</div>
+                    <div class="metric-label">2026 EPS 성장 전망</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">123%</div>
+                    <div class="metric-label">미국 부채/GDP 비율</div>
+                </div>
+            </div>
+
+            <h2>🔥 오늘의 핵심 이슈</h2>
+            
+            <div class="danger-box">
+                <strong>⚠️ 트럼프 vs 연준 파월 갈등 심화</strong>
+                <p style="margin-top: 8px; margin-bottom: 0;">미 법무부가 연준 파월 의장에 대해 거짓 증언 고발 조치. 연준 빌딩 리모델링 예산 관련 문제 제기. <span class="key-point">채권 전략가들은 "연준 독립성 훼손 행위"로 평가</span></p>
+            </div>
+
+            <h3>파월 의장의 대응</h3>
+            <div class="quote-box">
+                "대통령이 원한다고 대통령의 입맛에 맞게 금리를 내릴 수는 없다. 거시경제 지표를 분석해서 결정해야 경제에 도움이 된다."
+            </div>
+            
+            <p>파월 의장은 대통령과 만난 적도 없고 앞으로도 없을 것이라며 <strong>연준의 독립성 수호 의지</strong>를 명확히 밝힘. 이에 시장은 하락 출발 후 상승장으로 마무리됨.</p>
+
+            <div class="warning-box">
+                <strong>📌 연준 독립성 훼손 시 예상되는 5가지 문제</strong>
+                <ul style="margin-top: 10px; margin-bottom: 0;">
+                    <li><strong>인플레이션 급상승</strong> - 예스맨이 금리를 급격히 인하할 경우</li>
+                    <li><strong>은행 융자 금리 급등</strong> - 모기지 금리 10년 국채와 연동 상승</li>
+                    <li><strong>10년 국채 금리 상승</strong> - 부채의 악순환 심화</li>
+                    <li><strong>GDP 성장률 하락</strong> - 마이너스 성장 가능성</li>
+                    <li><strong>해외 자본 이탈</strong> - 증시 폭락 위험</li>
+                </ul>
+            </div>
+
+            <div class="highlight-box">
+                <strong>💡 투자 시사점</strong>
+                <p style="margin-top: 8px; margin-bottom: 0;">연준 독립성 훼손 우려 시 <span class="key-point">테크주와 국채가 가장 큰 타격</span>을 받을 전망. 단, 이런 노이즈는 오히려 <strong>매수 기회</strong>가 될 수 있음. 파월 의장이 임기 전 사퇴할 경우 약 <strong>20% 조정장</strong> 예상.</p>
+            </div>
+
+            <div class="divider"></div>
+
+            <h2>🛒 월마트, 나스닥 100 편입</h2>
+            
+            <div class="success-box">
+                <strong>📅 1월 20일, 월마트 나스닥 100 편입 확정</strong>
+                <p style="margin-top: 8px; margin-bottom: 0;">주가 <strong>+2.7% 상승</strong>. 구글 제미나이와 AI 파트너십 체결로 기술주 동반 상승장 형성.</p>
+            </div>
+
+            <h3>구글 제미나이 파트너십 내용</h3>
+            <ul>
+                <li><strong>AI 기반 상품 검색 서비스</strong> - 수십만 개 상품의 효율적 안내</li>
+                <li><strong>매장 내 AI 도우미</strong> - "어디에 뭐가 있어?" 질문에 즉시 응답</li>
+                <li><strong>회전율 향상 효과</strong> - 30분 쇼핑을 10분으로 단축, 매출 증대</li>
+            </ul>
+
+            <p><span class="key-point">핵심 포인트:</span> 월마트의 나스닥 100 편입은 <strong>전통 유통업체의 기술 혁신 성공</strong>을 상징. AI를 통한 생산성 향상이 실제 비즈니스 성과로 이어지는 대표 사례.</p>
+
+            <div class="divider"></div>
+
+            <h2>🚀 2026년 AI 슈퍼사이클 원년</h2>
+
+            <div class="summary-card">
+                <h3 style="margin-top: 0;">📌 AI 슈퍼사이클이란?</h3>
+                <p style="margin-bottom: 0;">데이터 센터 구축과 AI 반도체 판매를 넘어, <strong>다른 산업까지 전파·확산·비즈니스화</strong>되는 현상. 투자량과 인수합병(M&A)이 폭발적으로 증가하는 시기.</p>
+            </div>
+
+            <h3>AI 슈퍼사이클 주요 사례</h3>
+            <table>
+                <tr>
+                    <th>협력 기업</th>
+                    <th>내용</th>
+                </tr>
+                <tr>
+                    <td>구글 + 월마트</td>
+                    <td>AI 쇼핑 서비스</td>
+                </tr>
+                <tr>
+                    <td>엔비디아 + 일라이 릴리</td>
+                    <td>신약 개발 협력</td>
+                </tr>
+                <tr>
+                    <td>애플 + AI 시리</td>
+                    <td>AI 버전 음성비서</td>
+                </tr>
+                <tr>
+                    <td>테슬라 + 그록</td>
+                    <td>AI 통합 서비스</td>
+                </tr>
+                <tr>
+                    <td>메타 + SMR</td>
+                    <td>1.2GW 소형 핵발전소</td>
+                </tr>
+                <tr>
+                    <td>웨이페어 + 제미나이</td>
+                    <td>AI 직접 결제 시스템</td>
+                </tr>
+            </table>
+
+            <div class="warning-box">
+                <strong>⚠️ AI 신약개발의 현실</strong>
+                <p style="margin-top: 8px; margin-bottom: 0;">현재 AI를 활용한 신약 개발은 <strong>아직 실패 중</strong>. 20년 경력 전문가의 데이터와 경험을 AI가 대체하기 어려움. "Garbage In, Garbage Out" - 업계 경험 없는 엔지니어가 입력하면 결과도 부정확.</p>
+            </div>
+
+            <div class="divider"></div>
+
+            <h2>📈 2026년 섹터별 EPS 성장 전망</h2>
+
+            <div class="chart-container">
+                <div class="chart-title">📊 2026년 섹터별 EPS 성장률 전망 (%)</div>
+                <div class="bar-chart">
+                    <div class="bar-item">
+                        <span class="bar-label">IT</span>
+                        <div class="bar-wrapper">
+                            <div class="bar highlight" style="width: 100%;">21.7%</div>
+                        </div>
+                    </div>
+                    <div class="bar-item">
+                        <span class="bar-label">커뮤니케이션</span>
+                        <div class="bar-wrapper">
+                            <div class="bar positive" style="width: 85%;">18.0%</div>
+                        </div>
+                    </div>
+                    <div class="bar-item">
+                        <span class="bar-label">금융</span>
+                        <div class="bar-wrapper">
+                            <div class="bar positive" style="width: 75%;">16.0%</div>
+                        </div>
+                    </div>
+                    <div class="bar-item">
+                        <span class="bar-label">헬스케어</span>
+                        <div class="bar-wrapper">
+                            <div class="bar positive" style="width: 70%;">14.5%</div>
+                        </div>
+                    </div>
+                    <div class="bar-item">
+                        <span class="bar-label">소재</span>
+                        <div class="bar-wrapper">
+                            <div class="bar neutral" style="width: 60%;">12.0%</div>
+                        </div>
+                    </div>
+                    <div class="bar-item">
+                        <span class="bar-label">산업재</span>
+                        <div class="bar-wrapper">
+                            <div class="bar neutral" style="width: 55%;">11.0%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <div class="chart-title">📊 2026년 분기별 EPS 성장률 전망 (%)</div>
+                <div class="bar-chart">
+                    <div class="bar-item">
+                        <span class="bar-label">Q1</span>
+                        <div class="bar-wrapper">
+                            <div class="bar neutral" style="width: 65%;">11.8%</div>
+                        </div>
+                    </div>
+                    <div class="bar-item">
+                        <span class="bar-label">Q2</span>
+                        <div class="bar-wrapper">
+                            <div class="bar neutral" style="width: 72%;">13.5%</div>
+                        </div>
+                    </div>
+                    <div class="bar-item">
+                        <span class="bar-label">Q3</span>
+                        <div class="bar-wrapper">
+                            <div class="bar positive" style="width: 82%;">15.5%</div>
+                        </div>
+                    </div>
+                    <div class="bar-item">
+                        <span class="bar-label">Q4</span>
+                        <div class="bar-wrapper">
+                            <div class="bar positive" style="width: 95%;">18.0%</div>
+                        </div>
+                    </div>
+                </div>
+                <p style="font-size: 0.75rem; color: #757575; margin-top: 12px; margin-bottom: 0;">출처: S&P Capital IQ 전망치. 연간 성장률 약 14% 예상</p>
+            </div>
+
+            <div class="highlight-box">
+                <strong>📌 2025년 실적 vs 예상치 비교</strong>
+                <p style="margin-top: 8px; margin-bottom: 0;">2025년 Q3 EPS 성장률: 예측 <strong>2.9%</strong> → 실제 <strong>15.2%</strong><br>
+                S&P 500 기업의 <strong>80% 이상</strong>이 예상 실적을 상회함</p>
+            </div>
+
+            <div class="divider"></div>
+
+            <h2>💰 금융 섹터 전망</h2>
+
+            <h3>긍정적 요인</h3>
+            <ul>
+                <li><strong>가파른 일드커브(Yield Curve)</strong> - 은행 수익성 개선</li>
+                <li><strong>GDP 4.3% 성장</strong> 가속화 전망</li>
+                <li><strong>신용시장 안정</strong> - 크레딧 카드 시장 건전</li>
+                <li><strong>IPO·M&A 활동 증가</strong> - 투자은행 수수료 +16% 전망</li>
+                <li><strong>AI 인프라 자금 조달</strong> 수요 증가</li>
+            </ul>
+
+            <div class="success-box">
+                <strong>🏦 주요 금융주 실적 발표 일정</strong>
+                <p style="margin-top: 8px; margin-bottom: 0;">JP Morgan, Citi 등 주요 은행 실적 발표 예정. 올해 미 증시 방향성 예측의 핵심 지표가 될 전망.</p>
+            </div>
+
+            <div class="divider"></div>
+
+            <h2>🏥 헬스케어 섹터 전망</h2>
+
+            <p>JP Morgan Healthcare Conference(44회) 개최. 헬스케어 섹터 <strong>+1.6% 상승</strong>. 금리 인하 시 수혜 포지션.</p>
+
+            <h3>주요 인수합병(M&A) 동향</h3>
+            <table>
+                <tr>
+                    <th>인수 기업</th>
+                    <th>피인수 기업</th>
+                    <th>규모</th>
+                </tr>
+                <tr>
+                    <td>Merck</td>
+                    <td>Revolution Medicine</td>
+                    <td>$30B (가능성)</td>
+                </tr>
+            </table>
+
+            <h3>브리스톨 마이어스 주요 파이프라인</h3>
+            <div class="highlight-box">
+                <strong>🧬 코벤퓨(Cobenfy)</strong> - 조현병 치료제
+                <p style="margin-top: 8px; margin-bottom: 0;">알츠하이머 등 노인성 뇌질환에도 효과 기대. 블록버스터급 신약 6개 파이프라인 보유.</p>
+            </div>
+
+            <div class="divider"></div>
+
+            <h2>📅 1월 주요 일정 및 리스크</h2>
+
+            <div class="timeline">
+                <div class="timeline-item" style="border-left: 3px solid #d32f2f;">
+                    <div class="timeline-date">🔴 1월 14일 (화)</div>
+                    <strong>12월 CPI 발표</strong>
+                    <p style="margin-bottom: 0;">예상치: 전월비 +0.3%</p>
+                </div>
+                <div class="timeline-item" style="border-left: 3px solid #d32f2f;">
+                    <div class="timeline-date">🔴 1월 15일 (수) - 최대 리스크</div>
+                    <strong>TSMC 가이던스 발표</strong>
+                    <p style="margin-bottom: 0;">반도체주 변동성 매우 클 전망. 트럼프 관세 판결도 예정.</p>
+                </div>
+                <div class="timeline-item" style="border-left: 3px solid #1976d2;">
+                    <div class="timeline-date">🔵 1월 20일 (월)</div>
+                    <strong>월마트 나스닥 100 편입</strong>
+                </div>
+                <div class="timeline-item" style="border-left: 3px solid #388e3c;">
+                    <div class="timeline-date">🟢 1월 28일</div>
+                    <strong>FOMC 미팅</strong>
+                    <p style="margin-bottom: 0;">금리 인상은 없을 전망</p>
+                </div>
+            </div>
+
+            <div class="danger-box">
+                <strong>⚠️ 1월 15일이 가장 중요!</strong>
+                <p style="margin-top: 8px; margin-bottom: 0;">TSMC 가이던스가 반도체 섹터 전체 방향을 결정. <span class="key-point">"1월이 장사 잘 되면 그 해 장사가 잘 된다"</span> - 1월 15일을 무사히 넘겨야 1월 28일까지 안정적 흐름 예상.</p>
+            </div>
+
+            <div class="divider"></div>
+
+            <h2>📺 커뮤니케이션 서비스 섹터</h2>
+
+            <div class="success-box">
+                <strong>🎯 2026년 3대 호재</strong>
+                <div class="metric-grid" style="margin-top: 12px; margin-bottom: 0;">
+                    <div class="metric-card">
+                        <div class="metric-value">🏅</div>
+                        <div class="metric-label">올림픽</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value">⚽</div>
+                        <div class="metric-label">월드컵</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value">🗳️</div>
+                        <div class="metric-label">중간선거</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value">📈</div>
+                        <div class="metric-label">광고 매출↑</div>
+                    </div>
+                </div>
+            </div>
+
+            <p>소셜미디어 이용자 증가와 활성화로 광고 매출 증가 예상. <span class="key-point">올림픽, 월드컵, 중간선거가 모두 있는 해</span>로 커뮤니케이션 서비스 섹터에 매우 유리.</p>
+
+            <div class="divider"></div>
+
+            <h2>🔍 기타 주요 이슈</h2>
+
+            <h3>트럼프 행정명령 관련</h3>
+            <table>
+                <tr>
+                    <th>정책</th>
+                    <th>내용</th>
+                    <th>영향</th>
+                </tr>
+                <tr>
+                    <td>카드사 금리 규제</td>
+                    <td>연 이자율 10% 이하 요구</td>
+                    <td><span class="pill red">노이즈</span></td>
+                </tr>
+                <tr>
+                    <td>단독주택 투자 금지</td>
+                    <td>투자회사 구매 제한</td>
+                    <td><span class="pill orange">양면적</span></td>
+                </tr>
+                <tr>
+                    <td>국방예산 50% 인상</td>
+                    <td>1.5조 달러 (약 2천조 원)</td>
+                    <td><span class="pill blue">방산주↑</span></td>
+                </tr>
+            </table>
+
+            <h3>기관 동향</h3>
+            <ul>
+                <li><strong>테슬라</strong> - 기관들 비중 감소 중 (주가와 직접 연동 아님)</li>
+                <li><strong>메타</strong> - VR 투자 10% 감축, AI 인력 확대, 친트럼프 어드바이저 채용</li>
+                <li><strong>엔비디아</strong> - 자율주행 AI 시장 진출 발표</li>
+            </ul>
+
+            <div class="warning-box">
+                <strong>📉 투자의견 하락 기업</strong>
+                <p style="margin-top: 8px; margin-bottom: 0;">
+                    <span class="pill red">LEM</span>
+                    <span class="pill red">Netflix</span>
+                    <span class="pill red">Paramount</span>
+                </p>
+            </div>
+
+            <div class="divider"></div>
+
+            <h2>💡 투자 전략 요약</h2>
+
+            <div class="summary-card">
+                <h3 style="margin-top: 0;">✅ 핵심 투자 포인트</h3>
+                <ul style="margin-bottom: 0;">
+                    <li><strong>트럼프 발언은 노이즈</strong> - 펀더멘털로 판단해야</li>
+                    <li><strong>AI 슈퍼사이클 원년</strong> - 다양한 섹터로 확산</li>
+                    <li><strong>EPS 성장률 14%</strong> - 주가 성장률과 다를 수 있음</li>
+                    <li><strong>유망 섹터</strong>: 헬스케어, 금융, 커뮤니케이션, IT</li>
+                    <li><strong>테크주는 선택적 투자</strong> - 기대치가 이미 높음</li>
+                    <li><strong>1월 15일 TSMC 가이던스</strong>가 최대 변수</li>
+                </ul>
+            </div>
+
+            <div class="highlight-box">
+                <strong>📌 올해의 특징</strong>
+                <p style="margin-top: 8px; margin-bottom: 0;"><span class="key-point">EPS 상승률은 높으나, 주가 성장률로 이어지지 않을 수 있음.</span> 작년에 엄청난 실적을 낸 기업들은 올해 더 높은 기대치를 충족해야 하는 부담. "가수가 아닌 사람이 노래를 잘 부르면 감동하지만, 가수라면 더 잘 불러야 한다."</p>
+            </div>
+
+            <div class="warning-box">
+                <strong>⚠️ 투자 목적 설정의 중요성</strong>
+                <p style="margin-top: 8px; margin-bottom: 0;">목적 없이 투자하면 장기 투자 불가능. <strong>"5년 안에 얼마를 벌어서 무엇에 쓰겠다"</strong>는 명확한 비전 필요. 시장 급락 시 목적 없는 투자자는 90%가 손절.</p>
+            </div>
+
+            <div class="divider"></div>
+
+            <h2>📊 시장 시황 요약</h2>
+
+            <table>
+                <tr>
+                    <th>지표</th>
+                    <th>상태</th>
+                    <th>비고</th>
+                </tr>
+                <tr>
+                    <td>S&P 500</td>
+                    <td><span class="pill green">사상 최고치</span></td>
+                    <td>트럼프 노이즈에도 상승</td>
+                </tr>
+                <tr>
+                    <td>금 가격</td>
+                    <td><span class="pill green">$4,500+</span></td>
+                    <td>역대 최고점</td>
+                </tr>
+                <tr>
+                    <td>50일선 상회 종목</td>
+                    <td>30% → 70%</td>
+                    <td>투자 저변 확대</td>
+                </tr>
+                <tr>
+                    <td>연준 금리</td>
+                    <td>동결 전망</td>
+                    <td>인상 가능성 낮음</td>
+                </tr>
+                <tr>
+                    <td>미국 인플레이션</td>
+                    <td>체감 8%대</td>
+                    <td>공식 수치와 괴리</td>
+                </tr>
+            </table>
+
+        </div>
+        
+        <div class="footer">
+            <p>본 문서는 투자 참고 자료이며, 투자 결정은 본인의 판단과 책임하에 이루어져야 합니다.</p>
+            <p style="margin-top: 8px;">© 2026 시장포커스 분석 자료</p>
+        </div>
+    </div>
+</body>
+</html>

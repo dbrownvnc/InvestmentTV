@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>시험문제 - 2026년 달라지는 증시</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans KR', sans-serif;
+            line-height: 1.7;
+            color: #333;
+            background: #f8f9fa;
+            padding: 16px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #4a148c 0%, #7b1fa2 100%);
+            color: white;
+            padding: 24px 20px;
+            text-align: center;
+        }
+        .header h1 {
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+        .header .subtitle {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin-top: 8px;
+        }
+        .content {
+            padding: 20px;
+        }
+        .section-title {
+            background: linear-gradient(135deg, #1a237e 0%, #3949ab 100%);
+            color: white;
+            padding: 14px 20px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin: 0 -20px;
+            text-align: center;
+        }
+        .question-box {
+            background: #fafafa;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 18px;
+            margin: 20px 0;
+        }
+        .question-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+        .question-number {
+            background: #1a237e;
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+        .difficulty {
+            font-size: 0.8rem;
+            padding: 3px 8px;
+            border-radius: 10px;
+        }
+        .difficulty.easy {
+            background: #c8e6c9;
+            color: #2e7d32;
+        }
+        .difficulty.medium {
+            background: #fff3e0;
+            color: #e65100;
+        }
+        .difficulty.hard {
+            background: #ffcdd2;
+            color: #c62828;
+        }
+        .question-type {
+            font-size: 0.75rem;
+            color: #757575;
+            background: #e0e0e0;
+            padding: 2px 8px;
+            border-radius: 8px;
+        }
+        .question-text {
+            font-weight: 500;
+            margin-bottom: 14px;
+            line-height: 1.6;
+        }
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .option {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 12px 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .option:hover {
+            background: #e3f2fd;
+            border-color: #1976d2;
+        }
+        .option-number {
+            font-weight: 600;
+            color: #1976d2;
+            margin-right: 8px;
+        }
+        .blank-line {
+            border-bottom: 2px dotted #9e9e9e;
+            display: inline-block;
+            min-width: 100px;
+            margin: 0 4px;
+        }
+        
+        .divider {
+            height: 3px;
+            background: linear-gradient(90deg, #7b1fa2, #4a148c, #7b1fa2);
+            margin: 40px -20px;
+        }
+        
+        .answer-section {
+            background: #f3e5f5;
+            margin: 0 -20px;
+            padding: 20px;
+        }
+        .answer-title {
+            background: linear-gradient(135deg, #4a148c 0%, #7b1fa2 100%);
+            color: white;
+            padding: 14px 20px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin: -20px -20px 20px -20px;
+            text-align: center;
+        }
+        .answer-box {
+            background: white;
+            border-radius: 10px;
+            padding: 16px;
+            margin-bottom: 16px;
+            border-left: 4px solid #7b1fa2;
+        }
+        .answer-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        .answer-label {
+            font-weight: 700;
+            color: #4a148c;
+        }
+        .correct-answer {
+            background: #e8f5e9;
+            color: #2e7d32;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+        .explanation {
+            color: #555;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            padding: 10px;
+            background: #fafafa;
+            border-radius: 6px;
+        }
+        
+        .footer {
+            background: #263238;
+            color: #b0bec5;
+            padding: 20px;
+            text-align: center;
+            font-size: 0.75rem;
+        }
+
+        .ox-options {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+        }
+        .ox-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            font-weight: 700;
+            border: 2px solid #e0e0e0;
+            background: white;
+        }
+        .ox-btn.o {
+            color: #1976d2;
+        }
+        .ox-btn.x {
+            color: #d32f2f;
+        }
+
+        .short-answer {
+            width: 100%;
+            padding: 12px;
+            border: 2px dashed #bdbdbd;
+            border-radius: 8px;
+            background: #fafafa;
+            font-size: 0.9rem;
+            color: #757575;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📝 시험문제</h1>
+            <div class="subtitle">2026년 달라지는 증시: 나스닥100에 월마트가?</div>
+            <div style="font-size: 0.8rem; margin-top: 12px; opacity: 0.8;">총 10문제 | 제한시간 없음</div>
+        </div>
+        
+        <div class="content">
+            <div class="section-title">📋 문제지 (총 10문제)</div>
+
+            <!-- 문제 1 -->
+            <div class="question-box">
+                <div class="question-header">
+                    <div class="question-number">1</div>
+                    <span class="difficulty easy">⭐ 쉬움</span>
+                    <span class="question-type">객관식</span>
+                </div>
+                <div class="question-text">
+                    월마트가 나스닥 100에 편입되는 날짜는 언제인가?
+                </div>
+                <div class="options">
+                    <div class="option"><span class="option-number">①</span> 2026년 1월 15일</div>
+                    <div class="option"><span class="option-number">②</span> 2026년 1월 20일</div>
+                    <div class="option"><span class="option-number">③</span> 2026년 1월 28일</div>
+                    <div class="option"><span class="option-number">④</span> 2026년 2월 1일</div>
+                </div>
+            </div>
+
+            <!-- 문제 2 -->
+            <div class="question-box">
+                <div class="question-header">
+                    <div class="question-number">2</div>
+                    <span class="difficulty easy">⭐ 쉬움</span>
+                    <span class="question-type">OX 문제</span>
+                </div>
+                <div class="question-text">
+                    2026년 금 가격이 역대 최고점인 $4,500 이상을 기록했다.
+                </div>
+                <div class="ox-options">
+                    <div class="ox-btn o">O</div>
+                    <div class="ox-btn x">X</div>
+                </div>
+            </div>
+
+            <!-- 문제 3 -->
+            <div class="question-box">
+                <div class="question-header">
+                    <div class="question-number">3</div>
+                    <span class="difficulty medium">⭐⭐ 보통</span>
+                    <span class="question-type">객관식</span>
+                </div>
+                <div class="question-text">
+                    연준 독립성이 훼손될 경우 예상되는 결과로 <strong>적절하지 않은</strong> 것은?
+                </div>
+                <div class="options">
+                    <div class="option"><span class="option-number">①</span> 인플레이션 급상승</div>
+                    <div class="option"><span class="option-number">②</span> 모기지 금리 하락</div>
+                    <div class="option"><span class="option-number">③</span> 10년 국채 금리 상승</div>
+                    <div class="option"><span class="option-number">④</span> 해외 자본 이탈</div>
+                </div>
+            </div>
+
+            <!-- 문제 4 -->
+            <div class="question-box">
+                <div class="question-header">
+                    <div class="question-number">4</div>
+                    <span class="difficulty medium">⭐⭐ 보통</span>
+                    <span class="question-type">빈칸 채우기</span>
+                </div>
+                <div class="question-text">
+                    AI 슈퍼사이클이란 데이터 센터 구축과 AI 반도체 판매를 넘어, 다른 산업까지 <span class="blank-line"></span>되는 현상을 말한다.
+                </div>
+                <div class="short-answer">답안 작성란</div>
+            </div>
+
+            <!-- 문제 5 -->
+            <div class="question-box">
+                <div class="question-header">
+                    <div class="question-number">5</div>
+                    <span class="difficulty medium">⭐⭐ 보통</span>
+                    <span class="question-type">객관식</span>
+                </div>
+                <div class="question-text">
+                    2026년 1월 15일에 가장 큰 투자 리스크로 지목된 이벤트는?
+                </div>
+                <div class="options">
+                    <div class="option"><span class="option-number">①</span> FOMC 금리 결정</div>
+                    <div class="option"><span class="option-number">②</span> TSMC 가이던스 발표</div>
+                    <div class="option"><span class="option-number">③</span> JP Morgan 실적 발표</div>
+                    <div class="option"><span class="option-number">④</span> 월마트 나스닥 편입</div>
+                </div>
+            </div>
+
+            <!-- 문제 6 -->
+            <div class="question-box">
+                <div class="question-header">
+                    <div class="question-number">6</div>
+                    <span class="difficulty medium">⭐⭐ 보통</span>
+                    <span class="question-type">단답형</span>
+                </div>
+                <div class="question-text">
+                    2026년 섹터별 EPS 성장률 전망에서 가장 높은 성장이 예상되는 섹터는?
+                </div>
+                <div class="short-answer">답안 작성란</div>
+            </div>
+
+            <!-- 문제 7 -->
+            <div class="question-box">
+                <div class="question-header">
+                    <div class="question-number">7</div>
+                    <span class="difficulty medium">⭐⭐ 보통</span>
+                    <span class="question-type">객관식</span>
+                </div>
+                <div class="question-text">
+                    2026년 커뮤니케이션 서비스 섹터에 유리한 3대 호재가 아닌 것은?
+                </div>
+                <div class="options">
+                    <div class="option"><span class="option-number">①</span> 올림픽</div>
+                    <div class="option"><span class="option-number">②</span> 월드컵</div>
+                    <div class="option"><span class="option-number">③</span> 미국 중간선거</div>
+                    <div class="option"><span class="option-number">④</span> 미국 대선</div>
+                </div>
+            </div>
+
+            <!-- 문제 8 -->
+            <div class="question-box">
+                <div class="question-header">
+                    <div class="question-number">8</div>
+                    <span class="difficulty easy">⭐ 쉬움</span>
+                    <span class="question-type">OX 문제</span>
+                </div>
+                <div class="question-text">
+                    월마트는 구글 제미나이와 AI 파트너십을 체결하여 상품 검색 효율성을 높였다.
+                </div>
+                <div class="ox-options">
+                    <div class="ox-btn o">O</div>
+                    <div class="ox-btn x">X</div>
+                </div>
+            </div>
+
+            <!-- 문제 9 -->
+            <div class="question-box">
+                <div class="question-header">
+                    <div class="question-number">9</div>
+                    <span class="difficulty hard">⭐⭐⭐ 어려움</span>
+                    <span class="question-type">서술형</span>
+                </div>
+                <div class="question-text">
+                    2026년 EPS 성장률이 높음에도 불구하고 주가 상승률이 이에 미치지 못할 수 있는 이유를 설명하시오.
+                </div>
+                <div class="short-answer" style="height: 100px;">답안 작성란</div>
+            </div>
+
+            <!-- 문제 10 -->
+            <div class="question-box">
+                <div class="question-header">
+                    <div class="question-number">10</div>
+                    <span class="difficulty hard">⭐⭐⭐ 어려움</span>
+                    <span class="question-type">객관식</span>
+                </div>
+                <div class="question-text">
+                    파월 연준 의장이 임기 전 사퇴할 경우 예상되는 시장 조정폭은?
+                </div>
+                <div class="options">
+                    <div class="option"><span class="option-number">①</span> 약 5%</div>
+                    <div class="option"><span class="option-number">②</span> 약 10%</div>
+                    <div class="option"><span class="option-number">③</span> 약 20%</div>
+                    <div class="option"><span class="option-number">④</span> 약 30%</div>
+                </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <!-- 정답 및 해설 -->
+            <div class="answer-section">
+                <div class="answer-title">📝 정답 및 해설</div>
+
+                <!-- 정답 1 -->
+                <div class="answer-box">
+                    <div class="answer-header">
+                        <div class="question-number">1</div>
+                        <span class="answer-label">정답:</span>
+                        <span class="correct-answer">② 2026년 1월 20일</span>
+                    </div>
+                    <div class="explanation">
+                        월마트는 2026년 1월 20일에 나스닥 100에 공식 편입됩니다. 이는 전통 유통업체가 기술 혁신을 통해 기술주 지수에 편입되는 상징적 사건입니다.
+                    </div>
+                </div>
+
+                <!-- 정답 2 -->
+                <div class="answer-box">
+                    <div class="answer-header">
+                        <div class="question-number">2</div>
+                        <span class="answer-label">정답:</span>
+                        <span class="correct-answer">O</span>
+                    </div>
+                    <div class="explanation">
+                        금 가격이 역대 최고점을 경신하며 $4,500 이상을 기록했습니다. $4,000을 넘은 지 얼마 되지 않아 급격히 상승한 것으로, 안전자산 선호 심리와 인플레이션 헤지 수요가 반영된 결과입니다.
+                    </div>
+                </div>
+
+                <!-- 정답 3 -->
+                <div class="answer-box">
+                    <div class="answer-header">
+                        <div class="question-number">3</div>
+                        <span class="answer-label">정답:</span>
+                        <span class="correct-answer">② 모기지 금리 하락</span>
+                    </div>
+                    <div class="explanation">
+                        연준 독립성 훼손 시 인플레이션 급상승, 10년 국채 금리 상승으로 인해 모기지 금리는 오히려 <strong>상승</strong>합니다. 모기지 금리는 10년 국채와 연동되어 있어, 국채 금리가 오르면 모기지 금리도 함께 오릅니다.
+                    </div>
+                </div>
+
+                <!-- 정답 4 -->
+                <div class="answer-box">
+                    <div class="answer-header">
+                        <div class="question-number">4</div>
+                        <span class="answer-label">정답:</span>
+                        <span class="correct-answer">전파·확산·비즈니스화 (또는 "확산")</span>
+                    </div>
+                    <div class="explanation">
+                        AI 슈퍼사이클은 단순히 데이터 센터 구축이나 반도체 판매에 그치지 않고, AI 기술이 다른 산업으로 전파되어 실제 비즈니스 성과를 창출하는 현상을 말합니다. 2026년이 그 원년으로 평가됩니다.
+                    </div>
+                </div>
+
+                <!-- 정답 5 -->
+                <div class="answer-box">
+                    <div class="answer-header">
+                        <div class="question-number">5</div>
+                        <span class="answer-label">정답:</span>
+                        <span class="correct-answer">② TSMC 가이던스 발표</span>
+                    </div>
+                    <div class="explanation">
+                        1월 15일 TSMC 가이던스 발표는 반도체 섹터 전체의 방향성을 결정하는 중요한 이벤트입니다. TSMC가 반도체 산업의 대표성을 가지고 있어 변동성이 매우 클 것으로 예상됩니다.
+                    </div>
+                </div>
+
+                <!-- 정답 6 -->
+                <div class="answer-box">
+                    <div class="answer-header">
+                        <div class="question-number">6</div>
+                        <span class="answer-label">정답:</span>
+                        <span class="correct-answer">IT (정보기술) 섹터</span>
+                    </div>
+                    <div class="explanation">
+                        2026년 섹터별 EPS 성장률 전망에서 IT 섹터가 21.7%로 가장 높은 성장이 예상됩니다. 그 다음으로 커뮤니케이션 서비스(18%), 금융(16%), 헬스케어(14.5%) 순입니다.
+                    </div>
+                </div>
+
+                <!-- 정답 7 -->
+                <div class="answer-box">
+                    <div class="answer-header">
+                        <div class="question-number">7</div>
+                        <span class="answer-label">정답:</span>
+                        <span class="correct-answer">④ 미국 대선</span>
+                    </div>
+                    <div class="explanation">
+                        2026년에는 올림픽, 월드컵, 미국 중간선거(Mid-term Election)가 예정되어 있어 소셜미디어 이용이 활성화될 전망입니다. 미국 대선은 4년마다 열리며, 2026년에는 중간선거만 있습니다.
+                    </div>
+                </div>
+
+                <!-- 정답 8 -->
+                <div class="answer-box">
+                    <div class="answer-header">
+                        <div class="question-number">8</div>
+                        <span class="answer-label">정답:</span>
+                        <span class="correct-answer">O</span>
+                    </div>
+                    <div class="explanation">
+                        월마트는 구글 제미나이와 AI 파트너십을 체결하여 수십만 개 상품의 효율적 안내 시스템을 구축했습니다. 이를 통해 쇼핑 시간을 단축하고 매출을 증대시키는 효과를 기대하고 있습니다.
+                    </div>
+                </div>
+
+                <!-- 정답 9 -->
+                <div class="answer-box">
+                    <div class="answer-header">
+                        <div class="question-number">9</div>
+                        <span class="answer-label">정답:</span>
+                        <span class="correct-answer">서술형 (모범답안)</span>
+                    </div>
+                    <div class="explanation">
+                        <strong>모범답안:</strong><br><br>
+                        1) <strong>기대치 상승:</strong> 작년에 높은 실적을 달성한 기업들은 더 높은 기대치를 충족해야 하는 부담이 있습니다. "가수가 아닌 사람이 노래를 잘 부르면 감동하지만, 가수라면 더 잘 불러야 한다"는 비유처럼, 이미 높아진 눈높이를 충족시키기 어렵습니다.<br><br>
+                        2) <strong>밸류에이션 부담:</strong> 테크주를 중심으로 PE(주가수익비율)가 이미 높은 수준이어서, 실적이 좋아도 주가 상승 여력이 제한적입니다.<br><br>
+                        3) <strong>CAPEX 회수 압박:</strong> 작년에 AI 인프라에 대규모 투자(CAPEX)를 한 기업들은 올해 그 투자 대비 충분한 수익을 보여줘야 하는데, 기대에 미치지 못하면 주가가 하락할 수 있습니다.
+                    </div>
+                </div>
+
+                <!-- 정답 10 -->
+                <div class="answer-box">
+                    <div class="answer-header">
+                        <div class="question-number">10</div>
+                        <span class="answer-label">정답:</span>
+                        <span class="correct-answer">③ 약 20%</span>
+                    </div>
+                    <div class="explanation">
+                        분석가는 파월 연준 의장이 임기 전 사퇴하게 될 경우 약 20%의 조정장이 올 것으로 예상했습니다. 이는 연준 독립성에 대한 시장의 신뢰가 무너지면서 발생할 수 있는 충격으로, 매우 큰 투자 리스크입니다.
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>난이도: ⭐쉬움 30% | ⭐⭐보통 50% | ⭐⭐⭐어려움 20%</p>
+            <p style="margin-top: 8px;">© 2026 시장포커스 학습자료</p>
+        </div>
+    </div>
+</body>
+</html>
