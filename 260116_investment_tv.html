@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>1월 15일 미국 증시 분석 - 은행주 상승과 KLAC 폭등</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans KR', sans-serif;
+            line-height: 1.7;
+            background: linear-gradient(135deg, #0a0a1a 0%, #1a1a2e 100%);
+            color: #e0e0e0;
+            padding: 16px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        header {
+            text-align: center;
+            padding: 24px 0;
+            border-bottom: 2px solid #3498db;
+            margin-bottom: 24px;
+        }
+        h1 {
+            font-size: 1.5rem;
+            color: #fff;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+        .date {
+            color: #888;
+            font-size: 0.9rem;
+        }
+        .source {
+            color: #3498db;
+            font-size: 0.85rem;
+            margin-top: 8px;
+        }
+        h2 {
+            font-size: 1.2rem;
+            color: #3498db;
+            margin: 28px 0 16px;
+            padding-left: 12px;
+            border-left: 4px solid #3498db;
+        }
+        h3 {
+            font-size: 1.05rem;
+            color: #f39c12;
+            margin: 20px 0 12px;
+        }
+        p {
+            margin-bottom: 14px;
+            text-align: justify;
+        }
+        .highlight-box {
+            background: linear-gradient(135deg, #1e3a5f 0%, #2c3e50 100%);
+            border-radius: 12px;
+            padding: 16px;
+            margin: 16px 0;
+            border-left: 4px solid #3498db;
+        }
+        .warning-box {
+            background: linear-gradient(135deg, #5a2a2a 0%, #3d1f1f 100%);
+            border-radius: 12px;
+            padding: 16px;
+            margin: 16px 0;
+            border-left: 4px solid #e74c3c;
+        }
+        .success-box {
+            background: linear-gradient(135deg, #1e4d3a 0%, #2d3e2f 100%);
+            border-radius: 12px;
+            padding: 16px;
+            margin: 16px 0;
+            border-left: 4px solid #27ae60;
+        }
+        .stock-card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            padding: 16px;
+            margin: 12px 0;
+        }
+        .stock-name {
+            font-weight: bold;
+            color: #fff;
+            font-size: 1.1rem;
+        }
+        .stock-change {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin: 8px 0;
+        }
+        .positive { color: #27ae60; }
+        .negative { color: #e74c3c; }
+        .neutral { color: #f39c12; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+            font-size: 0.9rem;
+        }
+        th, td {
+            padding: 12px 8px;
+            text-align: left;
+            border-bottom: 1px solid #333;
+        }
+        th {
+            background: rgba(52, 152, 219, 0.2);
+            color: #3498db;
+            font-weight: 600;
+        }
+        tr:hover {
+            background: rgba(255,255,255,0.03);
+        }
+        .chart-container {
+            background: rgba(0,0,0,0.3);
+            border-radius: 12px;
+            padding: 16px;
+            margin: 20px 0;
+        }
+        .bar-chart {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .bar-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .bar-label {
+            width: 100px;
+            font-size: 0.85rem;
+            flex-shrink: 0;
+        }
+        .bar-wrapper {
+            flex: 1;
+            background: rgba(255,255,255,0.1);
+            border-radius: 4px;
+            height: 24px;
+            position: relative;
+        }
+        .bar {
+            height: 100%;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 8px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: #fff;
+        }
+        .key-point {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin: 12px 0;
+        }
+        .key-point-icon {
+            width: 24px;
+            height: 24px;
+            background: #3498db;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 0.8rem;
+        }
+        .metric-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin: 16px 0;
+        }
+        .metric-item {
+            background: rgba(255,255,255,0.05);
+            border-radius: 8px;
+            padding: 14px;
+            text-align: center;
+        }
+        .metric-value {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #3498db;
+        }
+        .metric-label {
+            font-size: 0.8rem;
+            color: #888;
+            margin-top: 4px;
+        }
+        .section-divider {
+            height: 1px;
+            background: linear-gradient(to right, transparent, #3498db, transparent);
+            margin: 32px 0;
+        }
+        .important {
+            color: #f39c12;
+            font-weight: 600;
+        }
+        .rule-box {
+            background: rgba(52, 152, 219, 0.1);
+            border: 1px solid #3498db;
+            border-radius: 8px;
+            padding: 16px;
+            margin: 16px 0;
+        }
+        .rule-title {
+            font-weight: bold;
+            color: #3498db;
+            margin-bottom: 8px;
+        }
+        footer {
+            text-align: center;
+            padding: 24px 0;
+            color: #666;
+            font-size: 0.8rem;
+            margin-top: 32px;
+            border-top: 1px solid #333;
+        }
+        .flow-chart {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin: 16px 0;
+        }
+        .flow-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .flow-arrow {
+            color: #3498db;
+            font-size: 1.2rem;
+        }
+        .flow-box {
+            background: rgba(52, 152, 219, 0.2);
+            padding: 10px 16px;
+            border-radius: 8px;
+            flex: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🏦 1월 15일 미국 증시 분석<br>은행주 상승과 KLAC 폭등</h1>
+            <div class="date">📅 2026년 1월 16일</div>
+            <div class="source">출처: 유튜브 투자 분석 방송</div>
+        </header>
+
+        <!-- 핵심 요약 -->
+        <h2>📌 오늘의 핵심 요약</h2>
+        <div class="success-box">
+            <p><strong>3일간의 하락장 종료!</strong> 1월 15일, 미국 증시가 반등에 성공했습니다. 특히 <span class="important">은행주와 반도체 장비주</span>가 강세를 보이며, 섹터 로테이션이 본격화되는 모습입니다.</p>
+        </div>
+
+        <div class="metric-grid">
+            <div class="metric-item">
+                <div class="metric-value positive">+5.86%</div>
+                <div class="metric-label">Morgan Stanley</div>
+            </div>
+            <div class="metric-item">
+                <div class="metric-value positive">+9.3%</div>
+                <div class="metric-label">KLAC</div>
+            </div>
+            <div class="metric-item">
+                <div class="metric-value positive">+0.62%</div>
+                <div class="metric-label">S&P 500</div>
+            </div>
+            <div class="metric-item">
+                <div class="metric-value positive">+0.5%</div>
+                <div class="metric-label">NASDAQ</div>
+            </div>
+        </div>
+
+        <div class="section-divider"></div>
+
+        <!-- 은행주 분석 -->
+        <h2>🏦 은행주 섹터 분석</h2>
+        
+        <h3>Morgan Stanley 실적 서프라이즈</h3>
+        <p>Morgan Stanley가 예상을 크게 상회하는 실적을 발표하며 <span class="positive">+5.86%</span> 급등했습니다. 특히 <span class="important">투자은행(Investment Banking) 부문이 47% 급성장</span>하며 실적을 견인했습니다.</p>
+
+        <div class="highlight-box">
+            <h4 style="color:#3498db; margin-bottom:12px;">📊 Morgan Stanley 실적 하이라이트</h4>
+            <table>
+                <tr>
+                    <td>EPS</td>
+                    <td><strong>$2.68</strong> (예상 대비 +$0.41)</td>
+                </tr>
+                <tr>
+                    <td>매출</td>
+                    <td><strong>179억 달러</strong></td>
+                </tr>
+                <tr>
+                    <td>순수익</td>
+                    <td><strong>44억 달러</strong></td>
+                </tr>
+                <tr>
+                    <td>투자은행 성장률</td>
+                    <td><span class="positive"><strong>+47%</strong></span></td>
+                </tr>
+            </table>
+        </div>
+
+        <p>Morgan Stanley의 성장 배경에는 <span class="important">M&A 및 IPO 시장의 활성화</span>가 있습니다. 특히 2026년에는 <strong>SpaceX의 IPO 주관</strong> 가능성이 있어 추가적인 수혜가 기대됩니다.</p>
+
+        <div class="stock-card">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <div class="stock-name">Morgan Stanley (MS)</div>
+                <div class="stock-change positive">+5.86%</div>
+            </div>
+            <table style="margin-top:12px;">
+                <tr><td>PE Ratio</td><td><strong>18배</strong> (시장 대비 저평가)</td></tr>
+                <tr><td>ROE</td><td>16% (S&P 500 평균 상회)</td></tr>
+                <tr><td>연간 수익 성장률</td><td><span class="positive">+48%</span></td></tr>
+            </table>
+        </div>
+
+        <h3>주요 금융주 일간 수익률</h3>
+        <div class="chart-container">
+            <div class="bar-chart">
+                <div class="bar-item">
+                    <span class="bar-label">KLAC</span>
+                    <div class="bar-wrapper">
+                        <div class="bar" style="width:100%; background:linear-gradient(90deg, #27ae60, #2ecc71);">+9.3%</div>
+                    </div>
+                </div>
+                <div class="bar-item">
+                    <span class="bar-label">블랙락</span>
+                    <div class="bar-wrapper">
+                        <div class="bar" style="width:68%; background:linear-gradient(90deg, #27ae60, #2ecc71);">+6.3%</div>
+                    </div>
+                </div>
+                <div class="bar-item">
+                    <span class="bar-label">Morgan Stanley</span>
+                    <div class="bar-wrapper">
+                        <div class="bar" style="width:63%; background:linear-gradient(90deg, #27ae60, #2ecc71);">+5.86%</div>
+                    </div>
+                </div>
+                <div class="bar-item">
+                    <span class="bar-label">골드만삭스</span>
+                    <div class="bar-wrapper">
+                        <div class="bar" style="width:48%; background:linear-gradient(90deg, #27ae60, #2ecc71);">+4.5%</div>
+                    </div>
+                </div>
+                <div class="bar-item">
+                    <span class="bar-label">Citi</span>
+                    <div class="bar-wrapper">
+                        <div class="bar" style="width:42%; background:linear-gradient(90deg, #27ae60, #2ecc71);">+3.91%</div>
+                    </div>
+                </div>
+                <div class="bar-item">
+                    <span class="bar-label">JP Morgan</span>
+                    <div class="bar-wrapper">
+                        <div class="bar" style="width:10%; background:linear-gradient(90deg, #27ae60, #2ecc71);">+0.92%</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-divider"></div>
+
+        <!-- 섹터 로테이션 -->
+        <h2>🔄 섹터 로테이션 분석</h2>
+        <p>현재 시장에서는 <span class="important">IT 섹터에서 금융 섹터로의 자금 이동</span>이 뚜렷하게 나타나고 있습니다. IT 섹터는 3일 연속 마이너스 1.4% 하락한 반면, 금융 섹터는 강세를 보이고 있습니다.</p>
+
+        <div class="flow-chart">
+            <div class="flow-item">
+                <div class="flow-box" style="background:rgba(231,76,60,0.2);">
+                    <strong>IT 섹터</strong><br>
+                    <span style="font-size:0.9rem;">마이크로소프트, NVIDIA 등</span>
+                </div>
+            </div>
+            <div class="flow-item">
+                <span class="flow-arrow">↓ 자금 이탈</span>
+            </div>
+            <div class="flow-item">
+                <div class="flow-box" style="background:rgba(39,174,96,0.2);">
+                    <strong>금융 섹터</strong><br>
+                    <span style="font-size:0.9rem;">Morgan Stanley, JP Morgan, 골드만삭스</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="highlight-box">
+            <h4 style="color:#3498db; margin-bottom:10px;">📈 섹터 로테이션 전략 포인트</h4>
+            <div class="key-point">
+                <div class="key-point-icon">1</div>
+                <div>IT 섹터 비중을 10% 정도 줄이고 현금 확보</div>
+            </div>
+            <div class="key-point">
+                <div class="key-point-icon">2</div>
+                <div>은행주(금융 섹터) 비중을 10% 수준으로 확대</div>
+            </div>
+            <div class="key-point">
+                <div class="key-point-icon">3</div>
+                <div>4분기 실적 시즌을 활용한 타이밍 전략</div>
+            </div>
+        </div>
+
+        <div class="section-divider"></div>
+
+        <!-- 반도체 장비주 -->
+        <h2>💎 반도체 장비주: KLAC</h2>
+        <div class="stock-card">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <div class="stock-name">KLA Corporation (KLAC)</div>
+                <div class="stock-change positive">+9.3%</div>
+            </div>
+            <p style="margin-top:12px;">TSMC의 호실적 발표 이후 반도체 장비 수요 증가 기대감으로 <strong>4세션 연속 상승</strong>을 기록했습니다.</p>
+            <table style="margin-top:12px;">
+                <tr><td>목표가</td><td><strong>$1,600</strong> (상향 조정)</td></tr>
+                <tr><td>투자의견</td><td>Hold → <span class="positive">Buy</span> (상향)</td></tr>
+                <tr><td>모멘텀</td><td>AI 및 첨단 공정 수요 증가</td></tr>
+            </table>
+        </div>
+
+        <p>반도체 장비주는 포트폴리오에 <span class="important">최소 하나는 보유</span>하는 것이 권장됩니다. KLAC는 주당 가격이 높아($1,000+) 소액 투자자에게는 부담이 될 수 있으나, 총 투자금이 5,000만원 이상인 경우 적합합니다.</p>
+
+        <div class="section-divider"></div>
+
+        <!-- 리스크 요인 -->
+        <h2>⚠️ 주요 리스크 요인</h2>
+
+        <div class="warning-box">
+            <h4 style="color:#e74c3c; margin-bottom:10px;">🚨 연준 독립성 리스크</h4>
+            <p>트럼프 행정부가 연준의 독립성을 훼손할 경우, 시장은 <strong>10~20% 폭락</strong>할 수 있습니다. 연준 의장 교체 시도나 정치적 압력이 가해질 경우 현금 비중을 늘려야 합니다.</p>
+        </div>
+
+        <div class="metric-grid">
+            <div class="metric-item">
+                <div class="metric-value neutral">17</div>
+                <div class="metric-label">VIX 지수</div>
+            </div>
+            <div class="metric-item">
+                <div class="metric-value" style="color:#e74c3c;">16 이하</div>
+                <div class="metric-label">안정권 기준</div>
+            </div>
+        </div>
+
+        <h3>크레딧 카드 이자율 규제 우려</h3>
+        <p>트럼프가 신용카드 이자율을 <strong>10% 이하로 제한</strong>하겠다고 언급하면서 Capital One(COF) 등 카드사 주식이 일시적으로 하락했습니다. 그러나 이는 <span class="important">노이즈로 판단</span>되며, 실제 시행 가능성은 낮습니다.</p>
+
+        <div class="section-divider"></div>
+
+        <!-- 테슬라 분석 -->
+        <h2>🚗 테슬라(TSLA) 투자 주의</h2>
+        <div class="warning-box">
+            <h4 style="color:#e74c3c; margin-bottom:10px;">기관 보유율 급감</h4>
+            <table>
+                <tr>
+                    <td>2025년 말 기관 보유율</td>
+                    <td><strong>47%</strong></td>
+                </tr>
+                <tr>
+                    <td>2026년 1월 기관 보유율</td>
+                    <td><strong>32%</strong> <span class="negative">(-15%p)</span></td>
+                </tr>
+                <tr>
+                    <td>PE Ratio</td>
+                    <td>S&P 500 대비 <strong>10배</strong></td>
+                </tr>
+            </table>
+        </div>
+
+        <p>전기차 세금 크레딧($7,000) 폐지로 인해 테슬라 매출이 <span class="negative">1년 사이 약 60% 감소</span>했습니다. 51개 기관 중 Hold 20, Buy 21, Sell 10으로, 과도한 비중 보유는 권장되지 않습니다.</p>
+
+        <div class="section-divider"></div>
+
+        <!-- 국방주 -->
+        <h2>🛡️ 국방 섹터: General Dynamics</h2>
+        <div class="stock-card">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <div class="stock-name">General Dynamics (GD)</div>
+                <div class="stock-change positive">+37%</div>
+            </div>
+            <p style="margin-top:8px; font-size:0.9rem; color:#888;">1년 수익률 (2025.1 ~ 2026.1)</p>
+            <table style="margin-top:12px;">
+                <tr><td>목표가</td><td><strong>$398</strong> (상향 조정)</td></tr>
+                <tr><td>지난 5세션</td><td><span class="positive">+4.4%</span></td></tr>
+                <tr><td>30대 그룹 편입</td><td>2024년 8월</td></tr>
+            </table>
+        </div>
+
+        <p>미국의 국방비가 <span class="important">2,000조원 수준</span>으로 증가하면서 국방 섹터가 수혜를 받고 있습니다. General Dynamics는 M1 전차, 스트라이커 장갑차 등을 생산하며, 안정적인 장기 투자에 적합합니다.</p>
+
+        <div class="section-divider"></div>
+
+        <!-- 주요 일정 -->
+        <h2>📅 주요 일정</h2>
+        <table>
+            <tr>
+                <th>날짜</th>
+                <th>이벤트</th>
+                <th>예상</th>
+            </tr>
+            <tr>
+                <td>1/28</td>
+                <td>FOMC 금리 결정</td>
+                <td><span class="neutral">동결 유력</span></td>
+            </tr>
+            <tr>
+                <td>1/28</td>
+                <td>테슬라 실적 발표</td>
+                <td>변동성 주의</td>
+            </tr>
+            <tr>
+                <td>1/28</td>
+                <td>General Dynamics 실적</td>
+                <td>매출 137% 예상</td>
+            </tr>
+            <tr>
+                <td>1/28</td>
+                <td>KLAC 실적 발표</td>
+                <td>상향 전망</td>
+            </tr>
+        </table>
+
+        <div class="section-divider"></div>
+
+        <!-- 투자 원칙 -->
+        <h2>📚 투자 원칙 정리</h2>
+
+        <div class="rule-box">
+            <div class="rule-title">📐 5.25 법칙</div>
+            <p>특정 종목이 <strong>25% 이상 상승</strong>하면 비중을 줄여야 합니다. 예: NVIDIA가 25% 이상 올랐다면 일부 매도하고 다른 기회를 모색하세요.</p>
+        </div>
+
+        <div class="rule-box">
+            <div class="rule-title">📐 7-2-1 법칙</div>
+            <p><strong>7년간 자산 2배 성장</strong>을 목표로 구성하면 투자 리스크가 베타 1에 가깝습니다.</p>
+            <table style="margin-top:10px;">
+                <tr>
+                    <td>2배 목표 (7년)</td>
+                    <td>리스크 1배 → 결과: 16~24만불</td>
+                </tr>
+                <tr>
+                    <td>3배 목표 (7년)</td>
+                    <td>리스크 1.5배 → 결과: 15~30만불</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="rule-box">
+            <div class="rule-title">📐 포트폴리오 비중 관리</div>
+            <ul style="margin-left:20px; margin-top:8px;">
+                <li>30대 핵심 그룹 종목 우선 배분</li>
+                <li>긍정 평가 종목은 여유 자금으로</li>
+                <li>고위험 종목은 0.5% 이하로 제한</li>
+            </ul>
+        </div>
+
+        <div class="section-divider"></div>
+
+        <!-- 거시경제 지표 -->
+        <h2>📊 거시경제 지표 현황</h2>
+        <table>
+            <tr>
+                <th>지표</th>
+                <th>현재</th>
+                <th>평가</th>
+            </tr>
+            <tr>
+                <td>인플레이션</td>
+                <td>2.7%</td>
+                <td><span class="positive">양호</span></td>
+            </tr>
+            <tr>
+                <td>VIX</td>
+                <td>17</td>
+                <td><span class="neutral">주의</span> (16 이하 필요)</td>
+            </tr>
+            <tr>
+                <td>S&P 500 50일선 위</td>
+                <td>70%</td>
+                <td><span class="positive">양호</span></td>
+            </tr>
+            <tr>
+                <td>S&P 500 200일선 위</td>
+                <td>67%</td>
+                <td><span class="positive">양호</span></td>
+            </tr>
+        </table>
+
+        <div class="section-divider"></div>
+
+        <!-- 투자 시사점 -->
+        <h2>💡 투자 시사점</h2>
+        <div class="success-box">
+            <div class="key-point">
+                <div class="key-point-icon">✓</div>
+                <div><strong>은행주 비중 확대:</strong> Morgan Stanley, JP Morgan 등 투자은행 비중을 10% 수준으로</div>
+            </div>
+            <div class="key-point">
+                <div class="key-point-icon">✓</div>
+                <div><strong>IT 섹터 비중 축소:</strong> 마이크로소프트 등 IT 종목 일부 매도하여 현금 확보</div>
+            </div>
+            <div class="key-point">
+                <div class="key-point-icon">✓</div>
+                <div><strong>반도체 장비주 보유:</strong> KLAC 등 최소 1종목은 포트폴리오에 편입</div>
+            </div>
+            <div class="key-point">
+                <div class="key-point-icon">✓</div>
+                <div><strong>국방주 관심:</strong> General Dynamics 4~5% 비중 권장</div>
+            </div>
+            <div class="key-point">
+                <div class="key-point-icon">✓</div>
+                <div><strong>테슬라 주의:</strong> 과도한 비중 보유 지양, 변동성 대비</div>
+            </div>
+        </div>
+
+        <div class="warning-box">
+            <h4 style="color:#e74c3c; margin-bottom:10px;">⚠️ 리스크 관리</h4>
+            <p>연준 독립성 훼손, 트럼프 정책 불확실성, 지정학적 리스크(이란, 그린란드) 등에 대비하여 <strong>현금 비중 10% 유지</strong>를 권장합니다.</p>
+        </div>
+
+        <footer>
+            <p>본 문서는 교육 및 정보 제공 목적으로 작성되었습니다.</p>
+            <p>투자 결정은 본인의 판단과 책임 하에 이루어져야 합니다.</p>
+            <p style="margin-top:10px;">📅 작성일: 2026년 1월 16일</p>
+        </footer>
+    </div>
+</body>
+</html>

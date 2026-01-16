@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>1월 15일 미국 증시 분석 - 시험문제</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans KR', sans-serif;
+            line-height: 1.8;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #e0e0e0;
+            padding: 16px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        header {
+            text-align: center;
+            padding: 24px 0;
+            border-bottom: 2px solid #e74c3c;
+            margin-bottom: 24px;
+        }
+        h1 {
+            font-size: 1.4rem;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+        .subtitle {
+            color: #888;
+            font-size: 0.9rem;
+        }
+        h2 {
+            font-size: 1.3rem;
+            color: #e74c3c;
+            margin: 32px 0 20px;
+            padding: 12px;
+            background: rgba(231, 76, 60, 0.1);
+            border-radius: 8px;
+            text-align: center;
+        }
+        .question-box {
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            border-left: 4px solid #3498db;
+        }
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        .question-number {
+            font-weight: bold;
+            color: #3498db;
+            font-size: 1.1rem;
+        }
+        .difficulty {
+            font-size: 0.85rem;
+            padding: 4px 10px;
+            border-radius: 20px;
+        }
+        .easy {
+            background: rgba(39, 174, 96, 0.2);
+            color: #27ae60;
+        }
+        .medium {
+            background: rgba(243, 156, 18, 0.2);
+            color: #f39c12;
+        }
+        .hard {
+            background: rgba(231, 76, 60, 0.2);
+            color: #e74c3c;
+        }
+        .question-type {
+            font-size: 0.8rem;
+            color: #888;
+            margin-bottom: 10px;
+        }
+        .question-text {
+            font-size: 1rem;
+            color: #fff;
+            margin-bottom: 16px;
+        }
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .option {
+            background: rgba(255,255,255,0.03);
+            padding: 12px 16px;
+            border-radius: 8px;
+            border: 1px solid #333;
+            transition: all 0.2s;
+        }
+        .option:hover {
+            background: rgba(52, 152, 219, 0.1);
+            border-color: #3498db;
+        }
+        .blank-line {
+            border-bottom: 2px dashed #555;
+            display: inline-block;
+            min-width: 100px;
+            margin: 0 8px;
+        }
+        .answer-section {
+            background: linear-gradient(135deg, #0a3d2e 0%, #1e4d3a 100%);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            border-left: 4px solid #27ae60;
+        }
+        .answer-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+        .answer-label {
+            font-weight: bold;
+            color: #27ae60;
+            font-size: 1rem;
+        }
+        .answer-value {
+            background: rgba(39, 174, 96, 0.3);
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-weight: bold;
+            color: #fff;
+        }
+        .explanation {
+            color: #ccc;
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+        .section-divider {
+            height: 2px;
+            background: linear-gradient(to right, transparent, #e74c3c, transparent);
+            margin: 40px 0;
+        }
+        .ox-options {
+            display: flex;
+            gap: 20px;
+            margin-top: 10px;
+        }
+        .ox-option {
+            flex: 1;
+            text-align: center;
+            padding: 16px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 8px;
+            border: 1px solid #333;
+            font-size: 1.5rem;
+        }
+        footer {
+            text-align: center;
+            padding: 24px 0;
+            color: #666;
+            font-size: 0.8rem;
+            margin-top: 32px;
+            border-top: 1px solid #333;
+        }
+        .score-guide {
+            background: rgba(52, 152, 219, 0.1);
+            border: 1px solid #3498db;
+            border-radius: 12px;
+            padding: 16px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        .score-guide h4 {
+            color: #3498db;
+            margin-bottom: 10px;
+        }
+        .important {
+            color: #f39c12;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📋 1월 15일 미국 증시 분석<br>시험문제</h1>
+            <div class="subtitle">총 10문제 | 제한시간 없음</div>
+        </header>
+
+        <div class="score-guide">
+            <h4>📊 난이도 배분</h4>
+            <p>⭐ 쉬움 30% | ⭐⭐ 보통 50% | ⭐⭐⭐ 어려움 20%</p>
+        </div>
+
+        <!-- ==================== 문제지 ==================== -->
+        <h2>━━━━━━━━━━━━━━━━━━━━<br>📋 시험문제 (총 10문제)<br>━━━━━━━━━━━━━━━━━━━━</h2>
+
+        <!-- 문제 1 -->
+        <div class="question-box">
+            <div class="question-header">
+                <span class="question-number">[문제 1]</span>
+                <span class="difficulty easy">⭐ 쉬움</span>
+            </div>
+            <div class="question-type">객관식</div>
+            <div class="question-text">
+                2026년 1월 15일, Morgan Stanley의 주가 상승률은 얼마였는가?
+            </div>
+            <div class="options">
+                <div class="option">① 3.91%</div>
+                <div class="option">② 4.5%</div>
+                <div class="option">③ 5.86%</div>
+                <div class="option">④ 6.3%</div>
+            </div>
+        </div>
+
+        <!-- 문제 2 -->
+        <div class="question-box">
+            <div class="question-header">
+                <span class="question-number">[문제 2]</span>
+                <span class="difficulty easy">⭐ 쉬움</span>
+            </div>
+            <div class="question-type">단답형</div>
+            <div class="question-text">
+                Morgan Stanley의 투자은행(Investment Banking) 부문 성장률은 몇 %였는가?
+            </div>
+            <p style="color:#888; font-size:0.9rem; margin-top:10px;">정답: <span class="blank-line"></span> %</p>
+        </div>
+
+        <!-- 문제 3 -->
+        <div class="question-box">
+            <div class="question-header">
+                <span class="question-number">[문제 3]</span>
+                <span class="difficulty medium">⭐⭐ 보통</span>
+            </div>
+            <div class="question-type">객관식</div>
+            <div class="question-text">
+                현재 시장에서 진행 중인 '섹터 로테이션'의 방향으로 올바른 것은?
+            </div>
+            <div class="options">
+                <div class="option">① 금융 섹터 → IT 섹터</div>
+                <div class="option">② IT 섹터 → 금융 섹터</div>
+                <div class="option">③ 헬스케어 → 에너지 섹터</div>
+                <div class="option">④ 유틸리티 → 소비재 섹터</div>
+            </div>
+        </div>
+
+        <!-- 문제 4 -->
+        <div class="question-box">
+            <div class="question-header">
+                <span class="question-number">[문제 4]</span>
+                <span class="difficulty medium">⭐⭐ 보통</span>
+            </div>
+            <div class="question-type">OX 문제</div>
+            <div class="question-text">
+                테슬라의 기관 보유율이 2025년 말 47%에서 2026년 1월 32%로 감소했다.
+            </div>
+            <div class="ox-options">
+                <div class="ox-option">⭕ O</div>
+                <div class="ox-option">❌ X</div>
+            </div>
+        </div>
+
+        <!-- 문제 5 -->
+        <div class="question-box">
+            <div class="question-header">
+                <span class="question-number">[문제 5]</span>
+                <span class="difficulty medium">⭐⭐ 보통</span>
+            </div>
+            <div class="question-type">빈칸 채우기</div>
+            <div class="question-text">
+                '5.25 법칙'에 따르면, 특정 종목이 <span class="blank-line"></span>% 이상 상승하면 비중을 줄여야 한다.
+            </div>
+        </div>
+
+        <!-- 문제 6 -->
+        <div class="question-box">
+            <div class="question-header">
+                <span class="question-number">[문제 6]</span>
+                <span class="difficulty medium">⭐⭐ 보통</span>
+            </div>
+            <div class="question-type">객관식</div>
+            <div class="question-text">
+                반도체 장비주 KLAC의 1월 15일 상승률과 목표가로 올바른 것은?
+            </div>
+            <div class="options">
+                <div class="option">① 상승률 6.3%, 목표가 $1,400</div>
+                <div class="option">② 상승률 9.3%, 목표가 $1,600</div>
+                <div class="option">③ 상승률 5.86%, 목표가 $1,500</div>
+                <div class="option">④ 상승률 4.5%, 목표가 $1,200</div>
+            </div>
+        </div>
+
+        <!-- 문제 7 -->
+        <div class="question-box">
+            <div class="question-header">
+                <span class="question-number">[문제 7]</span>
+                <span class="difficulty hard">⭐⭐⭐ 어려움</span>
+            </div>
+            <div class="question-type">서술형</div>
+            <div class="question-text">
+                '7-2-1 법칙'이란 무엇인지 설명하고, 7년간 3배 성장을 목표로 할 경우 리스크와 예상 결과를 서술하시오.
+            </div>
+            <p style="color:#888; font-size:0.9rem; margin-top:12px; border:1px dashed #555; padding:12px; border-radius:8px;">
+                답변 작성란
+            </p>
+        </div>
+
+        <!-- 문제 8 -->
+        <div class="question-box">
+            <div class="question-header">
+                <span class="question-number">[문제 8]</span>
+                <span class="difficulty medium">⭐⭐ 보통</span>
+            </div>
+            <div class="question-type">객관식</div>
+            <div class="question-text">
+                연준의 독립성이 훼손될 경우 예상되는 시장 하락폭은?
+            </div>
+            <div class="options">
+                <div class="option">① 3~5%</div>
+                <div class="option">② 5~7%</div>
+                <div class="option">③ 10~20%</div>
+                <div class="option">④ 30~40%</div>
+            </div>
+        </div>
+
+        <!-- 문제 9 -->
+        <div class="question-box">
+            <div class="question-header">
+                <span class="question-number">[문제 9]</span>
+                <span class="difficulty easy">⭐ 쉬움</span>
+            </div>
+            <div class="question-type">단답형</div>
+            <div class="question-text">
+                General Dynamics의 1년간(2025.1~2026.1) 수익률은 몇 %인가?
+            </div>
+            <p style="color:#888; font-size:0.9rem; margin-top:10px;">정답: <span class="blank-line"></span> %</p>
+        </div>
+
+        <!-- 문제 10 -->
+        <div class="question-box">
+            <div class="question-header">
+                <span class="question-number">[문제 10]</span>
+                <span class="difficulty hard">⭐⭐⭐ 어려움</span>
+            </div>
+            <div class="question-type">서술형</div>
+            <div class="question-text">
+                현재 시장 상황에서 권장되는 포트폴리오 조정 전략 3가지를 섹터별로 서술하시오.
+            </div>
+            <p style="color:#888; font-size:0.9rem; margin-top:12px; border:1px dashed #555; padding:12px; border-radius:8px;">
+                답변 작성란
+            </p>
+        </div>
+
+        <div class="section-divider"></div>
+
+        <!-- ==================== 정답지 ==================== -->
+        <h2>━━━━━━━━━━━━━━━━━━━━<br>📝 정답 및 해설<br>━━━━━━━━━━━━━━━━━━━━</h2>
+
+        <!-- 정답 1 -->
+        <div class="answer-section">
+            <div class="answer-header">
+                <span class="answer-label">[문제 1]</span>
+                <span class="answer-value">정답: ③</span>
+            </div>
+            <div class="explanation">
+                <strong>해설:</strong> Morgan Stanley는 2026년 1월 15일 <span class="important">5.86%</span> 상승했습니다. 예상을 크게 상회하는 실적 발표가 주요 원인이었으며, 특히 투자은행 부문의 47% 성장이 주가 상승을 이끌었습니다.
+            </div>
+        </div>
+
+        <!-- 정답 2 -->
+        <div class="answer-section">
+            <div class="answer-header">
+                <span class="answer-label">[문제 2]</span>
+                <span class="answer-value">정답: 47</span>
+            </div>
+            <div class="explanation">
+                <strong>해설:</strong> Morgan Stanley의 투자은행(Investment Banking) 부문은 <span class="important">47%</span> 급성장했습니다. M&A와 IPO 시장의 활성화가 이러한 성장의 주요 원인이며, 2026년에는 SpaceX IPO 주관 가능성도 있어 추가 성장이 기대됩니다.
+            </div>
+        </div>
+
+        <!-- 정답 3 -->
+        <div class="answer-section">
+            <div class="answer-header">
+                <span class="answer-label">[문제 3]</span>
+                <span class="answer-value">정답: ②</span>
+            </div>
+            <div class="explanation">
+                <strong>해설:</strong> 현재 시장에서는 <span class="important">IT 섹터에서 금융 섹터</span>로 자금이 이동하는 섹터 로테이션이 진행 중입니다. IT 섹터는 3일 연속 약 1.4% 하락한 반면, 금융주(Morgan Stanley, JP Morgan 등)는 강세를 보이고 있습니다.
+            </div>
+        </div>
+
+        <!-- 정답 4 -->
+        <div class="answer-section">
+            <div class="answer-header">
+                <span class="answer-label">[문제 4]</span>
+                <span class="answer-value">정답: ⭕ O</span>
+            </div>
+            <div class="explanation">
+                <strong>해설:</strong> 테슬라의 기관 보유율은 2025년 말 47%에서 2026년 1월 32%로 <span class="important">15%포인트 감소</span>했습니다. 이는 전기차 세금 크레딧($7,000) 폐지와 PE Ratio가 S&P 500 대비 10배에 달하는 고평가 우려 때문입니다.
+            </div>
+        </div>
+
+        <!-- 정답 5 -->
+        <div class="answer-section">
+            <div class="answer-header">
+                <span class="answer-label">[문제 5]</span>
+                <span class="answer-value">정답: 25</span>
+            </div>
+            <div class="explanation">
+                <strong>해설:</strong> '5.25 법칙'은 특정 종목이 <span class="important">25% 이상 상승</span>하면 비중을 줄여야 한다는 투자 원칙입니다. 예를 들어 NVIDIA가 25% 이상 올랐다면 일부를 매도하고 다른 성장 가능성이 높은 종목이나 섹터로 자금을 이동해야 합니다.
+            </div>
+        </div>
+
+        <!-- 정답 6 -->
+        <div class="answer-section">
+            <div class="answer-header">
+                <span class="answer-label">[문제 6]</span>
+                <span class="answer-value">정답: ②</span>
+            </div>
+            <div class="explanation">
+                <strong>해설:</strong> KLAC는 1월 15일 <span class="important">9.3%</span> 상승했으며, 목표가는 <span class="important">$1,600</span>으로 상향 조정되었습니다. TSMC의 호실적 발표 이후 AI 및 첨단 공정 수요 증가 기대감이 반영된 결과입니다.
+            </div>
+        </div>
+
+        <!-- 정답 7 -->
+        <div class="answer-section">
+            <div class="answer-header">
+                <span class="answer-label">[문제 7]</span>
+                <span class="answer-value">정답: 아래 해설 참조</span>
+            </div>
+            <div class="explanation">
+                <strong>해설:</strong><br><br>
+                <strong>7-2-1 법칙이란:</strong> 7년간 투자자산을 2배로 늘리도록 포트폴리오를 구성하면 투자 리스크가 베타 1에 가깝다는 원칙입니다.<br><br>
+                <strong>7년간 3배 성장 목표 시:</strong>
+                <ul style="margin-left:20px; margin-top:8px;">
+                    <li>투자 리스크: 기본 대비 <span class="important">50% 증가</span></li>
+                    <li>예상 결과: 15만불 ~ 30만불 (10만불 기준)</li>
+                    <li>최대 상승 시 3배(30만불)가 가능하나, 하락 시 50% 감소(15만불)할 수 있음</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 정답 8 -->
+        <div class="answer-section">
+            <div class="answer-header">
+                <span class="answer-label">[문제 8]</span>
+                <span class="answer-value">정답: ③</span>
+            </div>
+            <div class="explanation">
+                <strong>해설:</strong> 연준의 독립성이 훼손될 경우 시장은 <span class="important">10~20%</span> 폭락할 가능성이 큽니다. 트럼프가 연준 의장을 교체하거나 정치적 압력을 가할 경우 시장 신뢰가 크게 훼손되어 장기간 하락장이 지속될 수 있습니다.
+            </div>
+        </div>
+
+        <!-- 정답 9 -->
+        <div class="answer-section">
+            <div class="answer-header">
+                <span class="answer-label">[문제 9]</span>
+                <span class="answer-value">정답: 37</span>
+            </div>
+            <div class="explanation">
+                <strong>해설:</strong> General Dynamics는 2025년 1월부터 2026년 1월까지 1년간 <span class="important">37%</span> 상승했습니다. 미국 국방비 증가(약 2,000조원 수준)와 함께 M1 전차, 스트라이커 장갑차 등 핵심 국방 장비 생산업체로서 안정적인 성장을 보였습니다.
+            </div>
+        </div>
+
+        <!-- 정답 10 -->
+        <div class="answer-section">
+            <div class="answer-header">
+                <span class="answer-label">[문제 10]</span>
+                <span class="answer-value">정답: 아래 해설 참조</span>
+            </div>
+            <div class="explanation">
+                <strong>해설:</strong> 권장되는 포트폴리오 조정 전략 3가지:<br><br>
+                <strong>1. IT 섹터 비중 축소</strong>
+                <ul style="margin-left:20px; margin-top:4px;">
+                    <li>마이크로소프트, NVIDIA 등 IT 종목 비중을 10% 정도 줄이기</li>
+                    <li>현금 확보를 통해 다른 기회에 대비</li>
+                </ul>
+                <br>
+                <strong>2. 금융 섹터 비중 확대</strong>
+                <ul style="margin-left:20px; margin-top:4px;">
+                    <li>Morgan Stanley, JP Morgan 등 투자은행 주식 비중을 10% 수준으로 확대</li>
+                    <li>섹터 로테이션 흐름에 따른 수혜 기대</li>
+                </ul>
+                <br>
+                <strong>3. 국방 섹터 편입</strong>
+                <ul style="margin-left:20px; margin-top:4px;">
+                    <li>General Dynamics 등 국방주 4~5% 비중으로 편입</li>
+                    <li>미국 국방비 증가에 따른 안정적 성장 기대</li>
+                </ul>
+            </div>
+        </div>
+
+        <footer>
+            <p>본 시험문제는 2026년 1월 15일 미국 증시 분석 내용을 바탕으로 작성되었습니다.</p>
+            <p style="margin-top:10px;">📅 작성일: 2026년 1월 16일</p>
+        </footer>
+    </div>
+</body>
+</html>
