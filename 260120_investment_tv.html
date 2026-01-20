@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>미국 증시 분석: 나스닥 하락 전망과 고배당주 투자 전략</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.7;
+            color: #333;
+            background-color: #f8f9fa;
+            padding: 16px;
+            max-width: 100%;
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #1a237e 0%, #283593 100%);
+            color: white;
+            padding: 24px 20px;
+        }
+        
+        .header h1 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        
+        .header .meta {
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 20px;
+        }
+        
+        h2 {
+            font-size: 1.2rem;
+            color: #1a237e;
+            margin: 28px 0 16px 0;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #e8eaf6;
+        }
+        
+        h3 {
+            font-size: 1.05rem;
+            color: #303f9f;
+            margin: 20px 0 12px 0;
+        }
+        
+        p {
+            margin-bottom: 14px;
+            text-align: justify;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #e8eaf6 0%, #c5cae9 100%);
+            border-left: 4px solid #3f51b5;
+            padding: 16px;
+            margin: 16px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .warning-box {
+            background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+            border-left: 4px solid #ff9800;
+            padding: 16px;
+            margin: 16px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .danger-box {
+            background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
+            border-left: 4px solid #f44336;
+            padding: 16px;
+            margin: 16px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .success-box {
+            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+            border-left: 4px solid #4caf50;
+            padding: 16px;
+            margin: 16px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .key-point {
+            font-weight: 600;
+            color: #1a237e;
+        }
+        
+        .number {
+            font-weight: 700;
+            color: #d32f2f;
+        }
+        
+        .positive {
+            color: #2e7d32;
+            font-weight: 600;
+        }
+        
+        .negative {
+            color: #c62828;
+            font-weight: 600;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+            font-size: 0.9rem;
+        }
+        
+        th, td {
+            padding: 12px 10px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        th {
+            background: #3f51b5;
+            color: white;
+            font-weight: 600;
+        }
+        
+        tr:nth-child(even) {
+            background: #f5f5f5;
+        }
+        
+        .chart-container {
+            position: relative;
+            margin: 20px 0;
+            padding: 16px;
+            background: #fafafa;
+            border-radius: 8px;
+        }
+        
+        .chart-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #424242;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+        
+        .summary-card {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin: 16px 0;
+        }
+        
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px;
+            background: #fafafa;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .stat-value {
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+        
+        .stat-value.down {
+            color: #c62828;
+        }
+        
+        .stat-value.up {
+            color: #2e7d32;
+        }
+        
+        .stat-value.neutral {
+            color: #1565c0;
+        }
+        
+        .timeline {
+            position: relative;
+            padding-left: 24px;
+            margin: 16px 0;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 6px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #c5cae9;
+        }
+        
+        .timeline-item {
+            position: relative;
+            margin-bottom: 16px;
+            padding: 12px;
+            background: #f5f5f5;
+            border-radius: 8px;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -22px;
+            top: 16px;
+            width: 10px;
+            height: 10px;
+            background: #3f51b5;
+            border-radius: 50%;
+        }
+        
+        .timeline-date {
+            font-size: 0.8rem;
+            color: #3f51b5;
+            font-weight: 600;
+        }
+        
+        .footer {
+            background: #f5f5f5;
+            padding: 16px 20px;
+            font-size: 0.8rem;
+            color: #666;
+            text-align: center;
+        }
+        
+        .divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #c5cae9, transparent);
+            margin: 24px 0;
+        }
+        
+        ul {
+            margin: 12px 0;
+            padding-left: 20px;
+        }
+        
+        li {
+            margin-bottom: 8px;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin: 16px 0;
+        }
+
+        .comparison-item {
+            padding: 14px;
+            background: #fafafa;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid #e0e0e0;
+        }
+
+        .comparison-item .label {
+            font-size: 0.8rem;
+            color: #666;
+            margin-bottom: 4px;
+        }
+
+        .comparison-item .value {
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-right: 6px;
+            margin-bottom: 6px;
+        }
+
+        .tag-red { background: #ffcdd2; color: #c62828; }
+        .tag-green { background: #c8e6c9; color: #2e7d32; }
+        .tag-blue { background: #bbdefb; color: #1565c0; }
+        .tag-orange { background: #ffe0b2; color: #ef6c00; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📊 나스닥 하락 전망과 고배당주 투자 전략</h1>
+            <div class="meta">2026년 1월 20일 | 미국 증시 휴장(MLK Day)</div>
+        </div>
+        
+        <div class="content">
+            <!-- 핵심 요약 -->
+            <h2>📌 핵심 요약</h2>
+            
+            <div class="summary-card">
+                <div class="stat-item">
+                    <span class="stat-label">예상 나스닥 하락폭</span>
+                    <span class="stat-value down">-1.4%</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">10년물 국채 금리</span>
+                    <span class="stat-value up">4.2%+ 돌파</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">소개된 고배당주 수익률</span>
+                    <span class="stat-value neutral">연 13~14%</span>
+                </div>
+            </div>
+
+            <div class="highlight-box">
+                <strong>🎯 핵심 메시지:</strong> 트럼프 행정부의 유럽 관세 10% 추가 부과 발언으로 인플레이션 우려 재점화. 연준 금리 인하 기대감 약화로 기술주 중심 하락 예상.
+            </div>
+
+            <!-- 시장 하락 원인 분석 -->
+            <h2>📉 내일(1/21) 하락장 예상 원인</h2>
+            
+            <h3>1. 트럼프 관세 정책 확대</h3>
+            <p><span class="key-point">유럽 국가들에 대한 추가 관세 10% 부과</span> 발언이 시장에 충격을 주고 있습니다. 특히 NATO 방위비 분담과 연계하여 미군 주둔 국가들에 대한 관세 강화를 시사했습니다.</p>
+
+            <div class="warning-box">
+                <strong>⚠️ 관세와 인플레이션의 관계:</strong><br>
+                지난 1년간의 분석 결과, 전문가들은 <span class="negative">관세 부과가 미국 인플레이션 하락을 저해하는 주요 원인</span>이라는 결론을 내렸습니다.
+            </div>
+
+            <div class="chart-container">
+                <div class="chart-title">관세 정책이 경제에 미치는 영향 흐름</div>
+                <canvas id="flowChart" height="200"></canvas>
+            </div>
+
+            <h3>2. 연준 금리 정책 전망 변화</h3>
+            
+            <table>
+                <tr>
+                    <th>FOMC 일정</th>
+                    <th>금리 인하 전망</th>
+                </tr>
+                <tr>
+                    <td>1월 28-29일</td>
+                    <td><span class="negative">동결 예상</span></td>
+                </tr>
+                <tr>
+                    <td>3~4월</td>
+                    <td>0.25%p 인하 가능성 (불확실)</td>
+                </tr>
+            </table>
+
+            <p>관세 정책이 지속될 경우, 연간 <span class="number">0.25%p</span> 수준의 금리 인하도 보장되지 않는 상황입니다.</p>
+
+            <h3>3. 미중 갈등과 국채 시장</h3>
+
+            <div class="danger-box">
+                <strong>🚨 주목할 점:</strong><br>
+                중국이 미국 국채를 지속 매도 중이며, <span class="negative">지난 20년간 최저 수준</span>의 미국채 보유량을 기록하고 있습니다.
+            </div>
+
+            <div class="chart-container">
+                <div class="chart-title">10년물 미국채 금리 추이</div>
+                <canvas id="yieldChart" height="200"></canvas>
+            </div>
+
+            <p><span class="key-point">10년물 국채 금리가 4.2%를 돌파</span>하면서 일드커브가 가팔라지고 있습니다. 이는 중앙은행의 금리 인하를 더욱 어렵게 만드는 요인입니다.</p>
+
+            <div class="highlight-box">
+                <strong>💡 경제학적 해석 (볼런 이펙트):</strong><br>
+                경제 정책은 풍선 효과(Balloon Effect)가 있어 한 쪽을 누르면 다른 쪽이 튀어나옵니다. 관세를 올리면서 동시에 인플레이션을 잡는 것은 불가능합니다.
+            </div>
+
+            <!-- 미국 국가 부채 -->
+            <h3>4. 미국 국가 부채 우려</h3>
+            
+            <div class="comparison-grid">
+                <div class="comparison-item">
+                    <div class="label">GDP 대비 부채 비율</div>
+                    <div class="value negative">122~130%</div>
+                </div>
+                <div class="comparison-item">
+                    <div class="label">국가 부채 규모</div>
+                    <div class="value">~$38조</div>
+                </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <!-- 피터 틸의 투자 움직임 -->
+            <h2>🔄 피터 틸(Peter Thiel)의 포트폴리오 변화</h2>
+            
+            <p>페이팔 공동창업자이자 유명 투자자 피터 틸의 최근 투자 행보가 주목받고 있습니다.</p>
+
+            <div class="chart-container">
+                <div class="chart-title">피터 틸 포트폴리오 변화</div>
+                <canvas id="thielChart" height="220"></canvas>
+            </div>
+
+            <table>
+                <tr>
+                    <th>종목</th>
+                    <th>액션</th>
+                    <th>시점</th>
+                </tr>
+                <tr>
+                    <td>엔비디아(NVDA)</td>
+                    <td><span class="negative">전량 매도</span></td>
+                    <td>2025년 10월</td>
+                </tr>
+                <tr>
+                    <td>애플(AAPL)</td>
+                    <td><span class="positive">신규 매수</span></td>
+                    <td>최근</td>
+                </tr>
+                <tr>
+                    <td>마이크로소프트(MSFT)</td>
+                    <td><span class="positive">신규 매수</span></td>
+                    <td>최근</td>
+                </tr>
+            </table>
+
+            <div class="warning-box">
+                <strong>⚠️ 영상 발화자의 견해:</strong><br>
+                피터 틸의 기존 투자 철학(성장주 중심)과 맞지 않는 움직임이라고 분석합니다. 특히 마이크로소프트 매수에 대해서는 <span class="negative">"대찬성하지 않는다"</span>는 입장입니다.
+            </div>
+
+            <h3>애플 vs 마이크로소프트 비교</h3>
+
+            <div class="chart-container">
+                <div class="chart-title">펀더멘털 비교</div>
+                <canvas id="comparisonChart" height="220"></canvas>
+            </div>
+
+            <table>
+                <tr>
+                    <th>항목</th>
+                    <th>애플(AAPL)</th>
+                    <th>마이크로소프트(MSFT)</th>
+                </tr>
+                <tr>
+                    <td>캐시플로</td>
+                    <td><span class="positive">우수</span></td>
+                    <td>양호</td>
+                </tr>
+                <tr>
+                    <td>매출 성장성</td>
+                    <td>보통</td>
+                    <td><span class="positive">2배 이상 높음</span></td>
+                </tr>
+                <tr>
+                    <td>주가 유지 전략</td>
+                    <td>자사주 매입</td>
+                    <td>AI 투자</td>
+                </tr>
+                <tr>
+                    <td>채권 발행</td>
+                    <td>적음</td>
+                    <td>+15% (AI 데이터센터)</td>
+                </tr>
+            </table>
+
+            <div class="highlight-box">
+                <strong>💡 투자 교훈:</strong><br>
+                유명 투자자가 특정 종목을 샀다고 무조건 따라 매수하는 것은 바람직하지 않습니다. <span class="key-point">자신의 투자 목적과 성향에 맞춰</span> 의사결정해야 합니다.
+            </div>
+
+            <div class="divider"></div>
+
+            <!-- 엔비디아 분석 -->
+            <h2>🎮 엔비디아(NVDA) 현황</h2>
+
+            <div class="summary-card">
+                <div class="stat-item">
+                    <span class="stat-label">매도 권고 가격대</span>
+                    <span class="stat-value">$188~192</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">박스권 지속 기간</span>
+                    <span class="stat-value neutral">3개월+</span>
+                </div>
+            </div>
+
+            <p>영상 발화자는 2025년 10월경 $200 도달 전 엔비디아 비중 축소를 권고했으며, 이후 3개월 이상 박스권 횡보가 지속되고 있습니다.</p>
+
+            <div class="divider"></div>
+
+            <!-- SpaceX IPO -->
+            <h2>🚀 SpaceX IPO 전망 (2026년)</h2>
+
+            <div class="success-box">
+                <strong>📈 IPO 예상 시나리오:</strong><br>
+                • 현재 프리마켓 가격: <span class="number">$320</span>대<br>
+                • IPO 예상 가격: <span class="number">$500~800</span><br>
+                • 예상 시가총액: <span class="number">$1~1.5조</span> (트릴리언 달러)
+            </div>
+
+            <div class="chart-container">
+                <div class="chart-title">SpaceX 가치 변화 추정</div>
+                <canvas id="spacexChart" height="200"></canvas>
+            </div>
+
+            <h3>IPO 방식 검토 중</h3>
+            <ul>
+                <li><strong>백도어 리스팅(Backdoor Listing):</strong> SPAC 등을 통한 우회상장</li>
+                <li><strong>전통적 IPO:</strong> 모건스탠리, JP모건 등 IB 주관</li>
+            </ul>
+
+            <div class="warning-box">
+                <strong>⚠️ 시장 영향:</strong><br>
+                SpaceX 상장 시 <span class="key-point">M7(Magnificent 7)의 리더십이 재편</span>될 가능성이 있습니다. 기존 빅테크의 시장 지배력에 변화가 예상됩니다.
+            </div>
+
+            <div class="divider"></div>
+
+            <!-- 2026 IPO 시장 -->
+            <h2>📋 2026년 IPO 시장 전망</h2>
+
+            <p>올해 IPO 시장이 매우 활발할 것으로 예상됩니다.</p>
+
+            <div class="comparison-grid">
+                <div class="comparison-item">
+                    <div class="label">주목 섹터</div>
+                    <div class="value" style="font-size: 0.9rem;">AI · 퀀텀 · 배터리 · 우주항공</div>
+                </div>
+                <div class="comparison-item">
+                    <div class="label">주요 IPO 후보</div>
+                    <div class="value" style="font-size: 0.9rem;">SpaceX · Stripe · PsiQuantum</div>
+                </div>
+            </div>
+
+            <table>
+                <tr>
+                    <th>기업</th>
+                    <th>섹터</th>
+                    <th>상태</th>
+                </tr>
+                <tr>
+                    <td>SpaceX</td>
+                    <td>우주항공</td>
+                    <td><span class="tag tag-green">IPO 준비</span></td>
+                </tr>
+                <tr>
+                    <td>Stripe</td>
+                    <td>핀테크</td>
+                    <td><span class="tag tag-blue">IPO 검토</span></td>
+                </tr>
+                <tr>
+                    <td>PsiQuantum</td>
+                    <td>퀀텀 컴퓨팅</td>
+                    <td><span class="tag tag-orange">IPO 예정</span></td>
+                </tr>
+            </table>
+
+            <div class="divider"></div>
+
+            <!-- 섹터 로테이션 -->
+            <h2>🔄 섹터 로테이션 진행 중</h2>
+
+            <div class="danger-box">
+                <strong>🚨 경고:</strong><br>
+                2025년 3~4분기부터 <span class="key-point">기존 인기 섹터에서 자금 유출</span>, 새로운 섹터로 자금 유입이 진행 중입니다. 익숙한 종목만 고집하면 손실 위험이 있습니다.
+            </div>
+
+            <p>변동성이 심한 장에서는 남들이 투자하는 종목을 맹목적으로 따라가면 불안감과 후회가 따를 수 있습니다.</p>
+
+            <div class="divider"></div>
+
+            <!-- 고배당주 전략 -->
+            <h2>💰 연 13~14% 고배당주 전략</h2>
+
+            <div class="success-box">
+                <strong>✅ 소개된 고배당주 특징:</strong><br>
+                • 연간 배당 수익률: <span class="number">13.4~14%</span><br>
+                • 주가 특성: $48~51 박스권 횡보<br>
+                • 배당 지급: 월 배당
+            </div>
+
+            <h3>투자 수익 시뮬레이션</h3>
+
+            <div class="chart-container">
+                <div class="chart-title">투자금별 월 배당 수익 (세전, 13% 기준)</div>
+                <canvas id="dividendChart" height="200"></canvas>
+            </div>
+
+            <table>
+                <tr>
+                    <th>투자금</th>
+                    <th>연간 배당</th>
+                    <th>월 배당 (세전)</th>
+                </tr>
+                <tr>
+                    <td>1억원</td>
+                    <td>1,300만원</td>
+                    <td><span class="positive">~108만원</span></td>
+                </tr>
+                <tr>
+                    <td>10억원</td>
+                    <td>1.3억원</td>
+                    <td><span class="positive">~1,080만원</span></td>
+                </tr>
+                <tr>
+                    <td>$100만</td>
+                    <td>$13만</td>
+                    <td><span class="positive">~$10,800</span></td>
+                </tr>
+            </table>
+
+            <h3>고배당주 적합 투자자</h3>
+
+            <div class="highlight-box">
+                <span class="tag tag-green">✓ 적합</span>
+                <ul>
+                    <li>은퇴자 또는 은퇴 준비 중인 분</li>
+                    <li>매달 현금 흐름이 필요한 분</li>
+                    <li>보수적 투자 성향</li>
+                    <li>고변동성 종목 비중이 높아 리스크 헷지 필요한 분</li>
+                    <li>과거 투자 손실로 안정적 수익 원하는 분</li>
+                </ul>
+            </div>
+
+            <div class="danger-box">
+                <span class="tag tag-red">✗ 부적합</span>
+                <ul>
+                    <li>젊은 투자자 (성장주 중심 권장)</li>
+                    <li>단기 시세차익 목적</li>
+                    <li>40대 이하로 공격적 투자 가능한 분</li>
+                </ul>
+            </div>
+
+            <h3>고배당주 투자 시 유의사항</h3>
+
+            <div class="warning-box">
+                <strong>⚠️ 주의:</strong><br>
+                1. <span class="key-point">주가 상승은 기대하기 어려움</span> - 박스권 횡보 특성<br>
+                2. <strong>배당 소득세:</strong> 미국 원천징수 15% + 국내 추가 과세 가능<br>
+                3. <strong>분산 필수:</strong> 배당주 1~2개만 사면 안 됨<br>
+                4. <strong>상관관계 고려:</strong> 베타/알파 분석하여 역상관 종목 조합 필요
+            </div>
+
+            <div class="divider"></div>
+
+            <!-- 투자 시사점 -->
+            <h2>📊 종합 투자 시사점</h2>
+
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-date">단기 (1월 21일~)</div>
+                    <p>나스닥 <span class="negative">-1.4%</span> 하락 예상. 관세 뉴스에 민감한 장세 지속.</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">중기 (1~3월)</div>
+                    <p>FOMC 결과에 따라 방향성 결정. 10년물 금리 4.2%+ 고착 시 기술주 부진 지속 가능.</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">2026년 연간</div>
+                    <p>IPO 시장 활성화. SpaceX 등 대형 IPO로 시장 구조 변화 예상.</p>
+                </div>
+            </div>
+
+            <h3>핵심 체크리스트</h3>
+
+            <table>
+                <tr>
+                    <th>항목</th>
+                    <th>체크 포인트</th>
+                </tr>
+                <tr>
+                    <td>관세 정책</td>
+                    <td>유럽 관세 10% 추가 → 인플레 압력 ↑</td>
+                </tr>
+                <tr>
+                    <td>금리 전망</td>
+                    <td>2026년 금리 인하 불확실성 증가</td>
+                </tr>
+                <tr>
+                    <td>국채 시장</td>
+                    <td>중국 매도세 → 10년물 4.2%+ 상승</td>
+                </tr>
+                <tr>
+                    <td>섹터 전략</td>
+                    <td>로테이션 진행 중, 새 섹터 주목</td>
+                </tr>
+                <tr>
+                    <td>배당 전략</td>
+                    <td>은퇴자/보수적 투자자에 적합</td>
+                </tr>
+            </table>
+
+            <div class="highlight-box">
+                <strong>🎯 결론:</strong><br>
+                트럼프 관세 정책으로 인플레이션 우려가 재점화되면서 단기적으로 기술주 중심 조정이 예상됩니다. 투자자들은 <span class="key-point">섹터 로테이션에 주목</span>하고, 본인의 투자 목적에 맞는 포트폴리오 재조정을 고려해야 합니다. 고배당주는 은퇴자나 보수적 투자자에게 적합한 옵션이 될 수 있습니다.
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>본 문서는 유튜브 영상 내용을 정리한 것으로, 투자 조언이 아닙니다.<br>투자 결정은 본인의 판단과 책임 하에 이루어져야 합니다.</p>
+            <p style="margin-top: 8px;">원본: NOVA Real Invest | 분석일: 2026년 1월 20일</p>
+        </div>
+    </div>
+
+    <script>
+        // 관세 영향 흐름도 (수평 막대 차트로 시각화)
+        const flowCtx = document.getElementById('flowChart').getContext('2d');
+        new Chart(flowCtx, {
+            type: 'bar',
+            data: {
+                labels: ['관세 부과', '수입물가 상승', '인플레이션 상승', '금리 인하 지연', '주식시장 하락'],
+                datasets: [{
+                    label: '영향 강도',
+                    data: [100, 85, 75, 65, 55],
+                    backgroundColor: [
+                        'rgba(244, 67, 54, 0.7)',
+                        'rgba(255, 152, 0, 0.7)',
+                        'rgba(255, 193, 7, 0.7)',
+                        'rgba(103, 58, 183, 0.7)',
+                        'rgba(33, 150, 243, 0.7)'
+                    ],
+                    borderColor: [
+                        'rgb(244, 67, 54)',
+                        'rgb(255, 152, 0)',
+                        'rgb(255, 193, 7)',
+                        'rgb(103, 58, 183)',
+                        'rgb(33, 150, 243)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    x: {
+                        display: false,
+                        max: 120
+                    }
+                }
+            }
+        });
+
+        // 10년물 금리 차트
+        const yieldCtx = document.getElementById('yieldChart').getContext('2d');
+        new Chart(yieldCtx, {
+            type: 'line',
+            data: {
+                labels: ['2024 Q3', '2024 Q4', '2025 Q1', '2025 Q2', '2025 Q3', '2025 Q4', '2026 Jan'],
+                datasets: [{
+                    label: '10년물 국채 금리 (%)',
+                    data: [3.8, 4.0, 4.1, 3.9, 4.0, 4.15, 4.22],
+                    borderColor: 'rgb(198, 40, 40)',
+                    backgroundColor: 'rgba(198, 40, 40, 0.1)',
+                    fill: true,
+                    tension: 0.3
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    y: {
+                        min: 3.5,
+                        max: 4.5,
+                        ticks: {
+                            callback: function(value) {
+                                return value + '%';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // 피터 틸 포트폴리오 차트
+        const thielCtx = document.getElementById('thielChart').getContext('2d');
+        new Chart(thielCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['엔비디아 (매도)', '애플 (매수)', '마이크로소프트 (매수)', '기타'],
+                datasets: [{
+                    data: [0, 35, 30, 35],
+                    backgroundColor: [
+                        'rgba(158, 158, 158, 0.5)',
+                        'rgba(76, 175, 80, 0.7)',
+                        'rgba(33, 150, 243, 0.7)',
+                        'rgba(156, 39, 176, 0.7)'
+                    ],
+                    borderColor: [
+                        'rgb(158, 158, 158)',
+                        'rgb(76, 175, 80)',
+                        'rgb(33, 150, 243)',
+                        'rgb(156, 39, 176)'
+                    ],
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            boxWidth: 12,
+                            padding: 10
+                        }
+                    }
+                }
+            }
+        });
+
+        // 애플 vs MS 비교 차트
+        const compCtx = document.getElementById('comparisonChart').getContext('2d');
+        new Chart(compCtx, {
+            type: 'radar',
+            data: {
+                labels: ['캐시플로', '매출 성장성', '이익률', 'AI 투자', '자사주 매입'],
+                datasets: [{
+                    label: '애플',
+                    data: [95, 50, 75, 60, 90],
+                    borderColor: 'rgb(76, 175, 80)',
+                    backgroundColor: 'rgba(76, 175, 80, 0.2)',
+                }, {
+                    label: '마이크로소프트',
+                    data: [75, 90, 80, 95, 60],
+                    borderColor: 'rgb(33, 150, 243)',
+                    backgroundColor: 'rgba(33, 150, 243, 0.2)',
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    r: {
+                        beginAtZero: true,
+                        max: 100
+                    }
+                },
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }
+        });
+
+        // SpaceX 가치 차트
+        const spacexCtx = document.getElementById('spacexChart').getContext('2d');
+        new Chart(spacexCtx, {
+            type: 'bar',
+            data: {
+                labels: ['초기 투자', '프리마켓', 'IPO 예상 (하단)', 'IPO 예상 (상단)'],
+                datasets: [{
+                    label: '주당 가격 ($)',
+                    data: [30, 320, 500, 800],
+                    backgroundColor: [
+                        'rgba(158, 158, 158, 0.7)',
+                        'rgba(255, 193, 7, 0.7)',
+                        'rgba(76, 175, 80, 0.7)',
+                        'rgba(46, 125, 50, 0.7)'
+                    ],
+                    borderColor: [
+                        'rgb(158, 158, 158)',
+                        'rgb(255, 193, 7)',
+                        'rgb(76, 175, 80)',
+                        'rgb(46, 125, 50)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                return '$' + value;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // 배당 수익 차트
+        const divCtx = document.getElementById('dividendChart').getContext('2d');
+        new Chart(divCtx, {
+            type: 'bar',
+            data: {
+                labels: ['1억원', '5억원', '10억원'],
+                datasets: [{
+                    label: '월 배당 수익 (만원)',
+                    data: [108, 540, 1080],
+                    backgroundColor: 'rgba(76, 175, 80, 0.7)',
+                    borderColor: 'rgb(76, 175, 80)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                return value + '만원';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
