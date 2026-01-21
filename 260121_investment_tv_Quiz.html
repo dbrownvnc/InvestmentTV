@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>시험문제: 1월 20일 시장 포커스 - 그린랜드 갈등과 투자 기회</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans KR', sans-serif;
+            line-height: 1.7;
+            color: #1a1a1a;
+            background: #f8f9fa;
+            padding: 16px;
+            max-width: 100%;
+        }
+        .container {
+            max-width: 640px;
+            margin: 0 auto;
+        }
+        header {
+            background: linear-gradient(135deg, #4a148c 0%, #7b1fa2 100%);
+            color: white;
+            padding: 24px 20px;
+            border-radius: 16px;
+            margin-bottom: 20px;
+        }
+        header h1 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        header .meta {
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+        .section {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        .section-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #4a148c;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 3px solid #e1bee7;
+            text-align: center;
+        }
+        .question-box {
+            background: #fafafa;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 20px;
+            border-left: 4px solid #7b1fa2;
+        }
+        .question-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+        .question-number {
+            background: #7b1fa2;
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+        .question-meta {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .difficulty {
+            font-size: 0.8rem;
+            padding: 2px 8px;
+            border-radius: 12px;
+        }
+        .difficulty.easy {
+            background: #c8e6c9;
+            color: #2e7d32;
+        }
+        .difficulty.medium {
+            background: #fff3e0;
+            color: #e65100;
+        }
+        .difficulty.hard {
+            background: #ffcdd2;
+            color: #c62828;
+        }
+        .question-type {
+            font-size: 0.8rem;
+            padding: 2px 8px;
+            border-radius: 12px;
+            background: #e1bee7;
+            color: #6a1b9a;
+        }
+        .question-text {
+            font-size: 0.95rem;
+            color: #333;
+            margin-bottom: 12px;
+            font-weight: 500;
+        }
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .option {
+            background: white;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            border: 1px solid #e0e0e0;
+        }
+        .blank-line {
+            border-bottom: 2px dashed #9e9e9e;
+            display: inline-block;
+            min-width: 80px;
+            margin: 0 4px;
+        }
+        .divider {
+            height: 3px;
+            background: linear-gradient(90deg, #e1bee7, #f3e5f5, #e1bee7);
+            margin: 30px 0;
+            border-radius: 2px;
+        }
+        .answer-box {
+            background: #f3e5f5;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+            border-left: 4px solid #4a148c;
+        }
+        .answer-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        .answer-number {
+            background: #4a148c;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.85rem;
+            flex-shrink: 0;
+        }
+        .answer-label {
+            font-weight: 700;
+            color: #4a148c;
+            font-size: 1rem;
+        }
+        .answer-text {
+            background: white;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #2e7d32;
+            margin-bottom: 10px;
+        }
+        .explanation {
+            font-size: 0.9rem;
+            color: #555;
+            line-height: 1.6;
+        }
+        .explanation strong {
+            color: #4a148c;
+        }
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #888;
+            font-size: 0.8rem;
+        }
+        .print-break {
+            page-break-before: always;
+        }
+        @media print {
+            .section {
+                break-inside: avoid;
+            }
+            .question-box, .answer-box {
+                break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📝 시험문제</h1>
+            <p style="font-size: 1rem; margin: 8px 0;">1월 20일 시장 포커스: 그린랜드 갈등과 투자 기회</p>
+            <div class="meta">총 10문제 | 난이도: 쉬움 30% / 보통 50% / 어려움 20%</div>
+        </header>
+
+        <!-- 문제지 섹션 -->
+        <div class="section">
+            <div class="section-title">━━━ 📋 시험문제 (총 10문제) ━━━</div>
+
+            <!-- 문제 1 -->
+            <div class="question-box">
+                <div class="question-header">
+                    <div class="question-number">1</div>
+                    <div class="question-meta">
+                        <span class="difficulty easy">⭐ 쉬움</span>
+                        <span class="question-type">객관식</span>
+                    </div>
+                </div>
+                <div class="question-text">
+                    1월 20일 미국 증시에서 가장 큰 하락폭을 기록한 지수는 무엇이며, 그 하락률은?
+                </div>
+                <div class="options">
+                    <div class="option">① 다우존스 -1.76%</div>
+                    <div class="option">② S&P 500 -2.0%</div>
+                    <div class="option">③ 나스닥 -2.39%</div>
+                    <div class="option">④ Russell 2000 -1.5%</div>
+                </div>
+            </div>
+
+            <!-- 문제 2 -->
+            <div class="question-box">
+                <div class="question-header">
+                    <div class="question-number">2</div>
+                    <div class="question-meta">
+                        <span class="difficulty easy">⭐ 쉬움</span>
+                        <span class="question-type">OX 문제</span>
+                    </div>
+                </div>
+                <div class="question-text">
+                    10년 국채 금리가 4.5%를 3개월 이상 지속하면 미국 경제에 직접적인 타격이 발생할 수 있다. (O / X)
+                </div>
+            </div>
+
+            <!-- 문제 3 -->
+            <div class="question-box">
+                <div class="question-header">
+                    <div class="question-number">3</div>
+                    <div class="question-meta">
+                        <span class="difficulty medium">⭐⭐ 보통</span>
+                        <span class="question-type">단답형</span>
+                    </div>
+                </div>
+                <div class="question-text">
+                    영상에서 트럼프 행정부의 가장 큰 리스크로 지목된 것은 무엇의 독립성 훼손인가?
+                </div>
+            </div>
+
+            <!-- 문제 4 -->
+            <div class="question-box">
+                <div class="question-header">
+                    <div class="question-number">4</div>
+                    <div class="question-meta">
+                        <span class="difficulty medium">⭐⭐ 보통</span>
+                        <span class="question-type">객관식</span>
+                    </div>
+                </div>
+                <div class="question-text">
+                    Russell 2000의 1월 성과로 올바른 것은?
+                </div>
+                <div class="options">
+                    <div class="option">① 5세션 연속 상승, 올해 +5.2%</div>
+                    <div class="option">② 10세션 연속 상승, 올해 +7.4%</div>
+                    <div class="option">③ 8세션 연속 상승, 올해 +6.8%</div>
+                    <div class="option">④ 12세션 연속 상승, 올해 +8.1%</div>
+                </div>
+            </div>
+
+            <!-- 문제 5 -->
+            <div class="question-box">
+                <div class="question-header">
+                    <div class="question-number">5</div>
+                    <div class="question-meta">
+                        <span class="difficulty medium">⭐⭐ 보통</span>
+                        <span class="question-type">빈칸채우기</span>
+                    </div>
+                </div>
+                <div class="question-text">
+                    현재 투자자들은 Mag7(대형 기술주)의 비중을 줄이고, <span class="blank-line"></span>, <span class="blank-line"></span> 등의 섹터로 자금을 이동시키는 섹터 로테이션이 진행 중이다.
+                </div>
+            </div>
+
+            <!-- 문제 6 -->
+            <div class="question-box">
+                <div class="question-header">
+                    <div class="question-number">6</div>
+                    <div class="question-meta">
+                        <span class="difficulty easy">⭐ 쉬움</span>
+                        <span class="question-type">객관식</span>
+                    </div>
+                </div>
+                <div class="question-text">
+                    1월 28일 FOMC 회의에서 예상되는 금리 결정은?
+                </div>
+                <div class="options">
+                    <div class="option">① 금리 인상 (0.25%p)</div>
+                    <div class="option">② 금리 인하 (0.25%p)</div>
+                    <div class="option">③ 금리 동결</div>
+                    <div class="option">④ 금리 인하 (0.5%p)</div>
+                </div>
+            </div>
+
+            <!-- 문제 7 -->
+            <div class="question-box">
+                <div class="question-header">
+                    <div class="question-number">7</div>
+                    <div class="question-meta">
+                        <span class="difficulty medium">⭐⭐ 보통</span>
+                        <span class="question-type">단답형</span>
+                    </div>
+                </div>
+                <div class="question-text">
+                    덴마크 국민연금(아카데미카 펜션)이 미국 국채를 100% 매각한 금액은 얼마인가? (단위 포함)
+                </div>
+            </div>
+
+            <!-- 문제 8 -->
+            <div class="question-box">
+                <div class="question-header">
+                    <div class="question-number">8</div>
+                    <div class="question-meta">
+                        <span class="difficulty hard">⭐⭐⭐ 어려움</span>
+                        <span class="question-type">서술형</span>
+                    </div>
+                </div>
+                <div class="question-text">
+                    영상에서 언급된 '10년 국채 금리 상승이 주가 하락을 야기하는 메커니즘'과 현재 상황의 특수성(그린랜드 갈등)을 연결하여 설명하시오. (3~4문장)
+                </div>
+            </div>
+
+            <!-- 문제 9 -->
+            <div class="question-box">
+                <div class="question-header">
+                    <div class="question-number">9</div>
+                    <div class="question-meta">
+                        <span class="difficulty medium">⭐⭐ 보통</span>
+                        <span class="question-type">객관식</span>
+                    </div>
+                </div>
+                <div class="question-text">
+                    Oracle 주가가 약 6% 폭락한 주된 이유는?
+                </div>
+                <div class="options">
+                    <div class="option">① 분기 실적 미달</div>
+                    <div class="option">② CEO 사임 발표</div>
+                    <div class="option">③ 회사채 발행 규모 은폐 관련 집단소송</div>
+                    <div class="option">④ AI 사업 철수 발표</div>
+                </div>
+            </div>
+
+            <!-- 문제 10 -->
+            <div class="question-box">
+                <div class="question-header">
+                    <div class="question-number">10</div>
+                    <div class="question-meta">
+                        <span class="difficulty hard">⭐⭐⭐ 어려움</span>
+                        <span class="question-type">서술형</span>
+                    </div>
+                </div>
+                <div class="question-text">
+                    영상 분석가가 "트럼프발 폭락은 노이즈이며 적극적으로 대처해야 한다"고 주장하는 근거 3가지를 제시하시오.
+                </div>
+            </div>
+        </div>
+
+        <div class="divider print-break"></div>
+
+        <!-- 정답지 섹션 -->
+        <div class="section">
+            <div class="section-title">━━━ 📝 정답 및 해설 ━━━</div>
+
+            <!-- 정답 1 -->
+            <div class="answer-box">
+                <div class="answer-header">
+                    <div class="answer-number">1</div>
+                    <div class="answer-label">정답</div>
+                </div>
+                <div class="answer-text">③ 나스닥 -2.39%</div>
+                <div class="explanation">
+                    <strong>해설:</strong> 1월 20일 미국 증시에서 나스닥이 -2.39%로 가장 큰 하락폭을 기록했습니다. 다우존스는 -1.76%, S&P 500은 -2.0%를 기록했으며, Russell 2000은 오히려 상승세를 유지했습니다.
+                </div>
+            </div>
+
+            <!-- 정답 2 -->
+            <div class="answer-box">
+                <div class="answer-header">
+                    <div class="answer-number">2</div>
+                    <div class="answer-label">정답</div>
+                </div>
+                <div class="answer-text">O (맞다)</div>
+                <div class="explanation">
+                    <strong>해설:</strong> 영상에서 10년 국채 금리 4.3%는 마지노선, 4.5%는 위험 수준으로 설명했습니다. 특히 4.5%가 3개월 이상 지속될 경우 미국 경제에 직접적인 타격이 발생한다고 언급했습니다.
+                </div>
+            </div>
+
+            <!-- 정답 3 -->
+            <div class="answer-box">
+                <div class="answer-header">
+                    <div class="answer-number">3</div>
+                    <div class="answer-label">정답</div>
+                </div>
+                <div class="answer-text">연준 (연방준비제도, Federal Reserve)</div>
+                <div class="explanation">
+                    <strong>해설:</strong> 영상에서 트럼프가 연준의 독립성을 훼손하려는 시도가 가장 큰 리스크라고 강조했습니다. "연준의 독립성을 훼손하면 팔고 나가야 한다"고까지 표현하며 통화정책의 정치 도구화를 최대 위험으로 지목했습니다.
+                </div>
+            </div>
+
+            <!-- 정답 4 -->
+            <div class="answer-box">
+                <div class="answer-header">
+                    <div class="answer-number">4</div>
+                    <div class="answer-label">정답</div>
+                </div>
+                <div class="answer-text">② 10세션 연속 상승, 올해 +7.4%</div>
+                <div class="explanation">
+                    <strong>해설:</strong> Russell 2000은 10세션 연속 상승을 기록했으며, 올해(약 2주) 동안 7.4% 상승했습니다. 이는 대형 기술주에서 중소형주로의 섹터 로테이션을 보여주는 대표적 사례입니다.
+                </div>
+            </div>
+
+            <!-- 정답 5 -->
+            <div class="answer-box">
+                <div class="answer-header">
+                    <div class="answer-number">5</div>
+                    <div class="answer-label">정답</div>
+                </div>
+                <div class="answer-text">Materials (원자재), Industrial (산업재)</div>
+                <div class="explanation">
+                    <strong>해설:</strong> 현재 섹터 로테이션에서 Materials 섹터는 +8.6%, Industrial 섹터는 +7.6%의 성과를 보이고 있습니다. Materials에는 금, 은, 동 등이 포함되며, 스몰캡과 미드캡도 자금 유입이 활발합니다.
+                </div>
+            </div>
+
+            <!-- 정답 6 -->
+            <div class="answer-box">
+                <div class="answer-header">
+                    <div class="answer-number">6</div>
+                    <div class="answer-label">정답</div>
+                </div>
+                <div class="answer-text">③ 금리 동결</div>
+                <div class="explanation">
+                    <strong>해설:</strong> 1월 28일 FOMC 회의에서 금리 동결이 100% 확실시되고 있습니다. 따라서 해당 회의로 인한 큰 투자 리스크는 없다고 평가됩니다.
+                </div>
+            </div>
+
+            <!-- 정답 7 -->
+            <div class="answer-box">
+                <div class="answer-header">
+                    <div class="answer-number">7</div>
+                    <div class="answer-label">정답</div>
+                </div>
+                <div class="answer-text">1억불 (1억 달러)</div>
+                <div class="explanation">
+                    <strong>해설:</strong> 덴마크 아카데미카 펜션은 미국 국채를 100% 매각했으나, 실제 금액은 1억불로 상징적인 의미가 큽니다. 이는 그린랜드 갈등에 대한 유럽의 대응 시작점으로 해석됩니다.
+                </div>
+            </div>
+
+            <!-- 정답 8 -->
+            <div class="answer-box">
+                <div class="answer-header">
+                    <div class="answer-number">8</div>
+                    <div class="answer-label">정답 예시</div>
+                </div>
+                <div class="answer-text">서술형 모범답안</div>
+                <div class="explanation">
+                    <strong>모범답안:</strong> 10년 국채 금리가 상승하면 채권의 매력도가 높아져 주식시장에서 자금이 유출되고, 기업의 자금 조달 비용이 증가하여 주가 하락을 야기합니다. 현재 상황에서는 트럼프의 그린랜드 침공 위협에 대응하여 유럽(특히 덴마크)이 미국 국채 매각으로 협박하면서 금리 상승 압력이 가중되고 있습니다. 이런 지정학적 리스크가 금융시장 불안정으로 직결되어 4.3% 마지노선에 근접한 상황입니다.<br><br>
+                    <strong>채점 기준:</strong> ① 국채 금리-주가 역관계 설명 ② 그린랜드 갈등과 국채 매각 연결 ③ 현재 금리 수준의 위험성 인식
+                </div>
+            </div>
+
+            <!-- 정답 9 -->
+            <div class="answer-box">
+                <div class="answer-header">
+                    <div class="answer-number">9</div>
+                    <div class="answer-label">정답</div>
+                </div>
+                <div class="answer-text">③ 회사채 발행 규모 은폐 관련 집단소송</div>
+                <div class="explanation">
+                    <strong>해설:</strong> Oracle은 180억 달러 회사채 발행을 발표했으나 실제로는 380억 달러를 발행한 것으로 드러나 투자자들에게 허위 정보를 제공했다는 이유로 집단소송에 휘말렸습니다. 이로 인해 주가가 약 6% 폭락했습니다.
+                </div>
+            </div>
+
+            <!-- 정답 10 -->
+            <div class="answer-box">
+                <div class="answer-header">
+                    <div class="answer-number">10</div>
+                    <div class="answer-label">정답 예시</div>
+                </div>
+                <div class="answer-text">서술형 모범답안</div>
+                <div class="explanation">
+                    <strong>모범답안:</strong><br>
+                    <strong>1) 거시경제 펀더멘털 양호:</strong> GDP 성장률 2.3~2.5% 유지, 30년 모기지 금리 6%로 안정적, FOMC 금리 동결 확실시 등 핵심 경제지표가 나쁘지 않음.<br><br>
+                    <strong>2) 트럼프의 행동 패턴 분석:</strong> "Chicken Out" 성향으로, 실제 행동보다 협박을 통한 협상이 목적. 그린랜드 침공 시 잃을 것(전 세계 동맹 관계)이 얻을 것보다 훨씬 많음.<br><br>
+                    <strong>3) 미국의 자정 효과:</strong> 의회 민주주의, 여론(정책 반대율 58~60%), 내부 견제 등 시스템적 제동장치 존재. 과도한 행동 시 탄핵 논의까지 가능.<br><br>
+                    <strong>채점 기준:</strong> 3가지 근거 중 2가지 이상 정확히 서술 시 정답 인정
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>📺 출처: NOVA Real Invest 유튜브 (1월 20일 시장포커스)</p>
+            <p>⚠️ 본 시험문제는 학습 목적으로 제작되었습니다.</p>
+            <p>작성일: 2026년 1월 21일</p>
+        </footer>
+    </div>
+</body>
+</html>

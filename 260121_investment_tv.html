@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>1월 20일 시장 포커스: 그린랜드 갈등과 투자 기회</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans KR', sans-serif;
+            line-height: 1.7;
+            color: #1a1a1a;
+            background: #f8f9fa;
+            padding: 16px;
+            max-width: 100%;
+        }
+        .container {
+            max-width: 640px;
+            margin: 0 auto;
+        }
+        header {
+            background: linear-gradient(135deg, #1a237e 0%, #283593 100%);
+            color: white;
+            padding: 24px 20px;
+            border-radius: 16px;
+            margin-bottom: 20px;
+        }
+        header h1 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        header .meta {
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+        .section {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        .section-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #1a237e;
+            margin-bottom: 16px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e8eaf6;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .section-title .icon {
+            font-size: 1.3rem;
+        }
+        h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #333;
+            margin: 16px 0 10px 0;
+        }
+        p {
+            margin-bottom: 12px;
+            font-size: 0.95rem;
+            color: #444;
+        }
+        .highlight-box {
+            background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+            border-left: 4px solid #ff9800;
+            padding: 14px 16px;
+            border-radius: 0 12px 12px 0;
+            margin: 16px 0;
+        }
+        .highlight-box.danger {
+            background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
+            border-left-color: #f44336;
+        }
+        .highlight-box.success {
+            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+            border-left-color: #4caf50;
+        }
+        .highlight-box.info {
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            border-left-color: #2196f3;
+        }
+        .highlight-box strong {
+            color: #333;
+        }
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin: 16px 0;
+        }
+        .stat-card {
+            background: #f5f5f5;
+            padding: 14px;
+            border-radius: 12px;
+            text-align: center;
+        }
+        .stat-card.negative {
+            background: linear-gradient(135deg, #ffebee 0%, #fce4ec 100%);
+        }
+        .stat-card.positive {
+            background: linear-gradient(135deg, #e8f5e9 0%, #f1f8e9 100%);
+        }
+        .stat-value {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #1a237e;
+        }
+        .stat-card.negative .stat-value {
+            color: #c62828;
+        }
+        .stat-card.positive .stat-value {
+            color: #2e7d32;
+        }
+        .stat-label {
+            font-size: 0.8rem;
+            color: #666;
+            margin-top: 4px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+            font-size: 0.9rem;
+        }
+        th, td {
+            padding: 12px 10px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        th {
+            background: #f5f5f5;
+            font-weight: 600;
+            color: #333;
+        }
+        tr:last-child td {
+            border-bottom: none;
+        }
+        .tag {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .tag.red { background: #ffcdd2; color: #c62828; }
+        .tag.green { background: #c8e6c9; color: #2e7d32; }
+        .tag.blue { background: #bbdefb; color: #1565c0; }
+        .tag.orange { background: #ffe0b2; color: #e65100; }
+        .chart-container {
+            background: #fafafa;
+            border-radius: 12px;
+            padding: 16px;
+            margin: 16px 0;
+        }
+        .bar-chart {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .bar-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .bar-label {
+            width: 90px;
+            font-size: 0.8rem;
+            color: #555;
+            flex-shrink: 0;
+        }
+        .bar-track {
+            flex: 1;
+            height: 24px;
+            background: #e0e0e0;
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+        }
+        .bar-fill {
+            height: 100%;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 8px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: white;
+            min-width: 40px;
+        }
+        .bar-fill.negative { background: linear-gradient(90deg, #ef5350, #c62828); }
+        .bar-fill.positive { background: linear-gradient(90deg, #66bb6a, #2e7d32); }
+        .bar-fill.neutral { background: linear-gradient(90deg, #42a5f5, #1565c0); }
+        .timeline {
+            position: relative;
+            padding-left: 24px;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 6px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #e0e0e0;
+        }
+        .timeline-item {
+            position: relative;
+            margin-bottom: 16px;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -22px;
+            top: 6px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #1a237e;
+        }
+        .timeline-title {
+            font-weight: 600;
+            color: #333;
+            font-size: 0.9rem;
+        }
+        .timeline-desc {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 4px;
+        }
+        .key-point {
+            display: flex;
+            gap: 12px;
+            padding: 14px;
+            background: #f5f5f5;
+            border-radius: 12px;
+            margin-bottom: 10px;
+        }
+        .key-point .number {
+            width: 28px;
+            height: 28px;
+            background: #1a237e;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.85rem;
+            flex-shrink: 0;
+        }
+        .key-point .content {
+            flex: 1;
+        }
+        .key-point .title {
+            font-weight: 600;
+            color: #333;
+            font-size: 0.9rem;
+        }
+        .key-point .desc {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 4px;
+        }
+        .gauge-container {
+            text-align: center;
+            padding: 20px;
+            background: #fafafa;
+            border-radius: 12px;
+            margin: 16px 0;
+        }
+        .gauge {
+            width: 200px;
+            height: 100px;
+            margin: 0 auto 12px;
+            position: relative;
+        }
+        .gauge-bg {
+            width: 200px;
+            height: 100px;
+            border-radius: 100px 100px 0 0;
+            background: linear-gradient(90deg, #4caf50 0%, #ffeb3b 50%, #f44336 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        .gauge-mask {
+            width: 140px;
+            height: 70px;
+            background: #fafafa;
+            border-radius: 70px 70px 0 0;
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .gauge-needle {
+            width: 4px;
+            height: 60px;
+            background: #333;
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform-origin: bottom center;
+            transform: translateX(-50%) rotate(45deg);
+            border-radius: 2px;
+        }
+        .gauge-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #e65100;
+        }
+        .gauge-label {
+            font-size: 0.85rem;
+            color: #666;
+        }
+        .risk-meter {
+            display: flex;
+            gap: 4px;
+            margin: 8px 0;
+        }
+        .risk-bar {
+            flex: 1;
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 4px;
+        }
+        .risk-bar.active.low { background: #4caf50; }
+        .risk-bar.active.mid { background: #ff9800; }
+        .risk-bar.active.high { background: #f44336; }
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #888;
+            font-size: 0.8rem;
+        }
+        .divider {
+            height: 1px;
+            background: #e0e0e0;
+            margin: 20px 0;
+        }
+        ul {
+            padding-left: 20px;
+            margin: 12px 0;
+        }
+        li {
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            color: #444;
+        }
+        .pill-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 12px 0;
+        }
+        .pill {
+            padding: 6px 14px;
+            background: #e8eaf6;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: #3949ab;
+        }
+        .comparison-chart {
+            margin: 16px 0;
+        }
+        .comparison-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        .comparison-label {
+            width: 80px;
+            font-size: 0.8rem;
+            color: #555;
+        }
+        .comparison-bars {
+            flex: 1;
+            display: flex;
+            height: 20px;
+            background: #f0f0f0;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .comparison-bar-left {
+            background: #ef5350;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 4px;
+            font-size: 0.7rem;
+            color: white;
+        }
+        .comparison-bar-right {
+            background: #66bb6a;
+            display: flex;
+            align-items: center;
+            padding-left: 4px;
+            font-size: 0.7rem;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📊 1월 20일 시장 포커스</h1>
+            <p style="font-size: 1.1rem; margin: 8px 0;">그린랜드 갈등은 투자 기회</p>
+            <div class="meta">📅 2026년 1월 21일 | 미국 증시 분석</div>
+        </header>
+
+        <!-- 핵심 요약 -->
+        <div class="section">
+            <div class="section-title">
+                <span class="icon">⚡</span>
+                핵심 요약
+            </div>
+            <div class="highlight-box">
+                <strong>오늘의 핵심 메시지:</strong><br>
+                "트럼프발 노이즈로 인한 폭락은 <strong>적극적으로 대처</strong>해야 합니다. 감정적 매도는 금물!"
+            </div>
+            
+            <div class="stat-grid">
+                <div class="stat-card negative">
+                    <div class="stat-value">-2.39%</div>
+                    <div class="stat-label">나스닥</div>
+                </div>
+                <div class="stat-card negative">
+                    <div class="stat-value">-2.0%</div>
+                    <div class="stat-label">S&P 500</div>
+                </div>
+                <div class="stat-card negative">
+                    <div class="stat-value">-1.76%</div>
+                    <div class="stat-label">다우존스</div>
+                </div>
+                <div class="stat-card positive">
+                    <div class="stat-value">+1.76%</div>
+                    <div class="stat-label">금 (Gold)</div>
+                </div>
+            </div>
+
+            <div class="highlight-box info">
+                <strong>투자 판단:</strong> 거시경제 지표가 나쁘지 않아 <strong>큰 문제 없음</strong>. 단기 노이즈에 감정적 대응 금지.
+            </div>
+        </div>
+
+        <!-- 시장 현황 -->
+        <div class="section">
+            <div class="section-title">
+                <span class="icon">📉</span>
+                1월 20일 시장 현황
+            </div>
+            
+            <h3>주요 지수 등락률</h3>
+            <div class="chart-container">
+                <div class="bar-chart">
+                    <div class="bar-item">
+                        <span class="bar-label">나스닥</span>
+                        <div class="bar-track">
+                            <div class="bar-fill negative" style="width: 80%;">-2.39%</div>
+                        </div>
+                    </div>
+                    <div class="bar-item">
+                        <span class="bar-label">S&P 500</span>
+                        <div class="bar-track">
+                            <div class="bar-fill negative" style="width: 67%;">-2.0%</div>
+                        </div>
+                    </div>
+                    <div class="bar-item">
+                        <span class="bar-label">다우존스</span>
+                        <div class="bar-track">
+                            <div class="bar-fill negative" style="width: 59%;">-1.76%</div>
+                        </div>
+                    </div>
+                    <div class="bar-item">
+                        <span class="bar-label">비트코인</span>
+                        <div class="bar-track">
+                            <div class="bar-fill negative" style="width: 52%;">-3.1%</div>
+                        </div>
+                    </div>
+                    <div class="bar-item">
+                        <span class="bar-label">금 (Gold)</span>
+                        <div class="bar-track">
+                            <div class="bar-fill positive" style="width: 59%;">+1.76%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h3>자산별 상세</h3>
+            <table>
+                <tr>
+                    <th>자산</th>
+                    <th>현재가/수준</th>
+                    <th>등락</th>
+                </tr>
+                <tr>
+                    <td>S&P 500</td>
+                    <td>6,960~6,980</td>
+                    <td><span class="tag red">-2.0%</span></td>
+                </tr>
+                <tr>
+                    <td>금 (Gold)</td>
+                    <td>$4,800 근접</td>
+                    <td><span class="tag green">+1.76%</span></td>
+                </tr>
+                <tr>
+                    <td>10년 국채</td>
+                    <td>4.28%</td>
+                    <td><span class="tag orange">위험 경계</span></td>
+                </tr>
+                <tr>
+                    <td>비트코인</td>
+                    <td>9만불 하회</td>
+                    <td><span class="tag red">-3.1%</span></td>
+                </tr>
+                <tr>
+                    <td>유가</td>
+                    <td>소폭 상승</td>
+                    <td><span class="tag blue">약보합</span></td>
+                </tr>
+            </table>
+
+            <div class="highlight-box">
+                <strong>해석:</strong> 투자 리스크가 큰 자산(IT, 암호화폐)에서 안전자산(금)으로 자금 이동 현상 뚜렷.
+            </div>
+        </div>
+
+        <!-- 10년 국채 금리 위험 -->
+        <div class="section">
+            <div class="section-title">
+                <span class="icon">🚨</span>
+                10년 국채 금리 - 핵심 리스크 지표
+            </div>
+
+            <div class="gauge-container">
+                <div class="gauge">
+                    <div class="gauge-bg">
+                        <div class="gauge-mask"></div>
+                        <div class="gauge-needle"></div>
+                    </div>
+                </div>
+                <div class="gauge-value">4.28%</div>
+                <div class="gauge-label">현재 10년 국채 금리 (4.3% 근접)</div>
+            </div>
+
+            <h3>금리 임계점 분석</h3>
+            <table>
+                <tr>
+                    <th>금리 수준</th>
+                    <th>상태</th>
+                    <th>시장 영향</th>
+                </tr>
+                <tr>
+                    <td><strong>4.3%</strong></td>
+                    <td><span class="tag orange">마지노선</span></td>
+                    <td>주가 하락 압력 시작</td>
+                </tr>
+                <tr>
+                    <td><strong>4.5%</strong></td>
+                    <td><span class="tag red">위험</span></td>
+                    <td>장기적 경제 타격 가능</td>
+                </tr>
+                <tr>
+                    <td><strong>4.5% 3개월+</strong></td>
+                    <td><span class="tag red">심각</span></td>
+                    <td>미국 경제 직접 타격</td>
+                </tr>
+            </table>
+
+            <div class="highlight-box danger">
+                <strong>⚠️ 경고:</strong> 10년 국채 금리 4.3% 이상 시 투자 리스크 급증. 현재 4.28%로 마지노선 직전 상황!
+            </div>
+
+            <h3>금리 상승 원인</h3>
+            <ul>
+                <li><strong>덴마크 국민연금(아카데미카 펜션)</strong>: 미국 국채 100% 매각 (1억불, 상징적)</li>
+                <li><strong>유럽의 협박</strong>: 그린랜드 침공 시 미국 국채 대량 매각 시사</li>
+                <li><strong>일본 리스크</strong>: 경제 악화로 국채 매도 가능성</li>
+            </ul>
+        </div>
+
+        <!-- 그린랜드 갈등 -->
+        <div class="section">
+            <div class="section-title">
+                <span class="icon">🌍</span>
+                그린랜드 갈등 분석
+            </div>
+
+            <div class="highlight-box info">
+                <strong>결론:</strong> 그린랜드 갈등은 <strong>"노이즈"</strong>로 평가. 단기적 변동성 유발하나 펀더멘털 영향 제한적.
+            </div>
+
+            <h3>갈등 구도</h3>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-title">트럼프의 그린랜드 야심</div>
+                    <div class="timeline-desc">군사작전 또는 매입을 통한 그린랜드 확보 시사</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-title">유럽의 대응</div>
+                    <div class="timeline-desc">미국 국채 매각 협박으로 맞대응</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-title">시장 반응</div>
+                    <div class="timeline-desc">국채 금리 상승 → 주가 폭락</div>
+                </div>
+            </div>
+
+            <h3>침공 시 예상 결과</h3>
+            <div class="highlight-box danger">
+                <strong>미국이 잃을 것:</strong><br>
+                러시아, 중국, 남미, 인도, 유럽, 캐나다 모두 적대 관계로 전환 → 미국 단독 vs 전 세계 구도 → <strong>10년 내 미국 패권 위협</strong>
+            </div>
+
+            <p><strong>분석가 견해:</strong> 트럼프는 "Chicken Out" 할 가능성 높음. 실제 침공보다 협박 도구로 활용 중.</p>
+        </div>
+
+        <!-- 트럼프 리스크 -->
+        <div class="section">
+            <div class="section-title">
+                <span class="icon">⚡</span>
+                트럼프 행정부 리스크
+            </div>
+
+            <h3>최대 리스크: 연준 독립성 훼손</h3>
+            <div class="highlight-box danger">
+                <strong>🔴 최우선 경계 대상:</strong><br>
+                "연준의 독립성을 훼손하면 <strong>팔고 나가야</strong> 합니다. 미국 투자 상품을 완전히 바꿔야 합니다."
+            </div>
+
+            <ul>
+                <li>연준 이사회 구성원 재편 시도 (리사 쿡 타겟)</li>
+                <li>새로운 연준의장 선임 논의</li>
+                <li>대법원까지 친 트럼프화 전략</li>
+            </ul>
+
+            <h3>정치적 리스크</h3>
+            <table>
+                <tr>
+                    <th>지표</th>
+                    <th>현재 수준</th>
+                    <th>임계점</th>
+                </tr>
+                <tr>
+                    <td>정책 반대율</td>
+                    <td>58~60%</td>
+                    <td>-</td>
+                </tr>
+                <tr>
+                    <td>레임덕 시작</td>
+                    <td>-</td>
+                    <td>60~65%</td>
+                </tr>
+                <tr>
+                    <td>탄핵 논의</td>
+                    <td>-</td>
+                    <td>65% 이상</td>
+                </tr>
+            </table>
+
+            <div class="highlight-box">
+                <strong>긍정적 요소:</strong> 미국의 자정 효과 존재. 의회 민주주의가 브레이크 역할 수행 가능.
+            </div>
+        </div>
+
+        <!-- 섹터 로테이션 -->
+        <div class="section">
+            <div class="section-title">
+                <span class="icon">🔄</span>
+                섹터 로테이션 - 스몰캡 부상
+            </div>
+
+            <div class="stat-grid">
+                <div class="stat-card positive">
+                    <div class="stat-value">+7.4%</div>
+                    <div class="stat-label">Russell 2000 (2주간)</div>
+                </div>
+                <div class="stat-card positive">
+                    <div class="stat-value">10일</div>
+                    <div class="stat-label">연속 상승</div>
+                </div>
+            </div>
+
+            <h3>섹터별 자금 이동</h3>
+            <div class="chart-container">
+                <div class="bar-chart">
+                    <div class="bar-item">
+                        <span class="bar-label">Materials</span>
+                        <div class="bar-track">
+                            <div class="bar-fill positive" style="width: 86%;">+8.6%</div>
+                        </div>
+                    </div>
+                    <div class="bar-item">
+                        <span class="bar-label">Industrial</span>
+                        <div class="bar-track">
+                            <div class="bar-fill positive" style="width: 76%;">+7.6%</div>
+                        </div>
+                    </div>
+                    <div class="bar-item">
+                        <span class="bar-label">Russell 2000</span>
+                        <div class="bar-track">
+                            <div class="bar-fill positive" style="width: 74%;">+7.4%</div>
+                        </div>
+                    </div>
+                    <div class="bar-item">
+                        <span class="bar-label">IWO (Small)</span>
+                        <div class="bar-track">
+                            <div class="bar-fill positive" style="width: 65%;">높음</div>
+                        </div>
+                    </div>
+                    <div class="bar-item">
+                        <span class="bar-label">QQQ (Tech)</span>
+                        <div class="bar-track">
+                            <div class="bar-fill negative" style="width: 30%;">낮음</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="highlight-box success">
+                <strong>역사적 패턴:</strong> 1996년 유사 현상 발생 시 이후 30일간 +3% 추가 상승. <strong>2월 중순까지 스몰캡 주목!</strong>
+            </div>
+
+            <h3>자금 이동 패턴</h3>
+            <ul>
+                <li><strong>아웃:</strong> Mag7, 대형 기술주</li>
+                <li><strong>인:</strong> Materials(금, 은, 동), Industrial, 중소형주</li>
+            </ul>
+            <p>중소형주가 그동안 밸류 트랩에 빠져 저평가 → 현재 재평가 진행 중</p>
+        </div>
+
+        <!-- 개별 종목 -->
+        <div class="section">
+            <div class="section-title">
+                <span class="icon">📈</span>
+                개별 종목 동향
+            </div>
+
+            <table>
+                <tr>
+                    <th>종목</th>
+                    <th>등락</th>
+                    <th>사유</th>
+                </tr>
+                <tr>
+                    <td>3M</td>
+                    <td><span class="tag red">-8%+</span></td>
+                    <td>가이던스 하향 (소프트웨어 40%→30%)</td>
+                </tr>
+                <tr>
+                    <td>엔비디아</td>
+                    <td><span class="tag red">-4%</span></td>
+                    <td>Mag7 축소 흐름</td>
+                </tr>
+                <tr>
+                    <td>아마존</td>
+                    <td><span class="tag red">-3.4%</span></td>
+                    <td>기술주 전반 하락</td>
+                </tr>
+                <tr>
+                    <td>넷플릭스</td>
+                    <td><span class="tag red">-4%</span></td>
+                    <td>가이던스 하락 (장마감 후)</td>
+                </tr>
+                <tr>
+                    <td>JP모건</td>
+                    <td><span class="tag red">-3%</span></td>
+                    <td>트럼프 타겟 (크레딧카드 29%→10% 압박)</td>
+                </tr>
+                <tr>
+                    <td>Oracle</td>
+                    <td><span class="tag red">-5.8%</span></td>
+                    <td>집단소송 (회사채 180억→380억불 은폐)</td>
+                </tr>
+                <tr>
+                    <td>메타</td>
+                    <td><span class="tag blue">-</span></td>
+                    <td>내재가치 $753 (VR 투자 우려 지속)</td>
+                </tr>
+            </table>
+
+            <div class="highlight-box">
+                <strong>엔비디아 투자 전략:</strong><br>
+                - 9~10월 비중 축소 완료한 투자자: 유지<br>
+                - 신규 투자자: 현재 가격대 진입 기회
+            </div>
+        </div>
+
+        <!-- 거시경제 -->
+        <div class="section">
+            <div class="section-title">
+                <span class="icon">🏦</span>
+                거시경제 현황
+            </div>
+
+            <h3>주요 지표</h3>
+            <table>
+                <tr>
+                    <th>지표</th>
+                    <th>수치/전망</th>
+                    <th>평가</th>
+                </tr>
+                <tr>
+                    <td>GDP 성장률</td>
+                    <td>4Q +5.3%, 연간 2.3~2.5%</td>
+                    <td><span class="tag green">양호</span></td>
+                </tr>
+                <tr>
+                    <td>30년 모기지</td>
+                    <td>6% (10bp↓)</td>
+                    <td><span class="tag green">양호</span></td>
+                </tr>
+                <tr>
+                    <td>PCE 인플레이션</td>
+                    <td>예상 2.78% (목요일 발표)</td>
+                    <td><span class="tag blue">관망</span></td>
+                </tr>
+                <tr>
+                    <td>FOMC 금리 (1/28)</td>
+                    <td>동결 전망 100%</td>
+                    <td><span class="tag green">안정</span></td>
+                </tr>
+            </table>
+
+            <div class="highlight-box success">
+                <strong>결론:</strong> 거시경제 펀더멘털 양호. 성장 지속 시 국가부채 증가해도 투자 위험 제한적.
+            </div>
+
+            <h3>리스크 시나리오</h3>
+            <p>국가부채 증가 + 마이너스 성장(리세션) = 어려운 장 도래. <strong>현재는 해당 없음.</strong></p>
+        </div>
+
+        <!-- 공포 지수 -->
+        <div class="section">
+            <div class="section-title">
+                <span class="icon">😰</span>
+                VIX 공포지수
+            </div>
+
+            <div class="stat-grid">
+                <div class="stat-card">
+                    <div class="stat-value" style="color: #e65100;">20+</div>
+                    <div class="stat-label">현재 VIX (20일 이상 유지)</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" style="color: #2e7d32;">16 이하</div>
+                    <div class="stat-label">안정권 진입 기준</div>
+                </div>
+            </div>
+
+            <div class="highlight-box">
+                <strong>전망:</strong> VIX 16 이하로 내려가면 시장 안정 → <strong>폭등 가능성</strong>
+            </div>
+        </div>
+
+        <!-- AI/IPO -->
+        <div class="section">
+            <div class="section-title">
+                <span class="icon">🤖</span>
+                AI 기업 및 IPO 전망
+            </div>
+
+            <h3>Anthropic (엔트로픽)</h3>
+            <ul>
+                <li><strong>IPO 예상:</strong> 2026년 3~4분기 (9~10월)</li>
+                <li><strong>파트너:</strong> 아마존, 구글</li>
+                <li><strong>현재 성능:</strong> Claude 4.5가 AI 성능 차트 상위권</li>
+            </ul>
+
+            <h3>SpaceX</h3>
+            <div class="highlight-box info">
+                <strong>Pre-IPO 정보:</strong><br>
+                - 주당 가격(PPS): $600~$2,000 (스테이지별 상이)<br>
+                - 최소 투자액: $64,800<br>
+                - 예상 시가총액: <strong>$1~2 Trillion</strong> (마이크로소프트급)
+            </div>
+
+            <h3>AI 성능 순위 (Artificial Analysis 기준)</h3>
+            <table>
+                <tr>
+                    <th>순위</th>
+                    <th>모델</th>
+                    <th>특징</th>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>Grok (xAI)</td>
+                    <td>비용 높으나 성능 최상위</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>Claude 4.5</td>
+                    <td>현재 최고 성능</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>Gemini (구글)</td>
+                    <td>급상승 중</td>
+                </tr>
+                <tr>
+                    <td>-</td>
+                    <td>DeepSeek</td>
+                    <td>최근 성능 하락</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- 투자 전략 -->
+        <div class="section">
+            <div class="section-title">
+                <span class="icon">🎯</span>
+                투자 전략 요약
+            </div>
+
+            <div class="key-point">
+                <div class="number">1</div>
+                <div class="content">
+                    <div class="title">노이즈에 감정적 대응 금지</div>
+                    <div class="desc">트럼프발 폭락은 적극 대처 기회. 패닉 매도 절대 금지.</div>
+                </div>
+            </div>
+
+            <div class="key-point">
+                <div class="number">2</div>
+                <div class="content">
+                    <div class="title">10년 국채 금리 모니터링</div>
+                    <div class="desc">4.3% 이상 지속 시 경계, 4.5% 이상 3개월 지속 시 비중 조절 필요.</div>
+                </div>
+            </div>
+
+            <div class="key-point">
+                <div class="number">3</div>
+                <div class="content">
+                    <div class="title">섹터 로테이션 활용</div>
+                    <div class="desc">Mag7 비중 축소, 스몰캡(Russell 2000), Materials, Industrial 관심.</div>
+                </div>
+            </div>
+
+            <div class="key-point">
+                <div class="number">4</div>
+                <div class="content">
+                    <div class="title">연준 독립성 감시</div>
+                    <div class="desc">연준 정치 도구화 시 미국 투자 전면 재검토 필요.</div>
+                </div>
+            </div>
+
+            <div class="key-point">
+                <div class="number">5</div>
+                <div class="content">
+                    <div class="title">안전자산 비중 유지</div>
+                    <div class="desc">금 $4,700~$5,000 전망. 포트폴리오 헤지 역할.</div>
+                </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <h3>관심 섹터/종목</h3>
+            <div class="pill-list">
+                <span class="pill">Russell 2000</span>
+                <span class="pill">Materials (금/은/동)</span>
+                <span class="pill">Industrial</span>
+                <span class="pill">IWO ETF</span>
+                <span class="pill">S&P Mid Cap</span>
+            </div>
+
+            <h3>주의 섹터/종목</h3>
+            <div class="pill-list">
+                <span class="pill" style="background: #ffcdd2; color: #c62828;">Mag7 (과다 보유 시)</span>
+                <span class="pill" style="background: #ffcdd2; color: #c62828;">Oracle</span>
+                <span class="pill" style="background: #ffcdd2; color: #c62828;">고위험 암호화폐</span>
+            </div>
+        </div>
+
+        <!-- 일정 -->
+        <div class="section">
+            <div class="section-title">
+                <span class="icon">📅</span>
+                주요 일정
+            </div>
+            <table>
+                <tr>
+                    <th>날짜</th>
+                    <th>이벤트</th>
+                    <th>예상</th>
+                </tr>
+                <tr>
+                    <td>목요일</td>
+                    <td>PCE 인플레이션</td>
+                    <td>2.78%</td>
+                </tr>
+                <tr>
+                    <td>1월 28일</td>
+                    <td>FOMC 회의</td>
+                    <td>금리 동결 100%</td>
+                </tr>
+                <tr>
+                    <td>2월 중순</td>
+                    <td>스몰캡 모멘텀 지속 예상</td>
+                    <td>+3% 추가</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- 결론 -->
+        <div class="section">
+            <div class="section-title">
+                <span class="icon">✅</span>
+                최종 결론
+            </div>
+
+            <div class="highlight-box success">
+                <strong>시장 전망:</strong> 단기 노이즈 지속되나 거시경제 펀더멘털 양호.<br>
+                <strong>투자 전략:</strong> 적극적 대처, 섹터 로테이션 활용, 연준 리스크 모니터링.
+            </div>
+
+            <table>
+                <tr>
+                    <th>구분</th>
+                    <th>판단</th>
+                </tr>
+                <tr>
+                    <td>오늘 시장</td>
+                    <td><span class="tag orange">노이즈 (3.3.3)</span></td>
+                </tr>
+                <tr>
+                    <td>단기 전망</td>
+                    <td><span class="tag green">반등 가능</span></td>
+                </tr>
+                <tr>
+                    <td>최대 리스크</td>
+                    <td><span class="tag red">연준 독립성</span></td>
+                </tr>
+                <tr>
+                    <td>기회 섹터</td>
+                    <td><span class="tag green">스몰캡, Materials</span></td>
+                </tr>
+            </table>
+        </div>
+
+        <footer>
+            <p>📺 출처: NOVA Real Invest 유튜브</p>
+            <p>⚠️ 본 자료는 투자 참고용이며, 투자 결정은 본인 책임입니다.</p>
+            <p>작성일: 2026년 1월 21일</p>
+        </footer>
+    </div>
+</body>
+</html>
