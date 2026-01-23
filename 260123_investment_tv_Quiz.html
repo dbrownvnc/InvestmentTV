@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>시험문제 | 배당금 14.2% & MU 289% 성장 분석</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.7;
+            color: #333;
+            background: #f8f9fa;
+            padding: 16px;
+            max-width: 100%;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .header {
+            background: linear-gradient(135deg, #7b1fa2 0%, #9c27b0 100%);
+            color: white;
+            padding: 24px 20px;
+            border-radius: 16px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .header h1 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        .header .subtitle {
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+        .section {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        .section-title {
+            background: linear-gradient(135deg, #1a237e 0%, #283593 100%);
+            color: white;
+            padding: 16px 20px;
+            border-radius: 12px 12px 0 0;
+            margin: -20px -20px 20px -20px;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        .section-title.answers {
+            background: linear-gradient(135deg, #2e7d32 0%, #43a047 100%);
+        }
+        .question-box {
+            background: #fafafa;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+        .question-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+        .question-number {
+            background: #1a237e;
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+        .difficulty {
+            font-size: 0.8rem;
+        }
+        .difficulty.easy {
+            color: #4caf50;
+        }
+        .difficulty.medium {
+            color: #ff9800;
+        }
+        .difficulty.hard {
+            color: #f44336;
+        }
+        .question-type {
+            background: #e8eaf6;
+            color: #1a237e;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .question-text {
+            font-size: 0.95rem;
+            margin-bottom: 14px;
+            line-height: 1.6;
+        }
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .option {
+            background: white;
+            border: 1px solid #ddd;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .option:hover {
+            background: #e8eaf6;
+            border-color: #1a237e;
+        }
+        .blank-line {
+            border-bottom: 2px solid #333;
+            display: inline-block;
+            min-width: 100px;
+            margin: 0 4px;
+        }
+        .answer-box {
+            background: #e8f5e9;
+            border: 1px solid #a5d6a7;
+            border-radius: 10px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+        .answer-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        .answer-number {
+            background: #2e7d32;
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+        .answer-label {
+            background: #2e7d32;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+        .explanation {
+            font-size: 0.9rem;
+            color: #333;
+            padding: 10px;
+            background: white;
+            border-radius: 6px;
+            margin-top: 10px;
+        }
+        .explanation strong {
+            color: #2e7d32;
+        }
+        .divider {
+            height: 3px;
+            background: linear-gradient(90deg, #1a237e, #9c27b0, #1a237e);
+            margin: 30px 0;
+            border-radius: 2px;
+        }
+        .ox-options {
+            display: flex;
+            gap: 20px;
+            margin-top: 10px;
+        }
+        .ox-option {
+            font-size: 1.5rem;
+            padding: 10px 30px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+        .short-answer {
+            width: 100%;
+            padding: 12px;
+            border: 2px dashed #bbb;
+            border-radius: 8px;
+            background: white;
+            min-height: 60px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        .essay-answer {
+            width: 100%;
+            padding: 12px;
+            border: 2px dashed #bbb;
+            border-radius: 8px;
+            background: white;
+            min-height: 100px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        .info-box {
+            background: #fff3e0;
+            border-left: 4px solid #ff9800;
+            padding: 12px 14px;
+            margin: 14px 0;
+            border-radius: 0 8px 8px 0;
+            font-size: 0.85rem;
+        }
+        .footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 0.75rem;
+            color: #999;
+        }
+        strong {
+            color: #1a237e;
+        }
+        .score-box {
+            background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+            border: 2px solid #ff9800;
+            padding: 16px;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .score-box h3 {
+            color: #e65100;
+            margin-bottom: 8px;
+        }
+        .score-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 8px;
+            margin-top: 12px;
+        }
+        .score-item {
+            background: white;
+            padding: 8px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📝 시험문제</h1>
+            <div class="subtitle">배당금 14.2% 소개 & MU 289% 성장 분석</div>
+            <div class="subtitle" style="margin-top:8px;">2026년 1월 22일 방송 내용 기반</div>
+        </div>
+
+        <div class="score-box">
+            <h3>📊 채점표</h3>
+            <p style="font-size:0.85rem;">각 문제 10점 / 총점 100점</p>
+            <div class="score-grid">
+                <div class="score-item">1. ___</div>
+                <div class="score-item">2. ___</div>
+                <div class="score-item">3. ___</div>
+                <div class="score-item">4. ___</div>
+                <div class="score-item">5. ___</div>
+                <div class="score-item">6. ___</div>
+                <div class="score-item">7. ___</div>
+                <div class="score-item">8. ___</div>
+                <div class="score-item">9. ___</div>
+                <div class="score-item">10. ___</div>
+            </div>
+            <p style="margin-top:12px; font-weight:700;">총점: ___ / 100점</p>
+        </div>
+
+        <!-- 문제지 섹션 -->
+        <div class="section">
+            <div class="section-title">📋 시험문제 (총 10문제)</div>
+
+            <!-- 문제 1 -->
+            <div class="question-box">
+                <div class="question-header">
+                    <div class="question-number">1</div>
+                    <span class="difficulty easy">⭐ 쉬움</span>
+                    <span class="question-type">객관식</span>
+                </div>
+                <div class="question-text">
+                    오늘 소개된 고배당주 Dynex Capital(DY)의 <strong>연간 배당률</strong>은 얼마인가?
+                </div>
+                <div class="options">
+                    <div class="option">① 9.7%</div>
+                    <div class="option">② 12.5%</div>
+                    <div class="option">③ 14.2%</div>
+                    <div class="option">④ 16.8%</div>
+                </div>
+            </div>
+
+            <!-- 문제 2 -->
+            <div class="question-box">
+                <div class="question-header">
+                    <div class="question-number">2</div>
+                    <span class="difficulty easy">⭐ 쉬움</span>
+                    <span class="question-type">단답형</span>
+                </div>
+                <div class="question-text">
+                    마이크론(MU)의 <strong>1년 주가 성장률</strong>은 몇 퍼센트를 달성했는가?
+                </div>
+                <div class="short-answer">정답: </div>
+            </div>
+
+            <!-- 문제 3 -->
+            <div class="question-box">
+                <div class="question-header">
+                    <div class="question-number">3</div>
+                    <span class="difficulty medium">⭐⭐ 보통</span>
+                    <span class="question-type">객관식</span>
+                </div>
+                <div class="question-text">
+                    REIT(부동산투자신탁)가 높은 배당률을 유지할 수 있는 이유로 <strong>가장 적절한 것</strong>은?
+                </div>
+                <div class="options">
+                    <div class="option">① 부동산 가격이 항상 상승하기 때문에</div>
+                    <div class="option">② 투자 수익의 90% 이상을 배당금으로 지급해야 하는 법적 의무가 있어서</div>
+                    <div class="option">③ 세금 혜택이 크기 때문에</div>
+                    <div class="option">④ 기관 투자자 비율이 높아서</div>
+                </div>
+            </div>
+
+            <!-- 문제 4 -->
+            <div class="question-box">
+                <div class="question-header">
+                    <div class="question-number">4</div>
+                    <span class="difficulty medium">⭐⭐ 보통</span>
+                    <span class="question-type">OX문제</span>
+                </div>
+                <div class="question-text">
+                    트럼프 대통령의 그린랜드 군사력 사용 계획 철회는 <strong>"노이즈(Noise)"</strong>로 분류되며, 이러한 노이즈 발생 시에는 <strong>매도</strong>보다 <strong>매수 기회</strong>로 보는 것이 적절하다.
+                </div>
+                <div class="ox-options">
+                    <div class="ox-option">⭕ O</div>
+                    <div class="ox-option">❌ X</div>
+                </div>
+            </div>
+
+            <!-- 문제 5 -->
+            <div class="question-box">
+                <div class="question-header">
+                    <div class="question-number">5</div>
+                    <span class="difficulty medium">⭐⭐ 보통</span>
+                    <span class="question-type">빈칸채우기</span>
+                </div>
+                <div class="question-text">
+                    VIX 공포지수가 <span class="blank-line"></span> 이하가 되면 적극적으로 매수해도 되지만, 현재 <span class="blank-line"></span> 수준이라 <strong>333 법칙</strong>을 준수하며 분할 매수하는 것이 권장된다.
+                </div>
+                <div class="short-answer">정답: 첫 번째 빈칸 _______, 두 번째 빈칸 _______</div>
+            </div>
+
+            <!-- 문제 6 -->
+            <div class="question-box">
+                <div class="question-header">
+                    <div class="question-number">6</div>
+                    <span class="difficulty medium">⭐⭐ 보통</span>
+                    <span class="question-type">객관식</span>
+                </div>
+                <div class="question-text">
+                    SpaceX IPO의 주요 주관사로 <strong>70% 이상</strong>의 확률로 예상되는 투자은행은?
+                </div>
+                <div class="options">
+                    <div class="option">① Bank of America</div>
+                    <div class="option">② Goldman Sachs</div>
+                    <div class="option">③ JP Morgan</div>
+                    <div class="option">④ Morgan Stanley</div>
+                </div>
+            </div>
+
+            <!-- 문제 7 -->
+            <div class="question-box">
+                <div class="question-header">
+                    <div class="question-number">7</div>
+                    <span class="difficulty medium">⭐⭐ 보통</span>
+                    <span class="question-type">객관식</span>
+                </div>
+                <div class="question-text">
+                    NVIDIA(NVDA)의 H200 중국 판매 제한으로 예상되는 <strong>매출 감소 비율</strong>은 대략 얼마인가?
+                </div>
+                <div class="options">
+                    <div class="option">① 3~5%</div>
+                    <div class="option">② 10~15%</div>
+                    <div class="option">③ 20~25%</div>
+                    <div class="option">④ 30~35%</div>
+                </div>
+            </div>
+
+            <!-- 문제 8 -->
+            <div class="question-box">
+                <div class="question-header">
+                    <div class="question-number">8</div>
+                    <span class="difficulty hard">⭐⭐⭐ 어려움</span>
+                    <span class="question-type">단답형</span>
+                </div>
+                <div class="question-text">
+                    마이크론(MU)의 <strong>DCF(현금흐름할인) 가치</strong>는 얼마로 평가되었는가? (달러 단위로 작성)
+                </div>
+                <div class="short-answer">정답: $</div>
+            </div>
+
+            <!-- 문제 9 -->
+            <div class="question-box">
+                <div class="question-header">
+                    <div class="question-number">9</div>
+                    <span class="difficulty hard">⭐⭐⭐ 어려움</span>
+                    <span class="question-type">서술형</span>
+                </div>
+                <div class="question-text">
+                    방송에서 언급된 <strong>"5% 법칙"</strong>이 무엇인지 설명하고, 마이크론(MU)처럼 급등한 종목에 왜 이 법칙이 중요한지 간략히 서술하시오.
+                </div>
+                <div class="essay-answer">
+                    <p style="color:#999;">답변 작성란</p>
+                </div>
+            </div>
+
+            <!-- 문제 10 -->
+            <div class="question-box">
+                <div class="question-header">
+                    <div class="question-number">10</div>
+                    <span class="difficulty medium">⭐⭐ 보통</span>
+                    <span class="question-type">객관식</span>
+                </div>
+                <div class="question-text">
+                    다음 중 방송에서 <strong>"3강(3강)"</strong>으로 언급된 AI 광고 수익화 1위 기업과 함께 포함된 기업은?
+                </div>
+                <div class="options">
+                    <div class="option">① Meta, Google</div>
+                    <div class="option">② Meta, Amazon</div>
+                    <div class="option">③ Google, Microsoft</div>
+                    <div class="option">④ Meta, Tesla</div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- 정답 및 해설 섹션 -->
+        <div class="section">
+            <div class="section-title answers">📝 정답 및 해설</div>
+
+            <!-- 정답 1 -->
+            <div class="answer-box">
+                <div class="answer-header">
+                    <div class="answer-number">1</div>
+                    <span class="answer-label">정답: ③</span>
+                </div>
+                <div class="explanation">
+                    <strong>해설:</strong> Dynex Capital(DY)의 연간 배당률은 <strong>14.2%</strong>입니다. 이는 일반적인 배당주 대비 매우 높은 수준으로, REIT의 특성상 투자 수익의 90% 이상을 배당으로 지급해야 하기 때문에 가능합니다. P/E는 9.7로 별개의 지표입니다.
+                </div>
+            </div>
+
+            <!-- 정답 2 -->
+            <div class="answer-box">
+                <div class="answer-header">
+                    <div class="answer-number">2</div>
+                    <span class="answer-label">정답: 289%</span>
+                </div>
+                <div class="explanation">
+                    <strong>해설:</strong> 마이크론(MU)은 1년간 <strong>289%</strong>의 주가 성장률을 달성했습니다. 이는 한국 방송에서 거의 다루지 않았던 종목이지만, 지속적으로 "아직 싸다"고 언급되어 온 종목입니다. 신규 목표가는 $440, 내재가치 $977, DCF 가치 $1,556입니다.
+                </div>
+            </div>
+
+            <!-- 정답 3 -->
+            <div class="answer-box">
+                <div class="answer-header">
+                    <div class="answer-number">3</div>
+                    <span class="answer-label">정답: ②</span>
+                </div>
+                <div class="explanation">
+                    <strong>해설:</strong> REIT(Real Estate Investment Trust)는 법적으로 <strong>부동산 투자 수익의 90% 이상을 배당금으로 지급</strong>해야 합니다. 이러한 구조적 특성 때문에 높은 배당률 유지가 가능하며, 이는 한국에서는 찾기 어려운 투자 상품입니다.
+                </div>
+            </div>
+
+            <!-- 정답 4 -->
+            <div class="answer-box">
+                <div class="answer-header">
+                    <div class="answer-number">4</div>
+                    <span class="answer-label">정답: O (맞음)</span>
+                </div>
+                <div class="explanation">
+                    <strong>해설:</strong> 방송에서는 트럼프의 정치적 발언을 <strong>"노이즈(Noise)"</strong>로, 실질적 정책 변화를 <strong>"신호(Signal)"</strong>로 구분합니다. 노이즈로 인한 일시적 하락은 <strong>매수 기회</strong>로 보며, 실제로 그린랜드 침공 계획 철회 후 시장은 "치킨아웃" 패턴으로 반등했습니다.
+                </div>
+            </div>
+
+            <!-- 정답 5 -->
+            <div class="answer-box">
+                <div class="answer-header">
+                    <div class="answer-number">5</div>
+                    <span class="answer-label">정답: 14, 16</span>
+                </div>
+                <div class="explanation">
+                    <strong>해설:</strong> VIX 공포지수가 <strong>14 이하</strong>면 적극 매수 구간이고, 현재 <strong>16</strong> 수준에서는 여전히 투자 리스크가 존재합니다. 따라서 한 번에 투자하지 않고 <strong>333 법칙</strong>(3회에 걸친 분할 매수)을 준수하는 것이 권장됩니다.
+                </div>
+            </div>
+
+            <!-- 정답 6 -->
+            <div class="answer-box">
+                <div class="answer-header">
+                    <div class="answer-number">6</div>
+                    <span class="answer-label">정답: ④</span>
+                </div>
+                <div class="explanation">
+                    <strong>해설:</strong> SpaceX IPO 주관사 가능성 순위:<br>
+                    • <strong>Morgan Stanley: 70% 이상</strong><br>
+                    • JP Morgan: 50% 이상<br>
+                    • Goldman Sachs: Maybe<br>
+                    • Bank of America: 가능성 낮음<br><br>
+                    따라서 JP Morgan과 Morgan Stanley를 선제적으로 매수하는 전략이 언급되었습니다.
+                </div>
+            </div>
+
+            <!-- 정답 7 -->
+            <div class="answer-box">
+                <div class="answer-header">
+                    <div class="answer-number">7</div>
+                    <span class="answer-label">정답: ②</span>
+                </div>
+                <div class="explanation">
+                    <strong>해설:</strong> NVIDIA의 H200 중국 판매 제한으로 전체 매출의 <strong>10~15%</strong> 감소가 예상됩니다. 영업마진이 70% 이하로 떨어지면 현재 주가 유지가 어려울 수 있어, 포트폴리오 내 비중을 <strong>10% 이하</strong>로 관리하는 것이 권장됩니다.
+                </div>
+            </div>
+
+            <!-- 정답 8 -->
+            <div class="answer-box">
+                <div class="answer-header">
+                    <div class="answer-number">8</div>
+                    <span class="answer-label">정답: $1,556</span>
+                </div>
+                <div class="explanation">
+                    <strong>해설:</strong> 마이크론(MU)의 가치 평가:<br>
+                    • 신규 목표가: $440<br>
+                    • 내재가치(Intrinsic Value): $977<br>
+                    • <strong>DCF 가치: $1,556</strong><br><br>
+                    이 수치들은 현재 주가 대비 상당한 상승 여력이 있음을 시사하지만, 5% 법칙을 준수해야 합니다.
+                </div>
+            </div>
+
+            <!-- 정답 9 -->
+            <div class="answer-box">
+                <div class="answer-header">
+                    <div class="answer-number">9</div>
+                    <span class="answer-label">정답 예시</span>
+                </div>
+                <div class="explanation">
+                    <strong>모범 답안:</strong><br><br>
+                    <strong>5% 법칙</strong>이란 급등 종목의 경우 포트폴리오 내 비중이 일정 수준(약 5%)을 초과하면 일부를 매도하여 리스크를 관리하는 원칙입니다.<br><br>
+                    마이크론(MU)처럼 <strong>289%</strong> 급등한 종목은 빠르게 오른 만큼 빠르게 하락할 수 있는 변동성 리스크가 있습니다. 따라서 급등 시점에 일부를 매각하여 이익을 실현하고, 포트폴리오 전체의 변동성 노출을 줄이는 것이 중요합니다.<br><br>
+                    <em>(핵심: 급등=급락 리스크, 비중 관리, 분할 매도 언급 시 정답 인정)</em>
+                </div>
+            </div>
+
+            <!-- 정답 10 -->
+            <div class="answer-box">
+                <div class="answer-header">
+                    <div class="answer-number">10</div>
+                    <span class="answer-label">정답: ①</span>
+                </div>
+                <div class="explanation">
+                    <strong>해설:</strong> 방송에서 <strong>"3강"</strong>은 AI를 활용한 광고 수익화에서 선두를 달리는 기업들을 지칭합니다.<br>
+                    • <strong>1위: Meta</strong> - AI 광고 수익화 선두<br>
+                    • <strong>2위: Google</strong> - 검색 및 유튜브 광고<br><br>
+                    Meta의 내재가치는 $753, DCF 가치는 $1,337로 평가되었으며, 포트폴리오 내 약 10% 비중 보유가 권장되었습니다.
+                </div>
+            </div>
+        </div>
+
+        <div class="info-box">
+            <strong>📚 학습 포인트</strong><br>
+            • 노이즈 vs 신호 구분 능력 배양<br>
+            • VIX, 국채금리 등 지표 해석 능력<br>
+            • 333 법칙, 5% 법칙 등 리스크 관리 원칙<br>
+            • 배당주/성장주 특성 이해<br>
+            • IPO, 실적 발표 일정 관리
+        </div>
+
+        <div class="footer">
+            <p>본 시험문제는 교육 목적으로 작성되었습니다.</p>
+            <p>원본 방송: NOVA Real Invest (2026.01.22)</p>
+        </div>
+    </div>
+</body>
+</html>

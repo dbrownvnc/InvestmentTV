@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>연 14.2% 배당주 & 마이크론 289% 성장 분석 | 2026년 1월 22일</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.7;
+            color: #333;
+            background: #f8f9fa;
+            padding: 16px;
+            max-width: 100%;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .header {
+            background: linear-gradient(135deg, #1a237e 0%, #283593 100%);
+            color: white;
+            padding: 24px 20px;
+            border-radius: 16px;
+            margin-bottom: 20px;
+        }
+        .header h1 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        .header .date {
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+        .header .source {
+            font-size: 0.8rem;
+            opacity: 0.8;
+            margin-top: 4px;
+        }
+        .summary-box {
+            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+            border-left: 4px solid #2e7d32;
+            padding: 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .summary-box h2 {
+            color: #2e7d32;
+            font-size: 1rem;
+            margin-bottom: 10px;
+        }
+        .summary-box ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        .summary-box li {
+            padding: 6px 0;
+            padding-left: 20px;
+            position: relative;
+            font-size: 0.9rem;
+        }
+        .summary-box li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #2e7d32;
+            font-weight: bold;
+        }
+        .section {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        .section h2 {
+            font-size: 1.15rem;
+            color: #1a237e;
+            margin-bottom: 14px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #e8eaf6;
+        }
+        .section h3 {
+            font-size: 1rem;
+            color: #333;
+            margin: 16px 0 10px 0;
+        }
+        .section p {
+            font-size: 0.9rem;
+            margin-bottom: 12px;
+            color: #444;
+        }
+        .highlight {
+            background: #fff3e0;
+            border-left: 4px solid #ff9800;
+            padding: 12px 14px;
+            margin: 14px 0;
+            border-radius: 0 8px 8px 0;
+            font-size: 0.9rem;
+        }
+        .highlight.green {
+            background: #e8f5e9;
+            border-left-color: #4caf50;
+        }
+        .highlight.red {
+            background: #ffebee;
+            border-left-color: #f44336;
+        }
+        .highlight.blue {
+            background: #e3f2fd;
+            border-left-color: #2196f3;
+        }
+        .metric-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin: 14px 0;
+        }
+        .metric-card {
+            background: #f5f5f5;
+            padding: 14px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .metric-card .value {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #1a237e;
+        }
+        .metric-card .value.green { color: #2e7d32; }
+        .metric-card .value.red { color: #c62828; }
+        .metric-card .label {
+            font-size: 0.75rem;
+            color: #666;
+            margin-top: 4px;
+        }
+        .stock-card {
+            background: linear-gradient(135deg, #fafafa 0%, #f0f0f0 100%);
+            border: 1px solid #e0e0e0;
+            padding: 16px;
+            border-radius: 10px;
+            margin: 12px 0;
+        }
+        .stock-card .ticker {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #1a237e;
+        }
+        .stock-card .name {
+            font-size: 0.8rem;
+            color: #666;
+            margin-bottom: 10px;
+        }
+        .stock-card .stats {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .stock-card .stat {
+            font-size: 0.85rem;
+        }
+        .stock-card .stat span {
+            font-weight: 600;
+        }
+        .chart-container {
+            margin: 16px 0;
+            padding: 10px;
+            background: #fafafa;
+            border-radius: 10px;
+        }
+        .chart-container canvas {
+            max-height: 250px;
+        }
+        .table-responsive {
+            overflow-x: auto;
+            margin: 14px 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+        th, td {
+            padding: 10px 8px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        th {
+            background: #e8eaf6;
+            font-weight: 600;
+            color: #1a237e;
+        }
+        tr:hover {
+            background: #f5f5f5;
+        }
+        .tag {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            margin-right: 4px;
+        }
+        .tag.buy { background: #c8e6c9; color: #2e7d32; }
+        .tag.hold { background: #fff3e0; color: #e65100; }
+        .tag.watch { background: #e3f2fd; color: #1565c0; }
+        .warning-box {
+            background: #fff8e1;
+            border: 1px solid #ffc107;
+            padding: 14px;
+            border-radius: 8px;
+            margin: 14px 0;
+            font-size: 0.85rem;
+        }
+        .warning-box::before {
+            content: "⚠️ ";
+        }
+        .rule-box {
+            background: #f3e5f5;
+            border-left: 4px solid #9c27b0;
+            padding: 14px;
+            border-radius: 0 8px 8px 0;
+            margin: 14px 0;
+        }
+        .rule-box h4 {
+            color: #7b1fa2;
+            font-size: 0.95rem;
+            margin-bottom: 8px;
+        }
+        .rule-box p {
+            font-size: 0.85rem;
+            margin: 0;
+        }
+        .timeline {
+            border-left: 3px solid #1a237e;
+            padding-left: 20px;
+            margin: 16px 0;
+        }
+        .timeline-item {
+            position: relative;
+            padding-bottom: 16px;
+        }
+        .timeline-item::before {
+            content: "";
+            position: absolute;
+            left: -26px;
+            top: 4px;
+            width: 12px;
+            height: 12px;
+            background: #1a237e;
+            border-radius: 50%;
+        }
+        .timeline-item .date {
+            font-size: 0.8rem;
+            color: #666;
+        }
+        .timeline-item .content {
+            font-size: 0.9rem;
+            margin-top: 4px;
+        }
+        .footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 0.75rem;
+            color: #999;
+        }
+        strong {
+            color: #1a237e;
+        }
+        .divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #ddd, transparent);
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📊 연 14.2% 배당주 소개 & MU 289% 성장 달성</h1>
+            <div class="date">📅 2026년 1월 22일 멤버온리 방송</div>
+            <div class="source">원본: NOVA Real Invest 채널</div>
+        </div>
+
+        <div class="summary-box">
+            <h2>📌 핵심 요약 (Key Takeaways)</h2>
+            <ul>
+                <li><strong>Dynex Capital (DY)</strong> - 연 배당률 14.2% 모기지 리츠</li>
+                <li><strong>마이크론(MU)</strong> 1년 주가 성장률 <strong>289%</strong> 달성</li>
+                <li>트럼프 그린랜드 침공 계획 철회 → 시장 반등</li>
+                <li>VIX 공포지수 20→16 하락, 10년물 국채 4.26%</li>
+                <li>S&P 500 저항선 6,986 돌파 시 7,000 도달 전망</li>
+            </ul>
+        </div>
+
+        <!-- 시장 현황 섹션 -->
+        <div class="section">
+            <h2>📈 시장 포커스 - 트럼프 노이즈와 치킨아웃</h2>
+            
+            <p>트럼프 대통령의 그린랜드 군사력 사용 계획이 철회되면서 이틀간 하락했던 시장이 다시 상승세로 전환되었습니다. 이는 전형적인 <strong>"치킨아웃(Chicken Out)"</strong> 패턴으로, 트럼프의 언행에 따른 시장 변동은 <strong>노이즈(Noise)</strong>로 판단됩니다.</p>
+
+            <div class="highlight blue">
+                <strong>💡 노이즈 vs 신호 구분법</strong><br>
+                • <strong>노이즈</strong>: 일시적 정치적 발언, 투자 기회<br>
+                • <strong>신호</strong>: 실질적 정책 변화, 매도 고려
+            </div>
+
+            <div class="metric-grid">
+                <div class="metric-card">
+                    <div class="value green">6,913</div>
+                    <div class="label">S&P 500</div>
+                </div>
+                <div class="metric-card">
+                    <div class="value">4.26%</div>
+                    <div class="label">10년물 국채금리</div>
+                </div>
+                <div class="metric-card">
+                    <div class="value green">16</div>
+                    <div class="label">VIX (20→16)</div>
+                </div>
+                <div class="metric-card">
+                    <div class="value">6,986</div>
+                    <div class="label">저항선</div>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <canvas id="marketChart"></canvas>
+            </div>
+
+            <h3>주요 시장 동향</h3>
+            <ul style="padding-left: 20px; font-size: 0.9rem;">
+                <li><strong>PCE 지수</strong>: 예상치 부합 (0.2%)</li>
+                <li><strong>실업수당 신청</strong>: 하락세 지속</li>
+                <li><strong>FOMC (1/28-29)</strong>: 금리 동결 예상 (98%+)</li>
+                <li><strong>미 대법원</strong>: 연준 이사 리사 쿡 해임 불가 판결</li>
+                <li><strong>일본 국채 금리</strong>: 안정세 전환</li>
+            </ul>
+
+            <div class="highlight green">
+                <strong>✅ 투자 판단</strong>: 트럼프 노이즈 후 정상화 → 적극 매수 기회<br>
+                특히 <strong>대비형님 3대 그룹</strong> 위주 포트폴리오 확대 권장
+            </div>
+        </div>
+
+        <!-- 기술적 분석 섹션 -->
+        <div class="section">
+            <h2>📉 S&P 500 기술적 분석</h2>
+            
+            <div class="stock-card">
+                <div class="ticker">S&P 500 지수 현황</div>
+                <div class="name">2026년 1월 22일 기준</div>
+                <div class="stats">
+                    <div class="stat">저항선: <span>6,986</span></div>
+                    <div class="stat">지지선: <span>6,720</span></div>
+                    <div class="stat">50일 MA: <span>6,833</span></div>
+                </div>
+            </div>
+
+            <p><strong>6,986 돌파 시</strong> 7,000 고지 달성 가능성 높음. 현재 6,800~6,900 구간에서 횡보하며 안정세 유지 중.</p>
+
+            <div class="rule-box">
+                <h4>📊 VIX 지수 해석 가이드</h4>
+                <p>
+                    • <strong>14 이하</strong>: 적극 매수 구간<br>
+                    • <strong>16 현재</strong>: 투자 리스크 존재, 333 법칙 준수<br>
+                    • <strong>20 이상</strong>: 고변동성 경계
+                </p>
+            </div>
+
+            <div class="warning-box">
+                <strong>1월 28일 변동성 주의</strong>: 맥세븐(Mag7) 실적 발표 전후로 5% 내외 급등락 가능성. 마이크로소프트의 AI 투자 비용(CAPEX) 이슈 주시 필요.
+            </div>
+        </div>
+
+        <!-- 배당주 분석 섹션 -->
+        <div class="section">
+            <h2>💰 고배당주 분석: Dynex Capital (DY)</h2>
+            
+            <div class="stock-card">
+                <div class="ticker">DY <span class="tag buy">BUY Signal</span></div>
+                <div class="name">Dynex Capital - 모기지 REIT</div>
+                <div class="stats">
+                    <div class="stat">연 배당률: <span style="color:#2e7d32;">14.2%</span></div>
+                    <div class="stat">P/E: <span>9.7</span></div>
+                    <div class="stat">배당 주기: <span>월배당</span></div>
+                    <div class="stat">기관보유: <span>44%</span></div>
+                </div>
+            </div>
+
+            <h3>REIT(부동산투자신탁) 특성</h3>
+            <p>REIT는 부동산 투자 수익의 <strong>90% 이상을 배당금</strong>으로 지급해야 하는 법적 의무가 있어 높은 배당률 유지가 가능합니다. 한국에서는 불가능한 수준의 배당률입니다.</p>
+
+            <div class="chart-container">
+                <canvas id="dividendChart"></canvas>
+            </div>
+
+            <h3>투자 리스크 분석</h3>
+            <div class="table-responsive">
+                <table>
+                    <tr>
+                        <th>리스크 항목</th>
+                        <th>수준</th>
+                        <th>설명</th>
+                    </tr>
+                    <tr>
+                        <td>시장 규모 리스크</td>
+                        <td>보통</td>
+                        <td>스몰캡 특성</td>
+                    </tr>
+                    <tr>
+                        <td>금융 레버리지 리스크</td>
+                        <td><span style="color:#c62828;">높음</span></td>
+                        <td>부동산 담보 대출</td>
+                    </tr>
+                    <tr>
+                        <td>주가 변동성</td>
+                        <td><span style="color:#2e7d32;">매우 낮음</span></td>
+                        <td>안정적 주가</td>
+                    </tr>
+                    <tr>
+                        <td>유동성 리스크</td>
+                        <td>낮음</td>
+                        <td>거래량 충분</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="highlight">
+                <strong>📅 배당 일정 (중요!)</strong><br>
+                • Ex-Dividend Date: 매월 중순경<br>
+                • 1월분 배당: <strong style="color:#c62828;">이미 마감</strong> (1/21 기준)<br>
+                • 다음 배당: <strong>2월 15일 전 매수 필요</strong>
+            </div>
+
+            <div class="rule-box">
+                <h4>🎯 배당주 투자 5대 원칙</h4>
+                <p>
+                    1️⃣ 배당주 특성 이해 필수 (주가 성장 제한적)<br>
+                    2️⃣ 금리 하락 시 배당률 소폭 하락 가능<br>
+                    3️⃣ 개인 세금 상황 직접 확인<br>
+                    4️⃣ 45세 이하는 성장주 우선<br>
+                    5️⃣ 리츠는 분산 투자 필수
+                </p>
+            </div>
+        </div>
+
+        <!-- 마이크론 분석 섹션 -->
+        <div class="section">
+            <h2>🚀 마이크론(MU) 심층 분석</h2>
+            
+            <div class="stock-card">
+                <div class="ticker">MU <span class="tag buy">STRONG BUY</span></div>
+                <div class="name">Micron Technology - 메모리 반도체</div>
+                <div class="stats">
+                    <div class="stat">1년 성장률: <span style="color:#2e7d32;">+289%</span></div>
+                    <div class="stat">목표가: <span>$440</span></div>
+                    <div class="stat">내재가치: <span>$977</span></div>
+                    <div class="stat">DCF: <span>$1,556</span></div>
+                </div>
+            </div>
+
+            <p>마이크론은 한국 방송에서 거의 다루지 않았던 종목으로, 지난 1년간 <strong>289% 성장</strong>을 달성했습니다. 현재도 내재가치 대비 저평가 상태로 판단됩니다.</p>
+
+            <div class="chart-container">
+                <canvas id="muChart"></canvas>
+            </div>
+
+            <div class="metric-grid">
+                <div class="metric-card">
+                    <div class="value green">$440</div>
+                    <div class="label">신규 목표가</div>
+                </div>
+                <div class="metric-card">
+                    <div class="value">$977</div>
+                    <div class="label">내재가치</div>
+                </div>
+                <div class="metric-card">
+                    <div class="value">$1,556</div>
+                    <div class="label">DCF 가치</div>
+                </div>
+                <div class="metric-card">
+                    <div class="value">289%</div>
+                    <div class="label">1년 성장률</div>
+                </div>
+            </div>
+
+            <div class="warning-box">
+                <strong>5% 법칙 준수 필수</strong>: 급등 종목은 급락 위험도 큼. 포트폴리오 내 비중 관리하며 분할 매도 시점 고려 필요.
+            </div>
+
+            <div class="highlight green">
+                <strong>멤버 보유 현황</strong>: 95% 이상의 멤버들이 MU 보유 중. 포트폴리오 5~10% 비중 권장.
+            </div>
+        </div>
+
+        <!-- 실적 발표 일정 섹션 -->
+        <div class="section">
+            <h2>📆 주요 기업 실적 발표 일정</h2>
+            
+            <h3>1월 27일 (월)</h3>
+            <div class="table-responsive">
+                <table>
+                    <tr>
+                        <th>종목</th>
+                        <th>티커</th>
+                        <th>예상 EPS</th>
+                        <th>투자의견</th>
+                    </tr>
+                    <tr>
+                        <td>United Health</td>
+                        <td>UNH</td>
+                        <td>-</td>
+                        <td><span class="tag buy">바이 시그널 강함</span></td>
+                    </tr>
+                    <tr>
+                        <td>Boeing</td>
+                        <td>BA</td>
+                        <td>-</td>
+                        <td><span class="tag hold">관망</span></td>
+                    </tr>
+                    <tr>
+                        <td>Northrop Grumman</td>
+                        <td>NOC</td>
+                        <td>-</td>
+                        <td><span class="tag watch">주시</span></td>
+                    </tr>
+                    <tr>
+                        <td>Seagate Tech</td>
+                        <td>STX</td>
+                        <td>-</td>
+                        <td><span class="tag buy">나스닥 100 편입</span></td>
+                    </tr>
+                </table>
+            </div>
+
+            <h3>1월 28일 (화) - 맥세븐(Mag7) 실적</h3>
+            <div class="table-responsive">
+                <table>
+                    <tr>
+                        <th>종목</th>
+                        <th>티커</th>
+                        <th>예상 EPS</th>
+                        <th>주요 이슈</th>
+                    </tr>
+                    <tr>
+                        <td>Microsoft</td>
+                        <td>MSFT</td>
+                        <td>$3.86~$3.33</td>
+                        <td>CAPEX 부담, 예상 상회 필요</td>
+                    </tr>
+                    <tr>
+                        <td>Meta</td>
+                        <td>META</td>
+                        <td>-</td>
+                        <td>3강 중 하나, VR 리스크</td>
+                    </tr>
+                    <tr>
+                        <td>Tesla</td>
+                        <td>TSLA</td>
+                        <td>$0.44</td>
+                        <td>옵티머스 로봇 판매 예고</td>
+                    </tr>
+                    <tr>
+                        <td>IBM</td>
+                        <td>IBM</td>
+                        <td>$4.29~$4.33</td>
+                        <td>클라우드 성장성</td>
+                    </tr>
+                </table>
+            </div>
+
+            <h3>1월 28일 - 대비형님 3대 그룹</h3>
+            <div class="table-responsive">
+                <table>
+                    <tr>
+                        <th>종목</th>
+                        <th>티커</th>
+                        <th>예상 EPS</th>
+                        <th>성장성</th>
+                    </tr>
+                    <tr>
+                        <td>LAM Research</td>
+                        <td>LRCX</td>
+                        <td>$1.616</td>
+                        <td><span class="tag buy">반도체 장비</span></td>
+                    </tr>
+                    <tr>
+                        <td>GE Vernova</td>
+                        <td>GEV</td>
+                        <td>$2.99</td>
+                        <td>YoY +70% 이상 예상</td>
+                    </tr>
+                    <tr>
+                        <td>General Dynamics</td>
+                        <td>GD</td>
+                        <td>$4.10</td>
+                        <td>방산 예산 50% 증가</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- 주요 종목 분석 섹션 -->
+        <div class="section">
+            <h2>🔍 주요 종목별 분석</h2>
+
+            <div class="stock-card">
+                <div class="ticker">META <span class="tag buy">3강 중 하나</span></div>
+                <div class="name">Meta Platforms - AI 광고 수익 1위</div>
+                <div class="stats">
+                    <div class="stat">내재가치: <span>$753</span></div>
+                    <div class="stat">DCF: <span>$1,337</span></div>
+                    <div class="stat">포트폴리오: <span>~10%</span></div>
+                </div>
+            </div>
+            <p>AI를 활용한 광고 수익화에서 <strong>1위 기업</strong>. VR 사업 발표 시 주가 하락 패턴 주의. 현재 3강(Meta, Google, +1) 중 핵심 종목.</p>
+
+            <div class="stock-card">
+                <div class="ticker">ANET <span class="tag buy">급성장</span></div>
+                <div class="name">Arista Networks - 네트워크 장비</div>
+                <div class="stats">
+                    <div class="stat">금일 상승: <span style="color:#2e7d32;">+8%</span></div>
+                    <div class="stat">평가: <span>아직 저평가</span></div>
+                </div>
+            </div>
+            <p>대비형님 3대 그룹 포함 종목. 4~5% 이상 비중 보유 권장.</p>
+
+            <div class="stock-card">
+                <div class="ticker">NVDA <span class="tag hold">비중 축소</span></div>
+                <div class="name">NVIDIA - AI 반도체</div>
+                <div class="stats">
+                    <div class="stat">중국 제재: <span style="color:#c62828;">H200 판매 제동</span></div>
+                    <div class="stat">매출 영향: <span>-10~15%</span></div>
+                    <div class="stat">권장 비중: <span>10% 이하</span></div>
+                </div>
+            </div>
+            <p>H200 중국 판매 제한으로 분기 매출 10~15% 감소 예상. 영업마진 70% 이하 시 현 주가 유지 어려움. 20% 상승 시 이미 비중 축소 완료.</p>
+
+            <div class="stock-card">
+                <div class="ticker">GEV <span class="tag buy">필수 보유</span></div>
+                <div class="name">GE Vernova - 에너지 인프라</div>
+                <div class="stats">
+                    <div class="stat">예상 EPS: <span>$2.99</span></div>
+                    <div class="stat">성장률: <span>YoY +70%+</span></div>
+                </div>
+            </div>
+            <p>반드시 보유해야 할 종목. 없으면 소량이라도 편입 권장.</p>
+
+            <div class="stock-card">
+                <div class="ticker">INTC <span class="tag hold">비추천</span></div>
+                <div class="name">Intel - 반도체</div>
+                <div class="stats">
+                    <div class="stat">평가: <span style="color:#c62828;">투자 대상 아님</span></div>
+                </div>
+            </div>
+            <p>예상 실적 상회했으나 매출 감소로 가이던스 하향. 장마감 후 -5%.</p>
+        </div>
+
+        <!-- 은행/금융 섹션 -->
+        <div class="section">
+            <h2>🏦 은행주 & SpaceX IPO 전망</h2>
+
+            <h3>은행주 투자 전략</h3>
+            <div class="table-responsive">
+                <table>
+                    <tr>
+                        <th>종목</th>
+                        <th>티커</th>
+                        <th>투자의견</th>
+                        <th>비고</th>
+                    </tr>
+                    <tr>
+                        <td>JP Morgan</td>
+                        <td>JPM</td>
+                        <td><span class="tag buy">핵심 보유</span></td>
+                        <td>SpaceX IPO 주관 50%+</td>
+                    </tr>
+                    <tr>
+                        <td>Morgan Stanley</td>
+                        <td>MS</td>
+                        <td><span class="tag buy">핵심 보유</span></td>
+                        <td>SpaceX IPO 주관 70%+</td>
+                    </tr>
+                    <tr>
+                        <td>Goldman Sachs</td>
+                        <td>GS</td>
+                        <td><span class="tag watch">가능성 있음</span></td>
+                        <td>Maybe</td>
+                    </tr>
+                    <tr>
+                        <td>Capital One</td>
+                        <td>COF</td>
+                        <td><span class="tag hold">소량 보유</span></td>
+                        <td>트럼프 리스크 노출</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="highlight blue">
+                <strong>🚀 SpaceX IPO 전망</strong><br>
+                • 예상 시기: <strong>2026년 7월 이전</strong><br>
+                • 주요 주관사: JP Morgan, Morgan Stanley 유력<br>
+                • 투자 전략: 해당 은행주 선제 매수
+            </div>
+
+            <div class="warning-box">
+                <strong>Capital One(COF) 리스크</strong>: 트럼프 대통령이 신용카드 연이자율 10% 미만 제한 발언. 인베스트먼트 뱅킹 없이 크레딧카드 중심 사업 구조로 정책 리스크 큼. 과다 보유 자제.
+            </div>
+        </div>
+
+        <!-- 투자 철학 섹션 -->
+        <div class="section">
+            <h2>💡 투자 철학 & 333 법칙</h2>
+
+            <div class="rule-box">
+                <h4>📐 333 법칙</h4>
+                <p>
+                    시장 변동성이 있을 때 한 번에 전액 투자하지 않고 <strong>3회에 걸쳐 분할 매수</strong>하는 전략. VIX 16 수준에서는 이 법칙 준수 권장.
+                </p>
+            </div>
+
+            <div class="rule-box">
+                <h4>📐 5% 법칙</h4>
+                <p>
+                    급등 종목은 급락 위험도 높음. 단일 종목이 <strong>포트폴리오의 5%</strong>를 초과하면 일부 매도하여 리스크 관리.
+                </p>
+            </div>
+
+            <div class="highlight">
+                <strong>🧠 형님 생각 - 돈에 대한 철학</strong><br><br>
+                "가진 것으로 높아지지 않습니다. 가진 것을 <strong>베풀 때</strong> 높아지는 것입니다."<br><br>
+                "재물이란 나비와 같습니다. 억지로 잡으려면 날아가 버립니다. <strong>아름다운 정원을 먼저 만드십시오.</strong> 나비를 쫓지 않아도 때가 되면 정원에 핀 들꽃에서라도 찾아옵니다."
+            </div>
+
+            <p>투자에서 성공하려면 단순히 종목을 찍어주는 것이 아니라 <strong>사고력을 키우고 왜(Why)를 이해</strong>해야 합니다. 노이즈와 신호를 구분하고, 자기만의 판단 기준을 세우는 것이 중요합니다.</p>
+        </div>
+
+        <!-- 투자 체크리스트 섹션 -->
+        <div class="section">
+            <h2>✅ 이번 주 투자 체크리스트</h2>
+
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="date">1월 27일 (월)</div>
+                    <div class="content">United Health, Boeing, Seagate 실적 확인</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="date">1월 28-29일 (화-수)</div>
+                    <div class="content">FOMC 회의 - 금리 동결 예상 (98%+)</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="date">1월 28일 (화)</div>
+                    <div class="content">Microsoft, Meta, Tesla, IBM 실적 - 변동성 주의</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="date">2월 15일 전</div>
+                    <div class="content">Dynex Capital(DY) 매수 시 배당 수령 가능</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="date">상시</div>
+                    <div class="content">MU 5% 법칙 준수하며 비중 관리</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 포트폴리오 권장 섹션 -->
+        <div class="section">
+            <h2>📊 권장 포트폴리오 비중</h2>
+
+            <div class="chart-container">
+                <canvas id="portfolioChart"></canvas>
+            </div>
+
+            <div class="table-responsive">
+                <table>
+                    <tr>
+                        <th>구분</th>
+                        <th>종목</th>
+                        <th>권장 비중</th>
+                    </tr>
+                    <tr>
+                        <td>핵심 성장주</td>
+                        <td>META, GOOGL</td>
+                        <td>10% 내외</td>
+                    </tr>
+                    <tr>
+                        <td>반도체</td>
+                        <td>MU, NVDA</td>
+                        <td>5~10%</td>
+                    </tr>
+                    <tr>
+                        <td>대비형님 3대 그룹</td>
+                        <td>GEV, ANET, LRCX 등</td>
+                        <td>4~5%</td>
+                    </tr>
+                    <tr>
+                        <td>은행</td>
+                        <td>JPM, MS</td>
+                        <td>3~5%</td>
+                    </tr>
+                    <tr>
+                        <td>배당주 (은퇴자)</td>
+                        <td>DY 등 리츠</td>
+                        <td>분산 투자</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="footer">
+            <p>본 문서는 교육 목적으로 작성되었으며 투자 권유가 아닙니다.</p>
+            <p>투자의 최종 결정과 책임은 본인에게 있습니다.</p>
+            <p>© 2026 분석 문서 | 원본: NOVA Real Invest</p>
+        </div>
+    </div>
+
+    <script>
+        // 시장 지표 차트
+        new Chart(document.getElementById('marketChart'), {
+            type: 'bar',
+            data: {
+                labels: ['S&P 500', '10Y 국채(%)', 'VIX', '저항선'],
+                datasets: [{
+                    label: '현재값',
+                    data: [6913, 4.26, 16, 6986],
+                    backgroundColor: ['#4caf50', '#2196f3', '#ff9800', '#9c27b0'],
+                    borderRadius: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: false },
+                    title: { display: true, text: '주요 시장 지표 현황' }
+                },
+                scales: {
+                    y: { beginAtZero: false }
+                }
+            }
+        });
+
+        // 배당률 비교 차트
+        new Chart(document.getElementById('dividendChart'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Dynex Capital (DY)', 'S&P 500 평균', '한국 예금'],
+                datasets: [{
+                    data: [14.2, 1.5, 3.5],
+                    backgroundColor: ['#2e7d32', '#1a237e', '#9e9e9e'],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { position: 'bottom' },
+                    title: { display: true, text: '연간 배당률 비교 (%)' }
+                }
+            }
+        });
+
+        // 마이크론 가치 분석 차트
+        new Chart(document.getElementById('muChart'), {
+            type: 'bar',
+            data: {
+                labels: ['목표가', '내재가치', 'DCF 가치'],
+                datasets: [{
+                    label: '주가 ($)',
+                    data: [440, 977, 1556],
+                    backgroundColor: ['#ff9800', '#4caf50', '#2196f3'],
+                    borderRadius: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                indexAxis: 'y',
+                plugins: {
+                    legend: { display: false },
+                    title: { display: true, text: '마이크론(MU) 가치 평가 비교' }
+                }
+            }
+        });
+
+        // 포트폴리오 비중 차트
+        new Chart(document.getElementById('portfolioChart'), {
+            type: 'pie',
+            data: {
+                labels: ['핵심 성장주', '반도체', '3대 그룹', '은행', '배당주', '현금'],
+                datasets: [{
+                    data: [20, 15, 20, 10, 15, 20],
+                    backgroundColor: ['#1a237e', '#4caf50', '#ff9800', '#2196f3', '#9c27b0', '#9e9e9e'],
+                    borderWidth: 2,
+                    borderColor: '#fff'
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { position: 'bottom' },
+                    title: { display: true, text: '권장 포트폴리오 구성 (예시)' }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
