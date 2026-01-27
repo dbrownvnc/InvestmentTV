@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>1월 26일 미증시 포커스 - 시험문제</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.7;
+            color: #333;
+            background: #f8f9fa;
+            padding: 16px;
+            max-width: 100%;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            padding: 20px;
+        }
+        h1 {
+            font-size: 1.5rem;
+            color: #1a1a2e;
+            border-bottom: 3px solid #4361ee;
+            padding-bottom: 12px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        h2 {
+            font-size: 1.25rem;
+            color: #4361ee;
+            margin: 24px 0 16px 0;
+            padding: 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .meta-info {
+            background: #e8f4f8;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+        .question-box {
+            background: #fff;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 16px;
+            margin: 16px 0;
+            transition: border-color 0.3s;
+        }
+        .question-box:hover {
+            border-color: #4361ee;
+        }
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .question-number {
+            font-weight: bold;
+            color: #4361ee;
+            font-size: 1.1rem;
+        }
+        .difficulty {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .difficulty-easy {
+            background: #d4edda;
+            color: #155724;
+        }
+        .difficulty-medium {
+            background: #fff3cd;
+            color: #856404;
+        }
+        .difficulty-hard {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        .question-type {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            background: #e2e3e5;
+            color: #383d41;
+        }
+        .question-text {
+            font-size: 1rem;
+            margin-bottom: 12px;
+            line-height: 1.6;
+        }
+        .options {
+            margin-left: 8px;
+        }
+        .option {
+            display: block;
+            padding: 10px 12px;
+            margin: 8px 0;
+            background: #f8f9fa;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .option:hover {
+            background: #e9ecef;
+        }
+        .blank {
+            display: inline-block;
+            min-width: 100px;
+            border-bottom: 2px solid #4361ee;
+            margin: 0 4px;
+        }
+        .answer-section {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 3px dashed #dee2e6;
+        }
+        .answer-box {
+            background: #f8f9fa;
+            border-left: 4px solid #4361ee;
+            padding: 16px;
+            margin: 16px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        .answer-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        .answer-number {
+            font-weight: bold;
+            color: #4361ee;
+        }
+        .correct-answer {
+            background: #d4edda;
+            color: #155724;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-weight: 600;
+        }
+        .explanation {
+            margin-top: 8px;
+            padding: 12px;
+            background: #fff;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+        .explanation::before {
+            content: "💡 ";
+        }
+        .divider {
+            height: 2px;
+            background: linear-gradient(to right, #4361ee, #764ba2);
+            margin: 30px 0;
+            border-radius: 2px;
+        }
+        .print-break {
+            page-break-before: always;
+        }
+        footer {
+            margin-top: 24px;
+            padding-top: 16px;
+            border-top: 1px solid #dee2e6;
+            font-size: 0.8rem;
+            color: #6c757d;
+            text-align: center;
+        }
+        @media print {
+            .container {
+                box-shadow: none;
+            }
+            .answer-section {
+                page-break-before: always;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📝 1월 26일 미증시 포커스 시험문제</h1>
+        
+        <div class="meta-info">
+            <strong>총 10문제</strong> | 난이도: 쉬움 3문제, 보통 5문제, 어려움 2문제<br>
+            객관식, 단답형, OX, 빈칸채우기, 서술형 포함
+        </div>
+
+        <!-- 문제지 섹션 -->
+        <h2>📋 문제지</h2>
+
+        <!-- 문제 1 -->
+        <div class="question-box">
+            <div class="question-header">
+                <span class="question-number">[문제 1]</span>
+                <span class="difficulty difficulty-easy">⭐ 쉬움</span>
+                <span class="question-type">객관식</span>
+            </div>
+            <div class="question-text">
+                현재 미국 Top 10 기업이 S&P 500 전체 시가총액에서 차지하는 비중은 얼마인가?
+            </div>
+            <div class="options">
+                <span class="option">① 20%</span>
+                <span class="option">② 30%</span>
+                <span class="option">③ 40%</span>
+                <span class="option">④ 50%</span>
+            </div>
+        </div>
+
+        <!-- 문제 2 -->
+        <div class="question-box">
+            <div class="question-header">
+                <span class="question-number">[문제 2]</span>
+                <span class="difficulty difficulty-easy">⭐ 쉬움</span>
+                <span class="question-type">OX 문제</span>
+            </div>
+            <div class="question-text">
+                1월 27-28일 FOMC 회의에서 금리 인하 확률이 95% 이상이다.
+            </div>
+            <div class="options">
+                <span class="option">O (맞다)</span>
+                <span class="option">X (틀리다)</span>
+            </div>
+        </div>
+
+        <!-- 문제 3 -->
+        <div class="question-box">
+            <div class="question-header">
+                <span class="question-number">[문제 3]</span>
+                <span class="difficulty difficulty-easy">⭐ 쉬움</span>
+                <span class="question-type">단답형</span>
+            </div>
+            <div class="question-text">
+                VIX 지수에서 변동성 급등 가능성이 높아지는 기준선(마지노선)은 몇 포인트인가?
+            </div>
+        </div>
+
+        <!-- 문제 4 -->
+        <div class="question-box">
+            <div class="question-header">
+                <span class="question-number">[문제 4]</span>
+                <span class="difficulty difficulty-medium">⭐⭐ 보통</span>
+                <span class="question-type">객관식</span>
+            </div>
+            <div class="question-text">
+                금 가격이 사상 최고치를 기록한 것의 의미로 <strong>가장 적절하지 않은</strong> 것은?
+            </div>
+            <div class="options">
+                <span class="option">① 투자 리스크가 높아졌다는 신호이다</span>
+                <span class="option">② 안전자산 선호가 증가했다</span>
+                <span class="option">③ 주식시장이 안정적이라는 의미이다</span>
+                <span class="option">④ 지정학적 불확실성이 반영된 것이다</span>
+            </div>
+        </div>
+
+        <!-- 문제 5 -->
+        <div class="question-box">
+            <div class="question-header">
+                <span class="question-number">[문제 5]</span>
+                <span class="difficulty difficulty-medium">⭐⭐ 보통</span>
+                <span class="question-type">빈칸채우기</span>
+            </div>
+            <div class="question-text">
+                이번 주 빅테크 실적 발표에서 EPS나 매출 실적보다 더 중요한 것은 <span class="blank"></span>이다. 이것이 기대치에 못 미치면 PE가 높은 종목들은 폭락할 수 있다.
+            </div>
+        </div>
+
+        <!-- 문제 6 -->
+        <div class="question-box">
+            <div class="question-header">
+                <span class="question-number">[문제 6]</span>
+                <span class="difficulty difficulty-medium">⭐⭐ 보통</span>
+                <span class="question-type">객관식</span>
+            </div>
+            <div class="question-text">
+                현재 10년 국채 금리에 대한 설명으로 옳은 것은?
+            </div>
+            <div class="options">
+                <span class="option">① 4.3% 이상으로 위험 수준이다</span>
+                <span class="option">② 4.24%로 안정권에 진입했다</span>
+                <span class="option">③ 3.5% 이하로 너무 낮은 상태이다</span>
+                <span class="option">④ 5.0%를 돌파해 경기침체 우려가 있다</span>
+            </div>
+        </div>
+
+        <!-- 문제 7 -->
+        <div class="question-box">
+            <div class="question-header">
+                <span class="question-number">[문제 7]</span>
+                <span class="difficulty difficulty-medium">⭐⭐ 보통</span>
+                <span class="question-type">단답형</span>
+            </div>
+            <div class="question-text">
+                인텔이 실적 발표 후 약 몇 % 하락했으며, 그 주된 이유는 무엇인가?<br>
+                (하락률과 이유 두 가지 모두 답하시오)
+            </div>
+        </div>
+
+        <!-- 문제 8 -->
+        <div class="question-box">
+            <div class="question-header">
+                <span class="question-number">[문제 8]</span>
+                <span class="difficulty difficulty-medium">⭐⭐ 보통</span>
+                <span class="question-type">객관식</span>
+            </div>
+            <div class="question-text">
+                올해 AI 섹터에서 성장성이 더 클 것으로 예상되는 분야는?
+            </div>
+            <div class="options">
+                <span class="option">① 소프트웨어</span>
+                <span class="option">② 메모리 반도체</span>
+                <span class="option">③ 클라우드 서비스</span>
+                <span class="option">④ 사이버보안</span>
+            </div>
+        </div>
+
+        <!-- 문제 9 -->
+        <div class="question-box">
+            <div class="question-header">
+                <span class="question-number">[문제 9]</span>
+                <span class="difficulty difficulty-hard">⭐⭐⭐ 어려움</span>
+                <span class="question-type">서술형</span>
+            </div>
+            <div class="question-text">
+                트럼프 행정부의 정책 불확실성이 "치킨아웃(Chicken Out)" 패턴을 보이고 있다고 했다. 이 패턴이 무엇인지 설명하고, 투자자가 이에 대응할 때 주의해야 할 점을 서술하시오.
+            </div>
+        </div>
+
+        <!-- 문제 10 -->
+        <div class="question-box">
+            <div class="question-header">
+                <span class="question-number">[문제 10]</span>
+                <span class="difficulty difficulty-hard">⭐⭐⭐ 어려움</span>
+                <span class="question-type">서술형</span>
+            </div>
+            <div class="question-text">
+                "섹터 로테이션(Sector Rotation)과 리밸런싱을 통해 '덜 잃는 것'도 수익이다"라는 투자 원칙에 대해 설명하고, 현재 시장 환경에서 이 원칙이 왜 중요한지 구체적인 예시를 들어 서술하시오.
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- 정답지 섹션 -->
+        <div class="answer-section print-break">
+            <h2>📝 정답 및 해설</h2>
+
+            <!-- 정답 1 -->
+            <div class="answer-box">
+                <div class="answer-header">
+                    <span class="answer-number">[문제 1]</span>
+                    <span class="correct-answer">정답: ③</span>
+                </div>
+                <div class="explanation">
+                    미국 Top 10 기업(엔비디아, 마이크로소프트, 구글, 애플 등)이 S&P 500 전체 시가총액의 <strong>40%</strong>를 차지하고 있습니다. 이는 시장 건전성 측면에서 좋지 않은 스탠스로, 소수 대형주에 대한 의존도가 높아 이들 기업의 실적 변동이 전체 시장에 큰 영향을 미칠 수 있습니다.
+                </div>
+            </div>
+
+            <!-- 정답 2 -->
+            <div class="answer-box">
+                <div class="answer-header">
+                    <span class="answer-number">[문제 2]</span>
+                    <span class="correct-answer">정답: X (틀리다)</span>
+                </div>
+                <div class="explanation">
+                    FOMC에서 금리 <strong>동결</strong> 확률이 95% 이상이지, 금리 인하 확률이 아닙니다. 인플레이션이 2.7%에서 하락하지 않고 있어 금리 인하 가능성은 매우 낮으며, 가장 빠른 인하 시점은 6월로 예상됩니다.
+                </div>
+            </div>
+
+            <!-- 정답 3 -->
+            <div class="answer-box">
+                <div class="answer-header">
+                    <span class="answer-number">[문제 3]</span>
+                    <span class="correct-answer">정답: 16</span>
+                </div>
+                <div class="explanation">
+                    VIX 지수 <strong>16</strong>이 마지노선입니다. 16 이하면 안정권이지만, 16을 넘어서면 변동성이 급격히 확대되어 30까지 빠르게 상승할 수 있습니다. 현재 15.x로 안정권에 있습니다.
+                </div>
+            </div>
+
+            <!-- 정답 4 -->
+            <div class="answer-box">
+                <div class="answer-header">
+                    <span class="answer-number">[문제 4]</span>
+                    <span class="correct-answer">정답: ③</span>
+                </div>
+                <div class="explanation">
+                    금 가격 상승은 오히려 시장 <strong>불안정</strong>의 신호입니다. 안전자산인 금으로 자금이 이동한다는 것은 투자자들이 리스크를 느끼고 있다는 의미입니다. 금 가격이 사상 최고치를 기록한 것은 지정학적 불확실성과 정책 리스크가 높아졌음을 반영합니다.
+                </div>
+            </div>
+
+            <!-- 정답 5 -->
+            <div class="answer-box">
+                <div class="answer-header">
+                    <span class="answer-number">[문제 5]</span>
+                    <span class="correct-answer">정답: 가이던스(Guidance)</span>
+                </div>
+                <div class="explanation">
+                    실적 발표에서 과거 분기의 EPS나 매출보다 <strong>가이던스(향후 전망)</strong>가 더 중요합니다. PE가 높은 종목은 이미 미래 성장에 대한 기대가 주가에 반영되어 있으므로, 가이던스가 기대치에 못 미치면 주가가 폭락할 수 있습니다.
+                </div>
+            </div>
+
+            <!-- 정답 6 -->
+            <div class="answer-box">
+                <div class="answer-header">
+                    <span class="answer-number">[문제 6]</span>
+                    <span class="correct-answer">정답: ②</span>
+                </div>
+                <div class="explanation">
+                    10년 국채 금리는 4.3%가 위험 수준의 기준이었으나, 현재 <strong>4.24%</strong>로 하락하여 안정권에 진입했습니다. 이전에 4.28%, 4.27%에서 4.24%까지 내려온 것은 시장에 긍정적 신호입니다.
+                </div>
+            </div>
+
+            <!-- 정답 7 -->
+            <div class="answer-box">
+                <div class="answer-header">
+                    <span class="answer-number">[문제 7]</span>
+                    <span class="correct-answer">정답: 17% 하락, 가이던스 하락</span>
+                </div>
+                <div class="explanation">
+                    인텔은 실적 발표 후 <strong>약 17%</strong> 하락했으며, 주된 이유는 <strong>가이던스 하락</strong>입니다. 분석에서는 인텔을 투자 대상이 아니라고 지속적으로 강조해왔으며, 작년부터 이러한 경고가 있었습니다.
+                </div>
+            </div>
+
+            <!-- 정답 8 -->
+            <div class="answer-box">
+                <div class="answer-header">
+                    <span class="answer-number">[문제 8]</span>
+                    <span class="correct-answer">정답: ②</span>
+                </div>
+                <div class="explanation">
+                    올해 AI 섹터에서는 소프트웨어보다 <strong>메모리 반도체</strong>의 성장성이 더 클 것으로 예상됩니다. AI 학습과 추론에 필요한 대용량 고속 메모리 수요가 증가하고 있기 때문입니다.
+                </div>
+            </div>
+
+            <!-- 정답 9 -->
+            <div class="answer-box">
+                <div class="answer-header">
+                    <span class="answer-number">[문제 9]</span>
+                    <span class="correct-answer">정답: 서술형</span>
+                </div>
+                <div class="explanation">
+                    <strong>[모범 답안]</strong><br><br>
+                    <strong>치킨아웃 패턴 설명:</strong> 트럼프 행정부가 강경한 정책이나 협박성 발언(예: 그린랜드 침공, 캐나다 100% 관세 등)을 한 후, 실제 행동으로 옮기지 않고 철회하는 패턴을 말합니다. 이로 인해 시장이 일시적으로 하락했다가 다시 회복하는 현상이 반복됩니다.<br><br>
+                    <strong>투자자 주의점:</strong> ① 모든 발언을 노이즈로 치부하면 위험합니다. "늑대가 왔어요" 이야기처럼, 반복되는 협박 후 실제 행동이 나올 수 있습니다. ② 단기 하락 시 매수 기회로 활용할 수 있으나, 언제 실제 정책이 실행될지 모르므로 포트폴리오 분산과 리스크 관리가 필수입니다. ③ VIX, 금 가격 등 리스크 지표를 주시하며 대응해야 합니다.
+                </div>
+            </div>
+
+            <!-- 정답 10 -->
+            <div class="answer-box">
+                <div class="answer-header">
+                    <span class="answer-number">[문제 10]</span>
+                    <span class="correct-answer">정답: 서술형</span>
+                </div>
+                <div class="explanation">
+                    <strong>[모범 답안]</strong><br><br>
+                    <strong>원칙 설명:</strong> 섹터 로테이션은 성장 가능성이 높은 섹터로 자금을 이동하고, 리밸런싱은 포트폴리오 비중을 조정하는 것입니다. "덜 잃는 것도 수익"이라는 원칙은 상승장에서 수익을 내는 것만큼, 하락장에서 손실을 최소화하는 것도 중요하다는 의미입니다.<br><br>
+                    <strong>현재 시장에서의 중요성:</strong> ① Top 10 기업이 시총의 40%를 차지하는 집중된 시장에서, 대형 기술주 하락 시 전체 포트폴리오 손실이 클 수 있습니다. ② 예를 들어, 엔비디아의 비중을 높은 가격에서 줄이고 다른 섹터(메모리 반도체 등)로 이동했다면, 엔비디아 하락 시 손실을 줄이면서 새로운 섹터에서 수익을 올릴 수 있습니다. ③ 현재처럼 금 가격이 사상 최고치를 기록하고, VIX가 16 근처에서 움직이는 환경에서는 공격적 투자보다 방어적 포지션이 중요하며, 이때 섹터 로테이션과 리밸런싱이 핵심 전략이 됩니다.
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>📊 본 시험문제는 '1월 26일 미증시 포커스' 분석 내용을 바탕으로 작성되었습니다.</p>
+            <p>📅 작성일: 2026년 1월 27일</p>
+        </footer>
+    </div>
+</body>
+</html>
