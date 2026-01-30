@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>시험문제 - 메타·마이크로소프트 실적분석과 테크실적 전망</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans KR', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #e8e8e8;
+            line-height: 1.7;
+            padding: 16px;
+            max-width: 100%;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .header {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            border-radius: 16px;
+            padding: 24px 20px;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #000;
+        }
+        .header h1 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+        .header .subtitle {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        .section {
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+        .section-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #fbbf24;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid rgba(251, 191, 36, 0.3);
+            text-align: center;
+        }
+        .question-box {
+            background: rgba(0,0,0,0.3);
+            border-radius: 10px;
+            padding: 16px;
+            margin-bottom: 16px;
+            border-left: 4px solid #3b82f6;
+        }
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        .question-number {
+            background: #3b82f6;
+            color: #fff;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        .difficulty {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.8rem;
+        }
+        .difficulty-easy { color: #4ade80; }
+        .difficulty-medium { color: #fbbf24; }
+        .difficulty-hard { color: #f87171; }
+        .question-type {
+            background: rgba(255,255,255,0.1);
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.75rem;
+            color: #94a3b8;
+        }
+        .question-text {
+            font-size: 1rem;
+            margin-bottom: 14px;
+            line-height: 1.6;
+        }
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .option {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 8px;
+            padding: 10px 14px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .option:hover {
+            background: rgba(59, 130, 246, 0.2);
+            border-color: #3b82f6;
+        }
+        .blank {
+            display: inline-block;
+            min-width: 100px;
+            border-bottom: 2px solid #fbbf24;
+            margin: 0 4px;
+        }
+        
+        /* 정답지 스타일 */
+        .answer-section {
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 3px dashed rgba(251, 191, 36, 0.5);
+        }
+        .answer-header {
+            background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #fff;
+        }
+        .answer-box {
+            background: rgba(34, 197, 94, 0.1);
+            border-radius: 10px;
+            padding: 16px;
+            margin-bottom: 16px;
+            border-left: 4px solid #22c55e;
+        }
+        .answer-number {
+            background: #22c55e;
+            color: #fff;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+        .answer-text {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #4ade80;
+            margin-bottom: 10px;
+        }
+        .explanation {
+            font-size: 0.9rem;
+            color: #d1d5db;
+            background: rgba(0,0,0,0.2);
+            padding: 12px;
+            border-radius: 8px;
+            line-height: 1.6;
+        }
+        
+        strong {
+            color: #fbbf24;
+        }
+        
+        .divider {
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(251, 191, 36, 0.5), transparent);
+            margin: 30px 0;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #64748b;
+            font-size: 0.8rem;
+        }
+        
+        .ox-options {
+            display: flex;
+            gap: 16px;
+            margin-top: 10px;
+        }
+        .ox-option {
+            flex: 1;
+            text-align: center;
+            padding: 12px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 8px;
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+        .ox-option:first-child {
+            color: #4ade80;
+        }
+        .ox-option:last-child {
+            color: #f87171;
+        }
+        
+        .short-answer {
+            background: rgba(255,255,255,0.05);
+            border: 1px dashed rgba(255,255,255,0.3);
+            border-radius: 8px;
+            padding: 12px;
+            min-height: 50px;
+            margin-top: 10px;
+        }
+        
+        .essay-box {
+            background: rgba(255,255,255,0.05);
+            border: 1px dashed rgba(255,255,255,0.3);
+            border-radius: 8px;
+            padding: 16px;
+            min-height: 100px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📝 시험문제</h1>
+            <div class="subtitle">메타·마이크로소프트 실적분석과 테크실적 전망 | 총 10문제</div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">━━━━ 📋 문제지 ━━━━</div>
+
+            <!-- 문제 1 -->
+            <div class="question-box">
+                <div class="question-header">
+                    <span class="question-number">문제 1</span>
+                    <div class="difficulty difficulty-easy">⭐ 쉬움 <span class="question-type">객관식</span></div>
+                </div>
+                <div class="question-text">
+                    메타(META)의 2024년 4분기 실제 EPS(주당순이익)는 얼마였는가?
+                </div>
+                <div class="options">
+                    <div class="option">① $7.88</div>
+                    <div class="option">② $8.48</div>
+                    <div class="option">③ $8.88</div>
+                    <div class="option">④ $9.28</div>
+                </div>
+            </div>
+
+            <!-- 문제 2 -->
+            <div class="question-box">
+                <div class="question-header">
+                    <span class="question-number">문제 2</span>
+                    <div class="difficulty difficulty-easy">⭐ 쉬움 <span class="question-type">OX문제</span></div>
+                </div>
+                <div class="question-text">
+                    마이크로소프트는 EPS가 예상치($3.91)를 상회하여 $4.14를 기록했음에도 불구하고 주가가 약 10% 폭락했다.
+                </div>
+                <div class="ox-options">
+                    <div class="ox-option">⭕ O</div>
+                    <div class="ox-option">❌ X</div>
+                </div>
+            </div>
+
+            <!-- 문제 3 -->
+            <div class="question-box">
+                <div class="question-header">
+                    <span class="question-number">문제 3</span>
+                    <div class="difficulty difficulty-medium">⭐⭐ 보통 <span class="question-type">단답형</span></div>
+                </div>
+                <div class="question-text">
+                    마이크로소프트 주가 폭락의 직접적인 원인이 된 클라우드 서비스의 이름은 무엇이며, 예상 성장률과 실제 성장률의 차이는 몇 %p였는가?
+                </div>
+                <div class="short-answer">
+                    클라우드 서비스명: ________________<br><br>
+                    차이: ________%p
+                </div>
+            </div>
+
+            <!-- 문제 4 -->
+            <div class="question-box">
+                <div class="question-header">
+                    <span class="question-number">문제 4</span>
+                    <div class="difficulty difficulty-medium">⭐⭐ 보통 <span class="question-type">객관식</span></div>
+                </div>
+                <div class="question-text">
+                    다음 중 AI 시대에 소프트웨어 산업을 축소/회피해야 하는 이유로 <strong>가장 적절하지 않은</strong> 것은?
+                </div>
+                <div class="options">
+                    <div class="option">① AI가 소프트웨어 시장을 잠식하고 있다</div>
+                    <div class="option">② 평균 마진율 62%가 AI 대체로 하락할 가능성이 있다</div>
+                    <div class="option">③ 클라우드 인프라 수요가 급감하고 있다</div>
+                    <div class="option">④ 작년 4분기부터 실적 부진이 시작되었다</div>
+                </div>
+            </div>
+
+            <!-- 문제 5 -->
+            <div class="question-box">
+                <div class="question-header">
+                    <span class="question-number">문제 5</span>
+                    <div class="difficulty difficulty-medium">⭐⭐ 보통 <span class="question-type">빈칸채우기</span></div>
+                </div>
+                <div class="question-text">
+                    마이크론(MU)은 AI 메모리 수요 급증으로 메모리 (<span class="blank"></span>)을 타고 있으며, 1년간 약 (<span class="blank"></span>)%의 수익률을 기록했다. 단, 메모리 산업의 (<span class="blank"></span>) 리스크를 감안하여 (<span class="blank"></span>)월 이전에 비중 조절이 권장된다.
+                </div>
+            </div>
+
+            <!-- 문제 6 -->
+            <div class="question-box">
+                <div class="question-header">
+                    <span class="question-number">문제 6</span>
+                    <div class="difficulty difficulty-easy">⭐ 쉬움 <span class="question-type">객관식</span></div>
+                </div>
+                <div class="question-text">
+                    아마존이 16,000명의 화이트칼라를 해고한 후 추구하는 조직 문화로 CEO가 언급한 것은?
+                </div>
+                <div class="options">
+                    <div class="option">① 관료주의 강화</div>
+                    <div class="option">② 대형 스타트업 정신</div>
+                    <div class="option">③ 계층적 의사결정</div>
+                    <div class="option">④ 중간관리자 확대</div>
+                </div>
+            </div>
+
+            <!-- 문제 7 -->
+            <div class="question-box">
+                <div class="question-header">
+                    <span class="question-number">문제 7</span>
+                    <div class="difficulty difficulty-medium">⭐⭐ 보통 <span class="question-type">OX문제</span></div>
+                </div>
+                <div class="question-text">
+                    테슬라는 EPS가 예상치를 상회했으나, 자동차 판매가 16% 감소했고, 트럼프 정부의 EV 세금 혜택 $7,000 폐지로 실질 가격이 상승했다.
+                </div>
+                <div class="ox-options">
+                    <div class="ox-option">⭕ O</div>
+                    <div class="ox-option">❌ X</div>
+                </div>
+            </div>
+
+            <!-- 문제 8 -->
+            <div class="question-box">
+                <div class="question-header">
+                    <span class="question-number">문제 8</span>
+                    <div class="difficulty difficulty-hard">⭐⭐⭐ 어려움 <span class="question-type">객관식</span></div>
+                </div>
+                <div class="question-text">
+                    다음 중 AI 반도체 슈퍼사이클의 수혜 종목으로 "투자 권장" 의견이 아닌 것은?
+                </div>
+                <div class="options">
+                    <div class="option">① TSMC (TSM) - 파운드리</div>
+                    <div class="option">② LAM Research (LRCX) - 반도체 장비</div>
+                    <div class="option">③ ServiceNow (NOW) - 소프트웨어</div>
+                    <div class="option">④ Vertiv (VRT) - 전력 인프라</div>
+                    <div class="option">⑤ Broadcom (AVGO) - 네트워킹</div>
+                </div>
+            </div>
+
+            <!-- 문제 9 -->
+            <div class="question-box">
+                <div class="question-header">
+                    <span class="question-number">문제 9</span>
+                    <div class="difficulty difficulty-medium">⭐⭐ 보통 <span class="question-type">단답형</span></div>
+                </div>
+                <div class="question-text">
+                    S&P 500이 뚫은 저항선 수준과, "1월 장세가 연간 장세를 예측한다"는 법칙의 확률은 각각 얼마인가?
+                </div>
+                <div class="short-answer">
+                    저항선: ________________<br><br>
+                    1월 효과 확률: ________%
+                </div>
+            </div>
+
+            <!-- 문제 10 -->
+            <div class="question-box">
+                <div class="question-header">
+                    <span class="question-number">문제 10</span>
+                    <div class="difficulty difficulty-hard">⭐⭐⭐ 어려움 <span class="question-type">서술형</span></div>
+                </div>
+                <div class="question-text">
+                    AI 시대에 주식 시장에서 발생하는 "오버셀링(Overselling)" 현상을 설명하고, 이에 대응하는 투자 전략을 포트폴리오 구성 관점에서 서술하시오.
+                </div>
+                <div class="essay-box">
+                    
+                </div>
+            </div>
+
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- 정답 및 해설 -->
+        <div class="answer-section">
+            <div class="answer-header">
+                <h2>📝 정답 및 해설</h2>
+            </div>
+
+            <div class="section">
+                <!-- 정답 1 -->
+                <div class="answer-box">
+                    <span class="answer-number">문제 1</span>
+                    <div class="answer-text">정답: ③ $8.88</div>
+                    <div class="explanation">
+                        메타의 2024년 4분기 EPS는 $8.88로, 예상치를 상회했다. 이는 AI를 활용한 광고 효율화가 성과를 내면서 광고 매출이 크게 증가한 결과이다. 특히 AI 칩을 활용해 마케팅·세일즈에 직접 연결하여 광고 효과를 극대화한 것이 주요 성공 요인이었다.
+                    </div>
+                </div>
+
+                <!-- 정답 2 -->
+                <div class="answer-box">
+                    <span class="answer-number">문제 2</span>
+                    <div class="answer-text">정답: ⭕ O</div>
+                    <div class="explanation">
+                        마이크로소프트는 EPS가 예상치 $3.91을 상회하여 $4.14를 기록했음에도 주가가 약 10%(장중 최대 12%) 폭락했다. 이는 Azure 클라우드 성장률이 예상 40%에서 실제 39%로 1%p 낮았기 때문이다. 시장은 "AI에 그렇게 투자하고도 이 정도 성장밖에?" 라는 성과 검증 요구를 하기 시작한 것이다.
+                    </div>
+                </div>
+
+                <!-- 정답 3 -->
+                <div class="answer-box">
+                    <span class="answer-number">문제 3</span>
+                    <div class="answer-text">정답: Azure(애저) / 1%p</div>
+                    <div class="explanation">
+                        마이크로소프트의 클라우드 서비스인 Azure는 예상 성장률 40% 대비 실제 39%를 기록하여 1%p 차이가 났다. 절대적으로는 작은 차이지만, 시장은 AI 투자 대비 성과가 부족하다고 해석하여 대규모 매도가 발생했다. 이는 AI 시대 고평가 종목에 대한 시장의 엄격한 잣대를 보여주는 사례이다.
+                    </div>
+                </div>
+
+                <!-- 정답 4 -->
+                <div class="answer-box">
+                    <span class="answer-number">문제 4</span>
+                    <div class="answer-text">정답: ③ 클라우드 인프라 수요가 급감하고 있다</div>
+                    <div class="explanation">
+                        클라우드 인프라 수요는 오히려 AI로 인해 급증하고 있다. 축소 권고 대상은 클라우드 인프라가 아닌 'AI 애플리케이션 소프트웨어'이다. AI가 기존 소프트웨어의 기능을 대체하면서 마진율 하락이 예상되고, 실제로 ServiceNow(-41%), CRM, Adobe 등이 부진하고 있다. 반면 클라우드 인프라(AWS, Azure 등)와 반도체는 AI 슈퍼사이클의 수혜를 받고 있다.
+                    </div>
+                </div>
+
+                <!-- 정답 5 -->
+                <div class="answer-box">
+                    <span class="answer-number">문제 5</span>
+                    <div class="answer-text">정답: 슈퍼사이클 / 390 / 사이클(또는 사이클릭) / 6</div>
+                    <div class="explanation">
+                        마이크론은 AI 메모리 수요 급증으로 메모리 슈퍼사이클을 타고 있으며, 1년간 약 390%의 수익률을 기록했다. 그러나 메모리 산업은 전통적으로 사이클(호황-불황)이 있어 주문량 증가 속도가 둔화될 때 폭락 가능성이 있다. 현재 주문량의 50%만 소화 중이므로 상반기까지는 양호하나, 6월 이전에 비중 조절이 권장된다.
+                    </div>
+                </div>
+
+                <!-- 정답 6 -->
+                <div class="answer-box">
+                    <span class="answer-number">문제 6</span>
+                    <div class="answer-text">정답: ② 대형 스타트업 정신</div>
+                    <div class="explanation">
+                        아마존 CEO 앤디 재시는 16,000명의 중간 관리자급 해고 후 "대형 스타트업 정신"을 언급했다. 이는 AI 기반으로 조직이 수평화되고, CEO와의 의사결정 단계가 1~2단계 축소되며, 관료주의가 제거되는 변화를 의미한다. 보고를 받아 포장하는 중간 관리자 역할이 AI로 대체될 수 있다는 시그널이다.
+                    </div>
+                </div>
+
+                <!-- 정답 7 -->
+                <div class="answer-box">
+                    <span class="answer-number">문제 7</span>
+                    <div class="answer-text">정답: ⭕ O</div>
+                    <div class="explanation">
+                        테슬라는 EPS가 예상 $0.45 대비 $0.50으로 상회했다. 그러나 자동차 판매는 전년 대비 16% 감소했으며, 중국 BYD와의 경쟁도 심화되고 있다. 또한 트럼프 정부가 EV 세금 혜택 $7,000를 폐지하면서 소비자 입장에서 실질 가격이 상승했다. 현재 테슬라 주가는 로보택시와 휴머노이드 로봇에 대한 기대감으로 현상 유지 중이다.
+                    </div>
+                </div>
+
+                <!-- 정답 8 -->
+                <div class="answer-box">
+                    <span class="answer-number">문제 8</span>
+                    <div class="answer-text">정답: ③ ServiceNow (NOW) - 소프트웨어</div>
+                    <div class="explanation">
+                        ServiceNow는 AI 애플리케이션 소프트웨어 기업으로, AI 슈퍼사이클의 수혜가 아닌 피해 섹터에 속한다. 1개월 -24%, 6개월 -41% 하락했으며 투자 대상에서 제외 권고되었다. 반면 TSMC(파운드리), LAM Research(장비), Vertiv(전력 인프라), Broadcom(네트워킹)은 모두 AI 반도체 슈퍼사이클의 직접 수혜 종목으로 투자 권장 의견이다.
+                    </div>
+                </div>
+
+                <!-- 정답 9 -->
+                <div class="answer-box">
+                    <span class="answer-number">문제 9</span>
+                    <div class="answer-text">정답: 6,954 (또는 약 7,000) / 80%</div>
+                    <div class="explanation">
+                        S&P 500은 저항선 6,954를 돌파하여 7,000에 근접했다. "1월 효과" 또는 "1월 바로미터"로 알려진 이 법칙은 1월 장세가 해당 연도 전체 장세를 예측한다는 것으로, 역사적으로 약 80%의 확률로 맞았다. 따라서 1월 장이 상승으로 마감되면 연간 상승장을 기대할 수 있다.
+                    </div>
+                </div>
+
+                <!-- 정답 10 -->
+                <div class="answer-box">
+                    <span class="answer-number">문제 10</span>
+                    <div class="answer-text">정답 예시:</div>
+                    <div class="explanation">
+                        <strong>[오버셀링 현상 설명]</strong><br>
+                        AI 트레이딩 시대에는 알고리즘이 동시다발적으로 대량 매도를 실행한다. 과거에는 문제 발견 시 1~2% 매도가 일반적이었으나, 현재는 AI가 밀리초 단위로 판단하여 1만~2만 주를 동시에 매도한다. 이로 인해 마이크로소프트 같은 대형주도 하루 만에 10% 이상 폭락할 수 있다.<br><br>
+                        
+                        <strong>[대응 투자 전략]</strong><br>
+                        1) <u>포트폴리오 분산</u>: 메타 상승이 마이크로소프트 하락을 상쇄하도록 섹터/종목 분산<br>
+                        2) <u>현금 확보</u>: 10~15% 현금을 보유하여 폭락 시 3-3-3-5 비율로 분할 매수<br>
+                        3) <u>역발상 매수</u>: "이건 오버솔드"라고 판단되면 AI의 과매도를 기회로 활용<br>
+                        4) <u>안전자산 보유</u>: 금/은(GLD, SLV)으로 변동성 헤지<br>
+                        5) <u>섹터 인식</u>: 보유 종목의 산업/섹터 파악으로 연쇄 하락 리스크 관리
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>📺 원본: 멤버십 방송 (2026.1.30)</p>
+            <p style="margin-top:8px;">※ 본 시험문제는 학습 목적으로 제작되었습니다.</p>
+        </div>
+    </div>
+</body>
+</html>

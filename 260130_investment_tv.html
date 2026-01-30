@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>메타·마이크로소프트 실적분석과 주요 테크실적 전망 (2026.1.30)</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans KR', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #e8e8e8;
+            line-height: 1.7;
+            padding: 16px;
+            max-width: 100%;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 16px;
+            padding: 24px 20px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .header h1 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+        .header .date {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        .section {
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
+            border-left: 4px solid #667eea;
+        }
+        .section h2 {
+            font-size: 1.15rem;
+            color: #a8dadc;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .section h3 {
+            font-size: 1rem;
+            color: #ffd93d;
+            margin: 16px 0 10px 0;
+        }
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.2), rgba(118, 75, 162, 0.2));
+            border-radius: 10px;
+            padding: 16px;
+            margin: 12px 0;
+        }
+        .stat-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin: 12px 0;
+        }
+        .stat-item {
+            background: rgba(0,0,0,0.3);
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+        }
+        .stat-value {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #4ade80;
+        }
+        .stat-value.negative {
+            color: #f87171;
+        }
+        .stat-label {
+            font-size: 0.8rem;
+            color: #94a3b8;
+            margin-top: 4px;
+        }
+        .key-point {
+            background: rgba(74, 222, 128, 0.1);
+            border-left: 3px solid #4ade80;
+            padding: 12px 14px;
+            margin: 10px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        .warning-box {
+            background: rgba(248, 113, 113, 0.1);
+            border-left: 3px solid #f87171;
+            padding: 12px 14px;
+            margin: 10px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        .chart-container {
+            background: rgba(0,0,0,0.4);
+            border-radius: 12px;
+            padding: 16px;
+            margin: 16px 0;
+        }
+        .bar-chart {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .bar-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .bar-label {
+            width: 80px;
+            font-size: 0.85rem;
+            text-align: right;
+        }
+        .bar-track {
+            flex: 1;
+            height: 24px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 4px;
+            overflow: hidden;
+            position: relative;
+        }
+        .bar-fill {
+            height: 100%;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 8px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            transition: width 0.3s;
+        }
+        .bar-fill.green { background: linear-gradient(90deg, #22c55e, #4ade80); }
+        .bar-fill.blue { background: linear-gradient(90deg, #3b82f6, #60a5fa); }
+        .bar-fill.purple { background: linear-gradient(90deg, #8b5cf6, #a78bfa); }
+        .bar-fill.red { background: linear-gradient(90deg, #ef4444, #f87171); }
+        .bar-fill.yellow { background: linear-gradient(90deg, #eab308, #fde047); color: #000; }
+        
+        .company-card {
+            background: rgba(0,0,0,0.3);
+            border-radius: 10px;
+            padding: 16px;
+            margin: 12px 0;
+        }
+        .company-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        .company-name {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #fff;
+        }
+        .company-ticker {
+            background: rgba(102, 126, 234, 0.3);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: #a8dadc;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 12px 0;
+            font-size: 0.9rem;
+        }
+        th, td {
+            padding: 10px 8px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        th {
+            background: rgba(102, 126, 234, 0.2);
+            color: #a8dadc;
+            font-weight: 600;
+        }
+        tr:hover {
+            background: rgba(255,255,255,0.05);
+        }
+        .tag {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .tag-buy { background: #22c55e; color: #fff; }
+        .tag-hold { background: #eab308; color: #000; }
+        .tag-caution { background: #f87171; color: #fff; }
+        .tag-avoid { background: #6b7280; color: #fff; }
+        
+        .timeline {
+            position: relative;
+            padding-left: 24px;
+            margin: 16px 0;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 6px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #667eea;
+        }
+        .timeline-item {
+            position: relative;
+            margin-bottom: 16px;
+            padding-bottom: 16px;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -22px;
+            top: 4px;
+            width: 12px;
+            height: 12px;
+            background: #667eea;
+            border-radius: 50%;
+        }
+        .timeline-date {
+            font-size: 0.8rem;
+            color: #94a3b8;
+            margin-bottom: 4px;
+        }
+        
+        .donut-chart {
+            width: 200px;
+            height: 200px;
+            margin: 16px auto;
+            position: relative;
+        }
+        .donut-chart svg {
+            width: 100%;
+            height: 100%;
+            transform: rotate(-90deg);
+        }
+        .donut-segment {
+            fill: none;
+            stroke-width: 35;
+        }
+        .donut-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+        .donut-center .value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #fff;
+        }
+        .donut-center .label {
+            font-size: 0.8rem;
+            color: #94a3b8;
+        }
+        .legend {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 12px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.8rem;
+        }
+        .legend-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 3px;
+        }
+        
+        .summary-box {
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.15), rgba(74, 222, 128, 0.1));
+            border: 1px solid rgba(74, 222, 128, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .summary-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #4ade80;
+            margin-bottom: 12px;
+        }
+        
+        ul {
+            padding-left: 20px;
+            margin: 10px 0;
+        }
+        li {
+            margin: 6px 0;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #64748b;
+            font-size: 0.8rem;
+        }
+        
+        strong {
+            color: #ffd93d;
+        }
+        
+        .price-change {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-weight: 600;
+        }
+        .price-change.up { color: #4ade80; }
+        .price-change.down { color: #f87171; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📊 메타·마이크로소프트 실적분석과<br>주요 테크 실적 전망</h1>
+            <div class="date">2026년 1월 30일 | 멤버십 분석 리포트</div>
+        </div>
+
+        <!-- 핵심 요약 -->
+        <div class="section">
+            <h2>🎯 핵심 요약</h2>
+            <div class="highlight-box">
+                <p><strong>메타(META)</strong>: EPS 8.88로 예상치 상회, AI 광고 효율화로 실적 호조 → <span class="price-change up">▲10%</span></p>
+                <p style="margin-top:10px;"><strong>마이크로소프트(MSFT)</strong>: EPS 4.14로 상회했으나 Azure 성장률 둔화 우려 → <span class="price-change down">▼9.9%</span></p>
+                <p style="margin-top:10px;"><strong>투자 전략</strong>: 소프트웨어 축소, 반도체/메모리 확대, 포트폴리오 다각화 필수</p>
+            </div>
+        </div>
+
+        <!-- 메타 실적 분석 -->
+        <div class="section">
+            <h2>📱 메타(META) 실적 분석</h2>
+            
+            <div class="company-card">
+                <div class="company-header">
+                    <span class="company-name">Meta Platforms</span>
+                    <span class="company-ticker">NASDAQ: META</span>
+                </div>
+                
+                <div class="stat-grid">
+                    <div class="stat-item">
+                        <div class="stat-value">$8.88</div>
+                        <div class="stat-label">EPS (예상 상회)</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">+10%</div>
+                        <div class="stat-label">주가 상승</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">$753</div>
+                        <div class="stat-label">내재가치 추정</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">$30B+</div>
+                        <div class="stat-label">AI CAPEX 계획</div>
+                    </div>
+                </div>
+            </div>
+
+            <h3>✅ 긍정적 요인</h3>
+            <div class="key-point">
+                <strong>AI 광고 효율화 성과</strong><br>
+                AI 칩을 활용한 마케팅·세일즈 연결로 광고 효과가 극대화되어 실적 상회. AI를 실제 매출로 연결할 수 있는 대표적 기업.
+            </div>
+
+            <h3>⚠️ 우려 요인</h3>
+            <div class="warning-box">
+                <strong>메타버스 투자 부담</strong><br>
+                Reality Labs 부문 지속 적자. 10% 레이오프 단행에도 메타버스 사업 성과 미흡. 스핀오프 필요성 제기됨.
+            </div>
+
+            <div class="key-point">
+                <strong>💡 투자 시사점</strong>: 현재 주가 기준 내재가치 $753 대비 저평가 상태. 포트폴리오에 <strong>반드시 포함</strong> 권장.
+            </div>
+        </div>
+
+        <!-- 마이크로소프트 실적 분석 -->
+        <div class="section">
+            <h2>💻 마이크로소프트(MSFT) 실적 분석</h2>
+            
+            <div class="company-card">
+                <div class="company-header">
+                    <span class="company-name">Microsoft</span>
+                    <span class="company-ticker">NASDAQ: MSFT</span>
+                </div>
+                
+                <div class="stat-grid">
+                    <div class="stat-item">
+                        <div class="stat-value">$4.14</div>
+                        <div class="stat-label">실제 EPS</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">$3.91</div>
+                        <div class="stat-label">예상 EPS</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">$81B</div>
+                        <div class="stat-label">매출</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value negative">-9.9%</div>
+                        <div class="stat-label">주가 하락</div>
+                    </div>
+                </div>
+            </div>
+
+            <h3>📉 폭락 원인: Azure 성장률 둔화</h3>
+            
+            <div class="chart-container">
+                <div style="text-align:center; margin-bottom:12px; font-weight:600;">Azure 클라우드 성장률 비교</div>
+                <div class="bar-chart">
+                    <div class="bar-item">
+                        <span class="bar-label">예상치</span>
+                        <div class="bar-track">
+                            <div class="bar-fill blue" style="width:80%;">40%</div>
+                        </div>
+                    </div>
+                    <div class="bar-item">
+                        <span class="bar-label">실제</span>
+                        <div class="bar-track">
+                            <div class="bar-fill yellow" style="width:78%;">39%</div>
+                        </div>
+                    </div>
+                </div>
+                <p style="margin-top:12px; font-size:0.85rem; color:#94a3b8;">※ 1%p 차이지만 시장은 AI 투자 대비 성과 부족으로 해석</p>
+            </div>
+
+            <div class="warning-box">
+                <strong>시장 심리</strong>: "AI에 그렇게 투자했는데 얼마나 벌었어?" - 기관들의 성과 검증 요구 시작. OpenAI 연결 사업의 수익화에 시간 필요.
+            </div>
+
+            <div class="key-point">
+                <strong>💡 대응 전략</strong>: 펀더멘털 문제 아님. <strong>폭락 시 매수 기회</strong>. 오늘 같은 날 추가 매수 권장. 데뷔 30대 그룹에 포함된 종목으로 보유 유지.
+            </div>
+        </div>
+
+        <!-- AI 시대 오버셀링 현상 -->
+        <div class="section">
+            <h2>🤖 AI 시대 시장 변동성 특징</h2>
+            
+            <div class="highlight-box">
+                <p><strong>AI 트레이딩의 오버셀/오버바이 현상</strong></p>
+                <p style="margin-top:8px;">기존에는 문제 발견 시 1~2% 매도가 일반적이었으나, AI 알고리즘으로 인해 동시다발적 대량 매도 발생.</p>
+            </div>
+
+            <table>
+                <tr>
+                    <th>구분</th>
+                    <th>과거</th>
+                    <th>AI 시대</th>
+                </tr>
+                <tr>
+                    <td>매도 규모</td>
+                    <td>100~1,000주</td>
+                    <td>1만~2만주 동시</td>
+                </tr>
+                <tr>
+                    <td>의사결정 시간</td>
+                    <td>분~시간</td>
+                    <td>밀리초</td>
+                </tr>
+                <tr>
+                    <td>가격 변동</td>
+                    <td>1~3%</td>
+                    <td>10%+ 가능</td>
+                </tr>
+            </table>
+
+            <div class="key-point">
+                <strong>역발상 투자 기회</strong>: AI가 오버셀링할 때 "이건 오버솔드인데"라고 판단하고 매수할 수 있는 역발상이 필요. 오전 폭락 → 오후 회복 패턴 활용.
+            </div>
+        </div>
+
+        <!-- 테슬라 실적 -->
+        <div class="section">
+            <h2>🚗 테슬라(TSLA) 실적 분석</h2>
+            
+            <div class="company-card">
+                <div class="company-header">
+                    <span class="company-name">Tesla</span>
+                    <span class="company-ticker">NASDAQ: TSLA</span>
+                </div>
+                
+                <div class="stat-grid">
+                    <div class="stat-item">
+                        <div class="stat-value">$0.50</div>
+                        <div class="stat-label">실제 EPS</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">$0.45</div>
+                        <div class="stat-label">예상 EPS</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value negative">-16%</div>
+                        <div class="stat-label">자동차 판매</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">-$7,000</div>
+                        <div class="stat-label">EV 세금 혜택 폐지</div>
+                    </div>
+                </div>
+            </div>
+
+            <h3>리스크 요인</h3>
+            <ul>
+                <li>중국 BYD와의 경쟁 심화로 전망 불투명</li>
+                <li>트럼프 정부 EV 세금 혜택 $7,000 폐지 → 실질 가격 인상 효과</li>
+            </ul>
+
+            <h3>성장 동력</h3>
+            <ul>
+                <li><strong>로보택시(Robotaxi)</strong>: 기관 투자자들의 높은 기대</li>
+                <li><strong>휴머노이드 로봇</strong>: 새로운 수익원 기대</li>
+            </ul>
+
+            <div class="key-point">
+                현재 주가 현상 유지 중. 로보택시·로봇 기대감이 자동차 판매 감소를 상쇄.
+            </div>
+        </div>
+
+        <!-- 마이크론 분석 -->
+        <div class="section">
+            <h2>💾 마이크론(MU) - 메모리 슈퍼사이클</h2>
+            
+            <div class="company-card">
+                <div class="company-header">
+                    <span class="company-name">Micron Technology</span>
+                    <span class="company-ticker">NASDAQ: MU</span>
+                </div>
+                
+                <div class="stat-grid">
+                    <div class="stat-item">
+                        <div class="stat-value">+53%</div>
+                        <div class="stat-label">YTD 수익률</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">+390%</div>
+                        <div class="stat-label">1년 수익률</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <div style="text-align:center; margin-bottom:12px; font-weight:600;">MU 수익률 비교</div>
+                <div class="bar-chart">
+                    <div class="bar-item">
+                        <span class="bar-label">1년</span>
+                        <div class="bar-track">
+                            <div class="bar-fill green" style="width:100%;">390%</div>
+                        </div>
+                    </div>
+                    <div class="bar-item">
+                        <span class="bar-label">YTD</span>
+                        <div class="bar-track">
+                            <div class="bar-fill blue" style="width:54%;">53%</div>
+                        </div>
+                    </div>
+                    <div class="bar-item">
+                        <span class="bar-label">S&P 500</span>
+                        <div class="bar-track">
+                            <div class="bar-fill purple" style="width:15%;">~15%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="highlight-box">
+                <strong>AI 메모리 수요</strong><br>
+                현재 주문량의 50%만 소화 중. 나머지 50%를 올해 처리해야 하므로 <strong>상반기 실적 호조 예상</strong>.
+            </div>
+
+            <div class="warning-box">
+                <strong>사이클 리스크</strong>: 메모리는 항상 사이클이 있음. 주문량이 감소하고 성장 속도가 둔화될 때 폭락 가능. <strong>6월 이전에 비중 조절 권장</strong>.
+            </div>
+        </div>
+
+        <!-- 소프트웨어 산업 경고 -->
+        <div class="section">
+            <h2>⚠️ 소프트웨어 산업 - 축소 권고</h2>
+            
+            <div class="warning-box">
+                <strong>AI가 소프트웨어 시장 잠식 중</strong><br>
+                평균 마진율 62%의 소프트웨어 기업들, AI 대체 시 마진율 하락 불가피. 작년 4분기부터 실적 부진 시작.
+            </div>
+
+            <h3>📉 축소/제외 권장 종목</h3>
+            <table>
+                <tr>
+                    <th>종목</th>
+                    <th>최근 하락</th>
+                    <th>의견</th>
+                </tr>
+                <tr>
+                    <td>ServiceNow (NOW)</td>
+                    <td>1개월 -24%<br>6개월 -41%</td>
+                    <td><span class="tag tag-avoid">제외</span></td>
+                </tr>
+                <tr>
+                    <td>Salesforce (CRM)</td>
+                    <td>-</td>
+                    <td><span class="tag tag-avoid">제외</span></td>
+                </tr>
+                <tr>
+                    <td>Adobe (ADBE)</td>
+                    <td>-</td>
+                    <td><span class="tag tag-avoid">제외</span></td>
+                </tr>
+                <tr>
+                    <td>팔로알토 네트워크</td>
+                    <td>-</td>
+                    <td><span class="tag tag-caution">주의</span></td>
+                </tr>
+                <tr>
+                    <td>Snowflake</td>
+                    <td>-</td>
+                    <td><span class="tag tag-caution">주의</span></td>
+                </tr>
+            </table>
+
+            <div class="key-point">
+                <strong>핵심 메시지</strong>: AI 애플리케이션 소프트웨어 산업은 당분간 피하는 것이 좋음. 현금으로 보유하거나 다른 섹터로 전환 권장.
+            </div>
+        </div>
+
+        <!-- 아마존 구조조정 -->
+        <div class="section">
+            <h2>📦 아마존(AMZN) - 대규모 구조조정</h2>
+            
+            <div class="stat-grid">
+                <div class="stat-item">
+                    <div class="stat-value negative">16,000명</div>
+                    <div class="stat-label">화이트칼라 해고</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">수평 조직</div>
+                    <div class="stat-label">조직 구조 변화</div>
+                </div>
+            </div>
+
+            <h3>구조조정 특징</h3>
+            <ul>
+                <li><strong>중간 관리자급</strong>(대리~부장급) 대폭 축소</li>
+                <li>AI 기반 의사결정으로 관료주의 제거</li>
+                <li>CEO와의 의사결정 단계 1~2단계 축소</li>
+                <li>"대형 스타트업 정신" - CEO 앤디 재시</li>
+            </ul>
+
+            <h3>사업 방향 전환</h3>
+            <div class="highlight-box">
+                <p><strong>폐지</strong>: Amazon Fresh and Go (무인 매장)</p>
+                <p style="margin-top:8px;"><strong>강화</strong>: 초고속 배송 서비스 (당일 배송)</p>
+                <p style="margin-top:8px; font-size:0.9rem; color:#94a3b8;">직접 방문 → 온라인 주문 즉시 배송이 미래지향적이라 판단</p>
+            </div>
+
+            <div class="key-point">
+                <strong>투자 시사점</strong>: 대량 해고 시 일반적으로 P/E 하락 → <strong>매수 기회</strong>. 아마존 긍정적 평가.
+            </div>
+        </div>
+
+        <!-- AI 반도체 슈퍼사이클 -->
+        <div class="section">
+            <h2>🔥 AI 반도체 슈퍼사이클</h2>
+            
+            <div class="chart-container">
+                <div style="text-align:center; margin-bottom:12px; font-weight:600;">AI 칩 시장 규모 전망 (2024-2028)</div>
+                <div class="bar-chart">
+                    <div class="bar-item">
+                        <span class="bar-label">2024</span>
+                        <div class="bar-track">
+                            <div class="bar-fill blue" style="width:40%;">$220B</div>
+                        </div>
+                    </div>
+                    <div class="bar-item">
+                        <span class="bar-label">2028</span>
+                        <div class="bar-track">
+                            <div class="bar-fill green" style="width:100%;">$550B+</div>
+                        </div>
+                    </div>
+                </div>
+                <p style="margin-top:12px; text-align:center; font-size:0.9rem; color:#4ade80; font-weight:600;">+150% 성장 예상</p>
+            </div>
+
+            <h3>🎯 수혜 섹터 및 종목</h3>
+            <table>
+                <tr>
+                    <th>분류</th>
+                    <th>종목</th>
+                    <th>의견</th>
+                </tr>
+                <tr>
+                    <td>파운드리</td>
+                    <td>TSMC (TSM)</td>
+                    <td><span class="tag tag-buy">매수</span></td>
+                </tr>
+                <tr>
+                    <td>장비</td>
+                    <td>LAM Research (LRCX)</td>
+                    <td><span class="tag tag-buy">매수</span></td>
+                </tr>
+                <tr>
+                    <td>메모리</td>
+                    <td>Micron (MU)</td>
+                    <td><span class="tag tag-buy">필수 보유</span></td>
+                </tr>
+                <tr>
+                    <td>GPU</td>
+                    <td>NVIDIA (NVDA)</td>
+                    <td><span class="tag tag-buy">매수</span></td>
+                </tr>
+                <tr>
+                    <td>네트워킹</td>
+                    <td>Broadcom (AVGO)</td>
+                    <td><span class="tag tag-buy">매수</span></td>
+                </tr>
+                <tr>
+                    <td>전력인프라</td>
+                    <td>Vertiv (VRT)</td>
+                    <td><span class="tag tag-buy">추가 매수 검토</span></td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- SpaceX IPO -->
+        <div class="section">
+            <h2>🚀 SpaceX IPO 전망</h2>
+            
+            <div class="highlight-box">
+                <p><strong>예상 IPO 시기</strong>: 2026년 6월</p>
+                <p style="margin-top:8px;">• 6월 9일: 목성·금성 행성 정렬일</p>
+                <p>• 6월 28일: 일론 머스크 생일</p>
+            </div>
+
+            <div class="stat-grid">
+                <div class="stat-item">
+                    <div class="stat-value">$1.5~2T</div>
+                    <div class="stat-label">예상 시가총액</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">통합</div>
+                    <div class="stat-label">XAI + 스타링크</div>
+                </div>
+            </div>
+
+            <h3>잠재적 사업 가치</h3>
+            <ul>
+                <li><strong>우주 데이터센터</strong>: 태양광 발전 + 냉각 불필요 → 비용 혁신</li>
+                <li><strong>초고속 여행</strong>: 지구 어디든 15~25분 내 이동 가능</li>
+                <li><strong>스타링크</strong>: 글로벌 위성 인터넷</li>
+            </ul>
+
+            <div class="key-point">
+                <strong>IPO 투자 전략</strong>: 장기 투자 관점 권장. 첫날 급등 → 2~3일 폭락 → 이후 상승 사이클 예상. Accredited Investor만 Pre-IPO 참여 가능(미국).
+            </div>
+        </div>
+
+        <!-- 2월 실적 발표 일정 -->
+        <div class="section">
+            <h2>📅 2월 주요 실적 발표 전망</h2>
+            
+            <table>
+                <tr>
+                    <th>종목</th>
+                    <th>예상 EPS</th>
+                    <th>의견</th>
+                </tr>
+                <tr>
+                    <td>Alphabet (GOOGL)</td>
+                    <td>-</td>
+                    <td><span class="tag tag-buy">긍정</span></td>
+                </tr>
+                <tr>
+                    <td>AMD</td>
+                    <td>-</td>
+                    <td><span class="tag tag-buy">긍정</span></td>
+                </tr>
+                <tr>
+                    <td>NVIDIA (NVDA)</td>
+                    <td>-</td>
+                    <td><span class="tag tag-buy">긍정</span></td>
+                </tr>
+                <tr>
+                    <td>Broadcom (AVGO)</td>
+                    <td>$8.48</td>
+                    <td><span class="tag tag-buy">YTD +443%</span></td>
+                </tr>
+                <tr>
+                    <td>Palantir (PLTR)</td>
+                    <td>-</td>
+                    <td><span class="tag tag-caution">P/E 고평가 주의</span></td>
+                </tr>
+                <tr>
+                    <td>Micron (MU)</td>
+                    <td>3월 16일</td>
+                    <td><span class="tag tag-buy">긍정</span></td>
+                </tr>
+            </table>
+
+            <div class="warning-box">
+                <strong>팔란티어 주의</strong>: P/E가 매우 높아 실적 발표 후 20%+ 폭락 가능성. 이미 큰 수익을 낸 경우가 아니면 신중하게 접근.
+            </div>
+        </div>
+
+        <!-- S&P 500 시장 전망 -->
+        <div class="section">
+            <h2>📈 S&P 500 & 시장 전망</h2>
+            
+            <div class="stat-grid">
+                <div class="stat-item">
+                    <div class="stat-value">6,954</div>
+                    <div class="stat-label">저항선 돌파</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">7,000</div>
+                    <div class="stat-label">심리적 저항선</div>
+                </div>
+            </div>
+
+            <div class="highlight-box">
+                <strong>1월 효과</strong>: 1월 장세가 연간 장세를 예측할 확률 <strong>80%</strong>. 1월 31일까지 마감 후 확인 필요.
+            </div>
+
+            <h3>연준 정책 & 금리</h3>
+            <ul>
+                <li>금리 인하 동결 → 경제 호조 신호</li>
+                <li>일드 커브 가파름 → 은행주 실적 호조</li>
+                <li>스티키 인플레이션 지속</li>
+            </ul>
+
+            <div class="warning-box">
+                <strong>⚠️ 올해 최대 투자 리스크</strong><br>
+                연준 독립성 침해 가능성. 정치적 임명자가 연준 의장이 되면 시장 급변동 예상.
+            </div>
+        </div>
+
+        <!-- 금/은 투자 -->
+        <div class="section">
+            <h2>🥇 금/은 투자 현황</h2>
+            
+            <div class="stat-grid">
+                <div class="stat-item">
+                    <div class="stat-value">+63%</div>
+                    <div class="stat-label">SLV YTD</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">+277%</div>
+                    <div class="stat-label">SLV 1년</div>
+                </div>
+            </div>
+
+            <div class="key-point">
+                <strong>보유 유지 권장</strong>: 트럼프 행정부 + 지정학적 불안 + 정부 셧다운 가능성으로 안전자산 수요 지속. 당분간 금/은 비중 유지.
+            </div>
+        </div>
+
+        <!-- 투자 전략 요약 -->
+        <div class="summary-box">
+            <div class="summary-title">📌 투자 전략 요약</div>
+            
+            <h3 style="color:#fff; margin-top:0;">✅ 확대/매수</h3>
+            <ul>
+                <li>메타(META) - AI 광고 수익화 성공</li>
+                <li>마이크론(MU) - 메모리 슈퍼사이클</li>
+                <li>마이크로소프트(MSFT) - 폭락 시 매수</li>
+                <li>Vertiv(VRT) - 추가 매수 검토</li>
+                <li>반도체: NVDA, AVGO, TSM, LRCX</li>
+            </ul>
+
+            <h3 style="color:#fff;">⬇️ 축소/회피</h3>
+            <ul>
+                <li>소프트웨어: CRM, NOW, ADBE</li>
+                <li>고P/E 종목: PLTR 주의</li>
+                <li>인텔(INTC) - 투자 대상 아님</li>
+            </ul>
+
+            <h3 style="color:#fff;">🛡️ 유지</h3>
+            <ul>
+                <li>금/은(GLD, SLV) - 변동성 헤지</li>
+                <li>애플(AAPL) - 가치주로 변동성 완충</li>
+            </ul>
+        </div>
+
+        <!-- 포트폴리오 원칙 -->
+        <div class="section">
+            <h2>💡 포트폴리오 운용 원칙</h2>
+            
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-date">원칙 1</div>
+                    <strong>분산 투자</strong>: 메타 상승이 마이크로소프트 하락을 상쇄하는 구조
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">원칙 2</div>
+                    <strong>현금 확보</strong>: 10~15% 현금 보유 후 폭락 시 3-3-3-5 비율로 분할 매수
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">원칙 3</div>
+                    <strong>역발상</strong>: AI 오버셀링 시 매수 기회로 활용
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">원칙 4</div>
+                    <strong>섹터 인식</strong>: 보유 종목이 어느 산업/섹터에 속하는지 파악 필수
+                </div>
+            </div>
+
+            <div class="key-point">
+                시장 변동성보다 <strong>심리적 변동성</strong>이 더 위험. 펀더멘털이 좋으면 회복이 빠르므로 침착하게 대응.
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>📺 원본: 멤버십 방송 (2026.1.30)</p>
+            <p style="margin-top:8px;">※ 본 자료는 투자 참고용이며, 투자 판단의 책임은 본인에게 있습니다.</p>
+        </div>
+    </div>
+</body>
+</html>
