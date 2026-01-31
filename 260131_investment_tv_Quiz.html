@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>1월 30일 금·은·테크 폭락 분석 - 시험문제</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans KR', sans-serif;
+            line-height: 1.7;
+            color: #1a1a1a;
+            background: #f8f9fa;
+            padding: 16px;
+            max-width: 100%;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #8e44ad 0%, #9b59b6 100%);
+            color: #fff;
+            padding: 24px 20px;
+            text-align: center;
+        }
+        .header h1 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        .header .subtitle {
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+        .content {
+            padding: 20px;
+        }
+        .section-title {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: #fff;
+            padding: 14px 16px;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin: 24px 0 16px 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .question-box {
+            background: #fafafa;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 16px;
+            margin-bottom: 20px;
+        }
+        .question-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+        .question-number {
+            background: #3498db;
+            color: #fff;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+        .question-meta {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .difficulty {
+            font-size: 0.75rem;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-weight: 500;
+        }
+        .difficulty.easy {
+            background: #d5f5e3;
+            color: #27ae60;
+        }
+        .difficulty.medium {
+            background: #fef9e7;
+            color: #f39c12;
+        }
+        .difficulty.hard {
+            background: #fadbd8;
+            color: #e74c3c;
+        }
+        .question-type {
+            font-size: 0.75rem;
+            padding: 2px 8px;
+            border-radius: 12px;
+            background: #e8e8e8;
+            color: #666;
+        }
+        .question-text {
+            font-size: 0.95rem;
+            margin-bottom: 14px;
+            line-height: 1.6;
+        }
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .option {
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 10px 12px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .option:hover {
+            border-color: #3498db;
+            background: #f0f7ff;
+        }
+        .blank-line {
+            border-bottom: 1px solid #333;
+            display: inline-block;
+            min-width: 100px;
+            margin: 0 4px;
+        }
+        .ox-options {
+            display: flex;
+            gap: 16px;
+        }
+        .ox-option {
+            flex: 1;
+            text-align: center;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .ox-option:hover {
+            border-color: #3498db;
+        }
+        .short-answer {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            margin-top: 8px;
+        }
+        .essay-box {
+            width: 100%;
+            min-height: 100px;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            margin-top: 8px;
+            resize: vertical;
+        }
+        
+        /* 정답지 스타일 */
+        .answer-section {
+            margin-top: 40px;
+            padding-top: 24px;
+            border-top: 3px double #ddd;
+        }
+        .answer-box {
+            background: linear-gradient(135deg, #e8f6f3 0%, #d5f5e3);
+            border: 1px solid #82e0aa;
+            border-radius: 10px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+        .answer-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        .answer-number {
+            background: #27ae60;
+            color: #fff;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        .answer-label {
+            font-weight: 600;
+            color: #27ae60;
+            font-size: 0.95rem;
+        }
+        .answer-text {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #1e8449;
+            margin-bottom: 8px;
+        }
+        .explanation {
+            font-size: 0.9rem;
+            color: #444;
+            line-height: 1.6;
+            padding-left: 12px;
+            border-left: 3px solid #82e0aa;
+        }
+        .divider {
+            height: 2px;
+            background: linear-gradient(90deg, #8e44ad, #3498db, #27ae60);
+            margin: 30px 0;
+            border-radius: 1px;
+        }
+        .footer {
+            background: #f8f9fa;
+            padding: 16px 20px;
+            text-align: center;
+            font-size: 0.8rem;
+            color: #666;
+            border-top: 1px solid #eee;
+        }
+        .page-break {
+            page-break-after: always;
+            border-top: 2px dashed #ccc;
+            margin: 30px 0;
+            padding-top: 20px;
+        }
+        @media print {
+            .page-break {
+                page-break-after: always;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📝 1월 30일 금·은·테크 폭락 분석</h1>
+            <div class="subtitle">시험문제 (총 10문제)</div>
+        </div>
+        
+        <div class="content">
+            <!-- 문제지 섹션 -->
+            <div class="section-title">
+                📋 문제지
+            </div>
+
+            <!-- 문제 1 -->
+            <div class="question-box">
+                <div class="question-header">
+                    <span class="question-number">1</span>
+                    <div class="question-meta">
+                        <span class="difficulty easy">⭐ 쉬움</span>
+                        <span class="question-type">객관식</span>
+                    </div>
+                </div>
+                <div class="question-text">
+                    1월 30일 금(Gold)의 하락률은 대략 얼마였는가?
+                </div>
+                <div class="options">
+                    <div class="option">① 약 3%</div>
+                    <div class="option">② 약 5%</div>
+                    <div class="option">③ 약 10%</div>
+                    <div class="option">④ 약 20%</div>
+                </div>
+            </div>
+
+            <!-- 문제 2 -->
+            <div class="question-box">
+                <div class="question-header">
+                    <span class="question-number">2</span>
+                    <div class="question-meta">
+                        <span class="difficulty easy">⭐ 쉬움</span>
+                        <span class="question-type">OX 문제</span>
+                    </div>
+                </div>
+                <div class="question-text">
+                    케빈 워시(Kevin Warsh)는 통화량(M1, M2) 확대에 우호적인 비둘기파(Dovish) 성향의 인물이다.
+                </div>
+                <div class="ox-options">
+                    <div class="ox-option">O</div>
+                    <div class="ox-option">X</div>
+                </div>
+            </div>
+
+            <!-- 문제 3 -->
+            <div class="question-box">
+                <div class="question-header">
+                    <span class="question-number">3</span>
+                    <div class="question-meta">
+                        <span class="difficulty medium">⭐⭐ 보통</span>
+                        <span class="question-type">빈칸 채우기</span>
+                    </div>
+                </div>
+                <div class="question-text">
+                    연준(Fed)의 두 가지 핵심 임무(Dual Mandate)는 <span class="blank-line"></span>을(를) 억제하는 것과 <span class="blank-line"></span> 시장을 유지하는 것이다.
+                </div>
+            </div>
+
+            <!-- 문제 4 -->
+            <div class="question-box">
+                <div class="question-header">
+                    <span class="question-number">4</span>
+                    <div class="question-meta">
+                        <span class="difficulty medium">⭐⭐ 보통</span>
+                        <span class="question-type">객관식</span>
+                    </div>
+                </div>
+                <div class="question-text">
+                    영상에서 언급된 1월 30일 은(Silver)의 최대 하락폭은?
+                </div>
+                <div class="options">
+                    <div class="option">① 약 10%</div>
+                    <div class="option">② 약 20%</div>
+                    <div class="option">③ 약 30%</div>
+                    <div class="option">④ 약 40%</div>
+                </div>
+            </div>
+
+            <!-- 문제 5 -->
+            <div class="question-box">
+                <div class="question-header">
+                    <span class="question-number">5</span>
+                    <div class="question-meta">
+                        <span class="difficulty medium">⭐⭐ 보통</span>
+                        <span class="question-type">단답형</span>
+                    </div>
+                </div>
+                <div class="question-text">
+                    연준의 독립성이 무너질 경우, 미국 주식시장이 최대 몇 % 폭락할 수 있다고 언급되었는가?
+                </div>
+                <input type="text" class="short-answer" placeholder="숫자만 입력 (예: 10)">
+            </div>
+
+            <!-- 문제 6 -->
+            <div class="question-box">
+                <div class="question-header">
+                    <span class="question-number">6</span>
+                    <div class="question-meta">
+                        <span class="difficulty medium">⭐⭐ 보통</span>
+                        <span class="question-type">객관식</span>
+                    </div>
+                </div>
+                <div class="question-text">
+                    AI 슈퍼사이클 내에서 마진율이 하락할 것으로 예상되는 섹터는?
+                </div>
+                <div class="options">
+                    <div class="option">① 메모리/DRAM</div>
+                    <div class="option">② 소프트웨어</div>
+                    <div class="option">③ 반도체 장비</div>
+                    <div class="option">④ 데이터센터 인프라</div>
+                </div>
+            </div>
+
+            <!-- 문제 7 -->
+            <div class="question-box">
+                <div class="question-header">
+                    <span class="question-number">7</span>
+                    <div class="question-meta">
+                        <span class="difficulty medium">⭐⭐ 보통</span>
+                        <span class="question-type">OX 문제</span>
+                    </div>
+                </div>
+                <div class="question-text">
+                    영상에 따르면, 1월 30일 폭락의 원인은 미국 경제의 펀더멘털(기초체력) 악화 때문이다.
+                </div>
+                <div class="ox-options">
+                    <div class="ox-option">O</div>
+                    <div class="ox-option">X</div>
+                </div>
+            </div>
+
+            <!-- 문제 8 -->
+            <div class="question-box">
+                <div class="question-header">
+                    <span class="question-number">8</span>
+                    <div class="question-meta">
+                        <span class="difficulty hard">⭐⭐⭐ 어려움</span>
+                        <span class="question-type">객관식</span>
+                    </div>
+                </div>
+                <div class="question-text">
+                    달러 강세가 금·은 가격에 미치는 영향으로 올바른 것은?
+                </div>
+                <div class="options">
+                    <div class="option">① 달러 강세 → 금·은 투자 매력 상승 → 가격 상승</div>
+                    <div class="option">② 달러 강세 → 금·은 투자 심리 위축 → 가격 하락</div>
+                    <div class="option">③ 달러 강세 → 인플레이션 상승 → 금 가격 상승</div>
+                    <div class="option">④ 달러 강세와 금·은 가격은 무관하다</div>
+                </div>
+            </div>
+
+            <!-- 문제 9 -->
+            <div class="question-box">
+                <div class="question-header">
+                    <span class="question-number">9</span>
+                    <div class="question-meta">
+                        <span class="difficulty easy">⭐ 쉬움</span>
+                        <span class="question-type">단답형</span>
+                    </div>
+                </div>
+                <div class="question-text">
+                    영상에서 언급된, 1월 30일 자사주 매입 발표로 9~12% 상승한 미국 통신 기업의 이름은?
+                </div>
+                <input type="text" class="short-answer" placeholder="기업명 입력">
+            </div>
+
+            <!-- 문제 10 -->
+            <div class="question-box">
+                <div class="question-header">
+                    <span class="question-number">10</span>
+                    <div class="question-meta">
+                        <span class="difficulty hard">⭐⭐⭐ 어려움</span>
+                        <span class="question-type">서술형</span>
+                    </div>
+                </div>
+                <div class="question-text">
+                    영상에서 "연준의 독립성"이 미국 경제에 중요한 이유를 미국 국채(Treasury)와 연관지어 서술하시오.
+                </div>
+                <textarea class="essay-box" placeholder="답변을 작성하세요..."></textarea>
+            </div>
+
+            <!-- 정답지 섹션 -->
+            <div class="page-break"></div>
+            
+            <div class="answer-section">
+                <div class="section-title">
+                    📝 정답 및 해설
+                </div>
+
+                <!-- 정답 1 -->
+                <div class="answer-box">
+                    <div class="answer-header">
+                        <span class="answer-number">1</span>
+                        <span class="answer-label">정답</span>
+                    </div>
+                    <div class="answer-text">③ 약 10%</div>
+                    <div class="explanation">
+                        영상에서 "금 같은 경우는 10% 가까이 폭락을 했다"고 명시적으로 언급되었습니다. 1억 원 투자 시 1억 7~8천만 원에서 1억 6천만 원대로 하락한 것으로 설명했습니다.
+                    </div>
+                </div>
+
+                <!-- 정답 2 -->
+                <div class="answer-box">
+                    <div class="answer-header">
+                        <span class="answer-number">2</span>
+                        <span class="answer-label">정답</span>
+                    </div>
+                    <div class="answer-text">X (거짓)</div>
+                    <div class="explanation">
+                        케빈 워시는 매파적(Hawkish) 성향의 인물입니다. 영상에서 "M1, M2를 늘리는 것에 대해서 굉장히 매파적(Hawkish)하게 나온다"고 설명하며, 통화량 확대에 반대하는 입장임을 밝혔습니다.
+                    </div>
+                </div>
+
+                <!-- 정답 3 -->
+                <div class="answer-box">
+                    <div class="answer-header">
+                        <span class="answer-number">3</span>
+                        <span class="answer-label">정답</span>
+                    </div>
+                    <div class="answer-text">인플레이션, 완전고용</div>
+                    <div class="explanation">
+                        연준의 듀얼 맨데이트(Dual Mandate)는 ① 인플레이션 억제와 ② 완전 고용 시장 유지입니다. 영상에서 "연준이 해야 될 두 가지 일이 뭐냐면 인플레이션을 잡는 거랑 거의 완전 고용 시장을 만드는 것"이라고 설명했습니다.
+                    </div>
+                </div>
+
+                <!-- 정답 4 -->
+                <div class="answer-box">
+                    <div class="answer-header">
+                        <span class="answer-number">4</span>
+                        <span class="answer-label">정답</span>
+                    </div>
+                    <div class="answer-text">③ 약 30%</div>
+                    <div class="explanation">
+                        영상에서 "은은 30% 정도 폭락을 하다가 27% 정도로 마무리된 것 같다"고 언급했습니다. 장중 최대 30%까지 하락했다가 종가 기준 27% 하락으로 마감했습니다.
+                    </div>
+                </div>
+
+                <!-- 정답 5 -->
+                <div class="answer-box">
+                    <div class="answer-header">
+                        <span class="answer-number">5</span>
+                        <span class="answer-label">정답</span>
+                    </div>
+                    <div class="answer-text">30%</div>
+                    <div class="explanation">
+                        영상에서 "연준의 독립성이 무너졌다는 것이 국제사회에서 컨펌이 되면 30% 정도는 폭락할 가능성이 크다"고 명시적으로 경고했습니다. 이는 아무리 기업 실적이 좋아도 발생할 수 있는 시스템 리스크입니다.
+                    </div>
+                </div>
+
+                <!-- 정답 6 -->
+                <div class="answer-box">
+                    <div class="answer-header">
+                        <span class="answer-number">6</span>
+                        <span class="answer-label">정답</span>
+                    </div>
+                    <div class="answer-text">② 소프트웨어</div>
+                    <div class="explanation">
+                        영상에서 AI 슈퍼사이클 내 섹터 로테이션을 설명하며 "소프트웨어 인더스트리 산업들은 마진율이 떨어질 것으로 보인다"고 언급했습니다. 반면 메모리/DRAM 섹터는 사이클 상승 중이며 오버타임 가동 중이라고 했습니다.
+                    </div>
+                </div>
+
+                <!-- 정답 7 -->
+                <div class="answer-box">
+                    <div class="answer-header">
+                        <span class="answer-number">7</span>
+                        <span class="answer-label">정답</span>
+                    </div>
+                    <div class="answer-text">X (거짓)</div>
+                    <div class="explanation">
+                        영상에서 "지금은 어떤 펀더멘털 이슈가 있으면 타임 투 세일이라고 그랬는데, 지금 펀더멘털 이슈는 전혀 없다"고 강조했습니다. 폭락의 원인은 케빈 워시 연준의장 후보설에 따른 심리적 요인과 기관들의 이익 실현입니다.
+                    </div>
+                </div>
+
+                <!-- 정답 8 -->
+                <div class="answer-box">
+                    <div class="answer-header">
+                        <span class="answer-number">8</span>
+                        <span class="answer-label">정답</span>
+                    </div>
+                    <div class="answer-text">② 달러 강세 → 금·은 투자 심리 위축 → 가격 하락</div>
+                    <div class="explanation">
+                        영상에서 "달러가 강세가 되면 금은 계속 투자하는 것보다는 달러에 투자하는 것이 더 낫지 않은가"라고 설명했습니다. 달러 강세는 금·은 대비 달러 투자 매력을 높여 귀금속에서 자금 이탈을 유발합니다.
+                    </div>
+                </div>
+
+                <!-- 정답 9 -->
+                <div class="answer-box">
+                    <div class="answer-header">
+                        <span class="answer-number">9</span>
+                        <span class="answer-label">정답</span>
+                    </div>
+                    <div class="answer-text">버라이즌(Verizon)</div>
+                    <div class="explanation">
+                        영상에서 "버라이즌이 오늘 자사주 매입을 한다는 소식에 9% 정도 올라가다가 12% 정도 올라왔다"고 언급했습니다. 자사주 매입은 주주 환원 정책으로 주가에 긍정적 영향을 미칩니다.
+                    </div>
+                </div>
+
+                <!-- 정답 10 -->
+                <div class="answer-box">
+                    <div class="answer-header">
+                        <span class="answer-number">10</span>
+                        <span class="answer-label">모범답안</span>
+                    </div>
+                    <div class="answer-text">서술형 답안</div>
+                    <div class="explanation">
+                        <strong>핵심 포인트:</strong><br><br>
+                        
+                        ① <strong>연준 독립성과 국채 신뢰의 연관성:</strong> 연준의 독립성은 미국 국채(Treasury)와 직접적으로 연결되어 있다. 연준이 정치적 압력 없이 통화정책을 결정할 수 있다는 신뢰가 미국 국채의 안전자산 지위를 뒷받침한다.<br><br>
+                        
+                        ② <strong>국채 셀오프 위험:</strong> 연준의 독립성이 훼손되면 해외 투자자들(유럽, 중국 등)이 미국 국채를 신뢰하지 않게 되어 대규모 매도(셀오프)가 발생할 수 있다.<br><br>
+                        
+                        ③ <strong>미국 경제 기반 위협:</strong> 현재 미국 GDP 대비 부채 비율이 130%를 초과한 상황에서, 국채 셀오프가 발생하면 달러 기축통화국이라도 경제 기반이 무너질 수 있다. 이 경우 미국 주식시장은 30%까지 폭락할 가능성이 있다.
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="divider"></div>
+
+            <!-- 난이도별 배점 안내 -->
+            <div style="background: #f8f9fa; border-radius: 8px; padding: 16px; margin-top: 20px;">
+                <strong>📊 난이도 구성</strong><br><br>
+                • ⭐ 쉬움 (3문제): 1번, 2번, 9번<br>
+                • ⭐⭐ 보통 (5문제): 3번, 4번, 5번, 6번, 7번<br>
+                • ⭐⭐⭐ 어려움 (2문제): 8번, 10번<br><br>
+                
+                <strong>📝 문제 유형</strong><br><br>
+                • 객관식: 1번, 4번, 6번, 8번 (4문제)<br>
+                • OX문제: 2번, 7번 (2문제)<br>
+                • 빈칸채우기: 3번 (1문제)<br>
+                • 단답형: 5번, 9번 (2문제)<br>
+                • 서술형: 10번 (1문제)
+            </div>
+
+        </div>
+        
+        <div class="footer">
+            본 시험문제는 교육 목적으로 작성되었습니다.<br>
+            출처: 금은테크 분석 방송 (2026.01.31)
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>1월 30일 금·은·테크 폭락 분석과 전망</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans KR', sans-serif;
+            line-height: 1.7;
+            color: #1a1a1a;
+            background: #f8f9fa;
+            padding: 16px;
+            max-width: 100%;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #1e3a5f 0%, #2d5a87 100%);
+            color: #fff;
+            padding: 24px 20px;
+            text-align: center;
+        }
+        .header h1 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        .header .date {
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+        .content {
+            padding: 20px;
+        }
+        h2 {
+            font-size: 1.15rem;
+            color: #1e3a5f;
+            border-left: 4px solid #e74c3c;
+            padding-left: 12px;
+            margin: 24px 0 16px 0;
+        }
+        h3 {
+            font-size: 1.05rem;
+            color: #2c3e50;
+            margin: 20px 0 12px 0;
+        }
+        p {
+            margin-bottom: 14px;
+            text-align: justify;
+        }
+        .highlight-box {
+            background: linear-gradient(135deg, #fff5f5 0%, #fee);
+            border: 1px solid #f5c6cb;
+            border-radius: 8px;
+            padding: 16px;
+            margin: 16px 0;
+        }
+        .highlight-box.blue {
+            background: linear-gradient(135deg, #f0f7ff 0%, #e6f2ff);
+            border-color: #b8d4f0;
+        }
+        .highlight-box.green {
+            background: linear-gradient(135deg, #f0fff4 0%, #e6ffed);
+            border-color: #b2e0c2;
+        }
+        .highlight-box.yellow {
+            background: linear-gradient(135deg, #fffbf0 0%, #fff8e6);
+            border-color: #f5e6b3;
+        }
+        .stat-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin: 16px 0;
+        }
+        .stat-card {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 14px;
+            text-align: center;
+        }
+        .stat-card .label {
+            font-size: 0.8rem;
+            color: #666;
+            margin-bottom: 4px;
+        }
+        .stat-card .value {
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+        .stat-card .value.red {
+            color: #e74c3c;
+        }
+        .stat-card .value.green {
+            color: #27ae60;
+        }
+        .stat-card .value.blue {
+            color: #2980b9;
+        }
+        strong {
+            color: #c0392b;
+        }
+        .chart-container {
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 16px;
+            margin: 16px 0;
+        }
+        .chart-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+        .bar-chart {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .bar-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .bar-label {
+            width: 60px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+        .bar-wrapper {
+            flex: 1;
+            background: #f0f0f0;
+            border-radius: 4px;
+            height: 24px;
+            overflow: hidden;
+        }
+        .bar {
+            height: 100%;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 8px;
+            font-size: 0.75rem;
+            color: #fff;
+            font-weight: 600;
+        }
+        .bar.red {
+            background: linear-gradient(90deg, #e74c3c, #c0392b);
+        }
+        .bar.green {
+            background: linear-gradient(90deg, #27ae60, #1e8449);
+        }
+        .key-point {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin: 12px 0;
+            padding: 12px;
+            background: #fafafa;
+            border-radius: 8px;
+        }
+        .key-point .icon {
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+        .key-point .text {
+            font-size: 0.95rem;
+        }
+        .timeline {
+            position: relative;
+            padding-left: 24px;
+            margin: 16px 0;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 8px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #ddd;
+        }
+        .timeline-item {
+            position: relative;
+            margin-bottom: 16px;
+            padding-bottom: 16px;
+            border-bottom: 1px dashed #eee;
+        }
+        .timeline-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -20px;
+            top: 6px;
+            width: 10px;
+            height: 10px;
+            background: #3498db;
+            border-radius: 50%;
+        }
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+            font-size: 0.9rem;
+        }
+        .comparison-table th {
+            background: #1e3a5f;
+            color: #fff;
+            padding: 10px 8px;
+            text-align: left;
+            font-weight: 600;
+        }
+        .comparison-table td {
+            padding: 10px 8px;
+            border-bottom: 1px solid #eee;
+        }
+        .comparison-table tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+        .warning-box {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 8px;
+            padding: 14px;
+            margin: 16px 0;
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+        }
+        .warning-box .icon {
+            font-size: 1.3rem;
+        }
+        .section-divider {
+            height: 4px;
+            background: linear-gradient(90deg, #e74c3c, #f39c12, #27ae60, #3498db);
+            margin: 24px 0;
+            border-radius: 2px;
+        }
+        .footer {
+            background: #f8f9fa;
+            padding: 16px 20px;
+            text-align: center;
+            font-size: 0.8rem;
+            color: #666;
+            border-top: 1px solid #eee;
+        }
+        .flow-chart {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            margin: 16px 0;
+        }
+        .flow-box {
+            background: #3498db;
+            color: #fff;
+            padding: 10px 16px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-align: center;
+            width: 100%;
+            max-width: 280px;
+        }
+        .flow-box.red { background: #e74c3c; }
+        .flow-box.green { background: #27ae60; }
+        .flow-box.orange { background: #e67e22; }
+        .flow-arrow {
+            font-size: 1.2rem;
+            color: #999;
+        }
+        ul {
+            margin: 12px 0 12px 20px;
+        }
+        li {
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📉 1월 30일 금·은·테크 폭락 분석</h1>
+            <div class="date">2026년 1월 31일 | 미국 증시 분석</div>
+        </div>
+        
+        <div class="content">
+            <!-- 핵심 요약 -->
+            <h2>📊 당일 시장 핵심 데이터</h2>
+            
+            <div class="stat-grid">
+                <div class="stat-card">
+                    <div class="label">금(Gold) 하락률</div>
+                    <div class="value red">-10%</div>
+                </div>
+                <div class="stat-card">
+                    <div class="label">은(Silver) 하락률</div>
+                    <div class="value red">-27~30%</div>
+                </div>
+                <div class="stat-card">
+                    <div class="label">달러 지수 변동</div>
+                    <div class="value green">+0.26%</div>
+                </div>
+                <div class="stat-card">
+                    <div class="label">기관 현금화 비율</div>
+                    <div class="value blue">~10%</div>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <div class="chart-title">📉 1월 30일 자산별 하락률</div>
+                <div class="bar-chart">
+                    <div class="bar-item">
+                        <span class="bar-label">은(Silver)</span>
+                        <div class="bar-wrapper">
+                            <div class="bar red" style="width: 90%;">-27~30%</div>
+                        </div>
+                    </div>
+                    <div class="bar-item">
+                        <span class="bar-label">금(Gold)</span>
+                        <div class="bar-wrapper">
+                            <div class="bar red" style="width: 33%;">-10%</div>
+                        </div>
+                    </div>
+                    <div class="bar-item">
+                        <span class="bar-label">일부 테크</span>
+                        <div class="bar-wrapper">
+                            <div class="bar red" style="width: 13%;">-4~10%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="highlight-box">
+                <strong>⚡ 핵심 포인트:</strong> 귀금속(Precious Metals)과 일부 테크 종목의 급락은 <strong>펀더멘털 이슈가 아닌 심리적 요인</strong>에 기인. 기관들의 포트폴리오 약 10% 현금화로 인한 이익 실현 매물 출회.
+            </div>
+
+            <div class="section-divider"></div>
+
+            <!-- 폭락 원인 분석 -->
+            <h2>🔍 폭락 원인 분석</h2>
+            
+            <h3>1. 케빈 워시(Kevin Warsh) 연준 의장 후보 이슈</h3>
+            
+            <div class="highlight-box blue">
+                <strong>케빈 워시 프로필:</strong><br>
+                • 약 10년 전 연준 이사 역임<br>
+                • 매파적(Hawkish) 성향 - 통화량(M1, M2) 확대에 강력 반대<br>
+                • 최근 입장 변화: "올해 금리 1~2차례 인하 필요" 공식 발언
+            </div>
+
+            <p>케빈 워시의 스탠스는 사실상 현 제롬 파월 의장과 큰 차이가 없습니다. 둘 다 4~5월경 금리 인하 가능성을 시사하며, 올해 최대 1~2회 인하를 전망합니다. 그러나 시장의 우려는 <strong>"트럼프 대통령의 말을 잘 듣는 사람"</strong>이라는 인식에서 비롯됩니다.</p>
+
+            <div class="warning-box">
+                <span class="icon">⚠️</span>
+                <div>
+                    <strong>시장 불안 요인:</strong> 케빈 워시가 친트럼프 성향으로 연준의 독립성을 훼손할 수 있다는 우려가 심리적 셀오프(Sell-off)를 촉발했습니다.
+                </div>
+            </div>
+
+            <h3>2. 달러 강세 전환</h3>
+            
+            <div class="flow-chart">
+                <div class="flow-box">트럼프 취임 후 달러 약세 지속</div>
+                <span class="flow-arrow">↓</span>
+                <div class="flow-box orange">1월 30일 달러 강세 전환 (+0.26%)</div>
+                <span class="flow-arrow">↓</span>
+                <div class="flow-box red">금·은 투자 심리 위축</div>
+                <span class="flow-arrow">↓</span>
+                <div class="flow-box red">귀금속 대량 매도</div>
+            </div>
+
+            <p>달러가 강세로 전환되면 귀금속 대비 달러 투자 매력이 상승합니다. 트럼프 취임 이후 6~8포인트 하락했던 달러 지수가 방향을 전환하면서 금·은에서 달러로 자금 이동이 발생했습니다.</p>
+
+            <h3>3. 지정학적 리스크 vs 이익 실현</h3>
+            
+            <table class="comparison-table">
+                <tr>
+                    <th>상승 요인 (지금까지)</th>
+                    <th>하락 요인 (1/30)</th>
+                </tr>
+                <tr>
+                    <td>인플레이션으로 달러 구매력 하락</td>
+                    <td>달러 강세 전환</td>
+                </tr>
+                <tr>
+                    <td>트럼프발 지정학적 불확실성</td>
+                    <td>과열 구간 이익 실현</td>
+                </tr>
+                <tr>
+                    <td>미국 국채 매력 저하</td>
+                    <td>기관 포트폴리오 리밸런싱</td>
+                </tr>
+            </table>
+
+            <div class="section-divider"></div>
+
+            <!-- 장기 관점 -->
+            <h2>📈 장기 관점: 과열 조정의 이해</h2>
+            
+            <div class="chart-container">
+                <div class="chart-title">📊 금·은 연간 상승률 vs 당일 하락률</div>
+                <div class="bar-chart">
+                    <div class="bar-item">
+                        <span class="bar-label">금 연간</span>
+                        <div class="bar-wrapper">
+                            <div class="bar green" style="width: 85%;">+70~80%</div>
+                        </div>
+                    </div>
+                    <div class="bar-item">
+                        <span class="bar-label">금 당일</span>
+                        <div class="bar-wrapper">
+                            <div class="bar red" style="width: 13%;">-10%</div>
+                        </div>
+                    </div>
+                    <div class="bar-item">
+                        <span class="bar-label">은 연간</span>
+                        <div class="bar-wrapper">
+                            <div class="bar green" style="width: 65%;">+60%</div>
+                        </div>
+                    </div>
+                    <div class="bar-item">
+                        <span class="bar-label">은 당일</span>
+                        <div class="bar-wrapper">
+                            <div class="bar red" style="width: 37%;">-27~30%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="highlight-box green">
+                <strong>💡 투자 관점:</strong><br>
+                금에 1억 투자 시: 1억 7~8천만원 → 1억 6천만원대로 하락<br>
+                <em>= 여전히 +60~70% 수익 구간 유지</em>
+            </div>
+
+            <p>연간 70~80% 상승한 자산이 10% 하락한 것은 정상적인 조정입니다. 하루의 충격에 과민반응하기보다 <strong>전체 수익 트랙레코드</strong>를 확인해야 합니다.</p>
+
+            <div class="section-divider"></div>
+
+            <!-- 연준 독립성 -->
+            <h2>🏛️ 핵심 리스크: 연준 독립성</h2>
+            
+            <div class="highlight-box">
+                <strong>🚨 최대 위험 시나리오:</strong><br>
+                연준 독립성이 무너지고 국제사회에서 이를 확인(Confirm)하면<br>
+                → <strong style="font-size: 1.1rem;">미국 주식시장 30% 폭락 가능성</strong>
+            </div>
+
+            <h3>연준 독립성과 미국 국채의 관계</h3>
+            
+            <div class="flow-chart">
+                <div class="flow-box">연준 독립성 훼손 인식</div>
+                <span class="flow-arrow">↓</span>
+                <div class="flow-box orange">미국 국채 신뢰도 하락</div>
+                <span class="flow-arrow">↓</span>
+                <div class="flow-box red">해외 국채 매도(Sell-off)</div>
+                <span class="flow-arrow">↓</span>
+                <div class="flow-box red">미국 경제 위기</div>
+            </div>
+
+            <div class="key-point">
+                <span class="icon">📌</span>
+                <span class="text">현재 미국 GDP 대비 부채 비율이 <strong>130% 초과</strong>. 달러 기축통화국이라도 국채 셀오프 발생 시 경제 기반 붕괴 위험 존재.</span>
+            </div>
+
+            <h3>제롬 파월 의장의 입장</h3>
+            
+            <div class="highlight-box blue">
+                <strong>파월 블룸버그 인터뷰 핵심:</strong><br>
+                "선출된 정치인(Elected Politician)이 연준 의장이 되는 것은 반대한다"<br>
+                <em>→ 연준의 정치적 독립성 강조</em>
+            </div>
+
+            <p>세계적으로 제롬 파월에 대한 신뢰도가 트럼프 대통령보다 높은 상황입니다. 연준 의장 교체 여부는 의회 승인이 필요하며, 5월까지는 현 체제가 유지될 전망입니다.</p>
+
+            <div class="section-divider"></div>
+
+            <!-- 거시경제 현황 -->
+            <h2>🌐 미국 거시경제 현황</h2>
+            
+            <h3>연준의 듀얼 맨데이트(Dual Mandate)</h3>
+            
+            <table class="comparison-table">
+                <tr>
+                    <th>목표</th>
+                    <th>현재 상황</th>
+                    <th>평가</th>
+                </tr>
+                <tr>
+                    <td>인플레이션 억제</td>
+                    <td>목표 미달성 (잡히지 않음)</td>
+                    <td style="color: #e74c3c;">❌</td>
+                </tr>
+                <tr>
+                    <td>완전 고용</td>
+                    <td>실업률 상승 중, 호전 전망</td>
+                    <td style="color: #f39c12;">⚠️</td>
+                </tr>
+            </table>
+
+            <div class="key-point">
+                <span class="icon">💡</span>
+                <span class="text"><strong>인플레이션이 잡히지 않는 이유 = 미국 경제가 여전히 뜨겁다(Hot)</strong><br>소비 심리 강세 → 금리 인하 어려움</span>
+            </div>
+
+            <h3>금리 전망</h3>
+            
+            <p>트럼프 대통령은 올해 금리 1~2% 인하를 요구하지만, 실제로는 <strong>1~2회(0.25~0.5%p)</strong> 인하가 현실적입니다. 금리가 안 내려가는 것이 오히려 미국 경제의 건전성을 보여주는 지표입니다.</p>
+
+            <h3>미국 기업 구조조정 동향</h3>
+            
+            <div class="highlight-box yellow">
+                <strong>아마존 구조조정:</strong><br>
+                • 1만 3,000명 레이오프 (대리~부장급 중간관리자)<br>
+                • 보고 체계 단순화, 플랫 조직 지향<br>
+                • 마이크로소프트, 애플 등도 유사 흐름 예상
+            </div>
+
+            <div class="section-divider"></div>
+
+            <!-- AI 섹터 분석 -->
+            <h2>🤖 AI 슈퍼사이클 내 섹터 로테이션</h2>
+            
+            <div class="chart-container">
+                <div class="chart-title">AI 산업 내 섹터별 전망</div>
+                <table class="comparison-table">
+                    <tr>
+                        <th>섹터</th>
+                        <th>전망</th>
+                        <th>근거</th>
+                    </tr>
+                    <tr>
+                        <td>소프트웨어</td>
+                        <td style="color: #e74c3c;">▼ 마진율 하락</td>
+                        <td>경쟁 심화, 가격 압박</td>
+                    </tr>
+                    <tr>
+                        <td>메모리/DRAM</td>
+                        <td style="color: #27ae60;">▲ 사이클 상승</td>
+                        <td>주문량 > 생산량 (오버타임 가동)</td>
+                    </tr>
+                    <tr>
+                        <td>반도체 하드웨어</td>
+                        <td style="color: #27ae60;">▲ 강세 지속</td>
+                        <td>AI 인프라 수요 확대</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="key-point">
+                <span class="icon">🏭</span>
+                <span class="text">메모리칩 제조 기업들은 현재 <strong>오버타임 가동 중</strong>. 주문량을 따라갈 수 없는 상황으로, DRAM 사이클 상승 지속.</span>
+            </div>
+
+            <h3>2월 실적 시즌 전망</h3>
+            
+            <div class="highlight-box green">
+                <strong>하이테크 분기 실적:</strong> 사상 유래 없는 최고 실적 예상<br>
+                <em>※ 단, 가이던스(향후 전망)에 따라 주가 변동 가능</em>
+            </div>
+
+            <div class="section-divider"></div>
+
+            <!-- 투자 전략 -->
+            <h2>💰 투자 전략 및 시사점</h2>
+            
+            <h3>포트폴리오 관리 원칙</h3>
+            
+            <div class="timeline">
+                <div class="timeline-item">
+                    <strong>1. 투자 리스크 기준 설정</strong><br>
+                    특정 종목이 5~10% 하락 시 대응 방안을 미리 결정
+                </div>
+                <div class="timeline-item">
+                    <strong>2. 비중 조절</strong><br>
+                    초기 5%였던 비중이 15~20%로 늘었다면 → 비중 축소
+                </div>
+                <div class="timeline-item">
+                    <strong>3. 현금 보유</strong><br>
+                    변동성 확대 시 기회 포착을 위한 현금 여력 확보
+                </div>
+                <div class="timeline-item">
+                    <strong>4. 레버리지 상품 주의</strong><br>
+                    3배 레버리지 ETF 등은 투기 상품으로 인식 (하락 시 손실 극대화)
+                </div>
+            </div>
+
+            <h3>현 시점 투자 판단</h3>
+            
+            <table class="comparison-table">
+                <tr>
+                    <th>시그널</th>
+                    <th>판단</th>
+                </tr>
+                <tr>
+                    <td>펀더멘털 이슈</td>
+                    <td style="color: #27ae60;">❌ 없음 (심리적 요인)</td>
+                </tr>
+                <tr>
+                    <td>거시경제 지표</td>
+                    <td style="color: #27ae60;">양호</td>
+                </tr>
+                <tr>
+                    <td>AI 슈퍼사이클</td>
+                    <td style="color: #27ae60;">유효 (방향성 유지)</td>
+                </tr>
+                <tr>
+                    <td>주가 방향</td>
+                    <td style="color: #27ae60;">장기 우상향 유지</td>
+                </tr>
+            </table>
+
+            <div class="highlight-box green">
+                <strong>💡 핵심 메시지:</strong><br>
+                "폭락은 오히려 기회" - 펀더멘털이 강한 종목이 하락했을 때 진입 기회로 활용. 패닉할 상황이 아님.
+            </div>
+
+            <h3>주목할 긍정적 시그널</h3>
+            
+            <div class="key-point">
+                <span class="icon">📈</span>
+                <span class="text"><strong>버라이즌(Verizon)</strong>: 자사주 매입 발표 → 당일 9~12% 상승<br>애플, 엔비디아 등도 자사주 매입 가능성</span>
+            </div>
+
+            <div class="section-divider"></div>
+
+            <!-- S&P 전망 -->
+            <h2>📊 S&P 500 연간 전망</h2>
+            
+            <div class="highlight-box blue">
+                <strong>1월 실적 기반 연간 예측법:</strong><br>
+                1월 수익률 × 4 ≈ 연간 수익률 (전통적 통계 기반)
+            </div>
+
+            <p>현재 S&P 500이 7,000 근처까지 갔다가 조정 중이며, 1월 수익률이 약 1% 미만입니다. 이를 적용하면 <strong>연말 목표 약 7,500~7,600</strong>으로, 작년처럼 15% 급등은 기대하기 어렵습니다.</p>
+
+            <div class="key-point">
+                <span class="icon">📉</span>
+                <span class="text">S&P 기준 5~8% 조정이 와도 큰 문제 없음. 변동성이 커지는 시장이 오히려 기회.</span>
+            </div>
+
+            <div class="section-divider"></div>
+
+            <!-- 달러와 구매력 -->
+            <h2>💵 달러 구매력(Purchasing Power) 하락</h2>
+            
+            <div class="stat-grid">
+                <div class="stat-card">
+                    <div class="label">미국 이발비 사례</div>
+                    <div class="value blue">$80</div>
+                </div>
+                <div class="stat-card">
+                    <div class="label">주간 식료품비 (4인)</div>
+                    <div class="value blue">$400</div>
+                </div>
+            </div>
+
+            <div class="highlight-box yellow">
+                <strong>⚠️ 은퇴자 경고:</strong><br>
+                10년 전 100만 달러의 구매력 ≠ 현재 100만 달러<br>
+                <strong>실질 구매력 20~30% 하락</strong> 추정
+            </div>
+
+            <p>과도한 달러 발행으로 인해 현금 보유 시 구매력이 지속적으로 하락합니다. 이것이 금·은 등 실물자산 투자가 증가한 근본적 이유입니다.</p>
+
+            <div class="section-divider"></div>
+
+            <!-- 핵심 요약 -->
+            <h2>📝 핵심 요약</h2>
+            
+            <div class="key-point">
+                <span class="icon">1️⃣</span>
+                <span class="text"><strong>폭락 원인:</strong> 케빈 워시 연준의장 후보설 + 달러 강세 + 이익실현</span>
+            </div>
+            <div class="key-point">
+                <span class="icon">2️⃣</span>
+                <span class="text"><strong>펀더멘털:</strong> 이슈 없음. 거시경제 지표 양호</span>
+            </div>
+            <div class="key-point">
+                <span class="icon">3️⃣</span>
+                <span class="text"><strong>최대 리스크:</strong> 연준 독립성 훼손 시 30% 폭락 가능</span>
+            </div>
+            <div class="key-point">
+                <span class="icon">4️⃣</span>
+                <span class="text"><strong>AI 섹터:</strong> 소프트웨어 ↓, 메모리/하드웨어 ↑</span>
+            </div>
+            <div class="key-point">
+                <span class="icon">5️⃣</span>
+                <span class="text"><strong>전략:</strong> 패닉 금지, 비중 조절, 폭락은 기회</span>
+            </div>
+
+            <div class="warning-box">
+                <span class="icon">🔑</span>
+                <div>
+                    <strong>기억할 것:</strong> M1, M2와 Treasury, 달러의 상관관계를 이해하면 시장 예측이 가능해집니다. 기관들의 자금 흐름(어디서 빠져서 어디로 가는지)을 파악하는 것이 핵심입니다.
+                </div>
+            </div>
+
+        </div>
+        
+        <div class="footer">
+            본 분석은 교육 목적으로 작성되었으며, 투자 권유가 아닙니다.<br>
+            투자 결정은 개인의 판단과 책임 하에 이루어져야 합니다.<br>
+            출처: 금은테크 분석 방송 (2026.01.31)
+        </div>
+    </div>
+</body>
+</html>
