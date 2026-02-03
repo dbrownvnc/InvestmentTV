@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>올해 성장성 큰 미증시 섹터와 구글·아마존 예상실적 분석</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.8;
+            background: linear-gradient(135deg, #0a0a1a 0%, #1a1a3a 100%);
+            color: #e0e0e0;
+            padding: 16px;
+            max-width: 100%;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .header {
+            background: linear-gradient(135deg, #1e3a5f 0%, #2d5a87 100%);
+            border-radius: 16px;
+            padding: 24px 20px;
+            margin-bottom: 20px;
+            text-align: center;
+            border: 1px solid rgba(100, 150, 200, 0.3);
+        }
+        .header h1 {
+            font-size: 1.4rem;
+            color: #fff;
+            margin-bottom: 12px;
+            line-height: 1.4;
+        }
+        .header-meta {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            flex-wrap: wrap;
+            font-size: 0.85rem;
+            color: #a0c0e0;
+        }
+        .section {
+            background: rgba(30, 40, 60, 0.8);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
+            border: 1px solid rgba(100, 150, 200, 0.2);
+        }
+        .section-title {
+            font-size: 1.15rem;
+            color: #60a0dc;
+            margin-bottom: 16px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid rgba(100, 150, 200, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .key-point {
+            background: linear-gradient(135deg, #1a2a4a 0%, #253a5a 100%);
+            border-left: 4px solid #4a90d9;
+            padding: 14px 16px;
+            margin: 12px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        .highlight {
+            color: #ffd700;
+            font-weight: 600;
+        }
+        .positive {
+            color: #4ade80;
+        }
+        .negative {
+            color: #f87171;
+        }
+        .warning {
+            color: #fbbf24;
+        }
+        .index-card {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin: 16px 0;
+        }
+        .index-item {
+            background: rgba(40, 50, 70, 0.6);
+            padding: 14px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .index-name {
+            font-size: 0.85rem;
+            color: #9ca3af;
+            margin-bottom: 4px;
+        }
+        .index-value {
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+        .chart-container {
+            background: rgba(20, 30, 50, 0.6);
+            border-radius: 12px;
+            padding: 16px;
+            margin: 16px 0;
+        }
+        .chart-title {
+            font-size: 0.95rem;
+            color: #a0c0e0;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+            font-size: 0.9rem;
+        }
+        th, td {
+            padding: 12px 10px;
+            text-align: left;
+            border-bottom: 1px solid rgba(100, 150, 200, 0.2);
+        }
+        th {
+            background: rgba(40, 60, 90, 0.5);
+            color: #60a0dc;
+            font-weight: 600;
+        }
+        tr:hover {
+            background: rgba(60, 80, 110, 0.3);
+        }
+        .earnings-card {
+            background: linear-gradient(135deg, #1a2a4a 0%, #2a3a5a 100%);
+            border-radius: 12px;
+            padding: 18px;
+            margin: 14px 0;
+            border: 1px solid rgba(100, 150, 200, 0.25);
+        }
+        .earnings-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        .company-name {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #fff;
+        }
+        .earnings-date {
+            font-size: 0.8rem;
+            color: #9ca3af;
+            background: rgba(60, 80, 110, 0.5);
+            padding: 4px 10px;
+            border-radius: 12px;
+        }
+        .metric-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(100, 150, 200, 0.15);
+        }
+        .metric-label {
+            color: #9ca3af;
+        }
+        .metric-value {
+            font-weight: 600;
+        }
+        .sector-tag {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 16px;
+            font-size: 0.8rem;
+            margin: 4px;
+            font-weight: 500;
+        }
+        .sector-buy {
+            background: rgba(74, 222, 128, 0.2);
+            color: #4ade80;
+            border: 1px solid rgba(74, 222, 128, 0.3);
+        }
+        .sector-avoid {
+            background: rgba(248, 113, 113, 0.2);
+            color: #f87171;
+            border: 1px solid rgba(248, 113, 113, 0.3);
+        }
+        .risk-box {
+            background: linear-gradient(135deg, #3a1a1a 0%, #4a2a2a 100%);
+            border: 1px solid rgba(248, 113, 113, 0.3);
+            border-radius: 12px;
+            padding: 16px;
+            margin: 14px 0;
+        }
+        .risk-title {
+            color: #f87171;
+            font-weight: 600;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .summary-box {
+            background: linear-gradient(135deg, #1a3a2a 0%, #2a4a3a 100%);
+            border: 1px solid rgba(74, 222, 128, 0.3);
+            border-radius: 12px;
+            padding: 18px;
+            margin: 16px 0;
+        }
+        .summary-title {
+            color: #4ade80;
+            font-weight: 600;
+            margin-bottom: 12px;
+            font-size: 1.05rem;
+        }
+        .summary-item {
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(74, 222, 128, 0.15);
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+        }
+        .summary-item:last-child {
+            border-bottom: none;
+        }
+        .bullet {
+            color: #4ade80;
+            font-weight: bold;
+        }
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #6b7280;
+            font-size: 0.8rem;
+        }
+        .stat-highlight {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #60a0dc;
+        }
+        .divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(100, 150, 200, 0.3), transparent);
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📊 올해 성장성 큰 미증시 섹터와 구글·아마존 예상실적 분석</h1>
+            <div class="header-meta">
+                <span>📅 2026년 2월 3일</span>
+                <span>📺 미증시 포커스</span>
+            </div>
+        </div>
+
+        <!-- 1월 마감 현황 -->
+        <div class="section">
+            <h2 class="section-title">📈 1월 미증시 마감 현황</h2>
+            
+            <div class="key-point">
+                <strong class="positive">✅ 1월 미증시가 긍정적으로 마감</strong><br>
+                → 2026년 연간 시장이 긍정적으로 갈 가능성 높음
+            </div>
+
+            <div class="index-card">
+                <div class="index-item">
+                    <div class="index-name">다우존스</div>
+                    <div class="index-value positive">+1.05%</div>
+                </div>
+                <div class="index-item">
+                    <div class="index-name">S&P 500</div>
+                    <div class="index-value positive">+0.54%</div>
+                </div>
+                <div class="index-item">
+                    <div class="index-name">나스닥</div>
+                    <div class="index-value positive">+0.56%</div>
+                </div>
+                <div class="index-item">
+                    <div class="index-name">S&P 500 현재</div>
+                    <div class="index-value">7,000 근접</div>
+                </div>
+            </div>
+
+            <div class="key-point">
+                <strong>📊 1월 바로미터 효과</strong><br>
+                2차 세계대전 이후 S&P 500이 1월 상승 시:<br>
+                • 평균 연간 상승률: <span class="highlight">16.2%</span><br>
+                • 연간 상승 확률: <span class="highlight">85%</span><br>
+                • 전체 연평균 수익률: 9.3%
+            </div>
+        </div>
+
+        <!-- 주요 자산 동향 -->
+        <div class="section">
+            <h2 class="section-title">💰 주요 자산 동향</h2>
+            
+            <div class="chart-container">
+                <div class="chart-title">주요 자산 변동 현황</div>
+                <canvas id="assetChart" height="200"></canvas>
+            </div>
+
+            <table>
+                <tr>
+                    <th>자산</th>
+                    <th>현재가/변동</th>
+                    <th>전망</th>
+                </tr>
+                <tr>
+                    <td>🛢️ 유가</td>
+                    <td>$62 (작년比 +5%)</td>
+                    <td class="positive">LPG/LNG 상승 예상</td>
+                </tr>
+                <tr>
+                    <td>🥇 금</td>
+                    <td>사상최고가 후 조정</td>
+                    <td class="warning">$5,500 전망</td>
+                </tr>
+                <tr>
+                    <td>₿ 비트코인</td>
+                    <td>$78,000 (10만불→7.8만불)</td>
+                    <td class="negative">변동성 주의</td>
+                </tr>
+                <tr>
+                    <td>💵 달러인덱스</td>
+                    <td>+0.64%</td>
+                    <td>달러 강세</td>
+                </tr>
+            </table>
+
+            <div class="risk-box">
+                <div class="risk-title">⚠️ 비트코인 투자 리스크</div>
+                <p>• 탈중앙화(Decentralized)로 매수/매도 주체 파악 불가</p>
+                <p>• 최근 1-2개월간 <span class="negative">30% 하락</span> → 자금 이탈 신호</p>
+                <p>• 일반 금융상품 대비 투자 리스크 현저히 높음</p>
+            </div>
+        </div>
+
+        <!-- 투자심리 분석 -->
+        <div class="section">
+            <h2 class="section-title">🧠 투자심리 및 자금 흐름 분석</h2>
+
+            <div class="key-point">
+                <strong>현재 시장 모멘텀: <span class="negative">네거티브</span></strong><br>
+                → 확실한 펀더멘털 종목에만 선별적 진입 중
+            </div>
+
+            <h3 style="color: #a0c0e0; margin: 16px 0 12px; font-size: 1rem;">📤 1월 자금 이동 현황</h3>
+            
+            <div class="chart-container">
+                <div class="chart-title">1월 ETF 자금 흐름</div>
+                <canvas id="flowChart" height="180"></canvas>
+            </div>
+
+            <table>
+                <tr>
+                    <th>구분</th>
+                    <th>규모</th>
+                    <th>방향</th>
+                </tr>
+                <tr>
+                    <td>해외 이탈 (트럼프 리스크)</td>
+                    <td>$60 billion</td>
+                    <td>이머징마켓 (한국, 중국, 인도 등)</td>
+                </tr>
+                <tr>
+                    <td>미증시 내 섹터 로테이션</td>
+                    <td>$40 billion</td>
+                    <td>소프트웨어 → <span class="highlight">메모리 칩</span></td>
+                </tr>
+                <tr>
+                    <td>케빈 월시 연준의장 후보 발표 후</td>
+                    <td>$50 billion</td>
+                    <td>미국 시장 이탈</td>
+                </tr>
+            </table>
+
+            <div class="key-point">
+                <strong>💡 핵심 시사점</strong><br>
+                • 연준 독립성 훼손 우려 → 투자심리 위축<br>
+                • 금은에서 빠진 자금 → <span class="highlight">메모리 칩 집중 투자</span><br>
+                • 실적 상회 종목에 자금 집중 (실적 발표 시즌 전략)
+            </div>
+        </div>
+
+        <!-- 실적 발표 전망 -->
+        <div class="section">
+            <h2 class="section-title">📋 주요 기업 실적 발표 전망</h2>
+
+            <!-- 팔란티어 -->
+            <div class="earnings-card">
+                <div class="earnings-header">
+                    <span class="company-name">🔮 팔란티어 (PLTR)</span>
+                    <span class="earnings-date">발표 완료</span>
+                </div>
+                <div class="metric-row">
+                    <span class="metric-label">실적</span>
+                    <span class="metric-value positive">예상 EPS 대비 $0.02 상회</span>
+                </div>
+                <div class="metric-row">
+                    <span class="metric-label">매출 성장</span>
+                    <span class="metric-value positive">+69%</span>
+                </div>
+                <div class="metric-row">
+                    <span class="metric-label">미정부 매출</span>
+                    <span class="metric-value positive">+66%</span>
+                </div>
+                <div class="metric-row">
+                    <span class="metric-label">예상 주가</span>
+                    <span class="metric-value positive">+6% 급등 예상</span>
+                </div>
+            </div>
+
+            <!-- 구글 -->
+            <div class="earnings-card">
+                <div class="earnings-header">
+                    <span class="company-name">🔍 구글 (GOOGL)</span>
+                    <span class="earnings-date">2/5 (수)</span>
+                </div>
+                <div class="metric-row">
+                    <span class="metric-label">매출 성장률 예상</span>
+                    <span class="metric-value">+22.4%</span>
+                </div>
+                <div class="metric-row">
+                    <span class="metric-label">핵심 관전 포인트</span>
+                    <span class="metric-value warning">CAPEX 지출</span>
+                </div>
+                <div style="background: rgba(251, 191, 36, 0.1); border-radius: 8px; padding: 12px; margin-top: 12px;">
+                    <strong class="warning">⚠️ CAPEX 시나리오</strong><br>
+                    • CAPEX 지출 <span class="negative">90% 이상 증가</span> 시 → <span class="negative">4-5% 폭락</span> 가능<br>
+                    • CAPEX 지출 <span class="positive">90% 미만</span> 시 → <span class="positive">3-5% 상승</span> 가능<br>
+                    • 예상 변동폭: <span class="highlight">±6%</span>
+                </div>
+            </div>
+
+            <!-- 아마존 -->
+            <div class="earnings-card">
+                <div class="earnings-header">
+                    <span class="company-name">📦 아마존 (AMZN)</span>
+                    <span class="earnings-date">2/6 (목)</span>
+                </div>
+                <div class="metric-row">
+                    <span class="metric-label">예상 매출</span>
+                    <span class="metric-value">$211 billion</span>
+                </div>
+                <div class="metric-row">
+                    <span class="metric-label">매출 성장률</span>
+                    <span class="metric-value positive">+12.2% 예상</span>
+                </div>
+                <div class="metric-row">
+                    <span class="metric-label">실적 전망</span>
+                    <span class="metric-value positive">상회 예상</span>
+                </div>
+                <div style="background: rgba(96, 160, 220, 0.1); border-radius: 8px; padding: 12px; margin-top: 12px;">
+                    <strong style="color: #60a0dc;">📊 주요 이슈</strong><br>
+                    • 대규모 해고: 총 약 <span class="highlight">30,000명</span> (워싱턴주 2,200명+)<br>
+                    • 해고 효과 → <span class="positive">EPS 개선</span> → 주가 긍정적<br>
+                    • <span class="warning">실적 발표 후 $250 미돌파 시 → $230대 하락 가능</span>
+                </div>
+            </div>
+
+            <!-- AMD -->
+            <div class="earnings-card">
+                <div class="earnings-header">
+                    <span class="company-name">💻 AMD</span>
+                    <span class="earnings-date">내일 발표</span>
+                </div>
+                <div class="metric-row">
+                    <span class="metric-label">예상 매출</span>
+                    <span class="metric-value">$9.67 billion</span>
+                </div>
+                <div class="metric-row">
+                    <span class="metric-label">전분기 대비</span>
+                    <span class="metric-value positive">+10.8% 예상</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 섹터 분석 -->
+        <div class="section">
+            <h2 class="section-title">🎯 2026년 섹터별 투자 전략</h2>
+
+            <div class="chart-container">
+                <div class="chart-title">섹터별 예상 수익률 (S&P 500 평균 대비)</div>
+                <canvas id="sectorChart" height="220"></canvas>
+            </div>
+
+            <h3 style="color: #4ade80; margin: 20px 0 12px; font-size: 1rem;">✅ 유망 섹터 (투자 확대 권장)</h3>
+            <div style="margin-bottom: 16px;">
+                <span class="sector-tag sector-buy">🔋 에너지 (특히 LPG/LNG)</span>
+                <span class="sector-tag sector-buy">🏭 인더스트리얼</span>
+                <span class="sector-tag sector-buy">🧱 소재 (Materials)</span>
+                <span class="sector-tag sector-buy">💾 메모리 반도체</span>
+                <span class="sector-tag sector-buy">📡 커뮤니케이션 서비스</span>
+            </div>
+
+            <h3 style="color: #f87171; margin: 20px 0 12px; font-size: 1rem;">❌ 피해야 할 섹터</h3>
+            <div style="margin-bottom: 16px;">
+                <span class="sector-tag sector-avoid">📱 애플리케이션 소프트웨어</span>
+                <span class="sector-tag sector-avoid">🎰 카지노/게임</span>
+                <span class="sector-tag sector-avoid">🖥️ 시스템 소프트웨어</span>
+            </div>
+
+            <div class="key-point">
+                <strong>📈 섹터별 예상 수익률</strong><br>
+                • S&P 500 평균: <span class="highlight">+6.0%</span><br>
+                • 에너지/인더스트리얼 섹터: <span class="positive">+8.6%</span> (평균 대비 +2.6%p)
+            </div>
+        </div>
+
+        <!-- 트럼프 리스크 -->
+        <div class="section">
+            <h2 class="section-title">⚡ 트럼프 리스크 분석</h2>
+
+            <div class="risk-box">
+                <div class="risk-title">🚨 주요 리스크 요인</div>
+                <p>• <strong>연준 독립성 훼손 우려</strong>: 케빈 월시 연준의장 후보 지명</p>
+                <p>• <strong>관세 정책 불확실성</strong>: 캐나다 25% 관세 등 급변하는 정책</p>
+                <p>• <strong>정치적 불안정</strong>: 텍사스 특별선거 민주당 승리 (10%p 차)</p>
+                <p>• <strong>미국채 매각 압력</strong>: 네덜란드 $120 billion 매각, 중국/일본 보유 축소</p>
+            </div>
+
+            <div class="chart-container">
+                <div class="chart-title">트럼프 리스크로 인한 섹터 영향</div>
+                <canvas id="riskChart" height="180"></canvas>
+            </div>
+
+            <div class="key-point">
+                <strong class="warning">⚠️ 컨슈머 스테이플 이상 급등</strong><br>
+                현재 경제 상황(호황)에서 디펜시브 섹터 급등은 비정상적<br>
+                → 트럼프 리스크로 인한 방어적 포지션 증가 신호
+            </div>
+
+            <table>
+                <tr>
+                    <th>구분</th>
+                    <th>현황</th>
+                    <th>영향</th>
+                </tr>
+                <tr>
+                    <td>10년 국채 금리</td>
+                    <td>4.275%</td>
+                    <td class="warning">4.5% 초과 시 위험</td>
+                </tr>
+                <tr>
+                    <td>금리 인하 전망</td>
+                    <td>연 2회 예상</td>
+                    <td class="positive">하이텍 섹터 유리</td>
+                </tr>
+                <tr>
+                    <td>파이낸셜 섹터</td>
+                    <td>실적 양호</td>
+                    <td class="warning">트럼프 리스크로 주가 정체</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- M2와 금 가격 -->
+        <div class="section">
+            <h2 class="section-title">📊 M2 통화량과 금 가격 분석</h2>
+
+            <div class="key-point">
+                <strong>현재 상황</strong><br>
+                • M2(시중 통화량) 대비 금 가격 <span class="highlight">사상 유례없이 상승</span><br>
+                • 역사적으로 이 갭이 커지면 → <span class="negative">리세션 전조</span> 가능성
+            </div>
+
+            <div class="chart-container">
+                <div class="chart-title">M2 대비 금 가격 괴리</div>
+                <canvas id="m2Chart" height="160"></canvas>
+            </div>
+
+            <div style="background: rgba(96, 160, 220, 0.1); border-radius: 8px; padding: 14px; margin-top: 12px;">
+                <strong style="color: #60a0dc;">💡 시사점</strong><br>
+                • 연준이 M2 확대(금리 인하) 시도할 가능성<br>
+                • 금리 인하 → <span class="positive">하이텍/칩 섹터 유리</span><br>
+                • 금 가격 목표: <span class="highlight">$5,500</span>
+            </div>
+        </div>
+
+        <!-- SpaceX-xAI 합병 -->
+        <div class="section">
+            <h2 class="section-title">🚀 SpaceX-xAI 합병 이슈</h2>
+
+            <div class="key-point">
+                <strong>합병 발표 내용</strong><br>
+                • SpaceX 밸류에이션: <span class="highlight">$1.5 trillion</span><br>
+                • xAI와 공식 합병 발표<br>
+                • 일론 머스크의 전략: AI 컴퓨팅을 우주로 이전
+            </div>
+
+            <div class="risk-box">
+                <div class="risk-title">⚠️ 투자자 우려사항</div>
+                <p>• 기존 투자자 혼란: 밸류에이션 평가 방법 불명확</p>
+                <p>• 섹터 분류 문제: 우주산업? 자동차? AI? → 카테고리화 불가</p>
+                <p>• 법적 문제: SEC 승인 어려울 가능성</p>
+                <p>• "문어발식 경영" 비판 → 미국에서 용납 어려움</p>
+            </div>
+
+            <div class="summary-box">
+                <div class="summary-title">📌 전문가 견해</div>
+                <div class="summary-item">
+                    <span class="bullet">•</span>
+                    <span>현실적으로 합병 승인 <span class="negative">불가능</span> 예상</span>
+                </div>
+                <div class="summary-item">
+                    <span class="bullet">•</span>
+                    <span>경쟁사 설정 불가 (OpenAI? 테슬라? 보잉?)</span>
+                </div>
+                <div class="summary-item">
+                    <span class="bullet">•</span>
+                    <span>SpaceX IPO 시 투자 예정 (속보 대기)</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 샌디스크 주의 -->
+        <div class="section">
+            <h2 class="section-title">⚠️ 샌디스크(SanDisk) 투자 주의</h2>
+
+            <div class="risk-box">
+                <div class="risk-title">📉 펀더멘털 분석</div>
+                <p>• 최근 주가: <span class="positive">+15% 급등</span> (밈스탁 현상)</p>
+                <p>• EPS 성장률: <span class="negative">-290%</span> (성장 없음)</p>
+                <p>• 2025년 순이익: <span class="negative">-$1.64 million</span> (적자)</p>
+                <p>• 현재 주가 = 미래 성장 선반영 → <span class="warning">과매수 상태</span></p>
+            </div>
+
+            <div class="key-point">
+                <strong class="negative">⚠️ 리스크 경고</strong><br>
+                • 언제든 <span class="negative">70-80% 폭락</span> 가능성<br>
+                • 마이크론 등 실적 개선 기업과 <span class="highlight">질적으로 다름</span><br>
+                • 투자 시 비중조절 필수, 리스크 인지 후 투자
+            </div>
+        </div>
+
+        <!-- 핵심 요약 -->
+        <div class="section">
+            <h2 class="section-title">📌 핵심 투자 시사점 요약</h2>
+
+            <div class="summary-box">
+                <div class="summary-title">✅ 긍정적 시그널</div>
+                <div class="summary-item">
+                    <span class="bullet">•</span>
+                    <span>1월 증시 긍정 마감 → 2026년 연간 상승 확률 <span class="highlight">85%</span></span>
+                </div>
+                <div class="summary-item">
+                    <span class="bullet">•</span>
+                    <span>S&P 500 7,000 돌파 시 → <span class="positive">7,100 목표</span></span>
+                </div>
+                <div class="summary-item">
+                    <span class="bullet">•</span>
+                    <span>금리 인하 2회 예상 → <span class="positive">하이텍 섹터 유리</span></span>
+                </div>
+                <div class="summary-item">
+                    <span class="bullet">•</span>
+                    <span>메모리 반도체 기업 실적 호전 전망</span>
+                </div>
+            </div>
+
+            <div class="risk-box">
+                <div class="risk-title">⚠️ 주의사항</div>
+                <p>• 트럼프 리스크 지속 → 변동성 확대</p>
+                <p>• CAPEX 지출 예민하게 반응 중</p>
+                <p>• 옥석 가리기 장세 → 종목 선별 중요</p>
+                <p>• 폭락장 대비 리스크 관리 필수</p>
+            </div>
+
+            <div class="divider"></div>
+
+            <div style="text-align: center; padding: 16px 0;">
+                <p style="color: #9ca3af; font-size: 0.85rem; margin-bottom: 12px;">투자 원칙</p>
+                <p style="color: #60a0dc; font-size: 1.1rem; font-weight: 600;">
+                    "자산 투자는 리스크를 관리하는 과정이다.<br>
+                    자기 원칙 없이 남 따라하면 죽도밥도 안 된다."
+                </p>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>⚠️ 본 자료는 투자 참고용이며, 투자 판단의 책임은 본인에게 있습니다.</p>
+            <p>과거의 성과는 미래의 결과를 보장하지 않습니다.</p>
+            <p style="margin-top: 10px;">📺 출처: 미증시 포커스 (2026.02.03)</p>
+        </div>
+    </div>
+
+    <script>
+        // 자산 변동 차트
+        const assetCtx = document.getElementById('assetChart').getContext('2d');
+        new Chart(assetCtx, {
+            type: 'bar',
+            data: {
+                labels: ['다우존스', 'S&P 500', '나스닥', '유가', '달러인덱스'],
+                datasets: [{
+                    label: '변동률 (%)',
+                    data: [1.05, 0.54, 0.56, 5.0, 0.64],
+                    backgroundColor: [
+                        'rgba(74, 222, 128, 0.7)',
+                        'rgba(74, 222, 128, 0.7)',
+                        'rgba(74, 222, 128, 0.7)',
+                        'rgba(96, 160, 220, 0.7)',
+                        'rgba(96, 160, 220, 0.7)'
+                    ],
+                    borderColor: [
+                        'rgba(74, 222, 128, 1)',
+                        'rgba(74, 222, 128, 1)',
+                        'rgba(74, 222, 128, 1)',
+                        'rgba(96, 160, 220, 1)',
+                        'rgba(96, 160, 220, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: { color: '#9ca3af' },
+                        grid: { color: 'rgba(100, 150, 200, 0.1)' }
+                    },
+                    x: {
+                        ticks: { color: '#9ca3af' },
+                        grid: { display: false }
+                    }
+                }
+            }
+        });
+
+        // 자금 흐름 차트
+        const flowCtx = document.getElementById('flowChart').getContext('2d');
+        new Chart(flowCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['해외 이탈 ($60B)', '섹터 로테이션 ($40B)', '케빈월시 영향 ($50B)'],
+                datasets: [{
+                    data: [60, 40, 50],
+                    backgroundColor: [
+                        'rgba(248, 113, 113, 0.7)',
+                        'rgba(251, 191, 36, 0.7)',
+                        'rgba(248, 113, 113, 0.5)'
+                    ],
+                    borderColor: [
+                        'rgba(248, 113, 113, 1)',
+                        'rgba(251, 191, 36, 1)',
+                        'rgba(248, 113, 113, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: { color: '#9ca3af', padding: 12 }
+                    }
+                }
+            }
+        });
+
+        // 섹터별 수익률 차트
+        const sectorCtx = document.getElementById('sectorChart').getContext('2d');
+        new Chart(sectorCtx, {
+            type: 'bar',
+            data: {
+                labels: ['에너지', '인더스트리얼', '소재', '커뮤니케이션', 'S&P 평균', '소프트웨어'],
+                datasets: [{
+                    label: '예상 수익률 (%)',
+                    data: [8.6, 8.6, 7.5, 7.0, 6.0, 3.0],
+                    backgroundColor: [
+                        'rgba(74, 222, 128, 0.7)',
+                        'rgba(74, 222, 128, 0.7)',
+                        'rgba(74, 222, 128, 0.6)',
+                        'rgba(96, 160, 220, 0.7)',
+                        'rgba(156, 163, 175, 0.5)',
+                        'rgba(248, 113, 113, 0.7)'
+                    ],
+                    borderColor: [
+                        'rgba(74, 222, 128, 1)',
+                        'rgba(74, 222, 128, 1)',
+                        'rgba(74, 222, 128, 1)',
+                        'rgba(96, 160, 220, 1)',
+                        'rgba(156, 163, 175, 1)',
+                        'rgba(248, 113, 113, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        ticks: { color: '#9ca3af' },
+                        grid: { color: 'rgba(100, 150, 200, 0.1)' }
+                    },
+                    y: {
+                        ticks: { color: '#9ca3af' },
+                        grid: { display: false }
+                    }
+                }
+            }
+        });
+
+        // 트럼프 리스크 영향 차트
+        const riskCtx = document.getElementById('riskChart').getContext('2d');
+        new Chart(riskCtx, {
+            type: 'bar',
+            data: {
+                labels: ['컨슈머 스테이플', '에너지', '파이낸셜'],
+                datasets: [{
+                    label: '영향도',
+                    data: [85, 60, -30],
+                    backgroundColor: [
+                        'rgba(251, 191, 36, 0.7)',
+                        'rgba(74, 222, 128, 0.7)',
+                        'rgba(248, 113, 113, 0.7)'
+                    ],
+                    borderColor: [
+                        'rgba(251, 191, 36, 1)',
+                        'rgba(74, 222, 128, 1)',
+                        'rgba(248, 113, 113, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    y: {
+                        ticks: { color: '#9ca3af' },
+                        grid: { color: 'rgba(100, 150, 200, 0.1)' }
+                    },
+                    x: {
+                        ticks: { color: '#9ca3af' },
+                        grid: { display: false }
+                    }
+                }
+            }
+        });
+
+        // M2 차트
+        const m2Ctx = document.getElementById('m2Chart').getContext('2d');
+        new Chart(m2Ctx, {
+            type: 'line',
+            data: {
+                labels: ['2020', '2021', '2022', '2023', '2024', '2025', '2026'],
+                datasets: [{
+                    label: 'M2 대비 금 가격 괴리',
+                    data: [20, 35, 45, 55, 70, 90, 95],
+                    borderColor: 'rgba(255, 215, 0, 1)',
+                    backgroundColor: 'rgba(255, 215, 0, 0.1)',
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        labels: { color: '#9ca3af' }
+                    }
+                },
+                scales: {
+                    y: {
+                        ticks: { color: '#9ca3af' },
+                        grid: { color: 'rgba(100, 150, 200, 0.1)' }
+                    },
+                    x: {
+                        ticks: { color: '#9ca3af' },
+                        grid: { display: false }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
