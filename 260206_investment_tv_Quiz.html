@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>실적상회보다 Capex 증가에 투자심리 불안조정 - 시험문제</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800&display=swap');
+
+        :root {
+            --bg-primary: #0a0e17;
+            --bg-card: #111827;
+            --bg-card-alt: #1a2235;
+            --accent-red: #ef4444;
+            --accent-green: #22c55e;
+            --accent-blue: #3b82f6;
+            --accent-yellow: #eab308;
+            --accent-purple: #a855f7;
+            --accent-cyan: #06b6d4;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --border-color: #1e293b;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.8;
+            font-size: 15px;
+        }
+
+        .container {
+            max-width: 640px;
+            margin: 0 auto;
+            padding: 0 16px 60px;
+        }
+
+        .header {
+            background: linear-gradient(180deg, #0f1a2e 0%, var(--bg-primary) 100%);
+            padding: 32px 16px 24px;
+            text-align: center;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 24px;
+        }
+
+        .header-badge {
+            display: inline-block;
+            background: rgba(59, 130, 246, 0.15);
+            color: var(--accent-blue);
+            font-size: 11px;
+            font-weight: 700;
+            padding: 4px 12px;
+            border-radius: 20px;
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            margin-bottom: 12px;
+        }
+
+        .header h1 {
+            font-size: 20px;
+            font-weight: 800;
+            line-height: 1.4;
+            margin-bottom: 6px;
+        }
+
+        .header-meta {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .section-divider {
+            text-align: center;
+            padding: 20px 0;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--accent-blue);
+            border-top: 2px solid var(--accent-blue);
+            border-bottom: 2px solid var(--accent-blue);
+            background: rgba(59, 130, 246, 0.05);
+            margin: 28px 0;
+            letter-spacing: 2px;
+        }
+
+        .question-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px;
+            margin-bottom: 16px;
+        }
+
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .question-number {
+            font-size: 14px;
+            font-weight: 800;
+            color: var(--accent-blue);
+        }
+
+        .question-meta {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+        }
+
+        .difficulty {
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .diff-easy { background: rgba(34,197,94,0.15); color: #86efac; }
+        .diff-medium { background: rgba(234,179,8,0.15); color: #fde047; }
+        .diff-hard { background: rgba(239,68,68,0.15); color: #fca5a5; }
+
+        .q-type {
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 4px;
+            background: rgba(168,85,247,0.15);
+            color: #d8b4fe;
+            font-weight: 600;
+        }
+
+        .question-text {
+            font-size: 14px;
+            font-weight: 600;
+            line-height: 1.7;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+        }
+
+        .options {
+            list-style: none;
+            padding: 0;
+        }
+
+        .options li {
+            font-size: 13px;
+            color: var(--text-secondary);
+            padding: 8px 12px;
+            margin-bottom: 6px;
+            background: var(--bg-card-alt);
+            border-radius: 8px;
+            border: 1px solid transparent;
+            cursor: default;
+            line-height: 1.6;
+        }
+
+        .blank-line {
+            display: block;
+            border-bottom: 2px dashed var(--text-muted);
+            width: 200px;
+            height: 24px;
+            margin: 8px 0;
+        }
+
+        /* 정답지 */
+        .answer-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px;
+            margin-bottom: 16px;
+            border-left: 3px solid var(--accent-green);
+        }
+
+        .answer-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        .answer-number {
+            font-size: 14px;
+            font-weight: 800;
+            color: var(--accent-green);
+        }
+
+        .answer-value {
+            font-size: 14px;
+            font-weight: 800;
+            color: var(--accent-cyan);
+            background: rgba(6, 182, 212, 0.1);
+            padding: 2px 10px;
+            border-radius: 6px;
+        }
+
+        .explanation {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .footer {
+            text-align: center;
+            padding: 24px 0;
+            color: var(--text-muted);
+            font-size: 11px;
+            border-top: 1px solid var(--border-color);
+            margin-top: 32px;
+        }
+
+        strong { color: var(--text-primary); }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <div class="header-badge">📝 시험문제 10문항</div>
+    <h1>실적 상회보다 CAPEX 증가에<br>투자심리 불안 조정</h1>
+    <div class="header-meta">2026년 2월 6일 · 난이도: ⭐30% ⭐⭐50% ⭐⭐⭐20%</div>
+</div>
+
+<div class="container">
+
+    <!-- ━━━━━━━━ 문제지 ━━━━━━━━ -->
+    <div class="section-divider">📋 시험문제 (총 10문제)</div>
+
+    <!-- 문제 1 -->
+    <div class="question-card">
+        <div class="question-header">
+            <span class="question-number">[문제 1]</span>
+            <div class="question-meta">
+                <span class="difficulty diff-easy">⭐ 쉬움</span>
+                <span class="q-type">객관식</span>
+            </div>
+        </div>
+        <div class="question-text">2026년 2월 초 미국 증시 3일 연속 하락의 <strong>가장 직접적인 원인</strong>은?</div>
+        <ul class="options">
+            <li>① 미국 경제의 펀더멘털 악화</li>
+            <li>② 빅테크 기업들의 과도한 AI CAPEX(자본지출) 가이던스</li>
+            <li>③ 중국의 미국 국채 대량 매각</li>
+            <li>④ 연준의 기습적 금리 인상</li>
+        </ul>
+    </div>
+
+    <!-- 문제 2 -->
+    <div class="question-card">
+        <div class="question-header">
+            <span class="question-number">[문제 2]</span>
+            <div class="question-meta">
+                <span class="difficulty diff-easy">⭐ 쉬움</span>
+                <span class="q-type">OX 문제</span>
+            </div>
+        </div>
+        <div class="question-text">아마존이 발표한 AI CAPEX 가이던스는 약 $120B(1,200억 달러)이다.</div>
+        <ul class="options">
+            <li>⭕ 맞다</li>
+            <li>❌ 틀리다</li>
+        </ul>
+    </div>
+
+    <!-- 문제 3 -->
+    <div class="question-card">
+        <div class="question-header">
+            <span class="question-number">[문제 3]</span>
+            <div class="question-meta">
+                <span class="difficulty diff-medium">⭐⭐ 보통</span>
+                <span class="q-type">객관식</span>
+            </div>
+        </div>
+        <div class="question-text">AMD의 전년 동기 대비 매출 성장률은 얼마인가?</div>
+        <ul class="options">
+            <li>① 30%</li>
+            <li>② 45%</li>
+            <li>③ 57%</li>
+            <li>④ 72%</li>
+        </ul>
+    </div>
+
+    <!-- 문제 4 -->
+    <div class="question-card">
+        <div class="question-header">
+            <span class="question-number">[문제 4]</span>
+            <div class="question-meta">
+                <span class="difficulty diff-medium">⭐⭐ 보통</span>
+                <span class="q-type">단답형</span>
+            </div>
+        </div>
+        <div class="question-text">S&P 500 기준으로 역사적으로 <strong>가장 수익률이 높은 달</strong>과 <strong>두 번째로 높은 달</strong>을 순서대로 쓰시오.</div>
+        <div style="margin-top:8px; color:var(--text-muted); font-size:13px;">
+            1위: <span class="blank-line"></span>
+            2위: <span class="blank-line"></span>
+        </div>
+    </div>
+
+    <!-- 문제 5 -->
+    <div class="question-card">
+        <div class="question-header">
+            <span class="question-number">[문제 5]</span>
+            <div class="question-meta">
+                <span class="difficulty diff-medium">⭐⭐ 보통</span>
+                <span class="q-type">빈칸채우기</span>
+            </div>
+        </div>
+        <div class="question-text">현재 11개 섹터 중 강세를 보이는 섹터는 <span class="blank-line" style="display:inline-block;width:140px;"></span>와(과) <span class="blank-line" style="display:inline-block;width:140px;"></span>이며, 약세 섹터는 IT와 Consumer Discretionary이다.</div>
+    </div>
+
+    <!-- 문제 6 -->
+    <div class="question-card">
+        <div class="question-header">
+            <span class="question-number">[문제 6]</span>
+            <div class="question-meta">
+                <span class="difficulty diff-easy">⭐ 쉬움</span>
+                <span class="q-type">객관식</span>
+            </div>
+        </div>
+        <div class="question-text">다음 중 포트폴리오에서 <strong>매각(탈락) 대상</strong>이 아닌 종목은?</div>
+        <ul class="options">
+            <li>① Amazon (AMZN)</li>
+            <li>② Microsoft (MSFT)</li>
+            <li>③ NVIDIA (NVDA)</li>
+            <li>④ CrowdStrike (CRWD)</li>
+        </ul>
+    </div>
+
+    <!-- 문제 7 -->
+    <div class="question-card">
+        <div class="question-header">
+            <span class="question-number">[문제 7]</span>
+            <div class="question-meta">
+                <span class="difficulty diff-medium">⭐⭐ 보통</span>
+                <span class="q-type">객관식</span>
+            </div>
+        </div>
+        <div class="question-text">신규 편입 종목 중 <strong>연간 배당 수익률이 약 5.8%</strong>로 가장 높고, 목표가 $56인 종목은?</div>
+        <ul class="options">
+            <li>① Baker Hughes (BKR)</li>
+            <li>② Diamondback Energy (FANG)</li>
+            <li>③ Verizon (VZ)</li>
+            <li>④ AMD</li>
+        </ul>
+    </div>
+
+    <!-- 문제 8 -->
+    <div class="question-card">
+        <div class="question-header">
+            <span class="question-number">[문제 8]</span>
+            <div class="question-meta">
+                <span class="difficulty diff-medium">⭐⭐ 보통</span>
+                <span class="q-type">OX 문제</span>
+            </div>
+        </div>
+        <div class="question-text">10년 만기 미국 국채 수익률이 4.3% 이상이면 시장에 불안 요인이 되며, 당시 수준인 4.13%는 정상적인 범위에 해당한다.</div>
+        <ul class="options">
+            <li>⭕ 맞다</li>
+            <li>❌ 틀리다</li>
+        </ul>
+    </div>
+
+    <!-- 문제 9 -->
+    <div class="question-card">
+        <div class="question-header">
+            <span class="question-number">[문제 9]</span>
+            <div class="question-meta">
+                <span class="difficulty diff-hard">⭐⭐⭐ 어려움</span>
+                <span class="q-type">서술형</span>
+            </div>
+        </div>
+        <div class="question-text">빅테크 기업들의 실적이 시장 기대를 상회했음에도 주가가 급락한 이유를 <strong>CAPEX, 투자자 심리, AI 수익화</strong> 세 가지 키워드를 모두 사용하여 서술하시오.</div>
+        <div style="margin-top:12px; border:1px dashed var(--text-muted); border-radius:8px; padding:12px; min-height:100px; color:var(--text-muted); font-size:12px;">(서술 공간)</div>
+    </div>
+
+    <!-- 문제 10 -->
+    <div class="question-card">
+        <div class="question-header">
+            <span class="question-number">[문제 10]</span>
+            <div class="question-meta">
+                <span class="difficulty diff-hard">⭐⭐⭐ 어려움</span>
+                <span class="q-type">서술형</span>
+            </div>
+        </div>
+        <div class="question-text">IT 섹터에서 에너지·배당주 중심으로의 <strong>섹터 로테이션 전략</strong>이 현 시장 환경에서 유효한 이유를 설명하고, 이 전략의 <strong>장점과 한계</strong>를 각각 하나 이상 서술하시오.</div>
+        <div style="margin-top:12px; border:1px dashed var(--text-muted); border-radius:8px; padding:12px; min-height:100px; color:var(--text-muted); font-size:12px;">(서술 공간)</div>
+    </div>
+
+    <!-- ━━━━━━━━ 정답지 ━━━━━━━━ -->
+    <div class="section-divider">📝 정답 및 해설</div>
+
+    <!-- 정답 1 -->
+    <div class="answer-card">
+        <div class="answer-header">
+            <span class="answer-number">[문제 1]</span>
+            <span class="answer-value">정답: ②</span>
+        </div>
+        <div class="explanation">
+            <strong>해설:</strong> 이번 3일 연속 하락의 핵심 원인은 빅테크 기업들의 <strong>과도한 AI CAPEX 가이던스</strong>였다. 실적 자체는 시장 기대를 상회했으나, 아마존 $200B, 구글 $120B 등 대규모 자본지출 계획이 발표되면서 투자자들이 "수익 환원보다 추가 지출"에 대한 불만으로 패닉 셀을 했다. 경제 펀더멘털은 오히려 역대 최고치 수준이었으며, 중국 국채 매각이나 금리 인상은 사실이 아니다.
+        </div>
+    </div>
+
+    <!-- 정답 2 -->
+    <div class="answer-card">
+        <div class="answer-header">
+            <span class="answer-number">[문제 2]</span>
+            <span class="answer-value">정답: ❌ 틀리다</span>
+        </div>
+        <div class="explanation">
+            <strong>해설:</strong> $120B는 <strong>알파벳(구글)</strong>의 CAPEX 가이던스이다. 아마존은 이보다 훨씬 많은 <strong>$200B(2,000억 달러)</strong>를 발표하여 시장에 더 큰 충격을 주었다. 아마존의 $200B CAPEX가 주가 10~14% 폭락의 직접적 원인이 되었다.
+        </div>
+    </div>
+
+    <!-- 정답 3 -->
+    <div class="answer-card">
+        <div class="answer-header">
+            <span class="answer-number">[문제 3]</span>
+            <span class="answer-value">정답: ③ 57%</span>
+        </div>
+        <div class="explanation">
+            <strong>해설:</strong> AMD는 전년 동기 대비 매출이 <strong>57% 성장</strong>하는 놀라운 실적을 기록했다. 매출총이익(Gross Profit)도 30% 이상 증가했으며, 영업이익률도 2%p 개선되었다. 11개 섹터 중 이 수준의 매출 성장률을 보이는 기업은 극소수이며, 목표가 $300까지 가능한 것으로 평가되었다.
+        </div>
+    </div>
+
+    <!-- 정답 4 -->
+    <div class="answer-card">
+        <div class="answer-header">
+            <span class="answer-number">[문제 4]</span>
+            <span class="answer-value">정답: 1위 — 10월, 2위 — 4월</span>
+        </div>
+        <div class="explanation">
+            <strong>해설:</strong> S&P 500 기준 역사적으로 <strong>10월이 가장 수익률이 높은 달</strong>이며, <strong>4월이 두 번째</strong>이다. 두 달 모두 보통 1% 이상의 성장을 보인다. 반면 <strong>2월은 가장 수익률이 낮은 달</strong>로, 현재의 2월 약세장은 역사적 패턴과 일치한다. 기관들도 이 통계를 인지하고 있으며, AI 알고리즘이 이 심리를 증폭시키는 경향이 있다.
+        </div>
+    </div>
+
+    <!-- 정답 5 -->
+    <div class="answer-card">
+        <div class="answer-header">
+            <span class="answer-number">[문제 5]</span>
+            <span class="answer-value">정답: Consumer Staples(필수소비재), Energy(에너지)</span>
+        </div>
+        <div class="explanation">
+            <strong>해설:</strong> 11개 섹터 중 10개가 하락한 가운데, <strong>Consumer Staples(필수소비재)</strong>와 <strong>Energy(에너지)</strong>가 강세를 보였다. 필수소비재는 경기 방어적 성격으로 자금이 유입되었고, 에너지는 AI 데이터센터의 전력 수요 급증에 따른 LNG/가스 기술 수요 확대가 강세 요인이다.
+        </div>
+    </div>
+
+    <!-- 정답 6 -->
+    <div class="answer-card">
+        <div class="answer-header">
+            <span class="answer-number">[문제 6]</span>
+            <span class="answer-value">정답: ③ NVIDIA (NVDA)</span>
+        </div>
+        <div class="explanation">
+            <strong>해설:</strong> NVIDIA는 M7 중 보유 유지 종목이다. 매각(탈락) 대상은 Amazon, Microsoft, CrowdStrike, Snowflake, UnitedHealth(UNH)이다. 현재 포트폴리오에서 보유 유지하는 M7 종목은 <strong>NVIDIA, META, Alphabet(Google)</strong> 3개이며, AMD는 적극 매수 대상이다.
+        </div>
+    </div>
+
+    <!-- 정답 7 -->
+    <div class="answer-card">
+        <div class="answer-header">
+            <span class="answer-number">[문제 7]</span>
+            <span class="answer-value">정답: ③ Verizon (VZ)</span>
+        </div>
+        <div class="explanation">
+            <strong>해설:</strong> Verizon(VZ)은 연간 배당 수익률 약 <strong>5.80%</strong>로 신규 편입 3종목 중 가장 높다. 목표가는 $56이며 현재 $40대에 거래 중이다. 오버웨이트(포트폴리오 5~10% 비중 가능) 등급을 받았으며, 하루 10% 규모의 자사주 매입을 진행 중이다. BKR은 1.5%, FANG은 2.37%의 배당률을 보인다.
+        </div>
+    </div>
+
+    <!-- 정답 8 -->
+    <div class="answer-card">
+        <div class="answer-header">
+            <span class="answer-number">[문제 8]</span>
+            <span class="answer-value">정답: ⭕ 맞다</span>
+        </div>
+        <div class="explanation">
+            <strong>해설:</strong> 10년물 국채 수익률 <strong>4.3% 이상</strong>은 시장 불안 구간으로 평가된다. 당시 수준인 <strong>4.13%</strong>는 정상 범위에 해당하며, 주식시장 불안으로 자금이 국채로 유입되면서 금리가 하락하는 구조는 오히려 미국에 유리하다. 금리가 하락하면 정부의 이자 부담이 줄고, 기업들의 차입 비용도 감소한다.
+        </div>
+    </div>
+
+    <!-- 정답 9 -->
+    <div class="answer-card">
+        <div class="answer-header">
+            <span class="answer-number">[문제 9]</span>
+            <span class="answer-value">정답: 서술형 (모범답안)</span>
+        </div>
+        <div class="explanation">
+            <strong>모범답안:</strong> 빅테크 기업들의 실적은 시장 기대를 상회했으나, 아마존 $200B, 구글 $120B 등 전례 없는 규모의 <strong>CAPEX 가이던스</strong>가 발표되면서 주가가 급락했다. <strong>투자자 심리</strong> 측면에서 "수익이 좋다면 주주에게 환원해야지, 왜 계속 돈을 쓰느냐"는 불만이 폭발했고, 이는 패닉 셀로 이어졌다. 근본적으로 AI 인프라 투자가 아직 <strong>AI 수익화</strong> 단계에 도달하지 못했다는 인식, 즉 막대한 투자 대비 실질적인 수익 창출 시점이 불투명하다는 우려가 매도 압력의 핵심이다. 테슬라의 휴머노이드 로봇, 오픈AI의 반복적 투자유치 등이 "아직 갈 길이 멀다"는 신호로 해석되었다.
+        </div>
+    </div>
+
+    <!-- 정답 10 -->
+    <div class="answer-card">
+        <div class="answer-header">
+            <span class="answer-number">[문제 10]</span>
+            <span class="answer-value">정답: 서술형 (모범답안)</span>
+        </div>
+        <div class="explanation">
+            <strong>모범답안:</strong><br><br>
+            <strong>유효한 이유:</strong> IT 섹터가 CAPEX 쇼크로 단기 변동성이 급증하는 반면, 에너지 섹터는 AI 데이터센터 확장에 따른 전력(LNG) 수요 증가로 수혜를 받고 있다. 배당주는 방어적 성격으로 포트폴리오 변동성을 줄여준다.<br><br>
+            <strong>장점:</strong> ①IT 섹터 하락 시 포트폴리오 전체 변동성을 줄일 수 있다. ②에너지 기업(BKR P/E 22배)은 S&P 500 평균(약 29배) 대비 저평가 상태로 밸류에이션 매력이 있다. ③Verizon의 5.8% 배당 등 안정적 현금흐름을 확보할 수 있다.<br><br>
+            <strong>한계:</strong> ①에너지·배당주는 성장 속도가 IT 대비 느려, AI가 본격 수익화되는 시점에 상대적 수익률이 뒤처질 수 있다. ②지나치게 방어적 자산에 집중하면 장기 상승장에서의 수익 극대화 기회를 놓칠 수 있다.
+        </div>
+    </div>
+
+    <div class="footer">
+        📺 원본: 멤버온리 방송 (2026.02.05)<br>
+        본 시험문제는 교육·학습 목적으로 작성되었습니다.
+    </div>
+
+</div>
+</body>
+</html>

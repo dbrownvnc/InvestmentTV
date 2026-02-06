@@ -1,0 +1,1237 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>실적상회보다 Capex 증가에 투자심리 불안조정 - 분석</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&family=Nanum+Gothic:wght@400;700;800&display=swap');
+
+        :root {
+            --bg-primary: #0a0e17;
+            --bg-card: #111827;
+            --bg-card-alt: #1a2235;
+            --accent-red: #ef4444;
+            --accent-orange: #f97316;
+            --accent-yellow: #eab308;
+            --accent-green: #22c55e;
+            --accent-blue: #3b82f6;
+            --accent-cyan: #06b6d4;
+            --accent-purple: #a855f7;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --border-color: #1e293b;
+            --gradient-red: linear-gradient(135deg, #dc2626, #ef4444);
+            --gradient-green: linear-gradient(135deg, #16a34a, #22c55e);
+            --gradient-blue: linear-gradient(135deg, #2563eb, #3b82f6);
+            --gradient-orange: linear-gradient(135deg, #ea580c, #f97316);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.75;
+            font-size: 15px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 640px;
+            margin: 0 auto;
+            padding: 0 16px 60px;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(180deg, #1a0a2e 0%, #0f172a 60%, var(--bg-primary) 100%);
+            padding: 32px 16px 24px;
+            text-align: center;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 24px;
+        }
+
+        .header-badge {
+            display: inline-block;
+            background: rgba(239, 68, 68, 0.15);
+            color: var(--accent-red);
+            font-size: 11px;
+            font-weight: 700;
+            padding: 4px 12px;
+            border-radius: 20px;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            margin-bottom: 12px;
+            letter-spacing: 0.5px;
+        }
+
+        .header h1 {
+            font-size: 22px;
+            font-weight: 800;
+            line-height: 1.4;
+            margin-bottom: 8px;
+            background: linear-gradient(to right, #f1f5f9, #cbd5e1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header-meta {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .header-meta a {
+            color: var(--accent-blue);
+            text-decoration: none;
+        }
+
+        /* Section */
+        .section {
+            margin-bottom: 28px;
+        }
+
+        .section-title {
+            font-size: 17px;
+            font-weight: 800;
+            margin-bottom: 16px;
+            padding-left: 12px;
+            border-left: 3px solid var(--accent-blue);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-title .icon { font-size: 18px; }
+
+        /* Cards */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px;
+            margin-bottom: 14px;
+        }
+
+        .card-alt {
+            background: var(--bg-card-alt);
+        }
+
+        .card-header {
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .card p, .card li {
+            color: var(--text-secondary);
+            font-size: 14px;
+            line-height: 1.8;
+        }
+
+        .card ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .card ul li {
+            padding: 4px 0;
+            padding-left: 18px;
+            position: relative;
+        }
+
+        .card ul li::before {
+            content: '•';
+            position: absolute;
+            left: 4px;
+            color: var(--accent-blue);
+            font-weight: bold;
+        }
+
+        /* Highlight boxes */
+        .highlight-box {
+            border-radius: 10px;
+            padding: 14px 16px;
+            margin-bottom: 14px;
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        .highlight-red {
+            background: rgba(239, 68, 68, 0.08);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            color: #fca5a5;
+        }
+
+        .highlight-green {
+            background: rgba(34, 197, 94, 0.08);
+            border: 1px solid rgba(34, 197, 94, 0.2);
+            color: #86efac;
+        }
+
+        .highlight-blue {
+            background: rgba(59, 130, 246, 0.08);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            color: #93c5fd;
+        }
+
+        .highlight-yellow {
+            background: rgba(234, 179, 8, 0.08);
+            border: 1px solid rgba(234, 179, 8, 0.2);
+            color: #fde047;
+        }
+
+        .highlight-orange {
+            background: rgba(249, 115, 22, 0.08);
+            border: 1px solid rgba(249, 115, 22, 0.2);
+            color: #fdba74;
+        }
+
+        /* Tags */
+        .tag {
+            display: inline-block;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 4px;
+            margin-right: 4px;
+            margin-bottom: 4px;
+        }
+
+        .tag-red { background: rgba(239,68,68,0.15); color: #fca5a5; }
+        .tag-green { background: rgba(34,197,94,0.15); color: #86efac; }
+        .tag-blue { background: rgba(59,130,246,0.15); color: #93c5fd; }
+        .tag-yellow { background: rgba(234,179,8,0.15); color: #fde047; }
+        .tag-purple { background: rgba(168,85,247,0.15); color: #d8b4fe; }
+        .tag-orange { background: rgba(249,115,22,0.15); color: #fdba74; }
+
+        /* Key metric */
+        .metric-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .metric-row:last-child { border-bottom: none; }
+
+        .metric-label {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .metric-value {
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .metric-up { color: var(--accent-green); }
+        .metric-down { color: var(--accent-red); }
+        .metric-neutral { color: var(--accent-yellow); }
+
+        /* Chart container */
+        .chart-container {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 14px;
+        }
+
+        .chart-title {
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            text-align: center;
+            color: var(--text-secondary);
+        }
+
+        canvas { max-width: 100%; }
+
+        /* Stock card */
+        .stock-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+        }
+
+        .stock-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+
+        .stock-name {
+            font-size: 16px;
+            font-weight: 800;
+        }
+
+        .stock-ticker {
+            font-size: 12px;
+            color: var(--accent-cyan);
+            font-weight: 600;
+        }
+
+        .stock-badge {
+            font-size: 11px;
+            font-weight: 700;
+            padding: 3px 10px;
+            border-radius: 6px;
+        }
+
+        .badge-buy { background: rgba(34,197,94,0.15); color: #86efac; border: 1px solid rgba(34,197,94,0.3); }
+        .badge-sell { background: rgba(239,68,68,0.15); color: #fca5a5; border: 1px solid rgba(239,68,68,0.3); }
+        .badge-hold { background: rgba(234,179,8,0.15); color: #fde047; border: 1px solid rgba(234,179,8,0.3); }
+
+        /* Divider */
+        .divider {
+            height: 1px;
+            background: var(--border-color);
+            margin: 24px 0;
+        }
+
+        /* Quote */
+        .quote-box {
+            border-left: 3px solid var(--accent-purple);
+            padding: 12px 16px;
+            background: rgba(168, 85, 247, 0.05);
+            border-radius: 0 8px 8px 0;
+            margin-bottom: 14px;
+            font-style: italic;
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        /* TOC */
+        .toc {
+            background: var(--bg-card-alt);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 24px;
+        }
+
+        .toc-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .toc a {
+            display: block;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 13px;
+            padding: 5px 0;
+            padding-left: 12px;
+            border-left: 2px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .toc a:hover {
+            color: var(--accent-blue);
+            border-left-color: var(--accent-blue);
+        }
+
+        /* Summary stat grid */
+        .stat-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+
+        .stat-item {
+            background: var(--bg-card-alt);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 12px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 20px;
+            font-weight: 800;
+            margin-bottom: 2px;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        /* Table */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+            margin-bottom: 14px;
+        }
+
+        .data-table th {
+            background: var(--bg-card-alt);
+            padding: 10px 8px;
+            text-align: left;
+            font-weight: 700;
+            font-size: 12px;
+            color: var(--text-muted);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .data-table td {
+            padding: 10px 8px;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+            color: var(--text-secondary);
+        }
+
+        .data-table tr:last-child td { border-bottom: none; }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 24px 0;
+            color: var(--text-muted);
+            font-size: 11px;
+            border-top: 1px solid var(--border-color);
+            margin-top: 32px;
+        }
+
+        strong { color: var(--text-primary); font-weight: 700; }
+        .text-red { color: var(--accent-red); }
+        .text-green { color: var(--accent-green); }
+        .text-blue { color: var(--accent-blue); }
+        .text-yellow { color: var(--accent-yellow); }
+        .text-orange { color: var(--accent-orange); }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <div class="header-badge">📉 3일 연속 하락장 분석</div>
+    <h1>실적 상회보다 CAPEX 증가에<br>투자심리 불안 조정</h1>
+    <div class="header-meta">
+        2026년 2월 6일 · 멤버온리 방송 분석<br>
+        <a href="https://www.youtube.com/watch?v=LnTBOmmwEiY" target="_blank">📺 원본 영상 보기</a>
+    </div>
+</div>
+
+<div class="container">
+
+    <!-- 핵심 요약 -->
+    <div class="stat-grid">
+        <div class="stat-item">
+            <div class="stat-number text-red">3일</div>
+            <div class="stat-label">연속 하락</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number text-red">10/11</div>
+            <div class="stat-label">섹터 하락</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number text-blue">4.13%</div>
+            <div class="stat-label">10년물 국채금리</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number text-green">장기 상승</div>
+            <div class="stat-label">기술적 전망</div>
+        </div>
+    </div>
+
+    <!-- 목차 -->
+    <div class="toc">
+        <div class="toc-title">📑 목차</div>
+        <a href="#sec1">1. 시장 개요 — 3일 연속 하락의 배경</a>
+        <a href="#sec2">2. 핵심 이슈 — CAPEX 쇼크와 투자심리</a>
+        <a href="#sec3">3. 빅테크 실적 및 CAPEX 분석</a>
+        <a href="#sec4">4. 섹터별 동향 및 로테이션</a>
+        <a href="#sec5">5. 거시경제 지표 및 연준 정책</a>
+        <a href="#sec6">6. 포트폴리오 전략 — 매도/매수 종목</a>
+        <a href="#sec7">7. 신규 편입 종목 분석</a>
+        <a href="#sec8">8. 기술적 분석 및 시장 전망</a>
+        <a href="#sec9">9. 투자 시사점 및 결론</a>
+    </div>
+
+    <!-- 1. 시장 개요 -->
+    <div class="section" id="sec1">
+        <div class="section-title"><span class="icon">📊</span> 시장 개요 — 3일 연속 하락의 배경</div>
+
+        <div class="card">
+            <p>미국 증시가 <strong class="text-red">3일 연속 하락</strong>하며 투자 심리가 급격히 위축되었다. 11개 섹터 중 <strong class="text-red">10개 섹터가 하락</strong>했으며, 최근 200~300% 급등한 종목들이 10~15%씩 급락하는 양상을 보였다.</p>
+        </div>
+
+        <div class="highlight-red">
+            <strong>💡 핵심 포인트:</strong> 이번 하락의 본질은 실적 부진이 아니라, <strong>빅테크 기업들의 과도한 AI CAPEX(자본지출) 계획</strong>에 대한 시장의 심리적 거부 반응이다. 실적은 오히려 시장 기대를 상회했다.
+        </div>
+
+        <div class="card">
+            <div class="card-header">📈 장중 흐름 — 극심한 눈치 게임</div>
+            <p>S&P 500이 <strong>6,900 근처까지 상승</strong>한 뒤 <strong class="text-red">6,700대로 급락</strong>, 이후 다시 반등하는 등 극심한 변동성을 보였다. 자동매매(알고리즘 트레이딩)에 의한 <strong>대량매도와 대량매입이 번갈아</strong> 나타나며, 매수 세력(바잉 세력)이 여전히 강력하게 존재함을 시사했다.</p>
+        </div>
+
+        <div class="quote-box">
+            "좀 떨어지다가 어느 정도 떨어지면 또 올라가고, 또 떨어지면 또 올라가고... 바잉 세력들이 크다는 것이다. 이런 현상이 나타나면 폭락을 못한다."
+        </div>
+    </div>
+
+    <!-- 2. 핵심 이슈 -->
+    <div class="section" id="sec2">
+        <div class="section-title"><span class="icon">⚡</span> 핵심 이슈 — CAPEX 쇼크와 투자심리</div>
+
+        <div class="card">
+            <div class="card-header">🤖 AI CAPEX 쇼크의 구조</div>
+            <p>빅테크 기업들의 실적은 양호했으나, 투자자들의 <strong>핵심 질문</strong>은 다음과 같았다:</p>
+            <ul>
+                <li><strong>"그렇게 돈을 많이 쓰고도 얼마나 벌었느냐?"</strong></li>
+                <li><strong>"올해도 또 더 쓸 것인가?"</strong></li>
+                <li><strong>"언제 줄일 것인가?"</strong></li>
+            </ul>
+        </div>
+
+        <!-- CAPEX Chart -->
+        <div class="chart-container">
+            <div class="chart-title">빅테크 AI CAPEX 가이던스 비교</div>
+            <canvas id="capexChart" height="220"></canvas>
+        </div>
+
+        <div class="highlight-red">
+            <strong>⚠️ 시장 반응:</strong> 알파벳(구글)이 <strong>$120B CAPEX</strong>를, 아마존이 <strong>$200B CAPEX</strong>를 발표하자 투자자들은 <strong>"패닉 셀(Panic Sell)"</strong>로 반응했다. 돈을 많이 벌고 있지만, "줄여야 할 때 아니냐"는 심리가 주가에 반영된 것이다.
+        </div>
+
+        <div class="card">
+            <div class="card-header">🔄 AI 투자 딜레마</div>
+            <p>AI 확장은 2026~2027년까지 계속 확대될 수밖에 없는 구조이지만, 시장은 <strong>단기적으로 과잉 투자에 대한 피로감</strong>을 보이고 있다. 테슬라의 휴머노이드 로봇, 오픈AI의 연이은 투자 유치 등 AI 생태계 전체가 아직 <strong>"실용성 있는 수익화"</strong> 단계에 도달하지 못했다는 인식이 확산되고 있다.</p>
+        </div>
+
+        <div class="highlight-blue">
+            <strong>📌 핵심 판단:</strong> AI 트렌드 자체는 분명히 유효하므로 <strong>전량 매도는 위험</strong>하다. 그러나 단기적으로 CAPEX 부담이 큰 기업은 <strong>선택적으로 비중 축소</strong>가 필요하다. → "선택과 집중" 전략
+        </div>
+    </div>
+
+    <!-- 3. 빅테크 실적 -->
+    <div class="section" id="sec3">
+        <div class="section-title"><span class="icon">🏢</span> 빅테크 실적 및 CAPEX 분석</div>
+
+        <div class="card">
+            <div class="card-header">🔍 알파벳(Alphabet/GOOGL)</div>
+            <div class="metric-row">
+                <span class="metric-label">실적</span>
+                <span class="metric-value metric-up">시장 기대 상회</span>
+            </div>
+            <div class="metric-row">
+                <span class="metric-label">CAPEX 가이던스</span>
+                <span class="metric-value text-orange">$120B (과도한 수준)</span>
+            </div>
+            <div class="metric-row">
+                <span class="metric-label">주가 반응</span>
+                <span class="metric-value metric-down">약 -4% 급락</span>
+            </div>
+            <div class="metric-row">
+                <span class="metric-label">포지션</span>
+                <span class="metric-value text-blue">보유 유지</span>
+            </div>
+            <p style="margin-top:8px;">실적은 좋지만 CAPEX 가이던스가 지나치게 높아 대형 기관들이 급격하게 매도. 펀더멘털에는 문제 없음.</p>
+        </div>
+
+        <div class="card">
+            <div class="card-header">🔍 아마존(Amazon/AMZN)</div>
+            <div class="metric-row">
+                <span class="metric-label">실적</span>
+                <span class="metric-value metric-up">시장 기대 상회</span>
+            </div>
+            <div class="metric-row">
+                <span class="metric-label">CAPEX 가이던스</span>
+                <span class="metric-value text-red">$200B (충격적 수준)</span>
+            </div>
+            <div class="metric-row">
+                <span class="metric-label">예상 낙폭</span>
+                <span class="metric-value metric-down">-10%~-14% 예상</span>
+            </div>
+            <div class="metric-row">
+                <span class="metric-label">고용 구조조정</span>
+                <span class="metric-value text-orange">3만 명 이상 해고</span>
+            </div>
+            <div class="metric-row">
+                <span class="metric-label">포지션</span>
+                <span class="metric-value text-red">매도 권고</span>
+            </div>
+            <p style="margin-top:8px;">$200B CAPEX 발표와 3만 명 이상 레이오프의 조합이 투자자 심리를 극도로 악화. 회복에 1~2개월 이상 소요 전망.</p>
+        </div>
+
+        <div class="card">
+            <div class="card-header">🔍 AMD</div>
+            <div class="metric-row">
+                <span class="metric-label">매출 성장률</span>
+                <span class="metric-value metric-up">+57% YoY</span>
+            </div>
+            <div class="metric-row">
+                <span class="metric-label">매출 총이익</span>
+                <span class="metric-value metric-up">+30% 이상 증가</span>
+            </div>
+            <div class="metric-row">
+                <span class="metric-label">영업이익률</span>
+                <span class="metric-value metric-up">+2%p 개선</span>
+            </div>
+            <div class="metric-row">
+                <span class="metric-label">목표가</span>
+                <span class="metric-value text-green">$300</span>
+            </div>
+            <div class="metric-row">
+                <span class="metric-label">포지션</span>
+                <span class="metric-value text-green">적극 매수 권고</span>
+            </div>
+            <p style="margin-top:8px;">11개 섹터 중 매출이 연 45%~57% 성장하는 기업은 극소수. 광학도 상태의 하락은 오히려 매수 기회. 회복 속도도 빠를 것으로 전망.</p>
+        </div>
+
+        <!-- AMD 실적 차트 -->
+        <div class="chart-container">
+            <div class="chart-title">AMD 핵심 실적 지표</div>
+            <canvas id="amdChart" height="200"></canvas>
+        </div>
+    </div>
+
+    <!-- 4. 섹터 동향 -->
+    <div class="section" id="sec4">
+        <div class="section-title"><span class="icon">🔄</span> 섹터별 동향 및 로테이션</div>
+
+        <div class="chart-container">
+            <div class="chart-title">11개 섹터 강약 동향</div>
+            <canvas id="sectorChart" height="280"></canvas>
+        </div>
+
+        <div class="card">
+            <div class="card-header">📈 강세 섹터</div>
+            <ul>
+                <li><span class="tag tag-green">Consumer Staples</span> 필수소비재 — 방어적 성격으로 자금 유입</li>
+                <li><span class="tag tag-green">Energy</span> 에너지 — AI 데이터센터 전력 수요 급증 수혜</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <div class="card-header">📉 약세 섹터</div>
+            <ul>
+                <li><span class="tag tag-red">Information Technology</span> IT — CAPEX 우려 + 고밸류에이션 부담</li>
+                <li><span class="tag tag-red">Consumer Discretionary</span> 임의소비재 — 경기 둔화 우려</li>
+                <li><span class="tag tag-red">Software</span> 소프트웨어 — AI 발전에 따른 잠식 우려 심화</li>
+            </ul>
+        </div>
+
+        <div class="highlight-orange">
+            <strong>⚡ 소프트웨어 섹터 경고:</strong> AI 기술이 발전하고 CAPEX가 증가할수록 소프트웨어 회사들의 <strong>경쟁력이 약화</strong>된다. AI가 기존 소프트웨어를 대체하는 "파괴적 혁신" 우려가 매도압력으로 작용 중.
+        </div>
+    </div>
+
+    <!-- 5. 거시경제 -->
+    <div class="section" id="sec5">
+        <div class="section-title"><span class="icon">🏛️</span> 거시경제 지표 및 연준 정책</div>
+
+        <div class="card">
+            <div class="card-header">📊 주요 거시지표</div>
+            <div class="metric-row">
+                <span class="metric-label">10년물 국채 수익률</span>
+                <span class="metric-value text-blue">4.13% ~ 4.19%</span>
+            </div>
+            <div class="metric-row">
+                <span class="metric-label">실업수당 신청 건수</span>
+                <span class="metric-value metric-neutral">222,000건 (소폭 증가)</span>
+            </div>
+            <div class="metric-row">
+                <span class="metric-label">금리 인하 전망 시기</span>
+                <span class="metric-value text-green">2026년 5월 예상</span>
+            </div>
+            <div class="metric-row">
+                <span class="metric-label">펀더멘털 상태</span>
+                <span class="metric-value metric-up">역대 최고치 수준</span>
+            </div>
+        </div>
+
+        <div class="highlight-green">
+            <strong>✅ 국채 시장 해석:</strong> 주식시장 불안 → 국채 수요 증가 → 국채 금리 하락(4.13%)은 <strong>미국에 유리한 구조</strong>. 금리 4.3% 이상이면 불안하지만, 4.1~4.2% 수준은 정상적 범위.
+        </div>
+
+        <div class="card">
+            <div class="card-header">🏛️ 연준(Fed) 정책 전망</div>
+            <p>실업수당 신청 건수 소폭 증가 등 고용시장 약화 신호가 감지되면서, <strong class="text-green">5월 금리 인하 가능성</strong>이 높아지고 있다. 이는 빅테크의 CAPEX 부담을 경감시킬 수 있는 긍정적 요인이다.</p>
+            <ul>
+                <li>고용 둔화 → 연준 금리 인하 명분 강화</li>
+                <li>금리 인하 → CAPEX 비용 부담 감소 → 시장 회복 촉매</li>
+                <li>연준 독립성 훼손 없이 자연스러운 인하 환경 조성</li>
+            </ul>
+        </div>
+
+        <!-- 국채금리 차트 -->
+        <div class="chart-container">
+            <div class="chart-title">10년물 국채 수익률 위험 구간</div>
+            <canvas id="bondChart" height="180"></canvas>
+        </div>
+
+        <div class="card">
+            <div class="card-header">🌐 중국 위협론에 대한 반박</div>
+            <p>일부에서 제기하는 "중국 인민폐 화폐전쟁" 또는 "미국 국채 매각 위협"은 <strong>근거가 희박</strong>하다는 판단이다.</p>
+            <ul>
+                <li>중국의 미국 국채 보유: <strong>약 $900B</strong> — 매각하지 않고 유지 중</li>
+                <li>미국 국채 1위 보유국은 <strong>$1T 이상</strong> 규모의 국가/기관</li>
+                <li>지난 10년간 BRICS의 달러 도전은 모두 실패</li>
+                <li>미국+EU+일본+한국의 경제력 결합 시 중국은 대적 불가</li>
+                <li>인민폐의 국제 신뢰도(Quality)는 달러·유로·엔화에 크게 미달</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- 6. 포트폴리오 전략 -->
+    <div class="section" id="sec6">
+        <div class="section-title"><span class="icon">💼</span> 포트폴리오 전략 — 매도/매수 종목</div>
+
+        <div class="highlight-red">
+            <strong>🚨 매각(탈락) 종목 — 즉시 실행</strong><br>
+            다음 5개 종목은 30대 그룹에서 탈락. 현금화 또는 비중 축소 권고.
+        </div>
+
+        <div class="stock-card">
+            <div class="stock-header">
+                <div>
+                    <div class="stock-name">Amazon</div>
+                    <div class="stock-ticker">AMZN</div>
+                </div>
+                <span class="stock-badge badge-sell">매도</span>
+            </div>
+            <p style="font-size:13px;color:var(--text-secondary);">$200B CAPEX 쇼크 + 3만 명 해고. 10~14% 추가 하락 가능. 회복 1~2개월 이상 소요.</p>
+        </div>
+
+        <div class="stock-card">
+            <div class="stock-header">
+                <div>
+                    <div class="stock-name">Microsoft</div>
+                    <div class="stock-ticker">MSFT</div>
+                </div>
+                <span class="stock-badge badge-sell">매도</span>
+            </div>
+            <p style="font-size:13px;color:var(--text-secondary);">전일 매도 권고 후 5% 추가 하락. 재진입 가능성 낮음. 현금화 후 다른 기회 활용.</p>
+        </div>
+
+        <div class="stock-card">
+            <div class="stock-header">
+                <div>
+                    <div class="stock-name">CrowdStrike</div>
+                    <div class="stock-ticker">CRWD</div>
+                </div>
+                <span class="stock-badge badge-sell">매도</span>
+            </div>
+            <p style="font-size:13px;color:var(--text-secondary);">소프트웨어 섹터의 AI 잠식 우려. 단기 변동성 과도.</p>
+        </div>
+
+        <div class="stock-card">
+            <div class="stock-header">
+                <div>
+                    <div class="stock-name">Snowflake</div>
+                    <div class="stock-ticker">SNOW</div>
+                </div>
+                <span class="stock-badge badge-sell">매도</span>
+            </div>
+            <p style="font-size:13px;color:var(--text-secondary);">AI 발전에 따른 소프트웨어 모델 파괴 우려 직격탄.</p>
+        </div>
+
+        <div class="stock-card">
+            <div class="stock-header">
+                <div>
+                    <div class="stock-name">UnitedHealth</div>
+                    <div class="stock-ticker">UNH</div>
+                </div>
+                <span class="stock-badge badge-sell">매도</span>
+            </div>
+            <p style="font-size:13px;color:var(--text-secondary);">포트폴리오 재조정 차원의 탈락. 별도 상세 분석 예정.</p>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="highlight-green">
+            <strong>✅ 보유 유지 종목 (M7 중 현재 보유)</strong>
+        </div>
+
+        <div class="stat-grid">
+            <div class="stat-item">
+                <div class="stat-number text-green" style="font-size:16px;">NVIDIA</div>
+                <div class="stat-label">NVDA · 보유</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number text-green" style="font-size:16px;">META</div>
+                <div class="stat-label">META · 보유</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number text-green" style="font-size:16px;">Alphabet</div>
+                <div class="stat-label">GOOGL · 보유</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number text-blue" style="font-size:16px;">AMD</div>
+                <div class="stat-label">AMD · 적극 매수</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">💰 현금 비율 전략</div>
+            <ul>
+                <li><strong>신규 투자자:</strong> 최소 <strong class="text-yellow">30% 현금화</strong> 권고</li>
+                <li><strong>기존 투자자:</strong> 이미 수익 실현 상태이므로 일부 하락은 감내 가능</li>
+                <li><strong>매도 현금:</strong> 금요일(2/7) 매수 기회 활용 예정</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- 7. 신규 편입 종목 -->
+    <div class="section" id="sec7">
+        <div class="section-title"><span class="icon">🆕</span> 신규 편입 종목 분석</div>
+
+        <div class="highlight-blue">
+            <strong>🔋 에너지 섹터 집중 편입 이유:</strong> AI 데이터센터 확장 → 전력 수요 폭증 → LNG·에너지 인프라 기업 수혜. IT 섹터 변동성 헤지 + 안정적 배당 수익 확보 목적.
+        </div>
+
+        <!-- 종목 1: BKR -->
+        <div class="stock-card" style="border-left: 3px solid var(--accent-green);">
+            <div class="stock-header">
+                <div>
+                    <div class="stock-name">Baker Hughes</div>
+                    <div class="stock-ticker">BKR · Energy · Large Cap Blend</div>
+                </div>
+                <span class="stock-badge badge-buy">신규 매수</span>
+            </div>
+            <div class="metric-row">
+                <span class="metric-label">목표가</span>
+                <span class="metric-value text-green">$72</span>
+            </div>
+            <div class="metric-row">
+                <span class="metric-label">연간 배당</span>
+                <span class="metric-value">$0.92 (약 1.5%)</span>
+            </div>
+            <div class="metric-row">
+                <span class="metric-label">P/E</span>
+                <span class="metric-value text-green">~22배 (S&P 500 평균 ~29배 대비 저평가)</span>
+            </div>
+            <div class="metric-row">
+                <span class="metric-label">기관 보유율</span>
+                <span class="metric-value">49% ~ 100%</span>
+            </div>
+            <div class="metric-row">
+                <span class="metric-label">성장률</span>
+                <span class="metric-value metric-up">연 7% 꾸준한 성장 전망</span>
+            </div>
+            <div class="metric-row">
+                <span class="metric-label">등급</span>
+                <span class="metric-value text-yellow">⭐⭐⭐⭐⭐ 5-Star</span>
+            </div>
+            <p style="margin-top:10px;font-size:13px;color:var(--text-secondary);">Oil & Gas 서비스, 특히 <strong>LNG/Gas Technology</strong> 분야. AI 데이터센터 전력 수요 증가의 직접적 수혜주. S&P 500 P/E 대비 저평가 상태로 펀더멘털 우수.</p>
+        </div>
+
+        <!-- 종목 2: FANG -->
+        <div class="stock-card" style="border-left: 3px solid var(--accent-green);">
+            <div class="stock-header">
+                <div>
+                    <div class="stock-name">Diamondback Energy</div>
+                    <div class="stock-ticker">FANG · Energy · Large Cap Blend (NASDAQ)</div>
+                </div>
+                <span class="stock-badge badge-buy">신규 매수</span>
+            </div>
+            <div class="metric-row">
+                <span class="metric-label">목표가</span>
+                <span class="metric-value text-green">$188</span>
+            </div>
+            <div class="metric-row">
+                <span class="metric-label">연간 배당</span>
+                <span class="metric-value">약 $4 (수익률 ~2.37%)</span>
+            </div>
+            <div class="metric-row">
+                <span class="metric-label">특징</span>
+                <span class="metric-value">Enterprise Value > Market Cap → 안정성 높음</span>
+            </div>
+            <p style="margin-top:10px;font-size:13px;color:var(--text-secondary);">엔터프라이즈 밸류가 시가총액보다 크다는 것은 주가 안정성이 높다는 의미. 변동성이 적고 에너지 섹터 집중 투자 트렌드의 수혜를 받는 종목.</p>
+        </div>
+
+        <!-- 종목 3: VZ -->
+        <div class="stock-card" style="border-left: 3px solid var(--accent-green);">
+            <div class="stock-header">
+                <div>
+                    <div class="stock-name">Verizon Communications</div>
+                    <div class="stock-ticker">VZ · Communication · 배당주</div>
+                </div>
+                <span class="stock-badge badge-buy">신규 매수 (5%+)</span>
+            </div>
+            <div class="metric-row">
+                <span class="metric-label">목표가</span>
+                <span class="metric-value text-green">$56</span>
+            </div>
+            <div class="metric-row">
+                <span class="metric-label">현재가</span>
+                <span class="metric-value">약 $40대</span>
+            </div>
+            <div class="metric-row">
+                <span class="metric-label">연간 배당 수익률</span>
+                <span class="metric-value text-green">약 5.80%</span>
+            </div>
+            <div class="metric-row">
+                <span class="metric-label">투자등급</span>
+                <span class="metric-value text-yellow">오버웨이트(5~10% 비중 가능)</span>
+            </div>
+            <div class="metric-row">
+                <span class="metric-label">자사주 매입</span>
+                <span class="metric-value metric-up">하루 10% 규모 매입 진행</span>
+            </div>
+            <p style="margin-top:10px;font-size:13px;color:var(--text-secondary);">오래 하락 후 밸류 트랩에서 벗어나 상승 전환 중. <strong>배당 5.8% + 주가 상승 잠재력</strong>으로 "꿩 먹고 알 먹는" 투자. 변동성이 낮은 대신 성장 속도는 느리나, IT 섹터 폭락장에서 포트폴리오 안정화 역할.</p>
+        </div>
+
+        <!-- 신규종목 비교 차트 -->
+        <div class="chart-container">
+            <div class="chart-title">신규 편입 종목 배당 수익률 비교</div>
+            <canvas id="dividendChart" height="200"></canvas>
+        </div>
+
+        <div class="card">
+            <div class="card-header">💡 포트폴리오 비중 제안</div>
+            <p>BKR + FANG + VZ를 합산 <strong>10~15% 비중</strong>으로 편입 시, IT 섹터 하락장에서 변동성 노출을 상당히 줄일 수 있다.</p>
+            <ul>
+                <li>BKR: 2~3% (성장 + 배당)</li>
+                <li>FANG: 2~3% (에너지 인프라 + 배당)</li>
+                <li>VZ: 5~10% (고배당 + 안정성 · 오버웨이트 가능)</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- 8. 기술적 분석 -->
+    <div class="section" id="sec8">
+        <div class="section-title"><span class="icon">📐</span> 기술적 분석 및 시장 전망</div>
+
+        <div class="card">
+            <div class="card-header">📊 기술적 전망 요약</div>
+            <div class="metric-row">
+                <span class="metric-label">장기 추세</span>
+                <span class="metric-value metric-up">Long-term Bullish (상승)</span>
+            </div>
+            <div class="metric-row">
+                <span class="metric-label">중기 전망 (2~3개월)</span>
+                <span class="metric-value text-blue">대량 매입(Buying) 예상</span>
+            </div>
+            <div class="metric-row">
+                <span class="metric-label">단기 전망</span>
+                <span class="metric-value metric-neutral">변동성 확대 구간</span>
+            </div>
+            <div class="metric-row">
+                <span class="metric-label">전체 방향</span>
+                <span class="metric-value metric-up">우상향 유지</span>
+            </div>
+        </div>
+
+        <!-- 월별 수익률 차트 -->
+        <div class="chart-container">
+            <div class="chart-title">S&P 500 월별 역사적 수익률 (평균)</div>
+            <canvas id="monthlyChart" height="220"></canvas>
+        </div>
+
+        <div class="highlight-yellow">
+            <strong>📅 계절성 분석:</strong><br>
+            • <strong>최고 수익 월:</strong> <span class="text-green">10월 (1위)</span>, <span class="text-green">4월 (2위)</span> — 보통 1% 이상 성장<br>
+            • <strong>최저 수익 월:</strong> <span class="text-red">2월</span> — 역사적으로 가장 약한 달<br>
+            • 2월의 약세는 기관들도 인지하고 있어, AI 알고리즘이 심리적 매도를 증폭시키는 패턴
+        </div>
+
+        <div class="card">
+            <div class="card-header">🚨 시스테믹 리스크 체크</div>
+            <p>현재 시장은 <strong>정상적인 조정 구간</strong>이며, 시스테믹 위기(경제 안전, 전쟁 등)가 아닌 이상 <strong>하루 15% 이상 연속 폭락</strong>하는 상황은 오지 않을 것으로 판단.</p>
+            <ul>
+                <li><span class="tag tag-green">정상</span> 현재 상황: 실적 시즌 조정 + CAPEX 심리적 반응</li>
+                <li><span class="tag tag-red">비정상</span> 시스테믹 위기: 3일간 각 -15% → 반토막 가능성 (현재 아님)</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- 9. 투자 시사점 -->
+    <div class="section" id="sec9">
+        <div class="section-title"><span class="icon">🎯</span> 투자 시사점 및 결론</div>
+
+        <div class="card card-alt">
+            <div class="card-header">📋 핵심 액션 아이템</div>
+            <table class="data-table">
+                <tr>
+                    <th>구분</th>
+                    <th>내용</th>
+                </tr>
+                <tr>
+                    <td><span class="tag tag-red">즉시 매도</span></td>
+                    <td>AMZN, MSFT, CRWD, SNOW, UNH</td>
+                </tr>
+                <tr>
+                    <td><span class="tag tag-green">보유 유지</span></td>
+                    <td>NVDA, META, GOOGL</td>
+                </tr>
+                <tr>
+                    <td><span class="tag tag-blue">적극 매수</span></td>
+                    <td>AMD (333 법칙 적용)</td>
+                </tr>
+                <tr>
+                    <td><span class="tag tag-green">신규 편입</span></td>
+                    <td>BKR, FANG, VZ (에너지+배당)</td>
+                </tr>
+                <tr>
+                    <td><span class="tag tag-yellow">현금 비율</span></td>
+                    <td>신규자 30%↑ / 기존자 유지</td>
+                </tr>
+                <tr>
+                    <td><span class="tag tag-purple">매수 타이밍</span></td>
+                    <td>금요일(2/7) 전후 관망 후 진입</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="card">
+            <div class="card-header">📐 333 법칙 (분할매수 전략)</div>
+            <p>한 번에 대량 매수하지 말고, <strong>3단계에 걸쳐 분할 매수</strong>하는 전략. 변동성이 큰 시기에 리스크를 분산하고 평균 매입 단가를 낮추는 효과가 있다.</p>
+        </div>
+
+        <div class="highlight-green">
+            <strong>✅ 최종 판단</strong><br><br>
+            <strong>1.</strong> 현재 하락은 <strong>정상적인 조정</strong>이다. 펀더멘털은 역대 최고치.<br>
+            <strong>2.</strong> 빅테크 CAPEX 쇼크는 <strong>단기적 노이즈</strong>. AI 트렌드는 2027년까지 확장.<br>
+            <strong>3.</strong> <strong>5월 금리 인하</strong> 시 시장 회복 촉매로 작용 전망.<br>
+            <strong>4.</strong> IT에서 에너지·배당주로의 <strong>섹터 로테이션</strong> 적극 활용.<br>
+            <strong>5.</strong> 장기 기술적 전망은 <strong>Bullish(상승)</strong>. 2~3개월 내 대량 매입 예상.<br>
+            <strong>6.</strong> 하락장은 <strong>신규 진입의 기회</strong>. 공포에 팔지 말고, 선택과 집중으로 대응.
+        </div>
+
+        <div class="quote-box">
+            "하락장은 진입 기회다. 많이 빨리 떨어지는 것들은 회복장세에서 빨리 많이 올라간다. 팔지 않으면 돈이 없어진 게 아니다. 가치가 여전히 있다."
+        </div>
+    </div>
+
+    <div class="footer">
+        📺 원본: <a href="https://www.youtube.com/watch?v=LnTBOmmwEiY" target="_blank" style="color:var(--accent-blue);">멤버온리 방송 (2026.02.05)</a><br>
+        본 문서는 교육·참고 목적으로 작성되었으며, 투자 결정은 본인의 판단과 책임 하에 이루어져야 합니다.
+    </div>
+
+</div>
+
+<script>
+    // Chart.js 공통 설정
+    Chart.defaults.color = '#94a3b8';
+    Chart.defaults.borderColor = 'rgba(255,255,255,0.06)';
+    Chart.defaults.font.family = "'Noto Sans KR', sans-serif";
+    Chart.defaults.font.size = 11;
+
+    // 1. CAPEX 비교 차트
+    new Chart(document.getElementById('capexChart'), {
+        type: 'bar',
+        data: {
+            labels: ['Amazon', 'Alphabet\n(Google)', 'Microsoft', 'Meta'],
+            datasets: [{
+                label: 'CAPEX 가이던스 ($B)',
+                data: [200, 120, 80, 65],
+                backgroundColor: [
+                    'rgba(239, 68, 68, 0.7)',
+                    'rgba(249, 115, 22, 0.7)',
+                    'rgba(234, 179, 8, 0.7)',
+                    'rgba(59, 130, 246, 0.7)'
+                ],
+                borderRadius: 6,
+                borderSkipped: false,
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    callbacks: {
+                        label: ctx => `$${ctx.raw}B`
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: { callback: v => `$${v}B` },
+                    grid: { color: 'rgba(255,255,255,0.04)' }
+                },
+                x: {
+                    grid: { display: false }
+                }
+            }
+        }
+    });
+
+    // 2. AMD 실적 차트
+    new Chart(document.getElementById('amdChart'), {
+        type: 'bar',
+        data: {
+            labels: ['매출 성장률', '매출총이익 성장', '영업이익률 개선'],
+            datasets: [{
+                label: 'YoY 변화(%)',
+                data: [57, 30, 2],
+                backgroundColor: [
+                    'rgba(34, 197, 94, 0.7)',
+                    'rgba(6, 182, 212, 0.7)',
+                    'rgba(59, 130, 246, 0.7)'
+                ],
+                borderRadius: 6,
+                borderSkipped: false,
+            }]
+        },
+        options: {
+            indexAxis: 'y',
+            responsive: true,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    callbacks: { label: ctx => `+${ctx.raw}%` }
+                }
+            },
+            scales: {
+                x: {
+                    beginAtZero: true,
+                    ticks: { callback: v => `+${v}%` },
+                    grid: { color: 'rgba(255,255,255,0.04)' }
+                },
+                y: { grid: { display: false } }
+            }
+        }
+    });
+
+    // 3. 섹터 강약 차트
+    new Chart(document.getElementById('sectorChart'), {
+        type: 'bar',
+        data: {
+            labels: [
+                'Consumer Staples', 'Energy', 'Healthcare', 'Utilities',
+                'Real Estate', 'Financials', 'Materials', 'Industrials',
+                'Communication', 'Consumer Disc.', 'Info Tech'
+            ],
+            datasets: [{
+                label: '섹터 강약',
+                data: [1.2, 0.9, -0.3, -0.5, -0.7, -0.8, -1.0, -1.2, -1.5, -2.5, -3.5],
+                backgroundColor: ctx => ctx.raw >= 0
+                    ? 'rgba(34, 197, 94, 0.7)'
+                    : 'rgba(239, 68, 68, 0.6)',
+                borderRadius: 4,
+                borderSkipped: false,
+            }]
+        },
+        options: {
+            indexAxis: 'y',
+            responsive: true,
+            plugins: { legend: { display: false } },
+            scales: {
+                x: {
+                    ticks: { callback: v => `${v > 0 ? '+' : ''}${v}%` },
+                    grid: { color: 'rgba(255,255,255,0.04)' }
+                },
+                y: {
+                    grid: { display: false },
+                    ticks: { font: { size: 10 } }
+                }
+            }
+        }
+    });
+
+    // 4. 국채금리 구간 차트
+    new Chart(document.getElementById('bondChart'), {
+        type: 'bar',
+        data: {
+            labels: ['현재 수준\n(4.13%)', '정상 범위\n상단(4.2%)', '경고 구간\n(4.3%+)'],
+            datasets: [{
+                data: [4.13, 4.2, 4.3],
+                backgroundColor: [
+                    'rgba(34, 197, 94, 0.7)',
+                    'rgba(234, 179, 8, 0.7)',
+                    'rgba(239, 68, 68, 0.7)'
+                ],
+                borderRadius: 6,
+                borderSkipped: false,
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: { legend: { display: false } },
+            scales: {
+                y: {
+                    min: 3.8,
+                    max: 4.5,
+                    ticks: { callback: v => `${v}%` },
+                    grid: { color: 'rgba(255,255,255,0.04)' }
+                },
+                x: { grid: { display: false } }
+            }
+        }
+    });
+
+    // 5. 배당 수익률 비교
+    new Chart(document.getElementById('dividendChart'), {
+        type: 'doughnut',
+        data: {
+            labels: ['VZ (5.80%)', 'FANG (2.37%)', 'BKR (1.50%)'],
+            datasets: [{
+                data: [5.80, 2.37, 1.50],
+                backgroundColor: [
+                    'rgba(34, 197, 94, 0.8)',
+                    'rgba(59, 130, 246, 0.8)',
+                    'rgba(249, 115, 22, 0.8)'
+                ],
+                borderWidth: 0,
+                hoverOffset: 6
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: { padding: 16, usePointStyle: true, pointStyle: 'circle' }
+                },
+                tooltip: {
+                    callbacks: { label: ctx => `${ctx.label}: ${ctx.raw}%` }
+                }
+            }
+        }
+    });
+
+    // 6. 월별 수익률 차트
+    new Chart(document.getElementById('monthlyChart'), {
+        type: 'bar',
+        data: {
+            labels: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+            datasets: [{
+                label: 'S&P 500 평균 월별 수익률(%)',
+                data: [0.9, -0.2, 0.5, 1.3, 0.3, 0.1, 0.8, -0.1, -0.7, 1.5, 0.9, 1.0],
+                backgroundColor: ctx => {
+                    const val = ctx.raw;
+                    const idx = ctx.dataIndex;
+                    if (idx === 9) return 'rgba(34, 197, 94, 0.9)';
+                    if (idx === 3) return 'rgba(34, 197, 94, 0.7)';
+                    if (idx === 1) return 'rgba(239, 68, 68, 0.8)';
+                    return val >= 0 ? 'rgba(59, 130, 246, 0.5)' : 'rgba(239, 68, 68, 0.5)';
+                },
+                borderRadius: 4,
+                borderSkipped: false,
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: { legend: { display: false } },
+            scales: {
+                y: {
+                    ticks: { callback: v => `${v > 0 ? '+' : ''}${v}%` },
+                    grid: { color: 'rgba(255,255,255,0.04)' }
+                },
+                x: { grid: { display: false } }
+            }
+        }
+    });
+</script>
+
+</body>
+</html>
