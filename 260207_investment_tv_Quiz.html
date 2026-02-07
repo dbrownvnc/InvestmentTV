@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>2월 6일 긴급 미증시 진단 - 시험문제</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-primary: #0a0e17;
+  --bg-secondary: #111827;
+  --bg-card: #1a2332;
+  --bg-card-alt: #1e293b;
+  --accent-red: #ef4444;
+  --accent-green: #22c55e;
+  --accent-blue: #3b82f6;
+  --accent-amber: #f59e0b;
+  --accent-purple: #a855f7;
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --border-color: #1e293b;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Noto Sans KR', sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.8;
+  -webkit-font-smoothing: antialiased;
+}
+
+.container {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+.header {
+  background: linear-gradient(180deg, #111827 0%, var(--bg-primary) 100%);
+  border-bottom: 1px solid var(--border-color);
+  padding: 32px 0 24px;
+  text-align: center;
+}
+
+.header-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(168, 85, 247, 0.15);
+  border: 1px solid rgba(168, 85, 247, 0.3);
+  color: var(--accent-purple);
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 20px;
+  letter-spacing: 0.5px;
+  margin-bottom: 16px;
+}
+
+.header h1 {
+  font-size: 24px;
+  font-weight: 800;
+  line-height: 1.3;
+  margin-bottom: 8px;
+  background: linear-gradient(135deg, #f1f5f9, #94a3b8);
+  -webkit-background-clip: text;
+  -webkit-text-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
+
+.header-meta {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+/* Section Divider */
+.section-divider {
+  text-align: center;
+  padding: 32px 0 20px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.section-divider h2 {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.section-divider .sub {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+/* Question Card */
+.q-card {
+  background: var(--bg-card);
+  border-radius: 14px;
+  padding: 20px;
+  margin: 16px 0;
+  border: 1px solid var(--border-color);
+}
+
+.q-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.q-number {
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--accent-blue);
+}
+
+.q-tags {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.q-tag {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 12px;
+}
+
+.q-tag.easy {
+  background: rgba(34, 197, 94, 0.15);
+  color: var(--accent-green);
+}
+
+.q-tag.medium {
+  background: rgba(245, 158, 11, 0.15);
+  color: var(--accent-amber);
+}
+
+.q-tag.hard {
+  background: rgba(239, 68, 68, 0.15);
+  color: var(--accent-red);
+}
+
+.q-tag.type {
+  background: rgba(59, 130, 246, 0.1);
+  color: var(--accent-blue);
+}
+
+.q-text {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.7;
+  margin-bottom: 14px;
+}
+
+.q-options {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.q-option {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  cursor: default;
+}
+
+.q-option .num {
+  font-weight: 700;
+  color: var(--accent-blue);
+  margin-right: 6px;
+}
+
+.q-blank {
+  display: inline-block;
+  min-width: 100px;
+  border-bottom: 2px dashed var(--accent-amber);
+  margin: 0 4px;
+}
+
+.q-ox {
+  display: flex;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.q-ox span {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 10px 28px;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.q-answer-area {
+  background: var(--bg-secondary);
+  border: 1px dashed var(--border-color);
+  border-radius: 10px;
+  padding: 14px;
+  font-size: 13px;
+  color: var(--text-muted);
+  min-height: 60px;
+}
+
+/* Answer Section */
+.a-card {
+  background: var(--bg-card);
+  border-radius: 14px;
+  padding: 20px;
+  margin: 14px 0;
+  border: 1px solid var(--border-color);
+  border-left: 3px solid var(--accent-green);
+}
+
+.a-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.a-number {
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--accent-blue);
+}
+
+.a-answer {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--accent-green);
+}
+
+.a-explain {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  background: var(--bg-secondary);
+  border-radius: 10px;
+  padding: 14px;
+}
+
+/* Toggle Button */
+.toggle-section {
+  text-align: center;
+  padding: 24px 0;
+}
+
+.toggle-btn {
+  background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));
+  color: white;
+  border: none;
+  padding: 14px 32px;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 700;
+  font-family: 'Noto Sans KR', sans-serif;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.toggle-btn:hover { opacity: 0.9; }
+
+#answer-section { display: none; }
+
+.footer {
+  padding: 24px 0;
+  text-align: center;
+  font-size: 12px;
+  color: var(--text-muted);
+  border-top: 1px solid var(--border-color);
+}
+
+.footer a { color: var(--accent-blue); text-decoration: none; }
+
+@media (max-width: 400px) {
+  .header h1 { font-size: 20px; }
+  .q-card { padding: 16px; }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<!-- Header -->
+<header class="header">
+  <div class="header-badge">📝 시험문제</div>
+  <h1>2월 6일 긴급 미증시 진단</h1>
+  <div class="header-meta">총 10문제 · 난이도: ⭐~⭐⭐⭐</div>
+</header>
+
+<!-- ===== 문제지 ===== -->
+<div class="section-divider">
+  <h2>📋 시험문제 (총 10문제)</h2>
+  <div class="sub">문제를 모두 풀고 나서 아래의 [정답 보기] 버튼을 눌러주세요</div>
+</div>
+
+<!-- Q1 -->
+<div class="q-card">
+  <div class="q-header">
+    <div class="q-number">[문제 1]</div>
+    <div class="q-tags">
+      <span class="q-tag easy">⭐ 쉬움</span>
+      <span class="q-tag type">객관식</span>
+    </div>
+  </div>
+  <div class="q-text">2월 5일 미국 증시에서 11개 섹터 중 하락한 섹터는 몇 개인가?</div>
+  <div class="q-options">
+    <div class="q-option"><span class="num">①</span> 7개</div>
+    <div class="q-option"><span class="num">②</span> 8개</div>
+    <div class="q-option"><span class="num">③</span> 10개</div>
+    <div class="q-option"><span class="num">④</span> 11개</div>
+  </div>
+</div>
+
+<!-- Q2 -->
+<div class="q-card">
+  <div class="q-header">
+    <div class="q-number">[문제 2]</div>
+    <div class="q-tags">
+      <span class="q-tag easy">⭐ 쉬움</span>
+      <span class="q-tag type">OX 문제</span>
+    </div>
+  </div>
+  <div class="q-text">방송에 따르면, 실업률 상승과 실업수당 신청 증가는 미국 주식시장에 부정적인 신호(Bad News)이다.</div>
+  <div class="q-ox">
+    <span>⭕ O</span>
+    <span>❌ X</span>
+  </div>
+</div>
+
+<!-- Q3 -->
+<div class="q-card">
+  <div class="q-header">
+    <div class="q-number">[문제 3]</div>
+    <div class="q-tags">
+      <span class="q-tag medium">⭐⭐ 보통</span>
+      <span class="q-tag type">단답형</span>
+    </div>
+  </div>
+  <div class="q-text">AMD의 실적 성장률은 몇 %인가?</div>
+  <div class="q-answer-area">정답을 작성해 주세요</div>
+</div>
+
+<!-- Q4 -->
+<div class="q-card">
+  <div class="q-header">
+    <div class="q-number">[문제 4]</div>
+    <div class="q-tags">
+      <span class="q-tag medium">⭐⭐ 보통</span>
+      <span class="q-tag type">객관식</span>
+    </div>
+  </div>
+  <div class="q-text">Amazon 매도를 권고한 가장 핵심적인 이유는?</div>
+  <div class="q-options">
+    <div class="q-option"><span class="num">①</span> AI 기술 경쟁에서 뒤처짐</div>
+    <div class="q-option"><span class="num">②</span> CapEx($200B)가 수익 대비 과도하게 큼</div>
+    <div class="q-option"><span class="num">③</span> 클라우드 시장 점유율 하락</div>
+    <div class="q-option"><span class="num">④</span> 중국 시장 규제 리스크</div>
+  </div>
+</div>
+
+<!-- Q5 -->
+<div class="q-card">
+  <div class="q-header">
+    <div class="q-number">[문제 5]</div>
+    <div class="q-tags">
+      <span class="q-tag medium">⭐⭐ 보통</span>
+      <span class="q-tag type">빈칸 채우기</span>
+    </div>
+  </div>
+  <div class="q-text">기관들이 과도하게 매도하여 주가가 <span class="q-blank">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> 밸류에이션 아래로 내려간 상태를 <span class="q-blank">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> 라고 한다.</div>
+  <div class="q-answer-area">두 개의 빈칸에 들어갈 단어를 작성해 주세요</div>
+</div>
+
+<!-- Q6 -->
+<div class="q-card">
+  <div class="q-header">
+    <div class="q-number">[문제 6]</div>
+    <div class="q-tags">
+      <span class="q-tag medium">⭐⭐ 보통</span>
+      <span class="q-tag type">객관식</span>
+    </div>
+  </div>
+  <div class="q-text">Microsoft의 연간 CapEx(설비투자)는 얼마라고 언급되었는가?</div>
+  <div class="q-options">
+    <div class="q-option"><span class="num">①</span> $80 Billion</div>
+    <div class="q-option"><span class="num">②</span> $100 Billion</div>
+    <div class="q-option"><span class="num">③</span> $120 Billion</div>
+    <div class="q-option"><span class="num">④</span> $150 Billion</div>
+  </div>
+</div>
+
+<!-- Q7 -->
+<div class="q-card">
+  <div class="q-header">
+    <div class="q-number">[문제 7]</div>
+    <div class="q-tags">
+      <span class="q-tag easy">⭐ 쉬움</span>
+      <span class="q-tag type">OX 문제</span>
+    </div>
+  </div>
+  <div class="q-text">방송에 따르면, 미국에서 원자력 발전소 1기 건설에는 약 2~3년이 소요된다.</div>
+  <div class="q-ox">
+    <span>⭕ O</span>
+    <span>❌ X</span>
+  </div>
+</div>
+
+<!-- Q8 -->
+<div class="q-card">
+  <div class="q-header">
+    <div class="q-number">[문제 8]</div>
+    <div class="q-tags">
+      <span class="q-tag hard">⭐⭐⭐ 어려움</span>
+      <span class="q-tag type">서술형</span>
+    </div>
+  </div>
+  <div class="q-text">AI 반도체 수요 확대가 에너지 섹터에 미치는 영향을 설명하고, 이와 관련하여 방송에서 언급한 투자 기회를 서술하시오.</div>
+  <div class="q-answer-area">서술형 답안을 작성해 주세요</div>
+</div>
+
+<!-- Q9 -->
+<div class="q-card">
+  <div class="q-header">
+    <div class="q-number">[문제 9]</div>
+    <div class="q-tags">
+      <span class="q-tag medium">⭐⭐ 보통</span>
+      <span class="q-tag type">객관식</span>
+    </div>
+  </div>
+  <div class="q-text">방송에서 분류한 투자자 3가지 유형 중, 가장 높은 수익률을 기록하는 유형은?</div>
+  <div class="q-options">
+    <div class="q-option"><span class="num">①</span> 공포심에 매수 버튼을 누르지 못하는 유형</div>
+    <div class="q-option"><span class="num">②</span> 매수 후 불안하여 다시 매도하는 후회형 유형</div>
+    <div class="q-option"><span class="num">③</span> 신호가 나오면 즉시 실행하는 행동형 유형</div>
+    <div class="q-option"><span class="num">④</span> 음모론을 바탕으로 독자적 판단을 하는 유형</div>
+  </div>
+</div>
+
+<!-- Q10 -->
+<div class="q-card">
+  <div class="q-header">
+    <div class="q-number">[문제 10]</div>
+    <div class="q-tags">
+      <span class="q-tag hard">⭐⭐⭐ 어려움</span>
+      <span class="q-tag type">서술형</span>
+    </div>
+  </div>
+  <div class="q-text">방송에서 "실업률 상승 → Good News"라는 논리가 성립하는 이유를, 연준(Fed)의 금리 정책과 IT 섹터 밸류에이션의 관계를 포함하여 논리적으로 서술하시오.</div>
+  <div class="q-answer-area">서술형 답안을 작성해 주세요</div>
+</div>
+
+<!-- Toggle Answer -->
+<div class="toggle-section">
+  <button class="toggle-btn" onclick="document.getElementById('answer-section').style.display='block'; this.style.display='none';">
+    📝 정답 및 해설 보기
+  </button>
+</div>
+
+<!-- ===== 정답지 ===== -->
+<div id="answer-section">
+
+<div class="section-divider">
+  <h2>📝 정답 및 해설</h2>
+  <div class="sub">총 10문제</div>
+</div>
+
+<!-- A1 -->
+<div class="a-card">
+  <div class="a-header">
+    <div class="a-number">[문제 1]</div>
+    <div class="a-answer">정답: ③ 10개</div>
+  </div>
+  <div class="a-explain">방송에서 "11개의 섹터 중 10개가 하락하는 동반 하락"이라고 명시적으로 언급하였다. 이처럼 거의 모든 섹터가 동반 하락하는 것은 특정 기업이나 산업의 문제가 아닌, 시장 전체의 심리적·기술적 하락임을 시사한다.</div>
+</div>
+
+<!-- A2 -->
+<div class="a-card">
+  <div class="a-header">
+    <div class="a-number">[문제 2]</div>
+    <div class="a-answer">정답: ❌ X</div>
+  </div>
+  <div class="a-explain">방송에서는 실업률 상승과 실업수당 신청 증가를 "굿뉴스"라고 명확히 표현하였다. 고용 약화는 연준의 금리 인하 가능성을 높이며, 금리 인하는 반도체·IT 기업의 자금조달 비용을 낮추어 해당 섹터에 긍정적으로 작용하기 때문이다. 이는 "Bad News is Good News" 논리에 해당한다.</div>
+</div>
+
+<!-- A3 -->
+<div class="a-card">
+  <div class="a-header">
+    <div class="a-number">[문제 3]</div>
+    <div class="a-answer">정답: 57%</div>
+  </div>
+  <div class="a-explain">방송에서 "AMD 실적 성장률을 보면 57%", "백오더가 50%가 넘는다"고 구체적으로 언급하였다. 이는 메모리 칩 수요가 매우 높은 상태에서 강력한 실적 성장을 보이고 있음을 의미한다.</div>
+</div>
+
+<!-- A4 -->
+<div class="a-card">
+  <div class="a-header">
+    <div class="a-number">[문제 4]</div>
+    <div class="a-answer">정답: ② CapEx($200B)가 수익 대비 과도하게 큼</div>
+  </div>
+  <div class="a-explain">방송에서 Amazon은 연간 CapEx $200B을 투자하면서 Microsoft($120B)의 거의 2배를 쓰지만, 수익 창출력은 Microsoft나 Google보다 낮다고 지적했다. "배보다 배꼽이 크다"는 표현을 사용하며, 현 고금리 환경에서 이 규모의 투자는 부담이 크다고 분석했다.</div>
+</div>
+
+<!-- A5 -->
+<div class="a-card">
+  <div class="a-header">
+    <div class="a-number">[문제 5]</div>
+    <div class="a-answer">정답: DCF(현금흐름할인) / 오버솔드(Oversold)</div>
+  </div>
+  <div class="a-explain">방송에서 기관들이 과도하게 매도하여 주가가 DCF(Discounted Cash Flow) 밸류에이션 아래로 내려갔다고 언급했다. 이러한 상태를 "오버솔드(Oversold)"라고 하며, 기술적으로 극단적 저평가 구간임을 의미한다. 이는 곧 기관의 대량 매입으로 전환될 신호로 해석된다.</div>
+</div>
+
+<!-- A6 -->
+<div class="a-card">
+  <div class="a-header">
+    <div class="a-number">[문제 6]</div>
+    <div class="a-answer">정답: ③ $120 Billion</div>
+  </div>
+  <div class="a-explain">방송에서 "마이크로소프트가 CapEx가 120빌리언이라고 그랬어"라고 명시적으로 언급하였다. Amazon의 $200B과 비교하여 Microsoft가 더 적은 CapEx로 더 높은 수익을 내고 있다는 맥락에서 언급된 수치이다.</div>
+</div>
+
+<!-- A7 -->
+<div class="a-card">
+  <div class="a-header">
+    <div class="a-number">[문제 7]</div>
+    <div class="a-answer">정답: ❌ X</div>
+  </div>
+  <div class="a-explain">방송에서 미국에서 원자력 발전소 1기 건설에 "10년에서 12~13년 걸린다"고 언급하였다. 이 때문에 단기적 전력 부족 해결에는 원자력이 부적합하며, 디젤 엔진 발전이나 LNG 기반 전력 공급이 당분간 대안이 된다는 논리이다.</div>
+</div>
+
+<!-- A8 -->
+<div class="a-card">
+  <div class="a-header">
+    <div class="a-number">[문제 8]</div>
+    <div class="a-answer">정답: (서술형 모범답안)</div>
+  </div>
+  <div class="a-explain">
+    AI 반도체(NVIDIA 등)의 수요가 폭증하면서 데이터센터의 전력 소비가 급격히 증가하고 있다. 한 도시의 전력 공급을 대규모 데이터센터 하나에 할당해야 할 정도의 전력이 필요하다. 그러나 기존 전력 인프라로는 이를 감당할 수 없고, 원자력 발전소 건설에는 10~13년이 소요되므로 단기 해결이 불가능하다.
+    <br><br>
+    따라서 디젤 엔진 발전, LNG 기반 전력 공급, 전력 인프라 장비 업체 등이 수혜를 받게 된다. 방송에서는 유가 등락과 무관하게 전력 공급 인프라 자체의 수요 증가에 주목해야 하며, 오일 탐사(Exploration) 기업이 아닌 인프라·장비 공급 기업에 장기 투자할 것을 권고했다.
+  </div>
+</div>
+
+<!-- A9 -->
+<div class="a-card">
+  <div class="a-header">
+    <div class="a-number">[문제 9]</div>
+    <div class="a-answer">정답: ③ 신호가 나오면 즉시 실행하는 행동형 유형</div>
+  </div>
+  <div class="a-explain">방송에서 4~5년간 꾸준히 가장 많은 수익을 낸 그룹은 "하자마자 바로 팍팍 실행하는" 세 번째 유형이라고 밝혔다. 첫 번째(공포에 마비), 두 번째(후회형 "Could have, Should have, Would have") 유형은 수익 기회를 놓치며, 네 번째 음모론형은 아예 투자 자체가 안 된다고 경고했다.</div>
+</div>
+
+<!-- A10 -->
+<div class="a-card">
+  <div class="a-header">
+    <div class="a-number">[문제 10]</div>
+    <div class="a-answer">정답: (서술형 모범답안)</div>
+  </div>
+  <div class="a-explain">
+    ① <strong>실업률 상승 → 고용시장 약화 신호:</strong> 실업률 상승과 실업수당 신청 증가는 경제 활동이 둔화되고 있음을 나타낸다.
+    <br><br>
+    ② <strong>연준의 금리 인하 기대감 강화:</strong> 고용이 약해지면 연준은 경기 부양을 위해 기준금리(Federal Funds Rate)를 인하할 유인이 커진다. 트럼프 대통령도 1% 이상의 금리 인하를 요구하고 있어 정치적 압력도 가세한다.
+    <br><br>
+    ③ <strong>IT 섹터 밸류에이션 상승:</strong> 금리가 낮아지면 기업의 자금조달 비용(Cost of Capital)이 하락한다. 특히 미래 현금흐름에 대한 할인율이 낮아져 성장주의 현재가치(DCF)가 높아진다. 자본집약적인 반도체·IT 기업은 금리 인하의 가장 큰 수혜자가 된다.
+    <br><br>
+    ④ <strong>결론:</strong> 표면적으로 부정적인 경제지표(실업률 상승)가 금리 인하라는 경로를 통해 IT 섹터에 긍정적으로 작용하므로, "Bad News is Good News"라는 논리가 성립한다.
+  </div>
+</div>
+
+</div><!-- /answer-section -->
+
+<!-- Footer -->
+<div class="footer">
+  <p>원본: <a href="https://www.youtube.com/watch?v=aV51sbqwnRE" target="_blank">2월6일 긴급미증시 진단 - NOVA Real Invest</a></p>
+  <p style="margin-top:6px;">2026년 2월 7일 생성</p>
+</div>
+
+</div>
+
+</body>
+</html>
