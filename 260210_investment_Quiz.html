@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>미증시 포커스: 비트코인 집중조명과 투자자심리 분석 - 시험문제</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0c0f14;
+  --card: #151920;
+  --card-alt: #1a1f28;
+  --border: #2a3040;
+  --accent: #f0a030;
+  --accent-dim: rgba(240,160,48,0.12);
+  --accent-glow: rgba(240,160,48,0.25);
+  --text: #e8e4df;
+  --text-dim: #8a8f9a;
+  --correct: #3ecf8e;
+  --correct-bg: rgba(62,207,142,0.08);
+  --wrong: #ef6b6b;
+  --easy: #3ecf8e;
+  --medium: #f0a030;
+  --hard: #ef6b6b;
+  --blue: #5b8def;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Noto Sans KR', sans-serif;
+  line-height: 1.7;
+  min-height: 100vh;
+}
+
+.grain {
+  position: fixed; inset:0; z-index:9999; pointer-events:none; opacity:0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.hero {
+  position: relative;
+  padding: 60px 24px 50px;
+  text-align: center;
+  overflow: hidden;
+}
+
+.hero::before {
+  content:'';
+  position:absolute; top:-100px; left:50%; transform:translateX(-50%);
+  width:600px; height:600px;
+  background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+  opacity:0.3;
+  pointer-events:none;
+}
+
+.hero-tag {
+  display: inline-flex; align-items:center; gap:8px;
+  font-size: 11px; font-weight:600; letter-spacing:2px; text-transform:uppercase;
+  color: var(--accent);
+  background: var(--accent-dim);
+  padding: 6px 16px;
+  border-radius: 20px;
+  margin-bottom: 20px;
+  position:relative;
+}
+
+.hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(28px, 5vw, 44px);
+  font-weight: 900;
+  letter-spacing: -0.5px;
+  line-height: 1.25;
+  color: #fff;
+  margin-bottom: 12px;
+  position:relative;
+}
+
+.hero h1 span { color: var(--accent); }
+
+.hero-sub {
+  font-size: 14px;
+  color: var(--text-dim);
+  max-width: 520px;
+  margin: 0 auto;
+  position:relative;
+}
+
+.meta-bar {
+  display: flex; justify-content:center; gap:24px; flex-wrap:wrap;
+  margin-top:24px;
+  position:relative;
+}
+
+.meta-item {
+  font-size:12px; color: var(--text-dim);
+  display:flex; align-items:center; gap:6px;
+}
+
+.meta-item strong { color: var(--text); font-weight:600; }
+
+.container {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 0 20px 80px;
+}
+
+/* SECTION HEADERS */
+.section-header {
+  display: flex; align-items:center; gap:14px;
+  margin: 48px 0 28px;
+  position:relative;
+}
+
+.section-header::after {
+  content:''; flex:1; height:1px;
+  background: linear-gradient(90deg, var(--border), transparent);
+}
+
+.section-icon {
+  width:40px; height:40px;
+  display:flex; align-items:center; justify-content:center;
+  background: var(--accent-dim);
+  border: 1px solid rgba(240,160,48,0.2);
+  border-radius:10px;
+  font-size:18px;
+}
+
+.section-title {
+  font-size:20px; font-weight:700; color:#fff;
+}
+
+/* QUESTION CARD */
+.q-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 28px 28px 24px;
+  margin-bottom: 20px;
+  position: relative;
+  transition: border-color 0.3s;
+}
+
+.q-card:hover {
+  border-color: rgba(240,160,48,0.25);
+}
+
+.q-top {
+  display:flex; align-items:center; justify-content:space-between;
+  margin-bottom:16px;
+}
+
+.q-num {
+  font-family: 'Playfair Display', serif;
+  font-size:24px; font-weight:900; color: var(--accent);
+}
+
+.q-badges { display:flex; gap:8px; }
+
+.badge {
+  font-size:10px; font-weight:600; letter-spacing:1px; text-transform:uppercase;
+  padding: 3px 10px;
+  border-radius: 6px;
+}
+
+.badge-easy { background: rgba(62,207,142,0.1); color: var(--easy); border:1px solid rgba(62,207,142,0.2); }
+.badge-medium { background: rgba(240,160,48,0.1); color: var(--medium); border:1px solid rgba(240,160,48,0.2); }
+.badge-hard { background: rgba(239,107,107,0.1); color: var(--hard); border:1px solid rgba(239,107,107,0.2); }
+.badge-type { background: rgba(91,141,239,0.1); color: var(--blue); border:1px solid rgba(91,141,239,0.2); }
+
+.q-text {
+  font-size: 15.5px;
+  font-weight: 500;
+  color: #fff;
+  margin-bottom: 18px;
+  line-height: 1.75;
+}
+
+.options {
+  display: flex; flex-direction: column; gap: 10px;
+}
+
+.opt {
+  display: flex; align-items:flex-start; gap:12px;
+  padding: 12px 16px;
+  background: var(--card-alt);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  font-size: 14px;
+  line-height: 1.6;
+  transition: all 0.2s;
+}
+
+.opt-label {
+  min-width:26px; height:26px;
+  display:flex; align-items:center; justify-content:center;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  font-size: 12px; font-weight: 700;
+  color: var(--text-dim);
+  flex-shrink:0;
+  margin-top:1px;
+}
+
+.short-answer-box {
+  width:100%;
+  padding: 14px 18px;
+  background: var(--card-alt);
+  border: 1px dashed var(--border);
+  border-radius: 10px;
+  font-size: 13px;
+  color: var(--text-dim);
+  font-style:italic;
+}
+
+.ox-options {
+  display:flex; gap:12px;
+}
+
+.ox-btn {
+  flex:1;
+  padding: 14px;
+  text-align:center;
+  background: var(--card-alt);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  font-size: 20px; font-weight:700;
+  color: var(--text-dim);
+}
+
+/* ANSWER SECTION */
+.answer-section {
+  margin-top: 64px;
+  padding-top:40px;
+  border-top: 2px solid var(--accent);
+  position:relative;
+}
+
+.answer-section::before {
+  content:'🔑';
+  position:absolute; top:-18px; left:50%; transform:translateX(-50%);
+  width:36px; height:36px;
+  display:flex; align-items:center; justify-content:center;
+  background: var(--bg);
+  font-size:22px;
+  padding:0 12px;
+}
+
+.a-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 12px 12px 0;
+  padding: 22px 24px;
+  margin-bottom: 14px;
+}
+
+.a-top {
+  display:flex; align-items:center; gap:12px;
+  margin-bottom:10px;
+}
+
+.a-num {
+  font-weight:800; font-size:14px; color: var(--accent);
+}
+
+.a-answer {
+  font-weight:700; font-size:15px; color: var(--correct);
+  background: var(--correct-bg);
+  padding: 2px 12px;
+  border-radius: 6px;
+}
+
+.a-explain {
+  font-size: 13.5px;
+  color: var(--text-dim);
+  line-height: 1.8;
+}
+
+.footer-note {
+  text-align:center;
+  margin-top:48px;
+  font-size:12px;
+  color: var(--text-dim);
+  opacity:0.5;
+}
+
+@media (max-width:600px) {
+  .q-card { padding:22px 18px 20px; }
+  .a-card { padding:18px 16px; }
+  .hero { padding:40px 20px 36px; }
+}
+</style>
+</head>
+<body>
+<div class="grain"></div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-tag">📝 학습 검증 퀴즈</div>
+  <h1>비트코인 집중조명과<br><span>투자자심리 분석</span></h1>
+  <p class="hero-sub">투자는인생TV (2026.02.09) 미증시 포커스 방송 내용을 기반으로 출제된 10문항 시험입니다.</p>
+  <div class="meta-bar">
+    <div class="meta-item">📊 총 <strong>10문제</strong></div>
+    <div class="meta-item">🟢 쉬움 3 &nbsp;🟡 보통 5 &nbsp;🔴 어려움 2</div>
+    <div class="meta-item">📝 객관식 · 단답형 · OX</div>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- ==================== 문제지 ==================== -->
+<div class="section-header">
+  <div class="section-icon">📋</div>
+  <div class="section-title">문제지</div>
+</div>
+
+<!-- Q1 -->
+<div class="q-card">
+  <div class="q-top">
+    <div class="q-num">Q1</div>
+    <div class="q-badges">
+      <span class="badge badge-easy">쉬움</span>
+      <span class="badge badge-type">OX</span>
+    </div>
+  </div>
+  <div class="q-text">방송에서 비트코인은 "위험자산(Risky Asset)"의 최상위로 분류된다고 설명했다.</div>
+  <div class="ox-options">
+    <div class="ox-btn">⭕ O</div>
+    <div class="ox-btn">❌ X</div>
+  </div>
+</div>
+
+<!-- Q2 -->
+<div class="q-card">
+  <div class="q-top">
+    <div class="q-num">Q2</div>
+    <div class="q-badges">
+      <span class="badge badge-easy">쉬움</span>
+      <span class="badge badge-type">객관식</span>
+    </div>
+  </div>
+  <div class="q-text">방송에서 설명한 비트코인 가격의 급상승 주기(Halving Cycle)는 몇 년 단위인가?</div>
+  <div class="options">
+    <div class="opt"><span class="opt-label">①</span>2년</div>
+    <div class="opt"><span class="opt-label">②</span>3년</div>
+    <div class="opt"><span class="opt-label">③</span>4년</div>
+    <div class="opt"><span class="opt-label">④</span>5년</div>
+  </div>
+</div>
+
+<!-- Q3 -->
+<div class="q-card">
+  <div class="q-top">
+    <div class="q-num">Q3</div>
+    <div class="q-badges">
+      <span class="badge badge-medium">보통</span>
+      <span class="badge badge-type">객관식</span>
+    </div>
+  </div>
+  <div class="q-text">방송에서 비트코인 가격 결정에 영향을 미치는 7가지 요인 중 하나로, "이것이 늘어나면 비트코인 가격도 올라갈 가능성이 있다"고 설명한 것은?</div>
+  <div class="options">
+    <div class="opt"><span class="opt-label">①</span>M2 통화량 (Money Supply)</div>
+    <div class="opt"><span class="opt-label">②</span>연준 기준금리</div>
+    <div class="opt"><span class="opt-label">③</span>소비자물가지수 (CPI)</div>
+    <div class="opt"><span class="opt-label">④</span>미국 GDP 성장률</div>
+  </div>
+</div>
+
+<!-- Q4 -->
+<div class="q-card">
+  <div class="q-top">
+    <div class="q-num">Q4</div>
+    <div class="q-badges">
+      <span class="badge badge-easy">쉬움</span>
+      <span class="badge badge-type">단답형</span>
+    </div>
+  </div>
+  <div class="q-text">방송에서 글로벌 총 암호화폐 시총(비트코인 포함) 규모는 2024년 12월 31일 기준으로 약 얼마라고 했는가? (단위: trillion 달러)</div>
+  <div class="short-answer-box">정답을 작성하세요: __________ trillion 달러</div>
+</div>
+
+<!-- Q5 -->
+<div class="q-card">
+  <div class="q-top">
+    <div class="q-num">Q5</div>
+    <div class="q-badges">
+      <span class="badge badge-medium">보통</span>
+      <span class="badge badge-type">객관식</span>
+    </div>
+  </div>
+  <div class="q-text">"Capitulation"이란 용어가 방송에서 설명된 맥락으로 가장 적절한 것은?</div>
+  <div class="options">
+    <div class="opt"><span class="opt-label">①</span>기관투자자들이 대량 매수에 나서는 상태</div>
+    <div class="opt"><span class="opt-label">②</span>투자 피로도가 극도로 쌓여 공포에 모든 것을 매도하는 항복 상태</div>
+    <div class="opt"><span class="opt-label">③</span>시장에 새로운 투자자가 대거 유입되는 현상</div>
+    <div class="opt"><span class="opt-label">④</span>정부 규제가 강화되어 거래가 중단되는 상태</div>
+  </div>
+</div>
+
+<!-- Q6 -->
+<div class="q-card">
+  <div class="q-top">
+    <div class="q-num">Q6</div>
+    <div class="q-badges">
+      <span class="badge badge-medium">보통</span>
+      <span class="badge badge-type">OX</span>
+    </div>
+  </div>
+  <div class="q-text">방송에 따르면, 주식시장과 비트코인 가격의 상관관계(Correlation)는 항상 일정하게 연동(양의 상관관계)되어 있다.</div>
+  <div class="ox-options">
+    <div class="ox-btn">⭕ O</div>
+    <div class="ox-btn">❌ X</div>
+  </div>
+</div>
+
+<!-- Q7 -->
+<div class="q-card">
+  <div class="q-top">
+    <div class="q-num">Q7</div>
+    <div class="q-badges">
+      <span class="badge badge-medium">보통</span>
+      <span class="badge badge-type">객관식</span>
+    </div>
+  </div>
+  <div class="q-text">방송에서 비트코인 "고래(Whale)"란 비트코인을 얼마 이상 보유한 개인·기관·국가를 의미한다고 했는가?</div>
+  <div class="options">
+    <div class="opt"><span class="opt-label">①</span>100개 이상</div>
+    <div class="opt"><span class="opt-label">②</span>500개 이상</div>
+    <div class="opt"><span class="opt-label">③</span>1,000개 이상</div>
+    <div class="opt"><span class="opt-label">④</span>10,000개 이상</div>
+  </div>
+</div>
+
+<!-- Q8 -->
+<div class="q-card">
+  <div class="q-top">
+    <div class="q-num">Q8</div>
+    <div class="q-badges">
+      <span class="badge badge-hard">어려움</span>
+      <span class="badge badge-type">단답형</span>
+    </div>
+  </div>
+  <div class="q-text">방송에서 S&P 500의 긍정적 시장 신호로 언급된 지표는 무엇인가? "S&P 500 종목 중 ___%가 50일 이동평균선 이상에 위치해 있다"고 했다. 빈칸에 들어갈 숫자를 쓰시오.</div>
+  <div class="short-answer-box">정답을 작성하세요: __________</div>
+</div>
+
+<!-- Q9 -->
+<div class="q-card">
+  <div class="q-top">
+    <div class="q-num">Q9</div>
+    <div class="q-badges">
+      <span class="badge badge-medium">보통</span>
+      <span class="badge badge-type">객관식</span>
+    </div>
+  </div>
+  <div class="q-text">방송에서 미국 달러화 가치와 비트코인 가격의 관계는 어떻다고 설명했는가?</div>
+  <div class="options">
+    <div class="opt"><span class="opt-label">①</span>달러 가치가 상승하면 비트코인도 상승한다 (양의 상관관계)</div>
+    <div class="opt"><span class="opt-label">②</span>달러 가치가 하락하면 비트코인이 상승하는 경향이 있다 (역의 상관관계)</div>
+    <div class="opt"><span class="opt-label">③</span>달러 가치와 비트코인은 완전히 독립적이다</div>
+    <div class="opt"><span class="opt-label">④</span>달러 가치가 하락하면 비트코인도 함께 하락한다</div>
+  </div>
+</div>
+
+<!-- Q10 -->
+<div class="q-card">
+  <div class="q-top">
+    <div class="q-num">Q10</div>
+    <div class="q-badges">
+      <span class="badge badge-hard">어려움</span>
+      <span class="badge badge-type">객관식</span>
+    </div>
+  </div>
+  <div class="q-text">방송에서 설명한 내용을 종합할 때, 킨드웨어 홀딩(KT)의 주가가 54% 폭락한 근본 원인과, 이것이 슈퍼마이크로(SMCI)와 공유하는 공통 리스크 요인으로 가장 적절한 것은?</div>
+  <div class="options">
+    <div class="opt"><span class="opt-label">①</span>공매도 세력의 부정적 리포트 공격</div>
+    <div class="opt"><span class="opt-label">②</span>SEC 보고 기한(10-Q 파일링) 미이행으로 인한 투자자 신뢰 상실</div>
+    <div class="opt"><span class="opt-label">③</span>CAPEX 과다 지출로 인한 프리캐시플로우 악화</div>
+    <div class="opt"><span class="opt-label">④</span>AI 칩 수급 불안으로 인한 사업 중단 우려</div>
+  </div>
+</div>
+
+
+<!-- ==================== 정답 및 해설 ==================== -->
+<div class="answer-section">
+  <div class="section-header" style="margin-top:0;">
+    <div class="section-icon">🔑</div>
+    <div class="section-title">정답 및 해설</div>
+  </div>
+
+  <div class="a-card">
+    <div class="a-top">
+      <span class="a-num">Q1</span>
+      <span class="a-answer">⭕ O (정답)</span>
+    </div>
+    <div class="a-explain">방송에서 "비트코인은 위험자산(Risky Asset)으로 분류되며, 최상위 위험자산"이라고 명확히 설명했습니다. 변동성이 극도로 크고 투자자들이 감당하기 어려운 수준의 가격 등락이 있다는 점을 강조했습니다.</div>
+  </div>
+
+  <div class="a-card">
+    <div class="a-top">
+      <span class="a-num">Q2</span>
+      <span class="a-answer">③ 4년</span>
+    </div>
+    <div class="a-explain">비트코인의 "Halving" 주기는 4년 단위입니다. 방송에서 2012년, 2016년, 2020년, 2024년, 그리고 다음은 2028년에 급등 가능성이 크다고 설명했습니다. 이는 비트코인 채굴 보상이 4년마다 반감되는 구조에 기인합니다.</div>
+  </div>
+
+  <div class="a-card">
+    <div class="a-top">
+      <span class="a-num">Q3</span>
+      <span class="a-answer">① M2 통화량 (Money Supply)</span>
+    </div>
+    <div class="a-explain">방송에서 비트코인 가격 결정 7대 영향 요인 중 하나로 M2 Money Supply를 언급하며, "M2가 늘어나면 비트코인 가격도 올라갈 가능성이 있다"고 차트를 통해 상관관계(Correlation)를 설명했습니다.</div>
+  </div>
+
+  <div class="a-card">
+    <div class="a-top">
+      <span class="a-num">Q4</span>
+      <span class="a-answer">3.4 trillion 달러</span>
+    </div>
+    <div class="a-explain">2024년 12월 31일 기준 글로벌 총 암호화폐 시총은 3.4 trillion 달러이며, 이 중 비트코인 시총은 약 1.7 trillion 달러로 전체의 약 50%를 차지한다고 설명했습니다. 참고로 글로벌 주식 시총 125조, 채권 250조, 부동산 400조 달러와 비교해 아직 매우 작은 규모입니다.</div>
+  </div>
+
+  <div class="a-card">
+    <div class="a-top">
+      <span class="a-num">Q5</span>
+      <span class="a-answer">② 투자 피로도가 극도로 쌓여 공포에 모든 것을 매도하는 항복 상태</span>
+    </div>
+    <div class="a-explain">방송에서 Capitulation은 투자 피로도(Sign of Exhaustion)가 극도로 높아져 "더 이상은 못하겠다"며 보유 자산을 전량 매도하는 항복 상태를 의미합니다. 역설적으로 이 시점이 시장 최저점(바닥) 신호이며, 기관투자자들이 진입하는 시기라고 설명했습니다.</div>
+  </div>
+
+  <div class="a-card">
+    <div class="a-top">
+      <span class="a-num">Q6</span>
+      <span class="a-answer">❌ X (정답)</span>
+    </div>
+    <div class="a-explain">방송에서 주식시장과 비트코인의 상관관계는 시기에 따라 달라진다고 설명했습니다. 2017년에는 역(逆)상관관계, 2019년 이후에는 양의 상관관계였다가 2025년 현재 다시 떨어지는 등 일관성이 없습니다. "주가가 떨어진다고 비트코인이 올라가는 것도, 떨어지는 것도 아니다"라고 명확히 언급했습니다.</div>
+  </div>
+
+  <div class="a-card">
+    <div class="a-top">
+      <span class="a-num">Q7</span>
+      <span class="a-answer">③ 1,000개 이상</span>
+    </div>
+    <div class="a-explain">방송에서 비트코인 "고래(Whale)"는 비트코인 1,000개(천 주) 이상을 보유한 개인·기관·국가를 의미한다고 했습니다. 전체 월렛의 약 2%에 해당하지만, 비트코인 가격 변동의 약 50%를 좌우하는 영향력을 가진다고 설명했습니다.</div>
+  </div>
+
+  <div class="a-card">
+    <div class="a-top">
+      <span class="a-num">Q8</span>
+      <span class="a-answer">67 (%)</span>
+    </div>
+    <div class="a-explain">방송에서 "S&P 500의 주식 중 67%가 50일 이동평균선 이상에 있어서 아직 긍정적인 시장"이라고 평가했습니다. 이 비율이 50% 이하로 떨어지면 시장 회복에 상당한 시간이 소요된다고 부연했습니다.</div>
+  </div>
+
+  <div class="a-card">
+    <div class="a-top">
+      <span class="a-num">Q9</span>
+      <span class="a-answer">② 달러 가치가 하락하면 비트코인이 상승하는 경향 (역의 상관관계)</span>
+    </div>
+    <div class="a-explain">방송에서 달러와 비트코인은 "반대로 간다"고 설명했습니다. 달러 가치가 하락하면 구매력 유지를 위해 비트코인 같은 대체 자산으로 자금이 이동하여 가격이 상승하는 경향이 있다고 했습니다. 마찬가지로 이머징 마켓 통화(원화 등)와도 역의 관계가 관찰된다고 덧붙였습니다.</div>
+  </div>
+
+  <div class="a-card">
+    <div class="a-top">
+      <span class="a-num">Q10</span>
+      <span class="a-answer">② SEC 보고 기한(10-Q 파일링) 미이행으로 인한 투자자 신뢰 상실</span>
+    </div>
+    <div class="a-explain">킨드웨어 홀딩은 SEC에 10-Q를 기한 내 파일링하지 못해 54% 폭락했고, 슈퍼마이크로 역시 과거 동일한 SEC 보고 미이행으로 최고점 대비 약 70% 하락했습니다. 방송에서는 이를 "투자자·주주와의 약속을 어기는 비윤리적 행위"로 규정하며, 미국 시장에서는 약속 불이행에 대한 페널티가 한국보다 훨씬 크다고 강조했습니다. 한 번 신뢰를 잃으면 회복이 매우 어렵다는 교훈을 전달했습니다.</div>
+  </div>
+
+</div>
+
+<div class="footer-note">
+  투자는인생TV · 미증시 포커스 (2026.02.09) 방송 기반 학습 검증 퀴즈 · 총 10문항
+</div>
+
+</div>
+</body>
+</html>

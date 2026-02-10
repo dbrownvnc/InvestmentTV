@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>미증시 포커스: 비트코인 집중조명과 투자자 심리 분석</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root {
+  --bg-primary: #0a0e17;
+  --bg-card: #111827;
+  --bg-card-alt: #1a2235;
+  --border: #1e2d4a;
+  --text-primary: #e8edf5;
+  --text-secondary: #8899b4;
+  --text-muted: #5a6a85;
+  --accent-gold: #f0b429;
+  --accent-orange: #ef8b2c;
+  --accent-red: #ef4444;
+  --accent-green: #22c55e;
+  --accent-blue: #3b82f6;
+  --accent-cyan: #06b6d4;
+  --accent-purple: #a855f7;
+  --accent-btc: #f7931a;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Noto Sans KR', sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+.container {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 0 16px 60px;
+}
+
+/* Header */
+.header {
+  position: relative;
+  padding: 32px 0 24px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 24px;
+}
+
+.header::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -16px; right: -16px; bottom: 0;
+  background: linear-gradient(135deg, rgba(247,147,26,0.08) 0%, rgba(59,130,246,0.05) 100%);
+  z-index: -1;
+}
+
+.header-badge {
+  display: inline-block;
+  background: rgba(247,147,26,0.15);
+  color: var(--accent-btc);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 4px;
+  letter-spacing: 0.5px;
+  margin-bottom: 12px;
+}
+
+.header h1 {
+  font-size: 22px;
+  font-weight: 900;
+  line-height: 1.35;
+  margin-bottom: 8px;
+  background: linear-gradient(135deg, #fff 60%, var(--accent-btc));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.header-meta {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.header-meta span { margin-right: 12px; }
+
+/* Section */
+.section {
+  margin-bottom: 28px;
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 17px;
+  font-weight: 700;
+  margin-bottom: 14px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--border);
+}
+
+.section-title .icon {
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+/* Cards */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px;
+  margin-bottom: 12px;
+}
+
+.card-alt {
+  background: var(--bg-card-alt);
+}
+
+.card-title {
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: var(--accent-gold);
+}
+
+.card p, .card li {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.75;
+}
+
+.card ul {
+  list-style: none;
+  padding: 0;
+}
+
+.card ul li {
+  position: relative;
+  padding-left: 16px;
+  margin-bottom: 6px;
+}
+
+.card ul li::before {
+  content: '▸';
+  position: absolute;
+  left: 0;
+  color: var(--accent-gold);
+  font-size: 12px;
+}
+
+/* Index Grid */
+.index-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.index-item {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px;
+  text-align: center;
+}
+
+.index-item .label {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.index-item .value {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.index-item .change {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  margin-top: 2px;
+}
+
+.up { color: var(--accent-green); }
+.down { color: var(--accent-red); }
+.neutral { color: var(--accent-blue); }
+
+/* Highlight Box */
+.highlight-box {
+  border-left: 3px solid var(--accent-btc);
+  background: rgba(247,147,26,0.06);
+  padding: 12px 14px;
+  border-radius: 0 8px 8px 0;
+  margin-bottom: 12px;
+}
+
+.highlight-box.blue {
+  border-left-color: var(--accent-blue);
+  background: rgba(59,130,246,0.06);
+}
+
+.highlight-box.green {
+  border-left-color: var(--accent-green);
+  background: rgba(34,197,94,0.06);
+}
+
+.highlight-box.red {
+  border-left-color: var(--accent-red);
+  background: rgba(239,68,68,0.06);
+}
+
+.highlight-box.purple {
+  border-left-color: var(--accent-purple);
+  background: rgba(168,85,247,0.06);
+}
+
+.highlight-box p {
+  font-size: 13.5px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+.highlight-box strong {
+  color: var(--text-primary);
+}
+
+/* Chart Container */
+.chart-container {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px 12px;
+  margin-bottom: 12px;
+}
+
+.chart-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 10px;
+}
+
+canvas { max-width: 100%; }
+
+/* Factor List */
+.factor-item {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px;
+  margin-bottom: 10px;
+}
+
+.factor-num {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  background: rgba(247,147,26,0.15);
+  color: var(--accent-btc);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  font-weight: 700;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.factor-content h4 {
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 4px;
+  color: var(--text-primary);
+}
+
+.factor-content p {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.65;
+}
+
+/* Earnings Table */
+.earnings-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.earnings-table th {
+  text-align: left;
+  padding: 8px 10px;
+  border-bottom: 2px solid var(--border);
+  color: var(--text-muted);
+  font-weight: 600;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.earnings-table td {
+  padding: 8px 10px;
+  border-bottom: 1px solid rgba(30,45,74,0.5);
+  color: var(--text-secondary);
+}
+
+.earnings-table tr:last-child td { border-bottom: none; }
+
+.ticker {
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 600;
+  color: var(--accent-cyan);
+  font-size: 12px;
+}
+
+/* Tag */
+.tag {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 4px;
+  margin-right: 4px;
+  margin-bottom: 4px;
+}
+.tag-bull { background: rgba(34,197,94,0.15); color: var(--accent-green); }
+.tag-bear { background: rgba(239,68,68,0.15); color: var(--accent-red); }
+.tag-neutral { background: rgba(59,130,246,0.15); color: var(--accent-blue); }
+.tag-warn { background: rgba(240,180,41,0.15); color: var(--accent-gold); }
+
+/* Divider */
+.divider {
+  height: 1px;
+  background: var(--border);
+  margin: 24px 0;
+}
+
+/* Summary Box */
+.summary-box {
+  background: linear-gradient(135deg, rgba(247,147,26,0.08), rgba(59,130,246,0.08));
+  border: 1px solid rgba(247,147,26,0.2);
+  border-radius: 12px;
+  padding: 18px;
+}
+
+.summary-box h3 {
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: var(--accent-gold);
+}
+
+.summary-box ul {
+  list-style: none;
+  padding: 0;
+}
+
+.summary-box li {
+  font-size: 13.5px;
+  color: var(--text-secondary);
+  padding: 5px 0;
+  padding-left: 20px;
+  position: relative;
+}
+
+.summary-box li::before {
+  content: '✦';
+  position: absolute;
+  left: 0;
+  color: var(--accent-btc);
+  font-size: 10px;
+  top: 7px;
+}
+
+.footer {
+  margin-top: 32px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+  font-size: 11px;
+  color: var(--text-muted);
+  text-align: center;
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- Header -->
+<div class="header">
+  <div class="header-badge">₿ BITCOIN SPECIAL</div>
+  <h1>미증시 포커스: 비트코인 집중조명과 투자자 심리 분석</h1>
+  <div class="header-meta">
+    <span>📅 2026.02.10</span>
+    <span>📺 투자는인생TV</span>
+    <span>🎙️ 데이빌리</span>
+  </div>
+</div>
+
+<!-- 1. 주요 지수 현황 -->
+<div class="section">
+  <div class="section-title"><span class="icon">📊</span> 주요 지수 현황</div>
+  
+  <div class="index-grid">
+    <div class="index-item">
+      <div class="label">DOW JONES</div>
+      <div class="value up">50,130</div>
+      <div class="change up">역대 최고점 돌파 🔺</div>
+    </div>
+    <div class="index-item">
+      <div class="label">S&P 500</div>
+      <div class="value neutral">~7,000</div>
+      <div class="change neutral">7천선 부근 횡보</div>
+    </div>
+    <div class="index-item">
+      <div class="label">NASDAQ</div>
+      <div class="value up">23,238</div>
+      <div class="change neutral">5%↓ 후 빠른 회복</div>
+    </div>
+    <div class="index-item">
+      <div class="label">VIX</div>
+      <div class="value" style="color:var(--accent-orange)">17</div>
+      <div class="change" style="color:var(--accent-orange)">경계 수준 (16↓ 필요)</div>
+    </div>
+    <div class="index-item">
+      <div class="label">10Y TREASURY</div>
+      <div class="value neutral">4.2~4.3%</div>
+      <div class="change neutral">안정적 흐름</div>
+    </div>
+    <div class="index-item">
+      <div class="label">GOLD</div>
+      <div class="value up">회복세</div>
+      <div class="change up">$5,500 목표 전망</div>
+    </div>
+  </div>
+
+  <div class="highlight-box green">
+    <p><strong>다우 50,000 돌파</strong>는 가치주(대형 전통기업)가 시장을 뒷받침하고 있다는 긍정적 신호. S&P500 구성종목 중 <strong>67%가 50일 이동평균선 이상</strong>에 위치해 투자심리가 아직 긍정적 상태.</p>
+  </div>
+</div>
+
+<!-- 2. 시장 변동성 & 투자자 심리 -->
+<div class="section">
+  <div class="section-title"><span class="icon">🧠</span> 투자자 심리와 Capitulation</div>
+
+  <div class="card">
+    <div class="card-title">🔻 지난주 폭락장 복기</div>
+    <p>테크주 중심으로 <strong>7~20% 급락</strong>이 발생. 이는 투자자 피로도(Sign of Capitulation)가 극에 달한 결과. 지속적 하락 → 공포 축적 → 비이성적 매도 패턴이 반복됐음.</p>
+  </div>
+
+  <div class="chart-container">
+    <div class="chart-label">투자자 심리 사이클: 공포 → Capitulation → 기회</div>
+    <canvas id="psychologyChart" height="220"></canvas>
+  </div>
+
+  <div class="highlight-box red">
+    <p><strong>Capitulation (항복 매도)</strong>란 투자자가 더 이상의 손실을 견디지 못하고 모든 자산을 매도하는 현상. 이 시점이 보통 <strong>시장의 최저점</strong>이 되며, 기관투자자들이 진입하는 타이밍. 작년 2월에도 동일한 패턴이 나타났고, 4월부터 큰 상승이 이어졌음.</p>
+  </div>
+
+  <div class="card card-alt">
+    <div class="card-title">📉 VIX 경고 신호</div>
+    <ul>
+      <li>현재 VIX 17 → <strong>16 이하</strong>로 내려와야 안정권</li>
+      <li>아직 3~4% 추가 하락 가능성 상존</li>
+      <li>지난주 테크 급반등이 과매도 반등인지, 본격 회복인지 판단 시기상조</li>
+      <li>2월이라 이익실현 세력 존재 → 3~4월이면 더 심각할 수 있었음</li>
+    </ul>
+  </div>
+
+  <div class="highlight-box blue">
+    <p><strong>핵심 교훈:</strong> 폭락장은 "쌀과 껍데기를 분리하는 키(키질)"와 같음. 소규모 투자자(개미)가 가장 취약. 감정적 매도 후 이틀 내 급반등하는 패턴이 반복됨. <strong>묵직하게 버티는 것</strong>이 중요.</p>
+  </div>
+</div>
+
+<!-- 3. 비트코인 집중 분석 -->
+<div class="section">
+  <div class="section-title"><span class="icon">₿</span> 비트코인 집중 분석</div>
+
+  <div class="card">
+    <div class="card-title">글로벌 자산 시총 비교</div>
+    <ul>
+      <li><strong>글로벌 암호화폐 시총:</strong> $3.4T (2025.12.31 기준)</li>
+      <li><strong>비트코인 시총:</strong> $1.7T (암호화폐의 ~50%)</li>
+      <li><strong>글로벌 주식 시총:</strong> $125T</li>
+      <li><strong>글로벌 채권 시총:</strong> $250T</li>
+      <li><strong>글로벌 부동산 시총:</strong> $400T</li>
+    </ul>
+    <p style="margin-top:8px; color:var(--accent-orange); font-size:13px;">→ 비트코인은 전체 주식시장의 ~1.3%에 불과. 아직 변동성이 클 수밖에 없는 규모.</p>
+  </div>
+
+  <div class="chart-container">
+    <div class="chart-label">글로벌 자산 클래스별 시총 비교 (단위: $Trillion)</div>
+    <canvas id="marketCapChart" height="200"></canvas>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- 7가지 가격 결정 요인 -->
+  <div class="card-title" style="font-size:15px; margin-bottom:14px;">비트코인 가격 결정 7대 요인</div>
+
+  <div class="factor-item">
+    <div class="factor-num">1</div>
+    <div class="factor-content">
+      <h4>M2 통화량 (Money Supply)</h4>
+      <p>M2가 증가하면 비트코인 가격도 상승하는 상관관계(Correlation)가 존재. 유동성이 풍부해지면 위험자산으로 자금이 유입되는 패턴.</p>
+    </div>
+  </div>
+
+  <div class="factor-item">
+    <div class="factor-num">2</div>
+    <div class="factor-content">
+      <h4>4년 주기 반감기 (Halving Cycle)</h4>
+      <p>2012 → 2016 → 2020 → 2024 → <strong>2028년 전후</strong> 급등 패턴. 올해는 해당 주기가 아님. 과거 데이터 기반이며 미래 보장은 아님.</p>
+    </div>
+  </div>
+
+  <div class="factor-item">
+    <div class="factor-num">3</div>
+    <div class="factor-content">
+      <h4>신규 투자자 유입률 (Adoption Rate)</h4>
+      <p>신규 매수자가 늘수록 가격 상승 가능성 증가. 기관·국가·개인의 매수량 추적이 중요. 최근 Hot Wallet 유입은 다소 감소 추세.</p>
+    </div>
+  </div>
+
+  <div class="factor-item">
+    <div class="factor-num">4</div>
+    <div class="factor-content">
+      <h4>투자시장 리스크 수준</h4>
+      <p>주식·채권 시장의 리스크가 커지면 비트코인으로 자금 이동 가능성. 단, 주식시장과의 상관관계는 <strong>불안정</strong>(2017년 역상관 → 2019년 이후 양의 상관 → 현재 다시 약화).</p>
+    </div>
+  </div>
+
+  <div class="factor-item">
+    <div class="factor-num">5</div>
+    <div class="factor-content">
+      <h4>금리 & 달러 가치</h4>
+      <p>달러 가치 하락 → 구매력 유지 위해 비트코인 등 대체자산 매수 증가. 10년 국채 수익률과의 상관관계가 상대적으로 높은 편.</p>
+    </div>
+  </div>
+
+  <div class="factor-item">
+    <div class="factor-num">6</div>
+    <div class="factor-content">
+      <h4>기술 발전 (양자컴퓨팅 리스크)</h4>
+      <p>양자컴퓨터 기술이 발전할수록 암호키 해독 위험 증가. 사이버 범죄(특히 북한의 해킹) 노출 가능성도 상승. 비트코인의 <strong>기술적 취약점</strong>.</p>
+    </div>
+  </div>
+
+  <div class="factor-item">
+    <div class="factor-num">7</div>
+    <div class="factor-content">
+      <h4>고래(Whale)의 매매 활동</h4>
+      <p>1,000BTC 이상 보유한 기관/개인이 전체의 ~2%이나, 가격 변동의 ~50%를 좌우. 이들의 대량 매각은 급락 트리거. 트럼프 막내아들의 $300M 매도 사례 언급.</p>
+    </div>
+  </div>
+
+  <div class="chart-container">
+    <div class="chart-label">비트코인 계절성 패턴 (과거 평균 월별 수익률 경향)</div>
+    <canvas id="seasonalChart" height="200"></canvas>
+  </div>
+
+  <div class="highlight-box purple">
+    <p><strong>계절성 참고:</strong> 과거 데이터상 <strong>4~5월 상승</strong>, <strong>8~9월 하락</strong>, <strong>11월 강세</strong> 경향. 현재 저항선은 <strong>$84,000</strong>. 단, 표준편차가 매우 커서 통계적 참고만 가능.</p>
+  </div>
+
+  <div class="card card-alt">
+    <div class="card-title">⚠️ 비트코인 리스크 요약</div>
+    <ul>
+      <li>최고 위험 자산(Risky Asset) 분류 → 감당 불가 수준의 변동성</li>
+      <li>12월 $110,000 → 34% 이상 하락 기록</li>
+      <li>탈중앙화(Decentralized) 특성상 고래 활동 추적 어려움</li>
+      <li>은행권 위기 시 자금 유입 가능성 (SVB 사태 참조)</li>
+      <li>트럼프 관련 주가의 정치적 리스크 존재</li>
+    </ul>
+  </div>
+</div>
+
+<!-- 4. 거시경제 & 연준 -->
+<div class="section">
+  <div class="section-title"><span class="icon">🏛️</span> 거시경제 & 연준 정책</div>
+
+  <div class="card">
+    <div class="card-title">📅 이번 주 주요 일정: 비농업 고용지표 (수요일)</div>
+    <p>고용률 하락 또는 신규 일자리 감소 시 → <strong>장기적으로 긍정적 시그널</strong> (금리인하 기대). 실업률 <strong>4.5%까지는 크게 문제없다</strong>는 판단.</p>
+  </div>
+
+  <div class="highlight-box blue">
+    <p><strong>연준 금리 전망:</strong> 파월 의장 임기 만료(8월) 전 한 차례 금리 인하 가능성. 인플레이션 2.6% 수준 예상으로 급등 우려는 크지 않음.</p>
+  </div>
+
+  <div class="card card-alt">
+    <div class="card-title">🌏 글로벌 이슈</div>
+    <ul>
+      <li><strong>중국:</strong> 민간은행에 미국채 매입 금지 권고. 지난달 <strong>$50B 규모 금 매입</strong> (총 $370B 보유). 금값 $5,500 전망.</li>
+      <li><strong>일본:</strong> 다카이치 총리 압승 → 미국과 경제 딜 기대감 → 미국채 보유 확대 가능성 (세계 최대 보유국). 10년 국채에 <strong>희소식</strong>.</li>
+      <li><strong>원유:</strong> 러시아 수출 1월 대비 11%↓ (인도·미국 협의). 유가 상승세 지속 전망.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- 5. AI 투자 & CapEx -->
+<div class="section">
+  <div class="section-title"><span class="icon">🤖</span> AI CapEx와 기업 전망</div>
+
+  <div class="chart-container">
+    <div class="chart-label">주요 빅테크 AI CapEx 전망 (2026년, $Billion)</div>
+    <canvas id="capexChart" height="200"></canvas>
+  </div>
+
+  <div class="card">
+    <div class="card-title">CapEx 핵심 분석</div>
+    <ul>
+      <li><strong>아마존:</strong> 2026년 $200B 투자 계획 → 프리캐시플로우 마이너스 가능성 → 기업가치 손상 우려</li>
+      <li><strong>구글:</strong> $70~180B 투자 + <strong>$15B 규모 채권 발행</strong> (AI CapEx 자금 조달). 연말 대량해고 예상</li>
+      <li><strong>XAI:</strong> Apollo Global에서 $34억 융자로 엔비디아 칩 매입. SpaceX 인수합병으로 $1.5T 가치 활용 가능성</li>
+    </ul>
+  </div>
+
+  <div class="highlight-box red">
+    <p><strong>경고:</strong> CapEx 지출이 매출 증가 속도를 초과하면 → <strong>폭락 리스크</strong>. 테크주가 두 자릿수 실적에도 주가가 작년처럼 상승하기 어려운 이유. S&P500 Forward P/E 19로 하락해 밸류에이션은 양호.</p>
+  </div>
+
+  <div class="card card-alt">
+    <div class="card-title">💼 테크 해고 트렌드</div>
+    <p>AI 칩(엔비디아) 도입 → 기존 엔지니어 인력 대체 가속. <strong>아마존 3만명 해고</strong>, 메타 10만명 규모 등. 구글·MS·메타 추가 수백~수천 명 예상. 이는 실리콘밸리 부동산 시장에도 하방 압력으로 작용.</p>
+  </div>
+</div>
+
+<!-- 6. 선행지표 & 섹터 -->
+<div class="section">
+  <div class="section-title"><span class="icon">📈</span> 선행지표 & 유망 섹터</div>
+
+  <div class="card">
+    <div class="card-title">1월 이후 강세 지속 섹터</div>
+    <p>1월 선행지수가 그 해 살림이라는 관점에서, 아래 4개 섹터가 지속 상승 중:</p>
+    <div style="display:flex; flex-wrap:wrap; gap:6px; margin-top:10px;">
+      <span class="tag tag-bull">Consumer Staples (필수소비재)</span>
+      <span class="tag tag-bull">Industrials (산업재)</span>
+      <span class="tag tag-bull">Energy (에너지)</span>
+      <span class="tag tag-bull">Materials (소재)</span>
+    </div>
+    <p style="margin-top:10px;">→ 변동성이 싫다면 이들 섹터가 <strong>"맷집이 좋은"</strong> 대안.</p>
+  </div>
+
+  <div class="highlight-box green">
+    <p><strong>S&P500 전망 레인지:</strong> 하방 <strong>6,300</strong> (폭락 시 ~10% 하락) ~ 상방 <strong>7,600</strong>. 7천 돌파 후 빠르게 7,100→7,500 방향으로 이동할 시점이 올 것.</p>
+  </div>
+</div>
+
+<!-- 7. 기업 소식 -->
+<div class="section">
+  <div class="section-title"><span class="icon">🏢</span> 주요 기업 소식</div>
+
+  <div class="card">
+    <ul>
+      <li><strong>AppLovin (APP):</strong> Culper Research(공매도 세력) 부정 리포트 → 근거 없음 판명 → <strong>+10%↑</strong>. P/E 높은 종목은 공매도 타겟 주의.</li>
+      <li><strong>Valaris + TransOcean:</strong> 합병 합의 → Valaris <strong>+22%↑</strong></li>
+      <li><strong>TeraWulf:</strong> 비트코인 마이닝 → 데이터센터 사업 전환 → 목표가 상향 → <strong>+10%↑</strong></li>
+      <li><strong>Kindware Holdings (KT):</strong> SEC 10-Q 미제출 → <strong>-54%↓</strong>. 미국에서 SEC 보고 의무 위반은 투자자 신뢰 붕괴를 의미.</li>
+      <li><strong>Super Micro (SMCI) 교훈:</strong> SEC 보고 지연 후 $130~140 → $30대 추락. 한번 신뢰를 잃으면 회복이 매우 어려움.</li>
+      <li><strong>SpaceX:</strong> 달 도시 건설 먼저 추진. 2026년 말 화성 무인 스타쉽 발사 계획.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- 8. 실적 발표 일정 -->
+<div class="section">
+  <div class="section-title"><span class="icon">📋</span> 이번 주 주요 실적 발표</div>
+
+  <div class="card">
+    <table class="earnings-table">
+      <thead>
+        <tr>
+          <th>종목</th>
+          <th>전망</th>
+          <th>비고</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="ticker">DUK</span> Duke Energy</td>
+          <td><span class="tag tag-bear">약세</span></td>
+          <td>분기 대비 소폭 하락 예상</td>
+        </tr>
+        <tr>
+          <td><span class="ticker">MCD</span> McDonald's</td>
+          <td><span class="tag tag-bear">약세</span></td>
+          <td>가격 인상 → 매출 감소 가능</td>
+        </tr>
+        <tr>
+          <td><span class="ticker">TMUS</span> T-Mobile</td>
+          <td><span class="tag tag-bull">양호</span></td>
+          <td>꾸준한 매출 기대</td>
+        </tr>
+        <tr>
+          <td><span class="ticker">CSCO</span> Cisco</td>
+          <td><span class="tag tag-neutral">중립</span></td>
+          <td>EPS $1.02 예상, 한자릿수 성장</td>
+        </tr>
+        <tr>
+          <td><span class="ticker">APP</span> AppLovin</td>
+          <td><span class="tag tag-bull">강세</span></td>
+          <td>두 자릿수 성장 가능, P/E 높음 주의</td>
+        </tr>
+        <tr>
+          <td><span class="ticker">COIN</span> Coinbase</td>
+          <td><span class="tag tag-bear">약세</span></td>
+          <td>전분기 대비 50%↓, 비트코인 가격 하락 영향</td>
+        </tr>
+        <tr>
+          <td><span class="ticker">MRNA</span> Moderna</td>
+          <td><span class="tag tag-bear">약세</span></td>
+          <td>적자 폭 확대, 주의 필요</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- 9. 투자 시사점 -->
+<div class="section">
+  <div class="section-title"><span class="icon">🎯</span> 투자 시사점 종합</div>
+
+  <div class="summary-box">
+    <h3>핵심 투자 포인트</h3>
+    <ul>
+      <li>폭락장은 "키질"과 같다 — 개미를 털어내는 과정이며, Capitulation 이후가 기관 진입 타이밍</li>
+      <li>비트코인은 최상위 리스크 자산 — 7가지 가격 결정 요인 이해 후 투자 판단 필요</li>
+      <li>CapEx 과투자 경고 — 매출 증가 속도 < 투자 속도이면 테크주 폭락 리스크</li>
+      <li>방어적 섹터로 분산: 필수소비재, 산업재, 에너지, 소재 — 변동성 대비 안정적</li>
+      <li>금리 인하 1회 가능성(8월 전) — 고용지표 악화는 장기 긍정 신호</li>
+      <li>금 $5,500 목표 — 중국의 지속적 매입이 드라이버</li>
+      <li>SEC 보고 의무 위반 기업 절대 회피 — 미국 시장에서 신뢰 손상은 치명적</li>
+      <li>VIX 16 이하 전까지는 3~4% 추가 하락 가능성 상존 → 이를 정상적 변동으로 인식</li>
+    </ul>
+  </div>
+</div>
+
+<div class="footer">
+  ⚠️ 본 문서는 유튜브 채널 '투자는인생TV'의 방송 내용을 정리한 것으로, 투자 권유가 아닙니다.<br>
+  투자의 책임은 본인에게 있으며, 과거 데이터가 미래 수익을 보장하지 않습니다.
+</div>
+
+</div>
+
+<script>
+// Chart defaults
+Chart.defaults.color = '#8899b4';
+Chart.defaults.borderColor = 'rgba(30,45,74,0.5)';
+Chart.defaults.font.family = "'Noto Sans KR', sans-serif";
+Chart.defaults.font.size = 11;
+
+// 1. Psychology Cycle Chart
+new Chart(document.getElementById('psychologyChart'), {
+  type: 'line',
+  data: {
+    labels: ['낙관', '흥분', '과열', '불안시작', '공포확산', '패닉매도', 'Capitulation\n(항복)', '최저점', '기관진입', '회복기', '재상승'],
+    datasets: [{
+      label: '투자자 심리',
+      data: [60, 80, 95, 75, 50, 25, 10, 5, 20, 45, 70],
+      borderColor: '#f0b429',
+      backgroundColor: 'rgba(240,180,41,0.1)',
+      fill: true,
+      tension: 0.4,
+      pointRadius: 4,
+      pointBackgroundColor: function(ctx) {
+        return ctx.dataIndex === 6 ? '#ef4444' : ctx.dataIndex === 7 ? '#22c55e' : '#f0b429';
+      },
+      pointBorderWidth: 0,
+      borderWidth: 2.5
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { display: false },
+      tooltip: { enabled: true }
+    },
+    scales: {
+      y: {
+        display: false,
+        min: 0, max: 100
+      },
+      x: {
+        ticks: { font: { size: 9 }, maxRotation: 45 }
+      }
+    }
+  }
+});
+
+// 2. Market Cap Comparison
+new Chart(document.getElementById('marketCapChart'), {
+  type: 'bar',
+  data: {
+    labels: ['부동산', '채권', '주식', '암호화폐 전체', '비트코인'],
+    datasets: [{
+      data: [400, 250, 125, 3.4, 1.7],
+      backgroundColor: ['#3b82f6', '#06b6d4', '#22c55e', '#f7931a', '#f0b429'],
+      borderRadius: 6,
+      borderSkipped: false,
+      barPercentage: 0.7
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        callbacks: {
+          label: (ctx) => `$${ctx.raw}T`
+        }
+      }
+    },
+    scales: {
+      x: {
+        type: 'logarithmic',
+        ticks: {
+          callback: (v) => `$${v}T`
+        },
+        grid: { color: 'rgba(30,45,74,0.3)' }
+      },
+      y: {
+        grid: { display: false }
+      }
+    }
+  }
+});
+
+// 3. Seasonal Chart
+new Chart(document.getElementById('seasonalChart'), {
+  type: 'bar',
+  data: {
+    labels: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
+    datasets: [{
+      label: '평균 수익률 경향',
+      data: [3, -1, 2, 8, 7, -2, 1, -5, -4, 3, 12, 4],
+      backgroundColor: function(ctx) {
+        return ctx.raw >= 0 ? 'rgba(34,197,94,0.7)' : 'rgba(239,68,68,0.7)';
+      },
+      borderRadius: 4,
+      barPercentage: 0.6
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        callbacks: {
+          label: (ctx) => `${ctx.raw > 0 ? '+' : ''}${ctx.raw}% 경향`
+        }
+      }
+    },
+    scales: {
+      y: {
+        ticks: { callback: (v) => `${v}%` },
+        grid: { color: 'rgba(30,45,74,0.3)' }
+      },
+      x: {
+        grid: { display: false }
+      }
+    }
+  }
+});
+
+// 4. CapEx Chart
+new Chart(document.getElementById('capexChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Amazon', 'Google', 'XAI (융자)'],
+    datasets: [{
+      label: 'AI CapEx ($B)',
+      data: [200, 125, 3.4],
+      backgroundColor: ['#f0b429', '#3b82f6', '#a855f7'],
+      borderRadius: 6,
+      barPercentage: 0.5
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        callbacks: {
+          label: (ctx) => `$${ctx.raw}B`
+        }
+      }
+    },
+    scales: {
+      y: {
+        ticks: { callback: (v) => `$${v}B` },
+        grid: { color: 'rgba(30,45,74,0.3)' }
+      },
+      x: {
+        grid: { display: false }
+      }
+    }
+  }
+});
+</script>
+</body>
+</html>
