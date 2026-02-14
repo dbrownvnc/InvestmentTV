@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>시험문제 10문항 | NOVA 방송 분석 2026.02.14</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0e17;
+  --surface: #111827;
+  --surface2: #1a2235;
+  --border: #1e2d45;
+  --text: #e2e8f0;
+  --text-dim: #8b9dc3;
+  --accent: #f59e0b;
+  --red: #ef4444;
+  --green: #22c55e;
+  --blue: #3b82f6;
+  --purple: #a78bfa;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: 'Noto Sans KR', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.75;
+  font-size: 15px;
+}
+.container { max-width: 680px; margin: 0 auto; padding: 0 16px 80px; }
+.header {
+  padding: 40px 20px 30px;
+  text-align: center;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 32px;
+}
+.header .tag {
+  display: inline-block;
+  background: rgba(59,130,246,0.15);
+  color: var(--blue);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  padding: 4px 14px;
+  border-radius: 20px;
+  margin-bottom: 12px;
+}
+.header h1 { font-size: 20px; font-weight: 900; margin-bottom: 8px; }
+.header .meta { font-size: 12px; color: var(--text-dim); }
+
+.q-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 16px;
+}
+.q-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+.q-num {
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px;
+  font-weight: 700;
+  flex-shrink: 0;
+  color: #fff;
+}
+.q-meta {
+  display: flex; gap: 8px;
+}
+.q-type, .q-diff {
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-weight: 600;
+}
+.type-obj { background: rgba(59,130,246,0.15); color: var(--blue); }
+.type-short { background: rgba(167,139,250,0.15); color: var(--purple); }
+.type-ox { background: rgba(6,182,212,0.15); color: #06b6d4; }
+.diff-easy { background: rgba(34,197,94,0.15); color: var(--green); }
+.diff-mid { background: rgba(245,158,11,0.15); color: var(--accent); }
+.diff-hard { background: rgba(239,68,68,0.15); color: var(--red); }
+
+.q-text { font-size: 14px; font-weight: 500; margin-bottom: 12px; }
+.q-options { padding-left: 4px; }
+.q-options div {
+  font-size: 13px;
+  padding: 6px 0;
+  color: var(--text-dim);
+}
+.q-options div span { color: var(--text); font-weight: 500; margin-right: 6px; }
+
+/* Answer Section */
+.divider {
+  text-align: center;
+  margin: 48px 0 36px;
+  padding: 20px;
+  border-top: 2px dashed var(--border);
+  border-bottom: 2px dashed var(--border);
+}
+.divider h2 {
+  font-size: 18px;
+  font-weight: 900;
+  color: var(--accent);
+}
+.divider p { font-size: 12px; color: var(--text-dim); margin-top: 6px; }
+
+.a-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 18px;
+  margin-bottom: 14px;
+}
+.a-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.a-num {
+  width: 28px; height: 28px;
+  border-radius: 6px;
+  background: rgba(34,197,94,0.15);
+  color: var(--green);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 700;
+}
+.a-answer {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--green);
+}
+.a-explain {
+  font-size: 13px;
+  color: var(--text-dim);
+  line-height: 1.7;
+  padding-left: 38px;
+}
+
+.footer {
+  text-align: center;
+  padding: 30px 0;
+  font-size: 11px;
+  color: var(--text-dim);
+  border-top: 1px solid var(--border);
+  margin-top: 40px;
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+<div class="header">
+  <div class="tag">QUIZ 10 QUESTIONS</div>
+  <h1>📝 시험문제 — NOVA 방송 분석 기반</h1>
+  <div class="meta">2026.02.14 · 난이도: 쉬움 30% · 보통 50% · 어려움 20%</div>
+</div>
+
+<!-- ============================== -->
+<!-- 문제 영역 -->
+<!-- ============================== -->
+
+<!-- Q1 -->
+<div class="q-card">
+  <div class="q-header">
+    <div class="q-num" style="background:rgba(34,197,94,0.2);">01</div>
+    <div class="q-meta">
+      <span class="q-type type-obj">객관식</span>
+      <span class="q-diff diff-easy">쉬움</span>
+    </div>
+  </div>
+  <div class="q-text">2026년 2월 발표된 헤드라인 CPI(소비자물가지수)는 얼마였는가?</div>
+  <div class="q-options">
+    <div><span>①</span> 2.2%</div>
+    <div><span>②</span> 2.4%</div>
+    <div><span>③</span> 2.5%</div>
+    <div><span>④</span> 2.9%</div>
+  </div>
+</div>
+
+<!-- Q2 -->
+<div class="q-card">
+  <div class="q-header">
+    <div class="q-num" style="background:rgba(34,197,94,0.2);">02</div>
+    <div class="q-meta">
+      <span class="q-type type-ox">OX</span>
+      <span class="q-diff diff-easy">쉬움</span>
+    </div>
+  </div>
+  <div class="q-text">CPI 발표 이후 10년물 국채금리가 상승하여 나스닥이 하락했다. (O / X)</div>
+</div>
+
+<!-- Q3 -->
+<div class="q-card">
+  <div class="q-header">
+    <div class="q-num" style="background:rgba(245,158,11,0.2);">03</div>
+    <div class="q-meta">
+      <span class="q-type type-obj">객관식</span>
+      <span class="q-diff diff-mid">보통</span>
+    </div>
+  </div>
+  <div class="q-text">아리스타 네트워크 CEO가 어닝콜에서 밝힌 현재 AMD 가속기 사용 비중은?</div>
+  <div class="q-options">
+    <div><span>①</span> 5~10%</div>
+    <div><span>②</span> 20~25%</div>
+    <div><span>③</span> 40~50%</div>
+    <div><span>④</span> 70~80%</div>
+  </div>
+</div>
+
+<!-- Q4 -->
+<div class="q-card">
+  <div class="q-header">
+    <div class="q-num" style="background:rgba(245,158,11,0.2);">04</div>
+    <div class="q-meta">
+      <span class="q-type type-short">단답형</span>
+      <span class="q-diff diff-mid">보통</span>
+    </div>
+  </div>
+  <div class="q-text">CPI 하락에 가장 크게 기여한 두 가지 요인을 쓰시오.</div>
+</div>
+
+<!-- Q5 -->
+<div class="q-card">
+  <div class="q-header">
+    <div class="q-num" style="background:rgba(245,158,11,0.2);">05</div>
+    <div class="q-meta">
+      <span class="q-type type-obj">객관식</span>
+      <span class="q-diff diff-mid">보통</span>
+    </div>
+  </div>
+  <div class="q-text">리비안 주가가 하루 만에 약 26~27% 급등한 주요 원인으로 가장 거리가 먼 것은?</div>
+  <div class="q-options">
+    <div><span>①</span> R2 보급형 SUV 출시 기대</div>
+    <div><span>②</span> 폭스바겐 JV 소프트웨어 수익</div>
+    <div><span>③</span> 테슬라의 자율주행 라이선스 매각 발표</div>
+    <div><span>④</span> 공매도 커버링(숏 스퀴즈)</div>
+  </div>
+</div>
+
+<!-- Q6 -->
+<div class="q-card">
+  <div class="q-header">
+    <div class="q-num" style="background:rgba(34,197,94,0.2);">06</div>
+    <div class="q-meta">
+      <span class="q-type type-ox">OX</span>
+      <span class="q-diff diff-easy">쉬움</span>
+    </div>
+  </div>
+  <div class="q-text">CME FedWatch에서 6월 금리인하 확률이 51.8%로 처음 50%를 넘었다. (O / X)</div>
+</div>
+
+<!-- Q7 -->
+<div class="q-card">
+  <div class="q-header">
+    <div class="q-num" style="background:rgba(245,158,11,0.2);">07</div>
+    <div class="q-meta">
+      <span class="q-type type-obj">객관식</span>
+      <span class="q-diff diff-mid">보통</span>
+    </div>
+  </div>
+  <div class="q-text">조지 소로스가 4분기 13F 공시에서 비중을 확대한 종목군은?</div>
+  <div class="q-options">
+    <div><span>①</span> 은행주 (JP모건, 뱅크오브아메리카 등)</div>
+    <div><span>②</span> 에너지주 (엑슨모빌, 쉐브론 등)</div>
+    <div><span>③</span> 빅테크 (구글, MS, 애플, 엔비디아)</div>
+    <div><span>④</span> 전기차 (테슬라, 리비안, 루시드)</div>
+  </div>
+</div>
+
+<!-- Q8 -->
+<div class="q-card">
+  <div class="q-header">
+    <div class="q-num" style="background:rgba(239,68,68,0.2);">08</div>
+    <div class="q-meta">
+      <span class="q-type type-short">단답형</span>
+      <span class="q-diff diff-hard">어려움</span>
+    </div>
+  </div>
+  <div class="q-text">BLS 발표 CPI와 Truflation 데이터 간에 약 몇 배의 괴리가 있으며, 이러한 괴리의 정치적 배경을 간략히 설명하시오.</div>
+</div>
+
+<!-- Q9 -->
+<div class="q-card">
+  <div class="q-header">
+    <div class="q-num" style="background:rgba(245,158,11,0.2);">09</div>
+    <div class="q-meta">
+      <span class="q-type type-obj">객관식</span>
+      <span class="q-diff diff-mid">보통</span>
+    </div>
+  </div>
+  <div class="q-text">굴스비 연준 위원이 CPI 발표 후 강조한 핵심 우려는 무엇인가?</div>
+  <div class="q-options">
+    <div><span>①</span> 에너지 물가가 너무 빨리 하락하고 있다</div>
+    <div><span>②</span> 주거비 물가가 전월 대비 급등했다</div>
+    <div><span>③</span> 서비스 물가가 여전히 뜨겁고 3%에 고착되어 있다</div>
+    <div><span>④</span> 중고차 물가가 다시 반등하고 있다</div>
+  </div>
+</div>
+
+<!-- Q10 -->
+<div class="q-card">
+  <div class="q-header">
+    <div class="q-num" style="background:rgba(239,68,68,0.2);">10</div>
+    <div class="q-meta">
+      <span class="q-type type-short">서술형</span>
+      <span class="q-diff diff-hard">어려움</span>
+    </div>
+  </div>
+  <div class="q-text">빅테크 기업들이 엔비디아에서 AMD로 일부 전환하는 "멀티벤더 전략"을 채택하는 이유를 3가지 이상 설명하고, 이것이 엔비디아의 장기 경쟁력에 미치는 영향을 서술하시오.</div>
+</div>
+
+<!-- ============================== -->
+<!-- 정답 & 해설 -->
+<!-- ============================== -->
+
+<div class="divider">
+  <h2>📋 정답 & 해설</h2>
+  <p>아래로 스크롤하기 전에 먼저 문제를 풀어보세요!</p>
+</div>
+
+<!-- A1 -->
+<div class="a-card">
+  <div class="a-header">
+    <div class="a-num">01</div>
+    <div class="a-answer">정답: ② 2.4%</div>
+  </div>
+  <div class="a-explain">헤드라인 CPI는 2.4%로 발표되었으며, 시장 예상치 2.5%보다 0.1%p 하회했다. 코어 CPI는 2.5%였다.</div>
+</div>
+
+<!-- A2 -->
+<div class="a-card">
+  <div class="a-header">
+    <div class="a-num">02</div>
+    <div class="a-answer">정답: X</div>
+  </div>
+  <div class="a-explain">10년물 국채금리는 4.05%로 <strong>폭락(하락)</strong>했다. 그럼에도 나스닥이 하락한 이유는 금리가 아닌 AI 섹터 로테이션(소프트웨어 파괴, 하드웨어 전환) 때문이었다.</div>
+</div>
+
+<!-- A3 -->
+<div class="a-card">
+  <div class="a-header">
+    <div class="a-num">03</div>
+    <div class="a-answer">정답: ② 20~25%</div>
+  </div>
+  <div class="a-explain">아리스타 CEO는 어닝콜에서 "1년 전 GPU의 99%가 엔비디아였으나, 현재 20~25%를 AMD 가속기로 사용하고 있다"고 밝혔다. 이는 빅테크 고객들이 이미 멀티벤더 전략을 실행하고 있음을 시사한다.</div>
+</div>
+
+<!-- A4 -->
+<div class="a-card">
+  <div class="a-header">
+    <div class="a-num">04</div>
+    <div class="a-answer">정답: 주거비 진정 + 에너지 가격 하락</div>
+  </div>
+  <div class="a-explain">주거비가 전월 대비 +0.2%로 크게 진정되었고(CPI에서 주거비 비중이 약 절반), 에너지 부문이 -1.5%(휘발유 -3.2%, 연료유 -5.7%)로 급락하면서 전체 CPI를 끌어내렸다.</div>
+</div>
+
+<!-- A5 -->
+<div class="a-card">
+  <div class="a-header">
+    <div class="a-num">05</div>
+    <div class="a-answer">정답: ③ 테슬라의 자율주행 라이선스 매각 발표</div>
+  </div>
+  <div class="a-explain">테슬라의 자율주행 라이선스 매각은 실제로 발표된 사실이 아니라, 향후 가능성으로 언급된 것일 뿐이다. 리비안 급등의 실제 촉매는 R2 출시 기대, 폭스바겐 JV 수익, 쇼트 스퀴즈, 흑자 전환 가시화 등이었다.</div>
+</div>
+
+<!-- A6 -->
+<div class="a-card">
+  <div class="a-header">
+    <div class="a-num">06</div>
+    <div class="a-answer">정답: O</div>
+  </div>
+  <div class="a-explain">CME FedWatch에서 6월 금리인하 확률이 51.8%로 처음 50%를 넘어섰다. 이는 시장이 6월 금리인하를 거의 확정적으로 보기 시작했다는 의미다.</div>
+</div>
+
+<!-- A7 -->
+<div class="a-card">
+  <div class="a-header">
+    <div class="a-num">07</div>
+    <div class="a-answer">정답: ③ 빅테크 (구글, MS, 애플, 엔비디아)</div>
+  </div>
+  <div class="a-explain">조지 소로스는 은행주를 대거 정리하고, 구글·마이크로소프트·애플·엔비디아 등 빅테크 비중을 크게 확대했다. 매크로 투자자로서 금리인하 시 수혜가 큰 기술주, 그중에서도 품질 좋은 대형 빅테크를 선택한 것이다.</div>
+</div>
+
+<!-- A8 -->
+<div class="a-card">
+  <div class="a-header">
+    <div class="a-num">08</div>
+    <div class="a-answer">정답: 약 3배 괴리</div>
+  </div>
+  <div class="a-explain">BLS 발표 CPI(2.4%)와 시장 데이터 기반 Truflation 간에 약 3배의 괴리가 존재한다. 정치적 배경으로는 트럼프 행정부 이후 BLS 통계 담당자 교체가 있었고, 11월 중간선거를 의식한 정치적 데이터 관리('Managed Data') 의혹이 있다. 이로 인해 스마트머니는 공식 데이터를 신뢰하지 않고 금 등 안전자산으로 이동하고 있다.</div>
+</div>
+
+<!-- A9 -->
+<div class="a-card">
+  <div class="a-header">
+    <div class="a-num">09</div>
+    <div class="a-answer">정답: ③</div>
+  </div>
+  <div class="a-explain">굴스비 위원은 "서비스 물가가 여전히 뜨겁고, 3% 물가에 갇혀있다(Sticky)"고 경고했다. 이는 이민정책 변화로 인한 인건비 상승이 항공료(+6.5% MoM), 의료서비스, 외식업 등에 고착화되어 있기 때문이다.</div>
+</div>
+
+<!-- A10 -->
+<div class="a-card">
+  <div class="a-header">
+    <div class="a-num">10</div>
+    <div class="a-answer">모범 답안</div>
+  </div>
+  <div class="a-explain">
+    <strong>멀티벤더 전략 채택 이유 (3가지 이상):</strong><br>
+    ① <strong>벤더 종속 회피:</strong> 엔비디아의 인피니밴드(폐쇄형 네트워크)에 완전히 종속되면 기술적·사업적으로 큰 리스크<br>
+    ② <strong>가격 협상력 확보:</strong> GPU 1개당 $3~4만인 상황에서, AMD가 50% 저렴하므로 복수 견적(복스밴더)을 통한 가격 인하 압력 가능<br>
+    ③ <strong>공급망 다각화:</strong> 단일 공급업체 의존 시 공급 차질 위험. 기업 운영 원칙상 멀티벤더는 기본<br>
+    ④ <strong>이더넷 생태계 이점:</strong> 아리스타 등 네트워크 장비 업체들이 이더넷 기반 솔루션을 AMD와 결합해 제공<br><br>
+    <strong>엔비디아 장기 경쟁력 영향:</strong><br>
+    아리스타 CEO도 "AI 인프라 주도권은 엔비디아에 있다"고 인정. 엔비디아는 매년 신제품을 출시하는 반면 AMD는 시제품 단계이며, 성능 격차가 월등하다. 따라서 멀티벤더 전환은 단기적으로 엔비디아 시장점유율을 80:20 수준으로 제한하지만, 장기적 기술 리더십을 위협하기는 어렵다. 다만, 가격 압박과 마진 축소 압력은 지속될 수 있다.
+  </div>
+</div>
+
+<div class="footer">
+  <p>NOVA Real Invest 방송 기반 시험문제 · 2026.02.14</p>
+  <p>교육·학습 목적 자료</p>
+</div>
+
+</div>
+</body>
+</html>
