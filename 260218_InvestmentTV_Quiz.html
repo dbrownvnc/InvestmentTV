@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>시험문제 — 2월17일 미증시 포커스</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap');
+
+  :root {
+    --bg: #0d1117;
+    --card: #161b22;
+    --border: #30363d;
+    --text: #e6edf3;
+    --text-dim: #8b949e;
+    --accent: #58a6ff;
+    --green: #3fb950;
+    --red: #f85149;
+    --orange: #d29922;
+    --purple: #bc8cff;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.75;
+    font-size: 15px;
+    padding: 0 0 60px 0;
+  }
+
+  .header {
+    background: linear-gradient(135deg, #1a1e2e 0%, #0d1117 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 28px 20px 24px;
+    text-align: center;
+  }
+
+  .header .badge {
+    display: inline-block;
+    background: rgba(188,140,255,0.15);
+    color: var(--purple);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 20px;
+    letter-spacing: 0.5px;
+    margin-bottom: 12px;
+  }
+
+  .header h1 {
+    font-size: 20px;
+    font-weight: 900;
+    line-height: 1.4;
+    margin-bottom: 6px;
+  }
+
+  .header .meta {
+    font-size: 12px;
+    color: var(--text-dim);
+  }
+
+  .container { max-width: 640px; margin: 0 auto; padding: 0 16px; }
+
+  .question-card {
+    margin-top: 20px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .q-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--border);
+    background: rgba(255,255,255,0.02);
+  }
+
+  .q-num {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 900;
+    flex-shrink: 0;
+  }
+
+  .q-meta {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+  }
+
+  .tag {
+    display: inline-block;
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+  }
+
+  .tag-easy { background: rgba(63,185,80,0.15); color: var(--green); }
+  .tag-medium { background: rgba(210,153,34,0.15); color: var(--orange); }
+  .tag-hard { background: rgba(248,81,73,0.15); color: var(--red); }
+  .tag-type { background: rgba(88,166,255,0.15); color: var(--accent); }
+
+  .q-body {
+    padding: 14px 16px;
+  }
+
+  .q-body p {
+    font-weight: 500;
+    margin-bottom: 12px;
+  }
+
+  .options {
+    list-style: none;
+    padding: 0;
+  }
+
+  .options li {
+    padding: 10px 14px;
+    margin: 6px 0;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: default;
+  }
+
+  /* 정답 섹션 */
+  .answers-section {
+    margin-top: 48px;
+    padding-top: 32px;
+    border-top: 3px solid var(--accent);
+  }
+
+  .answers-title {
+    text-align: center;
+    font-size: 20px;
+    font-weight: 900;
+    margin-bottom: 8px;
+    color: var(--accent);
+  }
+
+  .answers-subtitle {
+    text-align: center;
+    font-size: 13px;
+    color: var(--text-dim);
+    margin-bottom: 24px;
+  }
+
+  .answer-card {
+    margin-top: 14px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+  }
+
+  .answer-card .a-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+
+  .answer-card .a-num {
+    font-size: 13px;
+    font-weight: 900;
+    color: var(--accent);
+  }
+
+  .answer-card .correct {
+    font-weight: 700;
+    color: var(--green);
+    font-size: 14px;
+  }
+
+  .answer-card .explanation {
+    font-size: 13px;
+    color: var(--text-dim);
+    line-height: 1.7;
+    margin-top: 6px;
+    padding-top: 8px;
+    border-top: 1px solid rgba(48,54,61,0.5);
+  }
+
+  .score-guide {
+    margin-top: 24px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    text-align: center;
+  }
+
+  .score-guide p {
+    font-size: 13px;
+    color: var(--text-dim);
+    margin: 4px 0;
+  }
+
+  .footer {
+    margin-top: 32px;
+    text-align: center;
+    font-size: 11px;
+    color: var(--text-dim);
+    padding: 20px;
+  }
+
+  strong { color: #fff; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="badge">📝 QUIZ · 10 QUESTIONS</div>
+  <h1>2월 17일 미증시 포커스 시험문제</h1>
+  <div class="meta">쉬움 30% · 보통 50% · 어려움 20% | 정답은 하단에 별도 표시</div>
+</div>
+
+<div class="container">
+
+  <!-- Q1 -->
+  <div class="question-card">
+    <div class="q-header">
+      <div class="q-num" style="background:rgba(63,185,80,0.15);color:#3fb950;">01</div>
+      <div class="q-meta">
+        <span class="tag tag-easy">쉬움</span>
+        <span class="tag tag-type">OX</span>
+      </div>
+    </div>
+    <div class="q-body">
+      <p>현재 시장에서 시가총액이 큰 메가캡 기업일수록 일일 변동성이 낮다.</p>
+      <ul class="options">
+        <li>⭕ O (맞다)</li>
+        <li>❌ X (틀리다)</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Q2 -->
+  <div class="question-card">
+    <div class="q-header">
+      <div class="q-num" style="background:rgba(210,153,34,0.15);color:#d29922;">02</div>
+      <div class="q-meta">
+        <span class="tag tag-medium">보통</span>
+        <span class="tag tag-type">객관식</span>
+      </div>
+    </div>
+    <div class="q-body">
+      <p>최근 3개월간 가장 높은 수익률을 기록한 섹터는?</p>
+      <ul class="options">
+        <li>① IT 섹터</li>
+        <li>② 에너지 섹터</li>
+        <li>③ 머티리얼 섹터</li>
+        <li>④ 금융 섹터</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Q3 -->
+  <div class="question-card">
+    <div class="q-header">
+      <div class="q-num" style="background:rgba(63,185,80,0.15);color:#3fb950;">03</div>
+      <div class="q-meta">
+        <span class="tag tag-easy">쉬움</span>
+        <span class="tag tag-type">단답형</span>
+      </div>
+    </div>
+    <div class="q-body">
+      <p>VIX(공포지수)가 안정적으로 간주되려면 몇 이하로 떨어져야 하는가?</p>
+    </div>
+  </div>
+
+  <!-- Q4 -->
+  <div class="question-card">
+    <div class="q-header">
+      <div class="q-num" style="background:rgba(210,153,34,0.15);color:#d29922;">04</div>
+      <div class="q-meta">
+        <span class="tag tag-medium">보통</span>
+        <span class="tag tag-type">객관식</span>
+      </div>
+    </div>
+    <div class="q-body">
+      <p>유틸리티 섹터가 상승하는 두 가지 주된 이유의 조합으로 올바른 것은?</p>
+      <ul class="options">
+        <li>① AI 데이터센터 전력수요 증가 + 금리인하 기대</li>
+        <li>② 원유가격 상승 + 환율 변동</li>
+        <li>③ 기술주 실적 호조 + 암호화폐 회복</li>
+        <li>④ 경기침체 공포 + 달러 강세</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Q5 -->
+  <div class="question-card">
+    <div class="q-header">
+      <div class="q-num" style="background:rgba(210,153,34,0.15);color:#d29922;">05</div>
+      <div class="q-meta">
+        <span class="tag tag-medium">보통</span>
+        <span class="tag tag-type">OX</span>
+      </div>
+    </div>
+    <div class="q-body">
+      <p>S&P 500 Equal Weighted Index 기준으로 현재 시장은 하락장이다.</p>
+      <ul class="options">
+        <li>⭕ O (맞다)</li>
+        <li>❌ X (틀리다)</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Q6 -->
+  <div class="question-card">
+    <div class="q-header">
+      <div class="q-num" style="background:rgba(248,81,73,0.15);color:#f85149;">06</div>
+      <div class="q-meta">
+        <span class="tag tag-hard">어려움</span>
+        <span class="tag tag-type">객관식</span>
+      </div>
+    </div>
+    <div class="q-body">
+      <p>팔로알토 네트워크가 예상 실적(EPS)을 상회했음에도 장 마감 후 -7% 이상 하락한 주된 이유는?</p>
+      <ul class="options">
+        <li>① 전체 시장 하락의 영향</li>
+        <li>② 가이던스 미충족 및 기관들의 더 높은 성장률 요구</li>
+        <li>③ 경쟁사의 호실적 발표</li>
+        <li>④ 환율 변동에 따른 해외 매출 감소</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Q7 -->
+  <div class="question-card">
+    <div class="q-header">
+      <div class="q-num" style="background:rgba(63,185,80,0.15);color:#3fb950;">07</div>
+      <div class="q-meta">
+        <span class="tag tag-easy">쉬움</span>
+        <span class="tag tag-type">단답형</span>
+      </div>
+    </div>
+    <div class="q-body">
+      <p>퀀텀 컴퓨팅의 발전이 위협이 되는 자산은 무엇인가?</p>
+    </div>
+  </div>
+
+  <!-- Q8 -->
+  <div class="question-card">
+    <div class="q-header">
+      <div class="q-num" style="background:rgba(210,153,34,0.15);color:#d29922;">08</div>
+      <div class="q-meta">
+        <span class="tag tag-medium">보통</span>
+        <span class="tag tag-type">객관식</span>
+      </div>
+    </div>
+    <div class="q-body">
+      <p>2026년 금리인하 전망과 관련하여 발표자가 예상하는 인하 횟수는?</p>
+      <ul class="options">
+        <li>① 1회</li>
+        <li>② 최소 2회</li>
+        <li>③ 3~4회</li>
+        <li>④ 인하 없음</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Q9 -->
+  <div class="question-card">
+    <div class="q-header">
+      <div class="q-num" style="background:rgba(210,153,34,0.15);color:#d29922;">09</div>
+      <div class="q-meta">
+        <span class="tag tag-medium">보통</span>
+        <span class="tag tag-type">OX</span>
+      </div>
+    </div>
+    <div class="q-body">
+      <p>퍼싱스퀘어(Pershing Square)는 기존 보유 종목을 매각하고 엔비디아를 267만 주 매입했다.</p>
+      <ul class="options">
+        <li>⭕ O (맞다)</li>
+        <li>❌ X (틀리다)</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Q10 -->
+  <div class="question-card">
+    <div class="q-header">
+      <div class="q-num" style="background:rgba(248,81,73,0.15);color:#f85149;">10</div>
+      <div class="q-meta">
+        <span class="tag tag-hard">어려움</span>
+        <span class="tag tag-type">서술형</span>
+      </div>
+    </div>
+    <div class="q-body">
+      <p>현재 AI 관련 주식의 밸류에이션을 둘러싼 두 진영의 핵심 논쟁을 각각 설명하고, 올해 AI 투자 시 작년과 달라진 시장의 요구사항이 무엇인지 서술하시오.</p>
+    </div>
+  </div>
+
+  <!-- ========== 정답 및 해설 구역 ========== -->
+  <div class="answers-section">
+    <div class="answers-title">📋 정답 및 해설</div>
+    <div class="answers-subtitle">아래에서 각 문제의 정답과 해설을 확인하세요</div>
+
+    <div class="answer-card">
+      <div class="a-header">
+        <span class="a-num">Q1.</span>
+        <span class="correct">정답: ❌ X (틀리다)</span>
+      </div>
+      <div class="explanation">전통적으로 시가총액이 클수록 변동성이 낮다고 알려져 있으나, 현재 시장에서는 메가캡 기업(구글, 메타, 아마존 등)이 하루 5~10% 이상 움직이며 오히려 스몰캡보다 변동성이 큰 역전 현상이 발생하고 있다.</div>
+    </div>
+
+    <div class="answer-card">
+      <div class="a-header">
+        <span class="a-num">Q2.</span>
+        <span class="correct">정답: ③ 머티리얼 섹터 (23%)</span>
+      </div>
+      <div class="explanation">지난 3개월간 머티리얼 섹터가 23%로 가장 높은 수익률을 기록했다. 에너지, 스테이플(14%), 유틸리티가 뒤를 이었으며, 이는 AI 셀오프 후 방어적 섹터로의 자금 이동을 보여준다.</div>
+    </div>
+
+    <div class="answer-card">
+      <div class="a-header">
+        <span class="a-num">Q3.</span>
+        <span class="correct">정답: 16 이하</span>
+      </div>
+      <div class="explanation">VIX 공포지수가 16 이하로 떨어져야 시장 심리가 안정적이라고 판단한다. 현재 VIX는 20을 넘어 올해 최고 구간에 도달했으며, 이는 투자 심리가 극도로 위축되어 있음을 나타낸다.</div>
+    </div>
+
+    <div class="answer-card">
+      <div class="a-header">
+        <span class="a-num">Q4.</span>
+        <span class="correct">정답: ① AI 데이터센터 전력수요 증가 + 금리인하 기대</span>
+      </div>
+      <div class="explanation">유틸리티 상승에는 두 가지 요인이 작용한다. 첫째, AI·데이터센터 확장으로 전기 사용량과 전기요금이 급등하면서 유틸리티 기업의 매출과 프리캐시플로우가 증가했다. 둘째, 유틸리티는 차입 비중이 높은 산업으로, 금리인하 시 이자비용 절감 효과가 크기 때문에 기관들이 선제적으로 매입하고 있다.</div>
+    </div>
+
+    <div class="answer-card">
+      <div class="a-header">
+        <span class="a-num">Q5.</span>
+        <span class="correct">정답: ❌ X (틀리다)</span>
+      </div>
+      <div class="explanation">S&P 500 Equal Weighted Index(동일가중지수) 기준으로는 상승장이다. 이는 상위 20개 대형주 중심으로 하락하고 있을 뿐, 나머지 기업들로 투자가 분산되면서 전체적으로는 건전한 시장임을 보여준다.</div>
+    </div>
+
+    <div class="answer-card">
+      <div class="a-header">
+        <span class="a-num">Q6.</span>
+        <span class="correct">정답: ② 가이던스 미충족 및 기관들의 더 높은 성장률 요구</span>
+      </div>
+      <div class="explanation">팔로알토 네트워크는 EPS $0.94로 예상 실적을 상회하고 매출도 14% 성장했으나, 기관들이 25% 이상의 매출 성장을 요구하면서 가이던스에 대한 불만으로 장 마감 후 -7% 이상 하락했다. 올해 시장은 단순한 실적 상회가 아닌 "기대치 이상의 성장 증명"을 요구하고 있다.</div>
+    </div>
+
+    <div class="answer-card">
+      <div class="a-header">
+        <span class="a-num">Q7.</span>
+        <span class="correct">정답: 암호화폐 (비트코인 등)</span>
+      </div>
+      <div class="explanation">퀀텀 컴퓨팅이 발전하면 암호화폐의 암호 코드를 해독(crack)할 수 있는 가능성이 생기며, 이는 암호화폐의 보안 기반을 위협한다. 비유하자면 "금고를 열 수 있는 전문가가 늘어나는 것"과 같아, 투자 리스크가 구조적으로 상승한다.</div>
+    </div>
+
+    <div class="answer-card">
+      <div class="a-header">
+        <span class="a-num">Q8.</span>
+        <span class="correct">정답: ② 최소 2회</span>
+      </div>
+      <div class="explanation">발표자는 2026년에도 최소 2회의 기준금리 인하가 있을 것으로 전망하고 있다. 이는 유틸리티·Russell 2000 등 금리민감 자산에 긍정적 요인이며, 4분기 GDP가 애틀랜타 연준 예측(3.7%)보다 낮게 나올 경우 인하 시기가 앞당겨질 수 있다.</div>
+    </div>
+
+    <div class="answer-card">
+      <div class="a-header">
+        <span class="a-num">Q9.</span>
+        <span class="correct">정답: ❌ X (틀리다)</span>
+      </div>
+      <div class="explanation">퍼싱스퀘어가 매입한 것은 엔비디아가 아니라 <strong>Hertz(허츠)</strong> 267만 주이다. 빌 애크먼이 이끄는 퍼싱스퀘어는 기존 포지션을 정리하고 허츠를 대량 매입하여 투자 방향 전환의 시그널을 보여주었다.</div>
+    </div>
+
+    <div class="answer-card">
+      <div class="a-header">
+        <span class="a-num">Q10.</span>
+        <span class="correct">정답: 모범답안 (아래 참조)</span>
+      </div>
+      <div class="explanation">
+        <strong>[하락 진영]</strong> PE(주가수익비율)가 이미 과도하게 높아 오버밸류 상태이며, 조정이 불가피하다는 입장.<br><br>
+        <strong>[상승 진영]</strong> 현재 PE가 높은 것은 인정하나, DCF(할인현금흐름) 기준으로 미래 캐시플로우가 훨씬 크기 때문에 기업가치를 더 높게 평가해야 한다는 입장.<br><br>
+        <strong>[올해 달라진 점]</strong> 작년까지는 예상 실적 상회만으로 주가가 올랐으나, 올해는 ①수익성 증명(비용 효율성), ②CapEx 대비 실질 수익 규모, ③가이던스의 상향 조정이 필수적으로 요구되고 있다. 단순 매출 성장이 아닌 "투자 대비 수익의 질"을 시장이 검증하는 단계로 전환됐다.
+      </div>
+    </div>
+
+    <div class="score-guide">
+      <p><strong>채점 기준</strong></p>
+      <p>9~10개 정답: 🏆 우수 — 시장 흐름을 정확히 파악하고 있음</p>
+      <p>7~8개 정답: 👍 양호 — 핵심은 이해하나 세부사항 보완 필요</p>
+      <p>5~6개 정답: 📚 보통 — 추가 학습 권장</p>
+      <p>4개 이하: 🔄 복습 필요 — 분석 자료 재독 권장</p>
+    </div>
+  </div>
+
+  <div class="footer">
+    투자는인생TV 2월 17일 미증시 포커스 기반 시험문제<br>
+    2026년 2월 18일 작성
+  </div>
+</div>
+
+</body>
+</html>

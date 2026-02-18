@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>투자는인생TV - 2월17일 미증시 포커스 분석</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap');
+
+  :root {
+    --bg: #0d1117;
+    --card: #161b22;
+    --border: #30363d;
+    --text: #e6edf3;
+    --text-dim: #8b949e;
+    --accent: #58a6ff;
+    --green: #3fb950;
+    --red: #f85149;
+    --orange: #d29922;
+    --purple: #bc8cff;
+    --teal: #39d353;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.75;
+    font-size: 15px;
+    padding: 0 0 60px 0;
+  }
+
+  .header {
+    background: linear-gradient(135deg, #1a1e2e 0%, #0d1117 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 28px 20px 24px;
+    text-align: center;
+  }
+
+  .header .badge {
+    display: inline-block;
+    background: rgba(88,166,255,0.15);
+    color: var(--accent);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 20px;
+    letter-spacing: 0.5px;
+    margin-bottom: 12px;
+  }
+
+  .header h1 {
+    font-size: 20px;
+    font-weight: 900;
+    line-height: 1.4;
+    margin-bottom: 8px;
+  }
+
+  .header .meta {
+    font-size: 12px;
+    color: var(--text-dim);
+  }
+
+  .container { max-width: 640px; margin: 0 auto; padding: 0 16px; }
+
+  .section {
+    margin-top: 28px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .section-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 16px 18px;
+    font-size: 16px;
+    font-weight: 700;
+    border-bottom: 1px solid var(--border);
+    background: rgba(88,166,255,0.04);
+  }
+
+  .section-title .icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+
+  .section-body { padding: 16px 18px; }
+  .section-body p { margin-bottom: 12px; color: var(--text); }
+  .section-body p:last-child { margin-bottom: 0; }
+
+  .highlight-box {
+    background: rgba(88,166,255,0.08);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 8px 8px 0;
+    padding: 12px 14px;
+    margin: 14px 0;
+    font-size: 14px;
+  }
+
+  .warning-box {
+    background: rgba(248,81,73,0.08);
+    border-left: 3px solid var(--red);
+    border-radius: 0 8px 8px 0;
+    padding: 12px 14px;
+    margin: 14px 0;
+    font-size: 14px;
+  }
+
+  .positive-box {
+    background: rgba(63,185,80,0.08);
+    border-left: 3px solid var(--green);
+    border-radius: 0 8px 8px 0;
+    padding: 12px 14px;
+    margin: 14px 0;
+    font-size: 14px;
+  }
+
+  .data-grid {
+    display: grid;
+    gap: 10px;
+    margin: 14px 0;
+  }
+
+  .data-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 14px;
+  }
+
+  .data-card .label {
+    font-size: 11px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+  }
+
+  .data-card .value {
+    font-size: 18px;
+    font-weight: 700;
+  }
+
+  .data-card .sub {
+    font-size: 12px;
+    color: var(--text-dim);
+    margin-top: 2px;
+  }
+
+  .up { color: var(--green); }
+  .down { color: var(--red); }
+  .neutral { color: var(--orange); }
+
+  .sector-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(48,54,61,0.5);
+  }
+
+  .sector-bar:last-child { border-bottom: none; }
+
+  .sector-bar .name {
+    width: 90px;
+    font-size: 13px;
+    font-weight: 500;
+    flex-shrink: 0;
+  }
+
+  .sector-bar .bar-wrap {
+    flex: 1;
+    height: 20px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .sector-bar .bar {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.6s ease;
+  }
+
+  .sector-bar .pct {
+    width: 55px;
+    text-align: right;
+    font-size: 13px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .timeline {
+    position: relative;
+    padding-left: 20px;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 6px;
+    top: 4px;
+    bottom: 4px;
+    width: 2px;
+    background: var(--border);
+  }
+
+  .timeline-item {
+    position: relative;
+    padding-bottom: 16px;
+  }
+
+  .timeline-item:last-child { padding-bottom: 0; }
+
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -17px;
+    top: 7px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 2px solid var(--bg);
+  }
+
+  .timeline-item .date {
+    font-size: 11px;
+    color: var(--accent);
+    font-weight: 700;
+    margin-bottom: 2px;
+  }
+
+  .timeline-item .content {
+    font-size: 14px;
+  }
+
+  .tag {
+    display: inline-block;
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: 500;
+    margin: 2px 2px;
+  }
+
+  .tag-red { background: rgba(248,81,73,0.15); color: var(--red); }
+  .tag-green { background: rgba(63,185,80,0.15); color: var(--green); }
+  .tag-blue { background: rgba(88,166,255,0.15); color: var(--accent); }
+  .tag-orange { background: rgba(210,153,34,0.15); color: var(--orange); }
+  .tag-purple { background: rgba(188,140,255,0.15); color: var(--purple); }
+
+  .summary-list {
+    list-style: none;
+    padding: 0;
+  }
+
+  .summary-list li {
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(48,54,61,0.4);
+    font-size: 14px;
+    display: flex;
+    gap: 8px;
+  }
+
+  .summary-list li:last-child { border-bottom: none; }
+
+  .summary-list .num {
+    width: 22px;
+    height: 22px;
+    background: rgba(88,166,255,0.15);
+    color: var(--accent);
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  canvas { max-width: 100%; margin: 14px 0; }
+
+  .footer {
+    margin-top: 32px;
+    text-align: center;
+    font-size: 11px;
+    color: var(--text-dim);
+    padding: 20px;
+    border-top: 1px solid var(--border);
+  }
+
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 16px 0;
+  }
+
+  strong { color: #fff; font-weight: 700; }
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+</head>
+<body>
+
+<div class="header">
+  <div class="badge">📈 US MARKET ANALYSIS</div>
+  <h1>하락장에서 기관들이 늘리는 것들<br>— 2월 17일 미증시 포커스</h1>
+  <div class="meta">투자는인생TV · 2026년 2월 18일 분석 · 미국 증시 관점</div>
+</div>
+
+<div class="container">
+
+  <!-- 핵심 요약 -->
+  <div class="section">
+    <div class="section-title">
+      <div class="icon" style="background:rgba(88,166,255,0.15);">⚡</div>
+      핵심 요약 (Executive Summary)
+    </div>
+    <div class="section-body">
+      <p>심리적 불안감이 확대되는 가운데, 기관투자자들은 <strong>방어적 섹터(유틸리티, 에너지, 머티리얼, 스테이플)</strong>로 자산을 이동 중이다. AI 섹터의 밸류에이션 논쟁이 계속되면서 대형 기술주 변동성이 극대화되고 있으나, S&P 500 Equal Weighted Index 기준으로는 여전히 상승장이다.</p>
+
+      <div class="highlight-box">
+        <strong>🔑 핵심 메시지:</strong> AI에서 빠져나온 자금이 유틸리티·에너지·머티리얼·스테이플로 이동 중. 이는 투자 자체가 줄어든 것이 아니라 <strong>방향이 전환</strong>되고 있는 것이다.
+      </div>
+
+      <ul class="summary-list">
+        <li><span class="num">1</span>메가캡 기업도 일일 5~10% 변동성 → 전통적 저변동성 상식 깨짐</li>
+        <li><span class="num">2</span>기관들 방어주·배당주 매입 확대, AI 셀오프 진행 중</li>
+        <li><span class="num">3</span>2026년 최소 2회 금리인하 전망 유지</li>
+        <li><span class="num">4</span>VIX 20 돌파 (올해 최고) → 투자심리 극도 위축</li>
+        <li><span class="num">5</span>S&P 500 Equal Weighted 기준 상승장 → 중소형주로 분산 투자 확대</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 변동성 급증 원인 분석 -->
+  <div class="section">
+    <div class="section-title">
+      <div class="icon" style="background:rgba(248,81,73,0.15);">🔥</div>
+      변동성 급증의 4가지 원인
+    </div>
+    <div class="section-body">
+
+      <p><strong>① 메가캡 기업의 비정상적 변동성</strong></p>
+      <p>구글, 메타, 아마존, 월마트 등 대형주가 하루 5~10% 움직이는 상황. 전통적으로 시가총액이 클수록 변동성이 낮다는 교과서적 이론이 현재 시장에서는 작동하지 않고 있다. 오히려 대형주가 스몰캡보다 변동성이 큰 역전 현상이 발생 중이다.</p>
+
+      <p><strong>② 대형 기관의 대량 매매 집중</strong></p>
+      <p>상위 20% 기업의 주식 보유율이 대형 기관 기준으로 90%를 넘는 경우가 빈번하다. 10년 전과 비교해 기관의 대량 매매(수백만 주 단위) 빈도가 급격히 증가했으며, 이것이 일일 변동성을 극대화하고 있다.</p>
+
+      <p><strong>③ AI 슈퍼사이클의 타 산업 전파</strong></p>
+      <p>AI 영향력이 칩·데이터센터를 넘어 보험, 암호화폐, 은행, 소프트웨어 등 전 산업으로 확산되면서, AI 관련 뉴스 하나에 다수 섹터가 동시 급변동하는 구조가 형성됐다. 일부 소프트웨어 기업은 AI 대체 우려로 30~50% 하락하는 사례도 발생했다.</p>
+
+      <p><strong>④ 실적 발표 기대치 상향</strong></p>
+      <p>예상 실적 상회만으로는 부족한 시장. 기관들이 더 높은 성장률을 요구하면서, 실적 서프라이즈에도 주가가 하락하는 역설적 현상이 반복되고 있다.</p>
+
+      <div class="warning-box">
+        <strong>📌 사례:</strong> 팔로알토 네트워크(Palo Alto Networks) — EPS $0.94로 예상 실적 상회, 매출 14% 성장에도 불구하고 장 마감 후 <strong>-7% 이상 하락</strong>. 시장은 25% 이상 매출 성장을 요구.
+      </div>
+    </div>
+  </div>
+
+  <!-- 섹터별 실적 차트 -->
+  <div class="section">
+    <div class="section-title">
+      <div class="icon" style="background:rgba(63,185,80,0.15);">📊</div>
+      지난 3개월 섹터별 수익률
+    </div>
+    <div class="section-body">
+      <canvas id="sectorChart3m" height="280"></canvas>
+
+      <p>전통적으로 에너지·머티리얼·스테이플·유틸리티가 동반 상승하는 것은 <strong>경기방어적 자금 이동</strong>을 의미한다. 그러나 현재는 리세션 공포보다는 <strong>AI 변동성 회피</strong>가 주요 원인으로 분석된다.</p>
+
+      <div class="highlight-box">
+        <strong>핵심 해석:</strong> 기관들이 AI 셀오프 후 안정적 배당 + 낮은 변동성을 가진 방어주로 자금을 이전하고 있다. 이 자금은 언제든지 AI 섹터로 복귀할 수 있다.
+      </div>
+    </div>
+  </div>
+
+  <!-- 1개월 섹터 실적 -->
+  <div class="section">
+    <div class="section-title">
+      <div class="icon" style="background:rgba(210,153,34,0.15);">📉</div>
+      지난 1개월 섹터별 수익률
+    </div>
+    <div class="section-body">
+      <canvas id="sectorChart1m" height="260"></canvas>
+      <p>1개월 기준으로도 에너지·머티리얼·유틸리티 강세가 뚜렷하며, IT(-4%), 경기소비재(-5%), 금융(-5%)은 하락세를 보이고 있다. AI 관련 혼란이 IT·금융 섹터에 직접적 타격을 주고 있는 양상이다.</p>
+    </div>
+  </div>
+
+  <!-- 주요 자산 YTD -->
+  <div class="section">
+    <div class="section-title">
+      <div class="icon" style="background:rgba(188,140,255,0.15);">💹</div>
+      주요 자산 YTD 수익률
+    </div>
+    <div class="section-body">
+      <div class="data-grid" style="grid-template-columns: 1fr 1fr;">
+        <div class="data-card">
+          <div class="label">S&P 500</div>
+          <div class="value down">-0.14%</div>
+          <div class="sub">1월 상승 → 2월 조정</div>
+        </div>
+        <div class="data-card">
+          <div class="label">Russell 2000</div>
+          <div class="value down">하락세</div>
+          <div class="sub">금리인하 시 반등 기대</div>
+        </div>
+        <div class="data-card">
+          <div class="label">금(Gold)</div>
+          <div class="value up">+16%</div>
+          <div class="sub">변동성 확대에도 강세 유지</div>
+        </div>
+        <div class="data-card">
+          <div class="label">비트코인</div>
+          <div class="value down">-22%</div>
+          <div class="sub">대형기관 매각 + 퀀텀 우려</div>
+        </div>
+        <div class="data-card">
+          <div class="label">천연가스(UNG)</div>
+          <div class="value up">+20%↑</div>
+          <div class="sub">1개월 새 급등, 상승 전망</div>
+        </div>
+        <div class="data-card">
+          <div class="label">VIX 공포지수</div>
+          <div class="value neutral">20+</div>
+          <div class="sub">올해 최고, 16 이하 필요</div>
+        </div>
+      </div>
+
+      <div class="positive-box">
+        <strong>긍정 시그널:</strong> 10년 국채 수익률이 약 15~20bp 하락 → 인플레이션 개선 신호, 미국 국가부채 부담 경감
+      </div>
+    </div>
+  </div>
+
+  <!-- 기관 투자 방향 변화 -->
+  <div class="section">
+    <div class="section-title">
+      <div class="icon" style="background:rgba(63,185,80,0.15);">🏦</div>
+      기관 투자 방향 변화 분석
+    </div>
+    <div class="section-body">
+      <p><strong>유틸리티 섹터 +7% 이상 상승의 이중 동력:</strong></p>
+      <p>첫째, AI 데이터센터 확장으로 전기 사용량·전기요금이 전년 대비 급증하면서 유틸리티 기업의 매출·프리캐시플로우가 구조적으로 개선되고 있다. 둘째, 유틸리티 기업은 금리에 민감한 차입구조를 가지고 있어, 기관들이 <strong>올해 2회 이상 금리인하를 예측</strong>하면서 선제적으로 매입하고 있다.</p>
+
+      <div class="divider"></div>
+
+      <p><strong>퍼싱스퀘어(Pershing Square)의 포지션 변화:</strong></p>
+      <p>빌 애크먼이 이끄는 퍼싱스퀘어가 기존 보유 종목을 정리하고 <strong>Hertz(HTZZ)를 267만 주 매입</strong>. 대형 헤지펀드의 방향 전환은 시장에 중요한 시그널이 된다.</p>
+
+      <div class="divider"></div>
+
+      <p><strong>공매도 분석 (테크니컬):</strong></p>
+      <p>2월 10일 기준 총 계약에서 롱(상승 베팅) 포지션이 숏 포지션보다 <strong>압도적으로 많은 상황</strong>이다. 14일 RSI 지표는 과매도(oversold) 상태를 나타내어, 향후 주가 상승 가능성이 높아진 구간으로 해석된다.</p>
+    </div>
+  </div>
+
+  <!-- AI 밸류에이션 논쟁 -->
+  <div class="section">
+    <div class="section-title">
+      <div class="icon" style="background:rgba(248,81,73,0.15);">🤖</div>
+      AI 밸류에이션 논쟁과 시장 영향
+    </div>
+    <div class="section-body">
+      <p>올해 AI 시장의 핵심 과제는 <strong>"적정 밸류에이션 찾기"</strong>이다. 두 진영이 충돌하고 있다:</p>
+
+      <div class="data-grid">
+        <div class="data-card" style="border-left: 3px solid var(--red);">
+          <div class="label">⚠️ 하락 진영</div>
+          <div class="sub" style="margin-top:4px;">"PE가 이미 과도하게 높다. 오버밸류 상태이며 조정이 불가피하다."</div>
+        </div>
+        <div class="data-card" style="border-left: 3px solid var(--green);">
+          <div class="label">✅ 상승 진영</div>
+          <div class="sub" style="margin-top:4px;">"DCF 기준 미래 캐시플로우가 훨씬 크다. 현재 PE를 감안해도 기업가치는 더 높게 평가해야 한다."</div>
+        </div>
+      </div>
+
+      <p>작년까지는 예상 실적 상회만으로 주가가 올랐으나, <strong>올해는 수익성 증명</strong>이 필수다. 구글의 CapEx $180B 발표처럼, 투자비용 규모 자체가 하락 요인이 되는 국면이다.</p>
+
+      <div class="highlight-box">
+        <strong>S&P 500 Equal Weighted Index:</strong> 상승장 유지 중. 이는 상위 20개 대형주에 집중됐던 자금이 나머지 480개 기업으로 분산되고 있음을 의미. 전체 시장에서 투자가 빠지는 것이 아니라 <strong>재배분</strong>이 일어나고 있다.
+      </div>
+    </div>
+  </div>
+
+  <!-- 기업 속보 -->
+  <div class="section">
+    <div class="section-title">
+      <div class="icon" style="background:rgba(88,166,255,0.15);">📰</div>
+      주요 기업 속보
+    </div>
+    <div class="section-body">
+      <p><strong>🔹 엔비디아(NVIDIA)</strong></p>
+      <p>시티그룹이 2026년 하반기(6월 이후) 주가 상승을 전망. 차세대 HBM(고대역폭 메모리) 출시 예정, 메타와 장기 파트너십 체결로 양사 윈-윈 구도가 형성되고 있다.</p>
+
+      <div class="divider"></div>
+
+      <p><strong>🔹 마이크로소프트(Microsoft)</strong></p>
+      <p>데이터센터 수요 급증에 대응하여 <strong>$200B(2천억 달러)</strong> 투자 계획 발표. 업계 1위 굳히기 전략으로 해석된다.</p>
+
+      <div class="divider"></div>
+
+      <p><strong>🔹 워너브라더스 디스커버리(WBD) × 넷플릭스</strong></p>
+      <p>합병 관련 특별주주총회가 <strong>2월 20일</strong> 예정. 넷플릭스는 2월 23일까지 결론 요청. 인수합병 시 넷플릭스의 운전자산·금융부담 증가로 <strong>넷플릭스 주가 하락 가능성</strong>이 제기된다.</p>
+
+      <div class="divider"></div>
+
+      <p><strong>🔹 소프트웨어 산업</strong></p>
+      <p>AI 기술 확장 우려로 대량 매각 발생, 평균 10% 이상 하락. 일부 종목은 반토막. 그러나 과매도 구간으로 진입하면서 <strong>매입 기회가 될 수 있다</strong>는 분석도 나오고 있다.</p>
+
+      <div class="divider"></div>
+
+      <p><strong>🔹 메타(Meta) — 사후 디지털 라이프 특허</strong></p>
+      <p>사용자 사망·휴면 시 소셜미디어 활동을 AI로 시뮬레이션하는 특허를 출원. 과거 데이터를 분석하여 개인의 성격·성품을 재현하며, 오디오·비디오 통화까지 모방 가능. 윤리적·도덕적 논쟁이 예상된다.</p>
+    </div>
+  </div>
+
+  <!-- 이번 주 경제 캘린더 -->
+  <div class="section">
+    <div class="section-title">
+      <div class="icon" style="background:rgba(210,153,34,0.15);">📅</div>
+      이번 주 주요 경제지표 일정
+    </div>
+    <div class="section-body">
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="date">화요일 (2/18)</div>
+          <div class="content"><strong>내구재 주문(Durable Goods)</strong> — 1월 변화, 예상 <span class="down">-1.8%</span>. 미국 경제 방향성 판단 지표. 변동성 확대 가능.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="date">목요일 (2/20)</div>
+          <div class="content"><strong>신규 실업수당 청구건수</strong> — 예상 229,000건. 증가 시 금리인하 시기 앞당겨질 수 있으나, 감소 시 인플레이션 우려 자극.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="date">금요일 (2/21)</div>
+          <div class="content"><strong>4분기 GDP 첫 추정치</strong> — 예상 2.8%. 애틀랜타 연준 예측 3.7%보다 낮게 발표 시 금리인하 가능성 확대.<br><strong>12월 PCE 가격지수</strong> — 인플레이션 핵심 지표 동시 발표. 금요일 대형 변동성 예상.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 이번 주 실적 발표 -->
+  <div class="section">
+    <div class="section-title">
+      <div class="icon" style="background:rgba(188,140,255,0.15);">💼</div>
+      이번 주 주요 실적 발표 전망
+    </div>
+    <div class="section-body">
+      <div class="data-grid">
+        <div class="data-card">
+          <div class="label">Constellation Energy</div>
+          <div class="value" style="font-size:14px;">예상 EPS 상회 전망</div>
+          <div class="sub"><span class="tag tag-green">긍정적</span></div>
+        </div>
+        <div class="data-card">
+          <div class="label">Palo Alto Networks</div>
+          <div class="value" style="font-size:14px;">EPS $0.94 상회 (발표 완료)</div>
+          <div class="sub"><span class="tag tag-red">장후 -7%↓</span> 가이던스 미충족</div>
+        </div>
+        <div class="data-card">
+          <div class="label">Walmart</div>
+          <div class="value" style="font-size:14px;">EPS $0.70 예상 상회 전망</div>
+          <div class="sub"><span class="tag tag-blue">미국 경제 바로미터</span></div>
+        </div>
+        <div class="data-card">
+          <div class="label">Deere & Company</div>
+          <div class="value" style="font-size:14px;">EPS $2.05 — 가이던스 하락</div>
+          <div class="sub"><span class="tag tag-orange">변동성 확대 전망</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 암호화폐 리스크 -->
+  <div class="section">
+    <div class="section-title">
+      <div class="icon" style="background:rgba(248,81,73,0.15);">🔐</div>
+      암호화폐 리스크: 퀀텀 컴퓨팅 위협
+    </div>
+    <div class="section-body">
+      <p>비트코인이 YTD -22% 하락한 배경에는 두 가지 요인이 있다. 첫째, 대형 기관 및 대량 보유자의 <strong>집중 매각</strong>. 둘째, <strong>퀀텀 컴퓨팅</strong> 발전에 따른 암호화폐 보안 우려이다.</p>
+      <p>퀀텀 컴퓨팅이 실용화 단계에 도달하면 암호화폐의 암호 코드를 해독(crack)할 수 있는 가능성이 생긴다. 이는 "금고를 열 수 있는 전문가가 늘어나는 것"과 같아서 투자 리스크가 구조적으로 상승하는 요인이다.</p>
+      <div class="warning-box">
+        <strong>비유:</strong> 화폐는 화폐이되, 내 금고를 털 수 있는 기술자가 늘어나면 불안해지는 것과 같은 원리. 퀀텀 컴퓨팅 발전 → 보안업체 하락 + 암호화폐 리스크 상승.
+      </div>
+    </div>
+  </div>
+
+  <!-- 시장 전망 -->
+  <div class="section">
+    <div class="section-title">
+      <div class="icon" style="background:rgba(63,185,80,0.15);">🔭</div>
+      시장 전망 및 투자 시사점
+    </div>
+    <div class="section-body">
+      <p><strong>금리 전망:</strong> 2026년 최소 2회 금리인하 가능성 유지. 4분기 GDP가 애틀랜타 연준 예측(3.7%)보다 낮게 나오면 인하 시기가 앞당겨질 수 있다.</p>
+
+      <div class="divider"></div>
+
+      <p><strong>연간 시장 전망:</strong> 1월장이 소폭 상승으로 마감됐고, 2월장도 상승으로 마무리된다면 올해 <strong>연간 상승장</strong> 가능성이 높아진다. 중간에 1~2차례 폭락장이 올 수 있으나, 12월 말 기준으로는 상승장 전망을 유지하고 있다.</p>
+
+      <div class="divider"></div>
+
+      <p><strong>Russell 2000:</strong> 금리인하 시 중소형주가 가장 큰 수혜를 받을 전망. 현재 과매도 상태로 관심 구간 진입.</p>
+
+      <div class="positive-box">
+        <strong>기회 포인트:</strong><br>
+        • 하루 3~5% 변동성은 변동성 트레이딩 기회<br>
+        • 소프트웨어 산업 과매도 구간 → 선별적 매입 기회<br>
+        • 유틸리티·에너지·천연가스(UNG) 상승세 지속 전망<br>
+        • 컨트래리언(역발상) 투자자들의 바이더딥(Buy the Dip) 활발
+      </div>
+
+      <div class="warning-box">
+        <strong>주의 사항:</strong><br>
+        • 펀더멘털과 무관한 급등락이 반복 → 일일 변동성에 체력 소진 주의<br>
+        • AI 관련주 밸류에이션 논쟁 당분간 지속<br>
+        • VIX 20+ 구간에서 추가 급락 가능 (2~4% 수준)<br>
+        • 정책 불확실성(관세, 연준, 지정학) 지속
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    본 문서는 투자는인생TV 방송 내용을 미국 증시 관점에서 분석·정리한 것입니다.<br>
+    투자 판단의 책임은 투자자 본인에게 있습니다.<br>
+    2026년 2월 18일 작성
+  </div>
+</div>
+
+<script>
+// 3개월 섹터 차트
+const ctx3m = document.getElementById('sectorChart3m').getContext('2d');
+new Chart(ctx3m, {
+  type: 'bar',
+  data: {
+    labels: ['머티리얼', '유틸리티', '에너지', '스테이플', '커뮤니케이션', 'IT', '금융', '소비재'],
+    datasets: [{
+      label: '3개월 수익률 (%)',
+      data: [23, 12, 15, 14, 5, -2, -3, -4],
+      backgroundColor: [
+        '#3fb950','#3fb950','#3fb950','#3fb950',
+        'rgba(88,166,255,0.6)',
+        '#f85149','#f85149','#f85149'
+      ],
+      borderRadius: 6,
+      borderSkipped: false,
+    }]
+  },
+  options: {
+    responsive: true,
+    indexAxis: 'y',
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        callbacks: {
+          label: (ctx) => `${ctx.parsed.x > 0 ? '+' : ''}${ctx.parsed.x}%`
+        }
+      }
+    },
+    scales: {
+      x: {
+        grid: { color: 'rgba(48,54,61,0.5)' },
+        ticks: { color: '#8b949e', callback: v => v + '%' }
+      },
+      y: {
+        grid: { display: false },
+        ticks: { color: '#e6edf3', font: { size: 12 } }
+      }
+    }
+  }
+});
+
+// 1개월 섹터 차트
+const ctx1m = document.getElementById('sectorChart1m').getContext('2d');
+new Chart(ctx1m, {
+  type: 'bar',
+  data: {
+    labels: ['에너지', '머티리얼', '유틸리티', '스테이플', 'IT', '소비재', '금융'],
+    datasets: [{
+      label: '1개월 수익률 (%)',
+      data: [10, 8, 7, 5, -4, -5, -5],
+      backgroundColor: [
+        '#3fb950','#3fb950','#3fb950','#3fb950',
+        '#f85149','#f85149','#f85149'
+      ],
+      borderRadius: 6,
+      borderSkipped: false,
+    }]
+  },
+  options: {
+    responsive: true,
+    indexAxis: 'y',
+    plugins: { legend: { display: false } },
+    scales: {
+      x: {
+        grid: { color: 'rgba(48,54,61,0.5)' },
+        ticks: { color: '#8b949e', callback: v => v + '%' }
+      },
+      y: {
+        grid: { display: false },
+        ticks: { color: '#e6edf3', font: { size: 12 } }
+      }
+    }
+  }
+});
+</script>
+
+</body>
+</html>
