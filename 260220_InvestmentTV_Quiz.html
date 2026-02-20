@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 폭락장 대비 포트폴리오 보수화 - 시험문제</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0e17;
+  --surface: #111827;
+  --surface2: #1a2235;
+  --border: #1e2d45;
+  --text: #e2e8f0;
+  --text-dim: #8896ab;
+  --accent: #f59e0b;
+  --accent2: #3b82f6;
+  --red: #ef4444;
+  --green: #22c55e;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: 'Noto Sans KR', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.75;
+  font-size: 15px;
+}
+.container { max-width: 680px; margin: 0 auto; padding: 20px 16px 60px; }
+
+.header {
+  text-align: center;
+  padding: 28px 0 20px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 28px;
+}
+.header h1 {
+  font-size: 22px;
+  font-weight: 900;
+  margin-bottom: 6px;
+  background: linear-gradient(135deg, #fff, #3b82f6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.header .sub { font-size: 12px; color: var(--text-dim); }
+
+.q-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 18px;
+  margin-bottom: 16px;
+  position: relative;
+}
+.q-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px; height: 28px;
+  background: var(--accent2);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  border-radius: 50%;
+  margin-right: 10px;
+  flex-shrink: 0;
+}
+.q-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+}
+.q-type {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 4px;
+  margin-left: auto;
+}
+.type-obj { background: #3b82f622; color: var(--accent2); }
+.type-ox { background: #f59e0b22; color: var(--accent); }
+.type-short { background: #a78bfa22; color: #a78bfa; }
+.diff { font-size: 10px; padding: 2px 6px; border-radius: 4px; margin-left: 6px; font-weight: 600; }
+.diff-easy { background: #22c55e22; color: var(--green); }
+.diff-mid { background: #f59e0b22; color: var(--accent); }
+.diff-hard { background: #ef444422; color: var(--red); }
+
+.q-text {
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 12px;
+  line-height: 1.6;
+}
+.options { list-style: none; padding: 0; }
+.options li {
+  padding: 8px 14px;
+  margin-bottom: 6px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.options li:hover { border-color: var(--accent2); background: #3b82f60d; }
+
+/* Answer Section */
+.divider-big {
+  text-align: center;
+  padding: 40px 0;
+  position: relative;
+}
+.divider-big::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0; right: 0;
+  height: 1px;
+  background: var(--accent);
+}
+.divider-big span {
+  background: var(--bg);
+  padding: 0 20px;
+  position: relative;
+  color: var(--accent);
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.a-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 14px;
+}
+.a-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.a-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px; height: 24px;
+  background: var(--green);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  border-radius: 50%;
+}
+.a-answer {
+  font-weight: 700;
+  color: var(--green);
+  font-size: 14px;
+}
+.a-explain {
+  font-size: 13px;
+  color: var(--text-dim);
+  line-height: 1.7;
+  padding-left: 32px;
+}
+
+.footer {
+  text-align: center;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+  color: var(--text-dim);
+  font-size: 11px;
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- HEADER -->
+<div class="header">
+  <h1>📝 시험문제 (10문제)</h1>
+  <div class="sub">AI 폭락장 대비 포트폴리오 보수화 시점 | 난이도: 쉬움 30% · 보통 50% · 어려움 20%</div>
+</div>
+
+<!-- ============================= -->
+<!-- 문제 영역 -->
+<!-- ============================= -->
+
+<!-- Q1 -->
+<div class="q-card">
+  <div class="q-header">
+    <span class="q-num">1</span>
+    <span class="q-type type-ox">OX</span>
+    <span class="diff diff-easy">쉬움</span>
+  </div>
+  <div class="q-text">현재 기관 투자자들의 섹터 로테이션에서 Information Technology(IT) 섹터는 2개월 이상 강화(Bullish) 추세를 보이고 있다.</div>
+  <ul class="options">
+    <li>⭕ O (맞다)</li>
+    <li>❌ X (틀리다)</li>
+  </ul>
+</div>
+
+<!-- Q2 -->
+<div class="q-card">
+  <div class="q-header">
+    <span class="q-num">2</span>
+    <span class="q-type type-obj">객관식</span>
+    <span class="diff diff-easy">쉬움</span>
+  </div>
+  <div class="q-text">다음 중 기관들이 현재 Bullish(강세)로 평가하고 있는 섹터를 모두 고르시오.</div>
+  <ul class="options">
+    <li>① Information Technology, Communication Services</li>
+    <li>② Utilities, Real Estate, Consumer Staples</li>
+    <li>③ Consumer Discretionary, Information Technology</li>
+    <li>④ Energy, Financials, Healthcare</li>
+  </ul>
+</div>
+
+<!-- Q3 -->
+<div class="q-card">
+  <div class="q-header">
+    <span class="q-num">3</span>
+    <span class="q-type type-obj">객관식</span>
+    <span class="diff diff-mid">보통</span>
+  </div>
+  <div class="q-text">아마존(AMZN)의 2026년 예상 CAPEX 대비 프리캐시플로(FCF) 비율은 약 몇 %로, 이것이 의미하는 바는?</div>
+  <ul class="options">
+    <li>① 77% – 투자 여력이 충분히 남아있어 안전</li>
+    <li>② 91% – 한계선에 가깝지만 아직 양호</li>
+    <li>③ 111% – 버는 것보다 더 많이 투자하여 캐시플로 마이너스 위험</li>
+    <li>④ 60% – 매우 건전한 투자 수준</li>
+  </ul>
+</div>
+
+<!-- Q4 -->
+<div class="q-card">
+  <div class="q-header">
+    <span class="q-num">4</span>
+    <span class="q-type type-short">단답형</span>
+    <span class="diff diff-mid">보통</span>
+  </div>
+  <div class="q-text">AMD가 데이터센터 기업 '크루소(Crusoe)'를 위해 자사 반도체를 ___로 활용하여 골드만삭스에 대출을 주선한 행위는 매출 확보를 위한 '발악'으로 해석된다. 빈칸에 들어갈 단어는?</div>
+</div>
+
+<!-- Q5 -->
+<div class="q-card">
+  <div class="q-header">
+    <span class="q-num">5</span>
+    <span class="q-type type-obj">객관식</span>
+    <span class="diff diff-mid">보통</span>
+  </div>
+  <div class="q-text">AI 하이퍼스케일 투자의 ROI(투자수익률)가 현실화되려면 어느 시점까지 기다려야 한다고 전망하는가?</div>
+  <ul class="options">
+    <li>① 2026년 하반기</li>
+    <li>② 2027년</li>
+    <li>③ 2028년 이후</li>
+    <li>④ 2030년 이후</li>
+  </ul>
+</div>
+
+<!-- Q6 -->
+<div class="q-card">
+  <div class="q-header">
+    <span class="q-num">6</span>
+    <span class="q-type type-ox">OX</span>
+    <span class="diff diff-easy">쉬움</span>
+  </div>
+  <div class="q-text">월마트(WMT)의 2025년 4분기 EPS는 $0.74로 예상치를 상회했으며, 연간 매출 성장률 가이던스도 기존 전망보다 상향 조정되었다.</div>
+  <ul class="options">
+    <li>⭕ O (맞다)</li>
+    <li>❌ X (틀리다)</li>
+  </ul>
+</div>
+
+<!-- Q7 -->
+<div class="q-card">
+  <div class="q-header">
+    <span class="q-num">7</span>
+    <span class="q-type type-obj">객관식</span>
+    <span class="diff diff-mid">보통</span>
+  </div>
+  <div class="q-text">다음 소프트웨어 기업 중 AI에 의해 대체하기 비교적 어려운 기업으로 분류된 것은?</div>
+  <ul class="options">
+    <li>① DocuSign, Accenture, Duolingo</li>
+    <li>② Cloudflare, CrowdStrike, ServiceNow, ADP</li>
+    <li>③ Palo Alto Networks, DocuSign, Oracle</li>
+    <li>④ Accenture, Duolingo, Palo Alto Networks</li>
+  </ul>
+</div>
+
+<!-- Q8 -->
+<div class="q-card">
+  <div class="q-header">
+    <span class="q-num">8</span>
+    <span class="q-type type-obj">객관식</span>
+    <span class="diff diff-hard">어려움</span>
+  </div>
+  <div class="q-text">AI 산업에 필요한 데이터센터 등 전력 수요가 약 150GW이며, 미국 전체 전력 사용량은 약 1,300GW이다. 이 에너지 수급 문제가 AI 산업에 미치는 가장 직접적인 위험은?</div>
+  <ul class="options">
+    <li>① 전기요금 상승으로 가계 소비가 줄어 경기침체가 발생한다</li>
+    <li>② 데이터센터 건설 불가 시점(인플렉션 포인트)에 도달하여 AI 투자 대비 실적이 나오지 않는다</li>
+    <li>③ 에너지 기업 주가만 상승하고 나머지 섹터는 전부 하락한다</li>
+    <li>④ 미국 정부가 AI 산업을 규제하여 모든 AI 프로젝트가 중단된다</li>
+  </ul>
+</div>
+
+<!-- Q9 -->
+<div class="q-card">
+  <div class="q-header">
+    <span class="q-num">9</span>
+    <span class="q-type type-short">단답형</span>
+    <span class="diff diff-mid">보통</span>
+  </div>
+  <div class="q-text">분석자가 AI 빅테크 5사 중 투자 대상 기업으로 선정한 두 기업의 티커(ticker)를 쓰시오. (2개 모두 기재)</div>
+</div>
+
+<!-- Q10 -->
+<div class="q-card">
+  <div class="q-header">
+    <span class="q-num">10</span>
+    <span class="q-type type-obj">객관식</span>
+    <span class="diff diff-hard">어려움</span>
+  </div>
+  <div class="q-text">포트폴리오 보수화 전략의 핵심 논리로 가장 적절한 것은?</div>
+  <ul class="options">
+    <li>① S&P 500 전체가 폭락할 것이므로 모든 주식을 매도하고 현금을 확보해야 한다</li>
+    <li>② AI 슈퍼사이클 내 선별적 조정 가능성에 대비하여 IT 비중을 축소하고 방어적 섹터를 확대하되 완전 이탈은 하지 않는다</li>
+    <li>③ 금리 인하가 확실하므로 오히려 IT 섹터 비중을 최대한 늘려야 한다</li>
+    <li>④ 한국 시장이 더 위험하므로 미국 시장은 현재 비중을 그대로 유지하면 된다</li>
+  </ul>
+</div>
+
+<!-- ============================= -->
+<!-- 정답 및 해설 영역 -->
+<!-- ============================= -->
+<div class="divider-big"><span>📋 정답 및 해설</span></div>
+
+<!-- A1 -->
+<div class="a-card">
+  <div class="a-header">
+    <span class="a-num">1</span>
+    <span class="a-answer">❌ X (틀리다)</span>
+  </div>
+  <div class="a-explain">IT 섹터는 2개월 이상 Weakening(약화) 추세에 있다. 기관들의 대규모 자금이 IT에서 빠져나와 유틸리티, 부동산, 필수소비재 등 방어적 섹터로 이동하고 있으며, 이는 디리스킹(De-risking) 시그널로 해석된다.</div>
+</div>
+
+<!-- A2 -->
+<div class="a-card">
+  <div class="a-header">
+    <span class="a-num">2</span>
+    <span class="a-answer">② Utilities, Real Estate, Consumer Staples</span>
+  </div>
+  <div class="a-explain">5월 전까지 기관들은 유틸리티(Utilities), 부동산(Real Estate), 필수소비재(Consumer Staples) 섹터에 대해 Bullish 포지션을 취하고 있다. IT와 커뮤니케이션 서비스는 Weakening으로 분류됐다.</div>
+</div>
+
+<!-- A3 -->
+<div class="a-card">
+  <div class="a-header">
+    <span class="a-num">3</span>
+    <span class="a-answer">③ 111% – 버는 것보다 더 많이 투자하여 캐시플로 마이너스 위험</span>
+  </div>
+  <div class="a-explain">아마존의 CAPEX/FCF 비율 111%는 프리캐시플로를 초과하는 투자를 하고 있음을 의미한다. 이는 밸런스시트의 주주자본(Stockholder's Equity) 감소, 자사주 매입·배당·M&A 등 재투자 여력 약화로 이어질 수 있다.</div>
+</div>
+
+<!-- A4 -->
+<div class="a-card">
+  <div class="a-header">
+    <span class="a-num">4</span>
+    <span class="a-answer">담보</span>
+  </div>
+  <div class="a-explain">AMD는 자사 반도체를 '담보(collateral)'로 제공하여 크루소의 대출을 주선했다. 고객사가 스스로 해야 할 자금 조달을 칩 제조사가 대신하는 것은 이례적이며, 이는 매출과 EPS 달성에 대한 극심한 압박을 반영한다. 작년 테슬라가 세금 혜택 종료 전 매출을 끌어올린 후 폭락한 패턴과 유사하다.</div>
+</div>
+
+<!-- A5 -->
+<div class="a-card">
+  <div class="a-header">
+    <span class="a-num">5</span>
+    <span class="a-answer">③ 2028년 이후</span>
+  </div>
+  <div class="a-explain">데이터센터를 건설하고, 칩을 설치하여 가동한 뒤, 그 결과물로 수익을 창출하기까지 최소 2~3년이 소요된다. 2026년 대규모 투자 → 2028년경 ROI 현실화가 예상되며, 그 사이 2026~2027년은 수익 공백 구간으로 기업에 부담이 된다.</div>
+</div>
+
+<!-- A6 -->
+<div class="a-card">
+  <div class="a-header">
+    <span class="a-num">6</span>
+    <span class="a-answer">❌ X (틀리다)</span>
+  </div>
+  <div class="a-explain">EPS $0.74로 예상 상회한 것은 맞지만, 연간 매출 성장률 가이던스는 기존 5%+ 전망에서 3.5~4.5%로 하향 조정되었다. 이는 미국 경제 성장 둔화 시그널로 해석되며, 주가가 2.7% 하락한 직접적 원인이었다.</div>
+</div>
+
+<!-- A7 -->
+<div class="a-card">
+  <div class="a-header">
+    <span class="a-num">7</span>
+    <span class="a-answer">② Cloudflare, CrowdStrike, ServiceNow, ADP</span>
+  </div>
+  <div class="a-explain">AI에 의해 대체하기 어려운 소프트웨어 기업으로 Cloudflare, CrowdStrike, ADP, ServiceNow가 분류되었다. 반면 DocuSign, Accenture, Duolingo는 AI 대체가 용이한 기업으로 투자 대상에서 제외가 권고되었다.</div>
+</div>
+
+<!-- A8 -->
+<div class="a-card">
+  <div class="a-header">
+    <span class="a-num">8</span>
+    <span class="a-answer">② 데이터센터 건설 불가 시점에 도달하여 AI 투자 대비 실적이 나오지 않는다</span>
+  </div>
+  <div class="a-explain">AI에 필요한 전력 150GW는 중소도시 약 40개의 연간 사용량에 해당하며, 원자력 발전소는 건설에 7~10년이 소요된다. 에너지 수급 병목으로 데이터센터를 더 이상 건설할 수 없는 인플렉션 포인트에 도달하면, 막대한 AI 투자 대비 실적(매출)이 나오지 않아 관련 기업들의 뱅크럽(파산) 위험이 커진다.</div>
+</div>
+
+<!-- A9 -->
+<div class="a-card">
+  <div class="a-header">
+    <span class="a-num">9</span>
+    <span class="a-answer">META (메타), GOOGL (알파벳/구글)</span>
+  </div>
+  <div class="a-explain">분석자는 AI 빅테크 5사(Google, Amazon, Meta, Microsoft, Oracle) 중 투자 대상으로 메타(META)와 알파벳(GOOGL)만 선정했다. 메타는 AI를 활용한 광고 수익화에 성공했고, 알파벳은 CAPEX/FCF 91%로 건전하며 장기적으로 주가 2배 가능성이 언급되었다.</div>
+</div>
+
+<!-- A10 -->
+<div class="a-card">
+  <div class="a-header">
+    <span class="a-num">10</span>
+    <span class="a-answer">② AI 슈퍼사이클 내 선별적 조정 가능성에 대비하여 IT 비중을 축소하고 방어적 섹터를 확대하되 완전 이탈은 하지 않는다</span>
+  </div>
+  <div class="a-explain">핵심 메시지는 "S&P 500 전체 하락"이 아닌 "AI 슈퍼사이클 내 선별적 조정" 경고이다. IT 섹터를 전부 매각하는 것이 아니라 비중을 40% 이하로 줄이고, 방어적 섹터(유틸리티, 헬스케어, 소비재, 텔레커뮤니케이션)로 분산하며, 5월 금리 인하 가능성을 고려해 완전 이탈은 하지 않는 전략이 권고되었다.</div>
+</div>
+
+<!-- Footer -->
+<div class="footer">
+  <p>원본: 투자는인생TV - AI 폭락장 대비 포트폴리오 보수화 시점 (2026.02.20)</p>
+</div>
+
+</div>
+</body>
+</html>
