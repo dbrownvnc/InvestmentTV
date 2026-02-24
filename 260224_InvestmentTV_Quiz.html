@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>시험문제 — Salesforce·Nvidia 실적 & Stagnation 리스크</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #ffffff;
+  --bg-alt: #fafafa;
+  --text: #1a1a1a;
+  --text-sub: #777777;
+  --accent: #e11d48;
+  --accent2: #f43f5e;
+  --table-border: #e5e5e5;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Noto Sans KR', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.75;
+  font-size: 15px;
+}
+.container { max-width: 680px; margin: 0 auto; padding: 0 20px; }
+
+.hero {
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d1a24 50%, #1a1a1a 100%);
+  padding: 48px 20px 40px;
+  text-align: center;
+}
+.hero-badge {
+  display: inline-block;
+  background: var(--accent);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  padding: 6px 18px;
+  border-radius: 2px;
+  margin-bottom: 20px;
+}
+.hero h1 {
+  font-family: 'Playfair Display', serif;
+  color: #fff;
+  font-size: 28px;
+  font-weight: 900;
+  line-height: 1.3;
+  max-width: 560px;
+  margin: 0 auto 12px;
+}
+.hero-meta {
+  color: rgba(255,255,255,0.5);
+  font-size: 12.5px;
+}
+
+.divider {
+  text-align: center;
+  padding: 32px 0;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--accent);
+  border-bottom: 2px solid var(--accent);
+  margin-bottom: 8px;
+}
+
+.question-block {
+  padding: 28px 0;
+  border-bottom: 1px solid var(--table-border);
+}
+.question-block:last-of-type { border-bottom: none; }
+
+.q-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+.q-number {
+  background: var(--accent);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+.q-diff {
+  font-size: 12px;
+  color: var(--text-sub);
+  font-weight: 500;
+}
+.q-type {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--accent2);
+  background: #fef2f2;
+  padding: 3px 10px;
+  border-radius: 12px;
+}
+
+.q-text {
+  font-size: 15.5px;
+  font-weight: 500;
+  line-height: 1.7;
+  margin-bottom: 14px;
+}
+
+.options {
+  padding-left: 4px;
+}
+.options .opt {
+  display: block;
+  padding: 8px 14px;
+  margin: 6px 0;
+  background: var(--bg-alt);
+  border: 1px solid var(--table-border);
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: default;
+  transition: background 0.2s;
+}
+.options .opt:hover { background: #f0f0f0; }
+
+/* Answer section */
+.answer-block {
+  padding: 24px 0;
+  border-bottom: 1px solid var(--table-border);
+}
+.answer-block:last-of-type { border-bottom: none; }
+
+.a-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.a-number {
+  background: var(--text);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 4px;
+}
+.a-answer {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--accent);
+}
+.a-explain {
+  font-size: 14px;
+  color: var(--text-sub);
+  line-height: 1.7;
+  padding-left: 4px;
+  border-left: 3px solid var(--table-border);
+  margin-left: 4px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.footer {
+  background: var(--bg-alt);
+  border-top: 1px solid var(--table-border);
+  padding: 28px 20px;
+  text-align: center;
+  font-size: 12px;
+  color: var(--text-sub);
+}
+
+.fade-in {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (max-width: 480px) {
+  .hero h1 { font-size: 23px; }
+  .q-text { font-size: 14.5px; }
+}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-badge">Exam Paper</div>
+  <h1>시험문제 — Salesforce·Nvidia 실적 & Stagnation 리스크</h1>
+  <p class="hero-meta">총 10문제 &nbsp;·&nbsp; 쉬움 3 / 보통 5 / 어려움 2</p>
+</header>
+
+<div class="container">
+
+<!-- ━━━━━━━ 문제지 ━━━━━━━ -->
+<div class="divider fade-in">📋 시험문제 (총 10문제)</div>
+
+<!-- Q1 -->
+<div class="question-block fade-in">
+  <div class="q-header">
+    <span class="q-number">문제 1</span>
+    <span class="q-diff">⭐ 쉬움</span>
+    <span class="q-type">객관식</span>
+  </div>
+  <div class="q-text">2월 23일 미국 증시에서 관세 영향으로 가장 큰 낙폭을 기록한 지수는?</div>
+  <div class="options">
+    <span class="opt">① S&P 500</span>
+    <span class="opt">② 나스닥</span>
+    <span class="opt">③ 다우존스</span>
+    <span class="opt">④ 러셀 2000</span>
+  </div>
+</div>
+
+<!-- Q2 -->
+<div class="question-block fade-in">
+  <div class="q-header">
+    <span class="q-number">문제 2</span>
+    <span class="q-diff">⭐ 쉬움</span>
+    <span class="q-type">OX 문제</span>
+  </div>
+  <div class="q-text">미국 대법원은 트럼프 대통령의 일괄 관세가 합헌이라고 6대 3으로 판결했다. (O / X)</div>
+</div>
+
+<!-- Q3 -->
+<div class="question-block fade-in">
+  <div class="q-header">
+    <span class="q-number">문제 3</span>
+    <span class="q-diff">⭐⭐ 보통</span>
+    <span class="q-type">빈칸 채우기</span>
+  </div>
+  <div class="q-text">물가는 상승하는데 경제 성장은 둔화되는 현상을 ( ________ )(이)라고 하며, 연준이 가장 경계하는 경제 상황이다.</div>
+</div>
+
+<!-- Q4 -->
+<div class="question-block fade-in">
+  <div class="q-header">
+    <span class="q-number">문제 4</span>
+    <span class="q-diff">⭐⭐ 보통</span>
+    <span class="q-type">객관식</span>
+  </div>
+  <div class="q-text">방송에서 수요일(2/25) 실적 발표 시 NVIDIA보다 기관투자자들의 관심이 더 크다고 분석한 기업은?</div>
+  <div class="options">
+    <span class="opt">① Apple</span>
+    <span class="opt">② Salesforce (CRM)</span>
+    <span class="opt">③ Microsoft</span>
+    <span class="opt">④ AMD</span>
+  </div>
+</div>
+
+<!-- Q5 -->
+<div class="question-block fade-in">
+  <div class="q-header">
+    <span class="q-number">문제 5</span>
+    <span class="q-diff">⭐⭐ 보통</span>
+    <span class="q-type">단답형</span>
+  </div>
+  <div class="q-text">칩 섹터(NVIDIA 등)에서 200일 이동평균선 위에 있는 종목 비율은 약 몇 %인가?</div>
+</div>
+
+<!-- Q6 -->
+<div class="question-block fade-in">
+  <div class="q-header">
+    <span class="q-number">문제 6</span>
+    <span class="q-diff">⭐ 쉬움</span>
+    <span class="q-type">객관식</span>
+  </div>
+  <div class="q-text">대법원 판결 이후 백악관이 행정명령으로 발표한 일괄 관세율은 몇 %이며, 유예기간은 며칠인가?</div>
+  <div class="options">
+    <span class="opt">① 10%, 120일</span>
+    <span class="opt">② 15%, 150일</span>
+    <span class="opt">③ 20%, 180일</span>
+    <span class="opt">④ 25%, 90일</span>
+  </div>
+</div>
+
+<!-- Q7 -->
+<div class="question-block fade-in">
+  <div class="q-header">
+    <span class="q-number">문제 7</span>
+    <span class="q-diff">⭐⭐ 보통</span>
+    <span class="q-type">객관식</span>
+  </div>
+  <div class="q-text">NVIDIA와 Salesforce의 실적 발표에서 방송이 가장 중요하다고 반복 강조한 핵심 변수는?</div>
+  <div class="options">
+    <span class="opt">① 당기순이익 (Net Income)</span>
+    <span class="opt">② 가이던스 (Guidance)</span>
+    <span class="opt">③ 배당금 (Dividend)</span>
+    <span class="opt">④ 자사주 매입 규모</span>
+  </div>
+</div>
+
+<!-- Q8 -->
+<div class="question-block fade-in">
+  <div class="q-header">
+    <span class="q-number">문제 8</span>
+    <span class="q-diff">⭐⭐ 보통</span>
+    <span class="q-type">OX 문제</span>
+  </div>
+  <div class="q-text">역사적 데이터에 따르면, 미국이 군사행동을 개시한 후 1년간 S&P 500은 대부분 하락하는 패턴을 보였다. (O / X)</div>
+</div>
+
+<!-- Q9 -->
+<div class="question-block fade-in">
+  <div class="q-header">
+    <span class="q-number">문제 9</span>
+    <span class="q-diff">⭐⭐⭐ 어려움</span>
+    <span class="q-type">서술형</span>
+  </div>
+  <div class="q-text">Salesforce(CRM)의 현재 P/E가 10대 중반으로 하락한 것이 "이례적 저평가"라고 할 수 있는 이유를 소프트웨어 기업의 특성(프로핏 마진, 비용구조)과 연결하여 설명하시오.</div>
+</div>
+
+<!-- Q10 -->
+<div class="question-block fade-in">
+  <div class="q-header">
+    <span class="q-number">문제 10</span>
+    <span class="q-diff">⭐⭐⭐ 어려움</span>
+    <span class="q-type">서술형</span>
+  </div>
+  <div class="q-text">현재 연준이 직면한 "이중 충격" 딜레마를 설명하고, 매파적 위원이 증가하는 배경과 이것이 하이테크 성장주에 미치는 영향을 논하시오.</div>
+</div>
+
+<!-- ━━━━━━━ 정답지 ━━━━━━━ -->
+<div class="divider fade-in" style="margin-top: 40px;">📝 정답 및 해설</div>
+
+<!-- A1 -->
+<div class="answer-block fade-in">
+  <div class="a-header">
+    <span class="a-number">문제 1</span>
+    <span class="a-answer">정답: ③ 다우존스</span>
+  </div>
+  <div class="a-explain">다우존스는 관세에 취약한 전통 산업·제조업 비중이 높아 -1.66%로 가장 큰 낙폭을 기록했다. 반면 테크 중심 나스닥은 -1.13%로 상대적으로 방어적이었다.</div>
+</div>
+
+<!-- A2 -->
+<div class="answer-block fade-in">
+  <div class="a-header">
+    <span class="a-number">문제 2</span>
+    <span class="a-answer">정답: X</span>
+  </div>
+  <div class="a-explain">대법원은 트럼프의 일괄 관세가 "불법(위헌)"이라고 6대 3으로 판결했다. 합헌이 아닌 위헌이다.</div>
+</div>
+
+<!-- A3 -->
+<div class="answer-block fade-in">
+  <div class="a-header">
+    <span class="a-number">문제 3</span>
+    <span class="a-answer">정답: 스태그플레이션 (Stagflation)</span>
+  </div>
+  <div class="a-explain">Stagnation(경기 침체)과 Inflation(물가 상승)의 합성어로, 성장은 정체되는데 물가만 오르는 최악의 경제 상황을 의미한다. 연준이 금리를 올리면 성장이 더 위축되고, 내리면 물가가 더 오르는 정책적 딜레마를 초래한다.</div>
+</div>
+
+<!-- A4 -->
+<div class="answer-block fade-in">
+  <div class="a-header">
+    <span class="a-number">문제 4</span>
+    <span class="a-answer">정답: ② Salesforce (CRM)</span>
+  </div>
+  <div class="a-explain">Salesforce는 거대 소프트웨어 기업으로서 소프트웨어 섹터 전체의 방향을 정하는 역할을 한다. 칩 섹터가 이미 회복한 반면 소프트웨어는 여전히 저점에 있어, CRM의 가이던스가 섹터 전체의 터닝포인트가 될 수 있다.</div>
+</div>
+
+<!-- A5 -->
+<div class="answer-block fade-in">
+  <div class="a-header">
+    <span class="a-number">문제 5</span>
+    <span class="a-answer">정답: 약 89%</span>
+  </div>
+  <div class="a-explain">칩 섹터 종목의 89%가 200일 이동평균선 위에 위치해 회복세를 보이고 있는 반면, 소프트웨어 섹터는 여전히 대부분 이동평균선 아래에 머물러 있다.</div>
+</div>
+
+<!-- A6 -->
+<div class="answer-block fade-in">
+  <div class="a-header">
+    <span class="a-number">문제 6</span>
+    <span class="a-answer">정답: ② 15%, 150일</span>
+  </div>
+  <div class="a-explain">백악관은 대법원 위헌 판결 직후 행정명령을 통해 모든 국가에 15% 일괄 관세를 150일간 한시적으로 부과하겠다고 발표했다. 다만 이 역시 의회 승인이 필요하다.</div>
+</div>
+
+<!-- A7 -->
+<div class="answer-block fade-in">
+  <div class="a-header">
+    <span class="a-number">문제 7</span>
+    <span class="a-answer">정답: ② 가이던스 (Guidance)</span>
+  </div>
+  <div class="a-explain">이번 분기의 실적(매출·EPS)보다 향후 전망을 나타내는 가이던스가 더 중요하다. 실적이 상회하더라도 가이던스가 하향되면 폭락, 반대로 가이던스가 상향되면 급등할 수 있다.</div>
+</div>
+
+<!-- A8 -->
+<div class="answer-block fade-in">
+  <div class="a-header">
+    <span class="a-number">문제 8</span>
+    <span class="a-answer">정답: X</span>
+  </div>
+  <div class="a-explain">역사적으로 전쟁 시작 후 1년간 S&P 500은 9번 이상 상승했다. 2차 세계대전, 아프간 전쟁, 러-우 전쟁 등 모두 군사행동 이후 증시가 상승 전환한 사례이다.</div>
+</div>
+
+<!-- A9 -->
+<div class="answer-block fade-in">
+  <div class="a-header">
+    <span class="a-number">문제 9</span>
+    <span class="a-answer">정답 예시:</span>
+  </div>
+  <div class="a-explain">소프트웨어 기업은 프로핏 마진이 60% 이상으로 매우 높고, 비용 구조가 주로 인건비(개발 인력)와 클라우드 인프라 비용 정도에 불과하다. 은행과 같은 전통 산업은 부동산 매입, 장비, 지점 운영 등 오버헤드가 높아 프로핏 마진이 8~12%에 불과한데, P/E가 비슷한 수준이다. CRM의 P/E 10대 중반은 은행 수준으로, 이익 창출 효율이 훨씬 높은 소프트웨어 기업의 밸류에이션으로는 극단적 저평가라 할 수 있다. 통상 소프트웨어 기업은 P/E 50 이상에서도 정상 범위로 간주된다.</div>
+</div>
+
+<!-- A10 -->
+<div class="answer-block fade-in">
+  <div class="a-header">
+    <span class="a-number">문제 10</span>
+    <span class="a-answer">정답 예시:</span>
+  </div>
+  <div class="a-explain">연준의 이중 충격은 "물가 상승 + 성장 둔화"가 동시에 발생한 것이다. 연준의 이중 책무(dual mandate)인 '최대 고용'과 '물가 안정'이 서로 상충하는 방향으로 나타났다. 물가를 잡으려면 금리를 올려야 하지만, 그러면 이미 둔화 중인 경제가 더 위축된다. 관세로 인한 수입품 가격 상승이 인플레이션의 주요 원인이기에, 이를 금리 정책만으로 해결하기 어렵다. 이런 배경에서 매파적 위원이 증가하고 있으며, 금리 인상이 현실화되면 하이테크 성장주에는 치명적이다. 자금 조달 비용이 상승하고, 미래 수익의 현재가치가 할인되며, 기업의 투자 위축으로 이어져 성장 모멘텀이 둔화되기 때문이다.</div>
+</div>
+
+</div><!-- end container -->
+
+<footer class="footer">
+  <p>본 시험문제는 투자는인생TV (2026.02.24) 방송 내용 기반 학습용 자료입니다.</p>
+</footer>
+
+<script>
+const fadeObs = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), i * 80);
+      fadeObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.12 });
+document.querySelectorAll('.fade-in').forEach(el => fadeObs.observe(el));
+</script>
+</body>
+</html>

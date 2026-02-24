@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Salesforce 실적이 Nvidia를 압도할 것 — 경제는 Stagnation 리스크</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Noto+Sans+KR:wght@300;400;500;700&family=Source+Serif+4:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #ffffff;
+  --bg-alt: #fafafa;
+  --text: #1a1a1a;
+  --text-sub: #777777;
+  --accent: #e11d48;
+  --accent2: #f43f5e;
+  --chart1: #e11d48;
+  --chart2: #1a1a1a;
+  --chart3: #6b7280;
+  --chart4: #2563eb;
+  --table-bg: #fafafa;
+  --table-header: #e11d48;
+  --table-border: #e5e5e5;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Noto Sans KR', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.75;
+  font-size: 15px;
+  -webkit-font-smoothing: antialiased;
+}
+.container { max-width: 680px; margin: 0 auto; padding: 0 20px; }
+
+/* Header */
+.hero {
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d1a24 50%, #1a1a1a 100%);
+  padding: 56px 20px 48px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+  background: repeating-linear-gradient(0deg, transparent, transparent 40px, rgba(225,29,72,0.03) 40px, rgba(225,29,72,0.03) 41px);
+}
+.hero-badge {
+  display: inline-block;
+  background: var(--accent);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  padding: 6px 18px;
+  border-radius: 2px;
+  margin-bottom: 24px;
+  position: relative;
+}
+.hero h1 {
+  font-family: 'Playfair Display', 'Source Serif 4', serif;
+  color: #fff;
+  font-size: 32px;
+  font-weight: 900;
+  line-height: 1.25;
+  max-width: 600px;
+  margin: 0 auto 16px;
+  position: relative;
+}
+.hero h1 em {
+  color: var(--accent2);
+  font-style: normal;
+}
+.hero-meta {
+  color: rgba(255,255,255,0.5);
+  font-size: 12.5px;
+  letter-spacing: 0.5px;
+  position: relative;
+}
+.hero-meta span { color: var(--accent2); }
+
+/* Sections */
+.section {
+  padding: 40px 0;
+  border-bottom: 1px solid var(--table-border);
+}
+.section:last-child { border-bottom: none; }
+.section-label {
+  display: inline-block;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 10px;
+}
+.section h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.3;
+  margin-bottom: 18px;
+  color: var(--text);
+}
+.section h3 {
+  font-size: 17px;
+  font-weight: 700;
+  margin: 28px 0 12px;
+  color: var(--text);
+  padding-left: 12px;
+  border-left: 3px solid var(--accent);
+}
+.section p {
+  margin-bottom: 14px;
+  color: var(--text);
+  font-weight: 400;
+}
+.section p.sub { color: var(--text-sub); font-size: 13.5px; }
+
+/* Highlight Box */
+.highlight-box {
+  background: var(--bg-alt);
+  border-left: 4px solid var(--accent);
+  padding: 18px 20px;
+  margin: 20px 0;
+  border-radius: 0 6px 6px 0;
+}
+.highlight-box.warn {
+  border-left-color: #f59e0b;
+  background: #fffbeb;
+}
+.highlight-box.info {
+  border-left-color: var(--chart4);
+  background: #eff6ff;
+}
+.highlight-box strong { color: var(--accent); }
+.highlight-box.warn strong { color: #d97706; }
+.highlight-box.info strong { color: var(--chart4); }
+
+/* Key Metric Cards */
+.metric-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin: 20px 0;
+}
+.metric-card {
+  background: var(--bg-alt);
+  border: 1px solid var(--table-border);
+  border-radius: 8px;
+  padding: 16px;
+  text-align: center;
+}
+.metric-card .value {
+  font-family: 'Playfair Display', serif;
+  font-size: 28px;
+  font-weight: 900;
+  color: var(--accent);
+}
+.metric-card .value.negative { color: var(--accent); }
+.metric-card .value.positive { color: #16a34a; }
+.metric-card .value.neutral { color: var(--chart4); }
+.metric-card .label {
+  font-size: 12px;
+  color: var(--text-sub);
+  margin-top: 4px;
+  font-weight: 500;
+}
+
+/* Tables */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  font-size: 13.5px;
+}
+thead th {
+  background: var(--table-header);
+  color: #fff;
+  padding: 10px 12px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 12.5px;
+}
+tbody td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--table-border);
+  background: var(--table-bg);
+}
+tbody tr:hover td { background: #f0f0f0; }
+td.red { color: var(--accent); font-weight: 600; }
+td.green { color: #16a34a; font-weight: 600; }
+
+/* Chart containers */
+.chart-container {
+  position: relative;
+  max-height: 340px;
+  margin: 20px 0;
+  background: var(--bg-alt);
+  border-radius: 8px;
+  padding: 16px;
+  border: 1px solid var(--table-border);
+}
+.chart-container canvas {
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  max-height: 300px;
+}
+.chart-container.chart-ready canvas {
+  opacity: 1;
+}
+.chart-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+/* Fade-in */
+.fade-in {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Pull quote */
+.pull-quote {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--accent);
+  text-align: center;
+  padding: 32px 24px;
+  margin: 28px 0;
+  border-top: 2px solid var(--accent);
+  border-bottom: 2px solid var(--accent);
+  line-height: 1.45;
+}
+.pull-quote cite {
+  display: block;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--text-sub);
+  margin-top: 10px;
+  font-style: normal;
+}
+
+/* Scenario cards */
+.scenario-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin: 20px 0;
+}
+.scenario-card {
+  background: var(--bg-alt);
+  border: 1px solid var(--table-border);
+  border-radius: 8px;
+  padding: 16px;
+  border-top: 3px solid var(--chart3);
+}
+.scenario-card.bull { border-top-color: #16a34a; }
+.scenario-card.bear { border-top-color: var(--accent); }
+.scenario-card h4 {
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.scenario-card p { font-size: 12.5px; color: var(--text-sub); margin: 0; }
+
+/* Footer */
+.footer {
+  background: var(--bg-alt);
+  border-top: 1px solid var(--table-border);
+  padding: 32px 20px;
+  text-align: center;
+  font-size: 12px;
+  color: var(--text-sub);
+}
+.footer a { color: var(--accent); text-decoration: none; }
+
+/* Tags */
+.tag {
+  display: inline-block;
+  background: var(--bg-alt);
+  border: 1px solid var(--table-border);
+  font-size: 11px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  margin: 3px 4px 3px 0;
+  color: var(--text-sub);
+  font-weight: 500;
+}
+
+@media (max-width: 480px) {
+  .hero h1 { font-size: 25px; }
+  .section h2 { font-size: 21px; }
+  .metric-row { grid-template-columns: 1fr 1fr; gap: 8px; }
+  .metric-card .value { font-size: 24px; }
+  .scenario-grid { grid-template-columns: 1fr; }
+  table { font-size: 12.5px; }
+  thead th, tbody td { padding: 8px 10px; }
+}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-badge">Market Analysis</div>
+  <h1>Salesforce 실적이 <em>Nvidia를 압도</em>할 것 — 경제는 <em>Stagnation</em> 리스크</h1>
+  <p class="hero-meta">2026년 2월 24일 &nbsp;·&nbsp; <span>투자는인생TV</span> &nbsp;·&nbsp; 미국 증시 & 거시경제 분석</p>
+</header>
+
+<div class="container">
+
+<!-- ═══════════ EXECUTIVE SUMMARY ═══════════ -->
+<div class="section fade-in">
+  <span class="section-label">Executive Summary</span>
+  <h2>4대 변동성 이벤트와 스태그플레이션 경고</h2>
+  <p>이번 주 미국 증시는 <strong>대법원의 관세 위헌 판결</strong>, <strong>수요일 NVIDIA·Salesforce 실적 발표</strong>, <strong>연준 혼조 데이터 해석</strong>, <strong>이란 공격 시나리오</strong> 등 4가지 핵심 이벤트가 변동성을 극대화할 전망이다. 특히 1월 경제지표에서 <strong>성장률 하락 + 물가 상승</strong>이라는 스태그플레이션 조합이 확인되며 기관투자자들의 경계감이 고조되고 있다.</p>
+
+  <div class="metric-row">
+    <div class="metric-card fade-in">
+      <div class="value negative">-1.66%</div>
+      <div class="label">다우존스 (2/23)</div>
+    </div>
+    <div class="metric-card fade-in">
+      <div class="value negative">-1.13%</div>
+      <div class="label">나스닥 (2/23)</div>
+    </div>
+    <div class="metric-card fade-in">
+      <div class="value neutral">6→3</div>
+      <div class="label">대법원 관세 위헌 판결</div>
+    </div>
+    <div class="metric-card fade-in">
+      <div class="value negative">15%</div>
+      <div class="label">신규 행정명령 관세율</div>
+    </div>
+  </div>
+
+  <div class="highlight-box">
+    <strong>핵심 메시지:</strong> 트럼프 관세 정책의 혼란은 "노이즈"일 가능성이 크지만, 장기화될 경우 실물경제 타격으로 이어질 수 있다. 투자 원칙을 트럼프의 발언에 맞추지 말 것.
+  </div>
+</div>
+
+<!-- ═══════════ 1. MARKET OVERVIEW ═══════════ -->
+<div class="section fade-in">
+  <span class="section-label">Part 1</span>
+  <h2>시장 개요 — 갈팡질팡하는 증시</h2>
+  <p>2월 23일 미국 증시는 관세 불확실성에 직격탄을 맞았다. S&P 500과 나스닥은 오전 장 초반 소폭 상승 출발했으나, <strong>장 마감 전 급격히 하락</strong>하는 패턴이 반복됐다. 1월 말 이후 하루 내 변동성이 <strong>최소 3~4회</strong> 방향을 바꾸는 극심한 갈팡질팡 장세가 지속 중이다.</p>
+
+  <p>특히 <strong>관세에 취약한 다우존스가 -1.66%로 최대 낙폭</strong>을 기록한 반면, 테크주 중심의 나스닥은 상대적으로 방어적인 -1.13%에 그쳤다. 이는 관세 영향이 제조업·전통산업에 집중되며 테크 섹터에는 직접적 타격이 제한적임을 시사한다.</p>
+
+  <div class="chart-container fade-in">
+    <div class="chart-title">2월 23일 주요 지수 수익률 (%)</div>
+    <canvas id="chartIndices" height="220"></canvas>
+  </div>
+
+  <h3>섹터별 방향성 부재</h3>
+  <p>섹터별 분석에서도 명확한 방향이 보이지 않는다. 에너지주가 유가 상승에 힘입어 강세를 보이고, 커뮤니케이션 서비스와 유틸리티가 한 달간 상승세를 이어가는 반면, 파이낸셜은 반등 시도 중이고 컨슈머 디스크리셔너리는 회복 국면이다.</p>
+
+  <div class="highlight-box warn">
+    <strong>주목:</strong> 유틸리티(방어주)와 경기 방어주가 <strong>동시 상승</strong>하는 특이한 시장 — 기관투자자들도 방향성을 잡지 못하고 안전자산과 성장자산을 동시에 포지셔닝하는 상황이다.
+  </div>
+
+  <div class="chart-container fade-in">
+    <div class="chart-title">섹터별 최근 투자 흐름 변화</div>
+    <canvas id="chartSector" height="240"></canvas>
+  </div>
+</div>
+
+<!-- ═══════════ 2. TARIFF CHAOS ═══════════ -->
+<div class="section fade-in">
+  <span class="section-label">Part 2</span>
+  <h2>관세 대혼란 — 대법원 위헌 판결과 그 여파</h2>
+
+  <p>금요일 미 대법원은 트럼프 대통령의 일괄 관세가 <strong>위헌(불법)</strong>이라고 <strong>6대 3</strong>으로 판결했다. 이른바 "해방의 날(Liberation Day)" 이후 1년간 시행해온 국가별 차등 관세 체계 전체가 법적 정당성을 잃게 된 셈이다.</p>
+
+  <h3>혼란의 핵심 쟁점</h3>
+  <table>
+    <thead><tr><th>쟁점</th><th>내용</th></tr></thead>
+    <tbody>
+      <tr><td><strong>기존 관세 환불</strong></td><td>이미 납부한 관세를 돌려줘야 하는가?</td></tr>
+      <tr><td><strong>현행 수출 관세</strong></td><td>현재 진행 중인 수출에 관세를 계속 부과하는가?</td></tr>
+      <tr><td><strong>협상 무효화</strong></td><td>한국 등 이미 관세 협상이 끝난 국가들의 합의는 어떻게 되는가?</td></tr>
+      <tr><td><strong>신규 15% 관세</strong></td><td>행정명령 150일 한시적 15% 일괄 관세의 실효성은?</td></tr>
+      <tr><td><strong>의회 승인</strong></td><td>행정명령도 의회 승인 필요 — 민주당 반대, 일부 공화당도 반대 예상</td></tr>
+    </tbody>
+  </table>
+
+  <p>백악관은 즉각 <strong>행정명령을 통한 15% 일괄 관세(150일 한시적)</strong>로 대응했다. 그러나 이 역시 의회 승인이 필요하며, 대법원의 위헌 판결 직후라 의원들이 찬성 표결에 나설 가능성은 낮다는 분석이다.</p>
+
+  <div class="pull-quote fade-in">
+    "트럼프의 말에 투자의 원칙을 정하면 안 된다. 관세 혼란은 노이즈가 될 가능성이 크다."
+    <cite>투자는인생TV</cite>
+  </div>
+
+  <h3>Transactional Person — 전략 없는 전술</h3>
+  <p>방송에서는 트럼프를 <strong>Transactional Person</strong>으로 규정했다. 영원한 적도 영원한 친구도 없이 이익에 따라 관계가 바뀌는 인물이기에, 일관된 정책 방향이 아닌 <strong>계속적인 전술만 나타나는 상황</strong>이다. 정책이 수시로 번복되면서 국가 간 신뢰가 훼손되고, 시장 불확실성이 극대화되는 악순환이 이어지고 있다.</p>
+
+  <div class="highlight-box info">
+    <strong>시장 전망:</strong> 관세가 아예 소멸(deadlock)될 가능성도 존재한다. 150일 이후 대통령의 독단적 관세 부과 권한은 제한되며, 의회 승인 없이는 지속이 어렵다. "He's gonna chicken out" — 결국 후퇴할 것이라는 관측.
+  </div>
+</div>
+
+<!-- ═══════════ 3. SALESFORCE vs NVIDIA ═══════════ -->
+<div class="section fade-in">
+  <span class="section-label">Part 3</span>
+  <h2>수요일 결전 — Salesforce가 Nvidia보다 중요한 이유</h2>
+
+  <p>2월 25일(수) 장 마감 후 <strong>NVIDIA(NVDA)</strong>와 <strong>Salesforce(CRM)</strong>의 분기 실적 발표가 동시에 예정되어 있다. 방송은 기관들의 관심이 <strong>NVIDIA보다 Salesforce에 훨씬 더 크다</strong>고 단언했다.</p>
+
+  <h3>왜 Salesforce인가?</h3>
+  <p>Salesforce는 단순한 CRM 기업이 아니라 <strong>소프트웨어 섹터 전체의 방향타</strong> 역할을 한다. 칩 섹터(NVIDIA 등)는 이미 회복 국면에 진입해 <strong>89%의 종목이 200일 이동평균선 위</strong>에 있는 반면, 소프트웨어 섹터는 여전히 심각한 하락 상태다.</p>
+
+  <div class="chart-container fade-in">
+    <div class="chart-title">칩 vs 소프트웨어: 200일 이동평균선 상회 비율</div>
+    <canvas id="chartChipVsSw" height="220"></canvas>
+  </div>
+
+  <div class="scenario-grid fade-in">
+    <div class="scenario-card bull">
+      <h4>🟢 가이던스 상향 시</h4>
+      <p>CRM 15%+ 급등 가능. 반토막 난 소프트웨어 종목들의 <strong>터닝포인트</strong>. 섹터 전반 강한 반등.</p>
+    </div>
+    <div class="scenario-card bear">
+      <h4>🔴 가이던스 하향 시</h4>
+      <p>소프트웨어 <strong>장기 불황</strong> 시나리오. CRM 추가 하락, 섹터 전반 투매 가능성.</p>
+    </div>
+  </div>
+
+  <h3>Salesforce (CRM) 현황</h3>
+  <table>
+    <thead><tr><th>지표</th><th>수치</th><th>의미</th></tr></thead>
+    <tbody>
+      <tr><td>주가</td><td>~$134</td><td class="red">고점 대비 거의 반토막</td></tr>
+      <tr><td>P/E</td><td>10대 중반</td><td class="red">소프트웨어로서는 이례적 저평가</td></tr>
+      <tr><td>기관보유율</td><td>81% → 45%</td><td class="red">기관 대거 이탈</td></tr>
+      <tr><td>컨센서스 목표가</td><td>하향 조정</td><td>실적 전 하향 리비전</td></tr>
+      <tr><td>핵심 변수</td><td><strong>가이던스</strong></td><td>매출 성장 전망이 모든 것을 결정</td></tr>
+    </tbody>
+  </table>
+
+  <h3>NVIDIA (NVDA) 관전 포인트</h3>
+  <table>
+    <thead><tr><th>지표</th><th>수치/전망</th></tr></thead>
+    <tbody>
+      <tr><td>예상 EPS</td><td>$1.45</td></tr>
+      <tr><td>매출 성장률</td><td>전년 동기 대비 <strong>70%+</strong> 예상</td></tr>
+      <tr><td>현재 P/E</td><td>약 23x</td></tr>
+      <tr><td>주가 시나리오</td><td class="green">$200+ 돌파</td></tr>
+      <tr><td></td><td class="red">또는 $169 이하로 하락</td></tr>
+      <tr><td>핵심</td><td><strong>가이던스 > 실적</strong> — 상회해도 가이던스가 낮으면 폭락</td></tr>
+    </tbody>
+  </table>
+
+  <div class="chart-container fade-in">
+    <div class="chart-title">주요 반도체 기업 P/E 비교</div>
+    <canvas id="chartPE" height="240"></canvas>
+  </div>
+</div>
+
+<!-- ═══════════ 4. STAGFLATION ═══════════ -->
+<div class="section fade-in">
+  <span class="section-label">Part 4</span>
+  <h2>스태그플레이션 리스크 — 이중 충격의 현실화</h2>
+
+  <p>지난주 발표된 경제지표에서 <strong>저성장(성장률 하락)</strong>과 <strong>고물가(예상 상회 인플레이션)</strong>가 동시에 확인됐다. 이는 연준이 가장 경계하는 조합인 <strong>스태그플레이션(Stagflation)</strong> 시그널이다.</p>
+
+  <div class="highlight-box">
+    <strong>스태그플레이션이란?</strong> 물가는 올라가는데 경제활동(소비·생산)은 위축되는 현상. "짜장면 값은 올라가는데 짜장면을 사 먹는 사람은 줄어드는 것"과 같다.
+  </div>
+
+  <div class="chart-container fade-in">
+    <div class="chart-title">스태그플레이션 진단 — 성장 vs 물가</div>
+    <canvas id="chartStagflation" height="220"></canvas>
+  </div>
+
+  <h3>물가 상승의 근본 원인: 관세</h3>
+  <p>지난 1년간의 관세 부과가 물가 상승의 <strong>최대 원인</strong>으로 지목된다. 기름값을 제외한 거의 모든 품목 — 식료품, 빵(밀가루), 야채, 서비스업, 자동차 가격이 상승했다. 자동차의 경우 2~3만 개 부품 중 미국에서 생산할 필요 없는 부속품(범퍼, 볼트, 너트 등)까지 국내 생산을 강요하면서 원가가 급등했다.</p>
+
+  <h3>연준의 딜레마</h3>
+  <p>연준 내부에서는 이례적으로 <strong>매파적(금리 인상) 의견</strong>이 부상하고 있다. 인플레이션이 재상승하는 상황에서 금리를 계속 낮추면 물가가 더 올라간다는 논리다. 게다가 <strong>5월 파월 의장 임기 만료</strong> 후 트럼프가 임명하는 새 의장은 매파적 성향이 예상되어, 금리 인상 가능성까지 열려 있다.</p>
+
+  <div class="metric-row fade-in">
+    <div class="metric-card">
+      <div class="value negative">↑</div>
+      <div class="label">물가상승률 (예상 상회)</div>
+    </div>
+    <div class="metric-card">
+      <div class="value negative">↓</div>
+      <div class="label">경제성장률 (하락)</div>
+    </div>
+  </div>
+
+  <div class="highlight-box warn">
+    <strong>하이테크 영향:</strong> 금리가 인상되면 성장주 전반에 부정적이다. 기업들의 투자 의욕이 감소하고, 자금 조달 비용이 올라간다. 다만 현재는 1개월치 데이터만으로 판단하기 이르며, <strong>경고(warning) 단계</strong>로 인식할 것.
+  </div>
+</div>
+
+<!-- ═══════════ 5. IRAN SCENARIO ═══════════ -->
+<div class="section fade-in">
+  <span class="section-label">Part 5</span>
+  <h2>이란 공격 시나리오 — 역사적으로 호재</h2>
+
+  <p>미국의 이란 공격 가능성이 높아지고 있다. 핵 항모 2척 이상, 핵 잠수함, 특수부대, 헬리콥터 부대가 호르무즈 해협에 배치된 상태로 <strong>전면전 양상</strong>이다. 그러나 역사적 데이터는 일방적인 군사작전이 증시에 <strong>부정적 영향이 없다</strong>는 것을 보여준다.</p>
+
+  <div class="chart-container fade-in">
+    <div class="chart-title">전쟁/군사행동 후 1년 S&P 500 성과</div>
+    <canvas id="chartWar" height="240"></canvas>
+  </div>
+
+  <table>
+    <thead><tr><th>사건</th><th>배경</th><th>이후 증시</th></tr></thead>
+    <tbody>
+      <tr><td><strong>2차 세계대전 (1938~)</strong></td><td>대공황 10년 후, 군수산업 발전</td><td class="green">경제 활황 전환</td></tr>
+      <tr><td><strong>아프간 전쟁 (2001)</strong></td><td>닷컴 버블 붕괴 + 9/11</td><td class="green">경기 회복</td></tr>
+      <tr><td><strong>러-우 전쟁 (2022)</strong></td><td>인플레이션 급등, 금리 인상기</td><td class="green">이후 강세장</td></tr>
+    </tbody>
+  </table>
+
+  <div class="highlight-box info">
+    <strong>결론:</strong> S&P 500은 전쟁 시작 후 1년 내 <strong>9번 이상 상승</strong>한 역사가 있다. 미국이 이란을 공격하면 기관들은 이를 <strong>"기회"</strong>로 판단할 가능성이 크다. 안 해도 마찬가지 — 증시에 큰 영향 없음.
+  </div>
+</div>
+
+<!-- ═══════════ 6. INDIVIDUAL STOCKS ═══════════ -->
+<div class="section fade-in">
+  <span class="section-label">Part 6</span>
+  <h2>개별 종목 동향 — Companies on the Move</h2>
+
+  <table>
+    <thead><tr><th>종목</th><th>등락</th><th>이슈</th></tr></thead>
+    <tbody>
+      <tr><td><strong>노보노디스크</strong></td><td class="red">-15%</td><td>비만치료제 CagriSema 임상실험 결과 미달</td></tr>
+      <tr><td><strong>도어대시</strong></td><td class="red">-3%</td><td>폭풍으로 미 동부해안 서비스 중단</td></tr>
+      <tr><td><strong>홈디포</strong></td><td class="red">하락</td><td>내일 아침 실적 발표 앞두고 선반영</td></tr>
+      <tr><td><strong>JP Morgan</strong></td><td class="red">-3~4%</td><td>이자 소득 약간 하락 발표</td></tr>
+      <tr><td><strong>도미노피자</strong></td><td class="green">+6%</td><td>EPS 하회에도 저점 반등 — 장기투자 유효</td></tr>
+      <tr><td><strong>애플로빈</strong></td><td class="red">-10%</td><td>SEC 조사 (타겟 광고 강제 혐의), YTD -43%</td></tr>
+      <tr><td><strong>알슬렉스</strong></td><td class="green">+79%</td><td>길리어드 인수합병 발표</td></tr>
+    </tbody>
+  </table>
+
+  <h3>애플로빈 (AppLovin) 심층</h3>
+  <p>2월 11일 분기실적에서 매출·EPS 모두 상회했으나, <strong>2월 20일 SEC 조사</strong> 소식에 폭락했다. 모바일 마케팅 플랫폼에서의 소비자 심리 타겟 광고 강제 혐의를 받고 있다. P/E가 26으로 하락해 <strong>"소프트웨어 회사가 은행주 수준의 밸류에이션"</strong>이라는 이례적 상황이다. 소프트웨어 기업의 프로핏 마진이 60%+ 인 점을 감안하면 극단적 저평가 영역이다.</p>
+
+  <h3>섹터별 자금 흐름</h3>
+  <div class="chart-container fade-in">
+    <div class="chart-title">강화 vs 약화 섹터</div>
+    <canvas id="chartFlow" height="220"></canvas>
+  </div>
+</div>
+
+<!-- ═══════════ 7. REAL ESTATE & RATES ═══════════ -->
+<div class="section fade-in">
+  <span class="section-label">Part 7</span>
+  <h2>부동산·금리 — 경고등</h2>
+
+  <p>미국 부동산 시장에 경고 신호가 켜졌다. 부동산 경기 부정적 전망이 우세하며, 중앙금리 인하 유예 또는 인상 시 부동산 경기가 <strong>급격히 악화</strong>될 가능성이 제기된다. 전기차 세제 혜택 폐지(대당 $7,000)로 자동차 판매도 부진하며, 전반적인 소비 위축 징후가 나타나고 있다.</p>
+
+  <div class="highlight-box warn">
+    <strong>부동산 관련자 주목:</strong> 금리 인상 가능성이 커지면서 주택담보대출 금리 재상승 위험이 있다. 부동산 섹터 투자 비중 점검이 필요한 시점.
+  </div>
+</div>
+
+<!-- ═══════════ 8. INVESTMENT IMPLICATIONS ═══════════ -->
+<div class="section fade-in">
+  <span class="section-label">Part 8</span>
+  <h2>투자 시사점 — 변동성 속의 기회</h2>
+
+  <h3>핵심 판단 프레임워크</h3>
+  <table>
+    <thead><tr><th>변수</th><th>현재 상태</th><th>투자 시사점</th></tr></thead>
+    <tbody>
+      <tr><td>관세 정책</td><td>노이즈 (소멸 가능)</td><td>원칙 변경 불필요</td></tr>
+      <tr><td>스태그플레이션</td><td>경고 단계 (1개월치)</td><td>인지하되 과잉반응 금지</td></tr>
+      <tr><td>소프트웨어 밸류에이션</td><td>역사적 저평가</td><td>CRM 가이던스가 터닝포인트</td></tr>
+      <tr><td>NVIDIA</td><td>가이던스 > 실적</td><td>$200 또는 $169 양극단</td></tr>
+      <tr><td>이란 리스크</td><td>중립~호재</td><td>군사행동 시 기회로 활용</td></tr>
+      <tr><td>기관 다이버전스</td><td>없음</td><td>대규모 매도 시그널 아직 없음</td></tr>
+    </tbody>
+  </table>
+
+  <h3>주요 시나리오</h3>
+  <div class="scenario-grid fade-in">
+    <div class="scenario-card bull">
+      <h4>🟢 Best Case</h4>
+      <p>CRM·NVDA 가이던스 상향 → 소프트웨어 섹터 반등 + 관세 노이즈 소멸 → S&P 7,000 돌파 시도</p>
+    </div>
+    <div class="scenario-card bear">
+      <h4>🔴 Worst Case</h4>
+      <p>가이던스 하향 + 15% 관세 현실화 + 매파적 연준 → 박스권 연장, 성장주 추가 하락</p>
+    </div>
+  </div>
+
+  <div class="pull-quote fade-in">
+    "주요 하락을 촉발하는 부정적 다이버전스는 아직 없다. 기관의 대규모 이탈은 발생하지 않았다."
+    <cite>투자는인생TV</cite>
+  </div>
+
+  <p>시장은 이미 트럼프의 발언과 번복에 <strong>어느 정도 면역</strong>이 형성되어 있다. 1년간의 학습 효과로 "심각하게 받아들이되, 덜 심각하게 반응"하는 패턴이 정착됐다. S&P 500이 7,000을 넘지 못하는 박스권이 계속되고 있으나, 2월 결산이 부정적으로 마무리되면 연간 전망에도 부담이 될 수 있다.</p>
+</div>
+
+<!-- ═══════════ TAGS & FOOTER ═══════════ -->
+<div class="section fade-in" style="padding-bottom: 20px;">
+  <span class="tag">관세 위헌 판결</span>
+  <span class="tag">Salesforce</span>
+  <span class="tag">NVIDIA</span>
+  <span class="tag">스태그플레이션</span>
+  <span class="tag">이란 리스크</span>
+  <span class="tag">소프트웨어 밸류에이션</span>
+  <span class="tag">연준 매파</span>
+  <span class="tag">S&P 500</span>
+</div>
+
+</div><!-- end container -->
+
+<footer class="footer">
+  <p>본 문서는 <a href="https://www.youtube.com/watch?v=TKlXSZ60vv8&t=2s" target="_blank">투자는인생TV (2026.02.24)</a> 방송 내용을 기반으로 미국 증시 관점에서 재구성한 분석 자료입니다.</p>
+  <p style="margin-top:8px;">투자 판단의 최종 책임은 투자자 본인에게 있습니다.</p>
+</footer>
+
+<script>
+// ═══════════ Observer 1: 일반 fade-in ═══════════
+const fadeObs = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), i * 80);
+      fadeObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.12 });
+document.querySelectorAll('.fade-in').forEach(el => fadeObs.observe(el));
+
+// ═══════════ Chart Configs (정의만, 직접 호출 금지) ═══════════
+const chartConfigs = {};
+
+// Chart 1: Market Indices
+chartConfigs['chartIndices'] = () => {
+  new Chart(document.getElementById('chartIndices'), {
+    type: 'bar',
+    data: {
+      labels: ['다우존스', 'S&P 500', '나스닥'],
+      datasets: [{
+        label: '수익률 (%)',
+        data: [-1.66, -1.2, -1.13],
+        backgroundColor: ['#e11d48', '#6b7280', '#2563eb'],
+        borderRadius: 4,
+        barPercentage: 0.6
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      animation: { duration: 1500, easing: 'easeInOutQuart', delay: (ctx) => ctx.dataIndex * 150 },
+      animations: { y: { from: 0 } },
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: ctx => ctx.parsed.y.toFixed(2) + '%' } }
+      },
+      scales: {
+        y: { grid: { color: '#e5e5e5' }, ticks: { callback: v => v + '%' } },
+        x: { grid: { display: false } }
+      }
+    }
+  });
+};
+
+// Chart 2: Sector Performance
+chartConfigs['chartSector'] = () => {
+  new Chart(document.getElementById('chartSector'), {
+    type: 'bar',
+    data: {
+      labels: ['에너지', '커뮤니케이션', '유틸리티', '인더스트리얼', '파이낸셜', '컨슈머', '테크', '헬스케어'],
+      datasets: [{
+        label: '한 달 변화',
+        data: [4.2, 3.5, 2.8, 1.9, 0.5, 0.3, -0.8, -0.4],
+        backgroundColor: ctx => ctx.parsed.x >= 0 ? '#16a34a' : '#e11d48',
+        borderRadius: 3,
+        barPercentage: 0.65
+      }]
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true,
+      maintainAspectRatio: false,
+      animation: { duration: 1500, easing: 'easeInOutQuart', delay: (ctx) => ctx.dataIndex * 120 },
+      animations: { x: { from: 0 } },
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: ctx => ctx.parsed.x.toFixed(1) + '%' } }
+      },
+      scales: {
+        x: { grid: { color: '#e5e5e5' }, ticks: { callback: v => v + '%' } },
+        y: { grid: { display: false } }
+      }
+    }
+  });
+};
+
+// Chart 3: Chip vs Software
+chartConfigs['chartChipVsSw'] = () => {
+  new Chart(document.getElementById('chartChipVsSw'), {
+    type: 'bar',
+    data: {
+      labels: ['칩 섹터 (NVDA 등)', '소프트웨어 섹터'],
+      datasets: [{
+        label: '200일 이평선 상회 비율 (%)',
+        data: [89, 32],
+        backgroundColor: ['#2563eb', '#e11d48'],
+        borderRadius: 4,
+        barPercentage: 0.5
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      animation: { duration: 1500, easing: 'easeInOutQuart', delay: (ctx) => ctx.dataIndex * 150 },
+      animations: { y: { from: 0 } },
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: ctx => ctx.parsed.y + '%' } }
+      },
+      scales: {
+        y: { max: 100, grid: { color: '#e5e5e5' }, ticks: { callback: v => v + '%' } },
+        x: { grid: { display: false } }
+      }
+    }
+  });
+};
+
+// Chart 4: P/E Ratios
+chartConfigs['chartPE'] = () => {
+  new Chart(document.getElementById('chartPE'), {
+    type: 'bar',
+    data: {
+      labels: ['ARM', 'Broadcom (AVGO)', 'AMD', 'NVIDIA', 'Marvell', 'AppLovin'],
+      datasets: [{
+        label: 'P/E Ratio',
+        data: [62, 29, 29, 23, 23, 26],
+        backgroundColor: ['#e11d48', '#1a1a1a', '#6b7280', '#2563eb', '#6b7280', '#f43f5e'],
+        borderRadius: 3,
+        barPercentage: 0.6
+      }]
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true,
+      maintainAspectRatio: false,
+      animation: { duration: 1500, easing: 'easeInOutQuart', delay: (ctx) => ctx.dataIndex * 120 },
+      animations: { x: { from: 0 } },
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { grid: { color: '#e5e5e5' }, ticks: { callback: v => v + 'x' } },
+        y: { grid: { display: false } }
+      }
+    }
+  });
+};
+
+// Chart 5: Stagflation
+chartConfigs['chartStagflation'] = () => {
+  new Chart(document.getElementById('chartStagflation'), {
+    type: 'bar',
+    data: {
+      labels: ['경제성장률', '물가상승률'],
+      datasets: [
+        {
+          label: '시장 예상',
+          data: [2.3, 2.5],
+          backgroundColor: '#6b7280',
+          borderRadius: 3,
+          barPercentage: 0.4
+        },
+        {
+          label: '실제 발표',
+          data: [1.8, 3.1],
+          backgroundColor: '#e11d48',
+          borderRadius: 3,
+          barPercentage: 0.4
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      animation: { duration: 1500, easing: 'easeInOutQuart', delay: (ctx) => ctx.dataIndex * 150 },
+      animations: { y: { from: 0 } },
+      plugins: {
+        legend: { position: 'bottom', labels: { font: { size: 11 }, padding: 16 } }
+      },
+      scales: {
+        y: { grid: { color: '#e5e5e5' }, ticks: { callback: v => v + '%' } },
+        x: { grid: { display: false } }
+      }
+    }
+  });
+};
+
+// Chart 6: War Impact on S&P 500
+chartConfigs['chartWar'] = () => {
+  new Chart(document.getElementById('chartWar'), {
+    type: 'bar',
+    data: {
+      labels: ['2차 세계대전\n(1938)', '한국전쟁\n(1950)', '걸프전\n(1990)', '아프간\n(2001)', '이라크\n(2003)', '리비아\n(2011)', '시리아\n(2014)', '러-우\n(2022)', '평균'],
+      datasets: [{
+        label: '1년 후 S&P 500 변화 (%)',
+        data: [12, 18, 24, 15, 22, 14, 11, 19, 16.9],
+        backgroundColor: ctx => ctx.dataIndex === 8 ? '#2563eb' : '#16a34a',
+        borderRadius: 3,
+        barPercentage: 0.65
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      animation: { duration: 1500, easing: 'easeInOutQuart', delay: (ctx) => ctx.dataIndex * 120 },
+      animations: { y: { from: 0 } },
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: ctx => '+' + ctx.parsed.y + '%' } }
+      },
+      scales: {
+        y: { grid: { color: '#e5e5e5' }, ticks: { callback: v => '+' + v + '%' } },
+        x: { grid: { display: false }, ticks: { font: { size: 10 }, maxRotation: 45 } }
+      }
+    }
+  });
+};
+
+// Chart 7: Sector Flow
+chartConfigs['chartFlow'] = () => {
+  new Chart(document.getElementById('chartFlow'), {
+    type: 'doughnut',
+    data: {
+      labels: ['유틸리티 (강화)', '부동산 (강화)', '커뮤니케이션 (약화)', '테크 (약화)'],
+      datasets: [{
+        data: [30, 25, 22, 23],
+        backgroundColor: ['#16a34a', '#2563eb', '#e11d48', '#f43f5e'],
+        borderWidth: 2,
+        borderColor: '#ffffff'
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      animation: { animateRotate: true, animateScale: true, duration: 2000, easing: 'easeInOutQuart' },
+      plugins: {
+        legend: { position: 'bottom', labels: { font: { size: 11 }, padding: 12 } }
+      }
+    }
+  });
+};
+
+// ═══════════ Observer 2: 차트 전용 ═══════════
+const chartObs = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const canvas = entry.target.querySelector('canvas');
+      if (canvas && chartConfigs[canvas.id]) {
+        setTimeout(() => {
+          chartConfigs[canvas.id]();
+          entry.target.classList.add('chart-ready');
+          delete chartConfigs[canvas.id];
+        }, 200);
+      }
+      chartObs.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.25 });
+
+document.querySelectorAll('.chart-container').forEach(el => chartObs.observe(el));
+</script>
+</body>
+</html>
