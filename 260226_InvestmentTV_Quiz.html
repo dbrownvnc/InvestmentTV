@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>엔비디아 실적 분석 — 시험문제 10선</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&family=Playfair+Display:wght@700&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Noto Sans KR', sans-serif; background: #fff; color: #1a1a1a; line-height: 1.8; }
+
+  .header {
+    background: #1a1a1a;
+    color: #fff;
+    padding: 40px 20px;
+    text-align: center;
+  }
+  .header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px;
+    margin-bottom: 8px;
+  }
+  .header p { font-size: 13px; color: rgba(255,255,255,0.5); }
+
+  .container { max-width: 680px; margin: 0 auto; padding: 0 20px; }
+
+  .tab-bar {
+    display: flex;
+    gap: 0;
+    margin-top: 24px;
+    border-bottom: 2px solid #e5e5e5;
+    position: sticky;
+    top: 0;
+    background: #fff;
+    z-index: 10;
+  }
+  .tab-btn {
+    flex: 1;
+    padding: 14px 0;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    background: none;
+    color: #777;
+    transition: all 0.3s;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px;
+  }
+  .tab-btn.active {
+    color: #e11d48;
+    border-bottom-color: #e11d48;
+  }
+
+  .tab-content { display: none; padding: 30px 0; }
+  .tab-content.active { display: block; }
+
+  .question-card {
+    background: #fafafa;
+    border: 1px solid #e5e5e5;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+  .q-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .q-number {
+    background: #e11d48;
+    color: #fff;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .q-meta {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+  .q-type {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 4px;
+    background: rgba(225,29,72,0.1);
+    color: #e11d48;
+  }
+  .q-diff {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 4px;
+  }
+  .diff-easy { background: rgba(22,163,74,0.1); color: #16a34a; }
+  .diff-mid { background: rgba(37,99,235,0.1); color: #2563eb; }
+  .diff-hard { background: rgba(225,29,72,0.1); color: #e11d48; }
+
+  .q-text {
+    font-size: 15px;
+    font-weight: 500;
+    margin-bottom: 14px;
+    line-height: 1.7;
+  }
+
+  .options { list-style: none; padding: 0; }
+  .options li {
+    padding: 10px 14px;
+    margin-bottom: 6px;
+    background: #fff;
+    border: 1px solid #e5e5e5;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: default;
+  }
+
+  /* Answer section */
+  .answer-card {
+    background: #fafafa;
+    border: 1px solid #e5e5e5;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+  .a-correct {
+    display: inline-block;
+    background: #e11d48;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 6px;
+    margin-bottom: 10px;
+  }
+  .a-explain {
+    font-size: 14px;
+    line-height: 1.8;
+    color: #333;
+  }
+
+  .footer {
+    text-align: center;
+    padding: 30px 20px;
+    font-size: 12px;
+    color: #aaa;
+    border-top: 1px solid #e5e5e5;
+    margin-top: 20px;
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>📝 시험문제 10선</h1>
+  <p>엔비디아 실적 발표 특별 분석 기반 | 난이도: 쉬움 30% · 보통 50% · 어려움 20%</p>
+</div>
+
+<div class="container">
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="showTab('questions')">📋 문제</button>
+    <button class="tab-btn" onclick="showTab('answers')">✅ 정답 & 해설</button>
+  </div>
+
+  <!-- ═══════ 문제 탭 ═══════ -->
+  <div id="questions" class="tab-content active">
+
+    <!-- Q1 -->
+    <div class="question-card">
+      <div class="q-header">
+        <div class="q-number">1</div>
+        <div class="q-meta">
+          <span class="q-type">OX</span>
+          <span class="q-diff diff-easy">쉬움</span>
+        </div>
+      </div>
+      <div class="q-text">엔비디아의 FY2026 Q4 실적에서 전년 대비 매출 성장률은 약 73%를 기록했다.</div>
+      <ul class="options">
+        <li>⭕ O (맞다)</li>
+        <li>❌ X (틀리다)</li>
+      </ul>
+    </div>
+
+    <!-- Q2 -->
+    <div class="question-card">
+      <div class="q-header">
+        <div class="q-number">2</div>
+        <div class="q-meta">
+          <span class="q-type">객관식</span>
+          <span class="q-diff diff-easy">쉬움</span>
+        </div>
+      </div>
+      <div class="q-text">엔비디아의 현재 주가가 돌파해야 하는 핵심 저항선은 얼마인가?</div>
+      <ul class="options">
+        <li>① $165</li>
+        <li>② $188</li>
+        <li>③ $200</li>
+        <li>④ $245</li>
+      </ul>
+    </div>
+
+    <!-- Q3 -->
+    <div class="question-card">
+      <div class="q-header">
+        <div class="q-number">3</div>
+        <div class="q-meta">
+          <span class="q-type">단답형</span>
+          <span class="q-diff diff-easy">쉬움</span>
+        </div>
+      </div>
+      <div class="q-text">방송에서 권장한 포트폴리오 내 단일 종목 최대 비중(상한선)은 몇 % 이내인가?</div>
+    </div>
+
+    <!-- Q4 -->
+    <div class="question-card">
+      <div class="q-header">
+        <div class="q-number">4</div>
+        <div class="q-meta">
+          <span class="q-type">객관식</span>
+          <span class="q-diff diff-mid">보통</span>
+        </div>
+      </div>
+      <div class="q-text">엔비디아 주가가 4개월 이상 박스권에 갇혀있는 근본적 원인으로 지적된 것은?</div>
+      <ul class="options">
+        <li>① 엔비디아의 기술력 부족</li>
+        <li>② 하이퍼스케일러들이 빚을 내서 AI 칩을 구매하고 있어 지속 가능성에 대한 불확실성</li>
+        <li>③ 중국의 엔비디아 칩 불매 운동</li>
+        <li>④ 게이밍 부문의 매출 급감</li>
+      </ul>
+    </div>
+
+    <!-- Q5 -->
+    <div class="question-card">
+      <div class="q-header">
+        <div class="q-number">5</div>
+        <div class="q-meta">
+          <span class="q-type">객관식</span>
+          <span class="q-diff diff-mid">보통</span>
+        </div>
+      </div>
+      <div class="q-text">이번 엔비디아 실적에서 중국 관련 매출이 제외된 이유와 그 매출이 전체에서 차지하는 비중은?</div>
+      <ul class="options">
+        <li>① 중국 시장 철수 — 약 25%</li>
+        <li>② AI 칩 수출 규제 — 약 10%</li>
+        <li>③ 환율 문제 — 약 5%</li>
+        <li>④ 중국 자체 칩 개발 — 약 15%</li>
+      </ul>
+    </div>
+
+    <!-- Q6 -->
+    <div class="question-card">
+      <div class="q-header">
+        <div class="q-number">6</div>
+        <div class="q-meta">
+          <span class="q-type">OX</span>
+          <span class="q-diff diff-mid">보통</span>
+        </div>
+      </div>
+      <div class="q-text">방송 진행자에 따르면, SaaS(소프트웨어 서비스)는 AI의 발전으로 인해 도태될 것이다.</div>
+      <ul class="options">
+        <li>⭕ O (맞다)</li>
+        <li>❌ X (틀리다)</li>
+      </ul>
+    </div>
+
+    <!-- Q7 -->
+    <div class="question-card">
+      <div class="q-header">
+        <div class="q-number">7</div>
+        <div class="q-meta">
+          <span class="q-type">객관식</span>
+          <span class="q-diff diff-mid">보통</span>
+        </div>
+      </div>
+      <div class="q-text">엔비디아의 기관투자자 보유율 변화를 올바르게 설명한 것은?</div>
+      <ul class="options">
+        <li>① 41%에서 60%로 상승</li>
+        <li>② 60%에서 41%로 하락</li>
+        <li>③ 50%에서 변동 없음</li>
+        <li>④ 80%에서 60%로 하락</li>
+      </ul>
+    </div>
+
+    <!-- Q8 -->
+    <div class="question-card">
+      <div class="q-header">
+        <div class="q-number">8</div>
+        <div class="q-meta">
+          <span class="q-type">단답형</span>
+          <span class="q-diff diff-mid">보통</span>
+        </div>
+      </div>
+      <div class="q-text">젠슨 황 CEO가 언급한, 단순 생성AI를 넘어서 자율적으로 판단하고 실행하는 차세대 AI 패러다임의 이름은 무엇인가?</div>
+    </div>
+
+    <!-- Q9 -->
+    <div class="question-card">
+      <div class="q-header">
+        <div class="q-number">9</div>
+        <div class="q-meta">
+          <span class="q-type">객관식</span>
+          <span class="q-diff diff-hard">어려움</span>
+        </div>
+      </div>
+      <div class="q-text">반도체 산업이 '사이클리컬(Cyclical)'하다는 것의 투자적 의미를 가장 정확하게 설명한 것은?</div>
+      <ul class="options">
+        <li>① 반도체 주가는 항상 우상향하므로 장기 보유가 최선이다</li>
+        <li>② 수요가 강할 때 폭발적 성장이 가능하나, 경쟁 심화·수요 둔화 시 가격과 수요가 동시에 하락해 큰 폭의 조정이 올 수 있다</li>
+        <li>③ 반도체 기업의 매출은 계절성에만 영향을 받는다</li>
+        <li>④ 사이클리컬 산업은 안전자산과 동일한 변동성을 보인다</li>
+      </ul>
+    </div>
+
+    <!-- Q10 -->
+    <div class="question-card">
+      <div class="q-header">
+        <div class="q-number">10</div>
+        <div class="q-meta">
+          <span class="q-type">서술형</span>
+          <span class="q-diff diff-hard">어려움</span>
+        </div>
+      </div>
+      <div class="q-text">엔비디아의 실적이 매출·EPS·가이던스 모두 시장 컨센서스를 상회('트리플 비트')했음에도 주가가 +9%까지 상승하지 못한 이유를 거시경제적 관점과 시장 구조적 관점에서 각각 설명하시오.</div>
+    </div>
+
+  </div>
+
+  <!-- ═══════ 정답 & 해설 탭 ═══════ -->
+  <div id="answers" class="tab-content">
+
+    <!-- A1 -->
+    <div class="answer-card">
+      <div class="q-header">
+        <div class="q-number">1</div>
+      </div>
+      <div class="a-correct">정답: O (맞다)</div>
+      <div class="a-explain">엔비디아의 FY2026 Q4 매출은 전년 대비 약 73% 성장했다. 방송 진행자는 사전에 "70% 이상이면 좋겠다"고 밝혔으며, 67% 미만 시 동반 폭락장 가능성이 있다고 경고했다. 실제로 73%를 기록하며 이 기준을 상회했다.</div>
+    </div>
+
+    <!-- A2 -->
+    <div class="answer-card">
+      <div class="q-header">
+        <div class="q-number">2</div>
+      </div>
+      <div class="a-correct">정답: ③ $200</div>
+      <div class="a-explain">엔비디아 주가의 핵심 저항선은 $200이다. 이 가격대를 돌파하면 $230~$245까지 빠르게 상승할 수 있다는 분석이지만, 4개월 이상 $188 내외 박스권에서 이 저항선을 돌파하지 못하고 있다. $245는 저항선이 아니라 돌파 후 목표가다.</div>
+    </div>
+
+    <!-- A3 -->
+    <div class="answer-card">
+      <div class="q-header">
+        <div class="q-number">3</div>
+      </div>
+      <div class="a-correct">정답: 20%</div>
+      <div class="a-explain">방송에서는 아무리 좋은 주식이라도 단일 종목 비중이 20%를 넘지 않도록 권장했다. 이상적으로는 10~15% 내외가 적절하며, 엔비디아를 50%씩 보유하고 있는 투자자들에게 강하게 경고했다.</div>
+    </div>
+
+    <!-- A4 -->
+    <div class="answer-card">
+      <div class="q-header">
+        <div class="q-number">4</div>
+      </div>
+      <div class="a-correct">정답: ② 하이퍼스케일러들이 빚을 내서 AI 칩을 구매하고 있어 지속 가능성에 대한 불확실성</div>
+      <div class="a-explain">엔비디아의 주요 고객(하이퍼스케일러)들이 영업이익만으로는 부족해 차입을 통해 AI 인프라에 투자하고 있다. 이들이 "언제까지 빚을 내서 살지 모른다"는 불확실성이 주가의 추가 상승을 제한하는 핵심 원인이다. 경제 성장 둔화 시 이 투자가 급격히 위축될 수 있다는 우려가 반영되어 있다.</div>
+    </div>
+
+    <!-- A5 -->
+    <div class="answer-card">
+      <div class="q-header">
+        <div class="q-number">5</div>
+      </div>
+      <div class="a-correct">정답: ② AI 칩 수출 규제 — 약 10%</div>
+      <div class="a-explain">미국 정부의 AI 칩 대중 수출 규제로 인해 중국 관련 매출이 이번 실적에서 완전히 제외됐다. 중국은 엔비디아 전체 매출의 약 10%를 차지하는 시장이다. 향후 저성능 AI 칩 구매가 이뤄지면 추가 매출 상승 가능성이 있다.</div>
+    </div>
+
+    <!-- A6 -->
+    <div class="answer-card">
+      <div class="q-header">
+        <div class="q-number">6</div>
+      </div>
+      <div class="a-correct">정답: X (틀리다)</div>
+      <div class="a-explain">방송 진행자는 "SaaS는 도태되는 것이 아니라 AI를 통해 혁신되는 과정"이라고 명확히 밝혔다. 타자기가 컴퓨터로 대체됐지만 '입력'이라는 행위 자체가 사라지지 않았듯이, AI는 SaaS를 대체하는 것이 아니라 더 효율적이고 강력하게 만드는 도구라는 것이 핵심 논리다. ChatGPT 같은 범용 AI는 제너럴리스트이고, 특정 비즈니스 영역(CRM 등)에는 전문 SaaS가 여전히 필요하다.</div>
+    </div>
+
+    <!-- A7 -->
+    <div class="answer-card">
+      <div class="q-header">
+        <div class="q-number">7</div>
+      </div>
+      <div class="a-correct">정답: ② 60%에서 41%로 하락</div>
+      <div class="a-explain">엔비디아의 기관투자자 보유율은 작년 약 60%에서 현재 41%로 약 19%p 하락했다. 경쟁 심화, 중국 수출 규제, 이익 실현 등 세 가지가 주요 원인이다. 다만, 이번 실적 서프라이즈 이후 기관 매입량이 다시 늘어날 것으로 전망된다.</div>
+    </div>
+
+    <!-- A8 -->
+    <div class="answer-card">
+      <div class="q-header">
+        <div class="q-number">8</div>
+      </div>
+      <div class="a-correct">정답: 에이전틱 AI (Agentic AI)</div>
+      <div class="a-explain">젠슨 황 CEO는 "에이전틱 AI(Agentic AI)의 전환점이 도래했다"고 발언했다. 에이전틱 AI란 단순히 텍스트를 생성하는 수준을 넘어, 자율적으로 판단하고 작업을 실행하는 AI 에이전트를 의미한다. 이는 AI 칩 수요를 한 단계 더 끌어올릴 수 있는 핵심 트렌드다.</div>
+    </div>
+
+    <!-- A9 -->
+    <div class="answer-card">
+      <div class="q-header">
+        <div class="q-number">9</div>
+      </div>
+      <div class="a-correct">정답: ② 수요가 강할 때 폭발적 성장이 가능하나, 경쟁 심화·수요 둔화 시 가격과 수요가 동시에 하락해 큰 폭의 조정이 올 수 있다</div>
+      <div class="a-explain">사이클리컬(Cyclical) 산업은 경기 순환에 민감하게 반응하는 산업을 뜻한다. 수요가 강할 때는 많이 팔리지만, 경쟁이 심화되면 가격이 하락하고 동시에 수요까지 줄어들 경우 "반 토막"이 나는 구간이 반드시 찾아온다. 따라서 반도체 종목에만 과도하게 집중하는 것은 위험하며, 섹터 분산이 필수적이다.</div>
+    </div>
+
+    <!-- A10 -->
+    <div class="answer-card">
+      <div class="q-header">
+        <div class="q-number">10</div>
+      </div>
+      <div class="a-correct">정답: 모범답안</div>
+      <div class="a-explain">
+        <strong>[거시경제적 관점]</strong> 하이퍼스케일러(빅테크)들이 영업이익만으로 AI 투자를 감당하지 못하고 차입을 통해 칩을 구매하고 있다. 경제 성장률이 둔화되거나 스태그플레이션이 현실화되면 이들의 투자 속도와 주문량이 급격히 줄어들 수 있다. "가격은 올라가고 구매자는 줄어드는 상황"이 최대 리스크이며, 시장은 이 불확실성을 이미 주가에 반영하고 있다.
+        <br><br>
+        <strong>[시장 구조적 관점]</strong> ① 기관투자자 보유율이 60%→41%로 하락하면서 매수세 약화 ② 중국 수출 규제로 매출의 ~10%가 불확실한 상태 ③ AMD, 자체 칩 개발 등 경쟁 심화 ④ $200 기술적 저항선에서 반복 저항을 받고 있어 심리적 벽 형성. 이러한 복합적 요인이 실적 서프라이즈에도 불구하고 주가의 폭발적 상승을 제한하고 있다.
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    엔비디아 실적 발표 특별 분석 — 시험문제 10선<br>
+    출처: 투자는인생TV (2026.02.26)
+  </div>
+</div>
+
+<script>
+function showTab(id) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.target.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+
+</body>
+</html>
