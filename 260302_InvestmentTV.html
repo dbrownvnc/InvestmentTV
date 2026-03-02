@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>이란 폭격과 미국 증시 분석 | 2026.03.02</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #ffffff;
+      --bg2: #fafafa;
+      --text: #1a1a1a;
+      --text2: #777777;
+      --accent: #e11d48;
+      --accent2: #f43f5e;
+      --border: #e5e5e5;
+      --c1: #e11d48;
+      --c2: #1a1a1a;
+      --c3: #6b7280;
+      --c4: #2563eb;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      line-height: 1.7;
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 0 20px 60px;
+    }
+
+    /* FADE IN */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* CHART CONTAINER */
+    .chart-container {
+      position: relative;
+      max-height: 340px;
+    }
+    .chart-container canvas {
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      max-height: 300px;
+    }
+    .chart-container.chart-ready canvas {
+      opacity: 1;
+    }
+
+    /* HEADER */
+    .hero {
+      border-bottom: 3px solid var(--accent);
+      padding: 48px 0 28px;
+      margin-bottom: 8px;
+    }
+    .hero-tag {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 2.5px;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(28px, 7vw, 38px);
+      font-weight: 900;
+      line-height: 1.15;
+      color: var(--text);
+      margin-bottom: 16px;
+    }
+    .hero h1 span { color: var(--accent); }
+    .hero-sub {
+      font-family: 'Source Serif 4', serif;
+      font-size: 15px;
+      color: var(--text2);
+      font-style: italic;
+      line-height: 1.6;
+    }
+    .hero-meta {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+      font-size: 11px;
+      color: var(--text2);
+      letter-spacing: 0.5px;
+    }
+    .hero-meta strong { color: var(--text); }
+
+    /* SECTION */
+    section { margin-top: 40px; }
+
+    .section-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+    h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 14px;
+      line-height: 1.3;
+    }
+    p {
+      color: var(--text);
+      margin-bottom: 12px;
+      font-size: 14.5px;
+    }
+    strong.hl { color: var(--accent); font-weight: 600; }
+
+    /* DIVIDER */
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 36px 0;
+    }
+
+    /* CALLOUT */
+    .callout {
+      background: var(--bg2);
+      border-left: 4px solid var(--accent);
+      padding: 16px 18px;
+      margin: 20px 0;
+      border-radius: 0 6px 6px 0;
+    }
+    .callout p {
+      margin: 0;
+      font-family: 'Source Serif 4', serif;
+      font-size: 14px;
+      color: var(--text);
+      font-style: italic;
+    }
+
+    /* CARD GRID */
+    .card-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin: 16px 0;
+    }
+    .card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+    }
+    .card-title {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--text2);
+      margin-bottom: 6px;
+    }
+    .card-value {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--accent);
+    }
+    .card-desc {
+      font-size: 11.5px;
+      color: var(--text2);
+      margin-top: 4px;
+    }
+
+    /* TABLE */
+    .tbl-wrap {
+      overflow-x: auto;
+      margin: 18px 0;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--bg2);
+      font-size: 13px;
+    }
+    thead tr { background: var(--accent); color: #fff; }
+    th { padding: 11px 13px; text-align: left; font-weight: 600; font-size: 12px; letter-spacing: 0.3px; }
+    td { padding: 10px 13px; border-bottom: 1px solid var(--border); color: var(--text); }
+    tbody tr:last-child td { border-bottom: none; }
+    tbody tr:hover { background: #fff5f7; }
+
+    /* RISK BADGE */
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+    .badge-red { background: #fee2e2; color: #dc2626; }
+    .badge-green { background: #dcfce7; color: #16a34a; }
+    .badge-gray { background: #f3f4f6; color: #6b7280; }
+    .badge-blue { background: #dbeafe; color: #2563eb; }
+
+    /* BOTTOM NOTE */
+    .bottom-note {
+      margin-top: 44px;
+      padding: 20px;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+    }
+    .bottom-note h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 16px;
+      margin-bottom: 10px;
+      color: var(--text);
+    }
+    .bottom-note ul {
+      padding-left: 18px;
+    }
+    .bottom-note li {
+      font-size: 13.5px;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+
+    /* PULL QUOTE */
+    .pull-quote {
+      margin: 28px 0;
+      padding: 0 0 0 20px;
+      border-left: 3px solid var(--accent);
+    }
+    .pull-quote p {
+      font-family: 'Playfair Display', serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.4;
+      margin: 0;
+    }
+
+    .chart-title {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text2);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 10px;
+    }
+    .chart-note {
+      font-size: 11px;
+      color: var(--text2);
+      margin-top: 8px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero fade-in">
+  <div class="hero-tag">미국 증시 & 지정학적 리스크 분석</div>
+  <h1>이란 <span>폭격</span>과<br>미국 증시의 관계</h1>
+  <p class="hero-sub">트럼프 행정부의 이란 군사 작전, 시장은 어떻게 반응하는가 — 역사적 사례와 현재 투자 환경을 중심으로</p>
+  <div class="hero-meta">
+    <span>📅 <strong>2026년 3월 2일</strong></span>
+    <span>|</span>
+    <span>🎙 원본: YouTube 영상 분석</span>
+  </div>
+</div>
+
+<!-- SECTION 1 -->
+<section class="fade-in">
+  <div class="section-label">핵심 요약</div>
+  <h2>전쟁이 아닌 '폭격' — 미국의 시각</h2>
+  <p>미국이 이란 혁명수비대 지도부를 포함한 <strong class="hl">약 1,000개 목표물</strong>에 대한 공습을 단행했다. 한국 언론에서는 3차 세계대전 가능성을 크게 다뤘지만, 미국 내에서는 브레이킹 뉴스 이상의 의미를 부여하지 않는 분위기다.</p>
+
+  <div class="callout">
+    <p>미국에서 '전쟁(War)'은 의회의 승인이 필요하다. 대통령 단독으로 할 수 있는 것은 '폭격(Strike)'이며, 이번 작전은 법적으로도 전쟁이 아니다.</p>
+  </div>
+
+  <p>실제로 전쟁 선포는 의회 승인 절차가 요구되지만, 이번처럼 <strong class="hl">대통령 권한만으로 실시하는 군사 작전</strong>은 미국 역사에서 반복적으로 있어왔다. 시장은 이를 다르게 해석한다.</p>
+</section>
+
+<hr class="divider">
+
+<!-- SECTION 2: 역사적 사례 -->
+<section class="fade-in">
+  <div class="section-label">역사적 맥락</div>
+  <h2>전쟁과 미국 증시 — 역사는 무엇을 말하나</h2>
+  <p>2차 세계대전, 9·11 테러, 러시아-우크라이나 전쟁 등 굵직한 지정학적 충격에서 미국 증시는 어떻게 반응했는가.</p>
+
+  <div class="tbl-wrap fade-in">
+    <table>
+      <thead>
+        <tr>
+          <th>사건</th>
+          <th>시기</th>
+          <th>단기 반응</th>
+          <th>이후 추세</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>2차 세계대전 참전</td>
+          <td>1939–1945</td>
+          <td><span class="badge badge-red">일시 하락</span></td>
+          <td><span class="badge badge-green">전후 강한 성장</span></td>
+        </tr>
+        <tr>
+          <td>9·11 테러</td>
+          <td>2001.09</td>
+          <td><span class="badge badge-red">급락</span></td>
+          <td><span class="badge badge-green">회복 후 반등</span></td>
+        </tr>
+        <tr>
+          <td>이라크 전쟁</td>
+          <td>2002–2003</td>
+          <td><span class="badge badge-red">리세션 동반</span></td>
+          <td><span class="badge badge-green">이후 회복세</span></td>
+        </tr>
+        <tr>
+          <td>러시아-우크라이나</td>
+          <td>2022.02</td>
+          <td><span class="badge badge-red">단기 변동성</span></td>
+          <td><span class="badge badge-gray">혼조세 지속</span></td>
+        </tr>
+        <tr>
+          <td>이란 폭격 (금번)</td>
+          <td>2026.03</td>
+          <td><span class="badge badge-red">예상: 1% 내외↓</span></td>
+          <td><span class="badge badge-blue">분석 중</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="pull-quote fade-in">
+    <p>"전쟁이 나고 나서 미국 증시가 무너진 적은 단 한 번도 없었다 — 미국 역사상."</p>
+  </div>
+
+  <p>오히려 미국 증시에 더 큰 충격을 준 것은 <strong class="hl">서브프라임 모기지 사태, 닷컴 버블</strong> 같은 내부적 경제 문제였다. 지정학적 이벤트는 단기 변동성을 유발할 뿐, 장기 추세를 바꾸지 않았다.</p>
+</section>
+
+<!-- 차트 1: 역사적 회복 속도 -->
+<div class="fade-in" style="margin-top:24px;">
+  <div class="chart-title">주요 지정학적 충격 후 S&P 500 회복 기간 (일 기준)</div>
+  <div class="chart-container fade-in">
+    <canvas id="chart1" height="220"></canvas>
+  </div>
+  <div class="chart-note">※ 단기 저점 기준 회복에 걸린 거래일 수 / 출처: 영상 내 언급 기반 재구성</div>
+</div>
+
+<hr class="divider">
+
+<!-- SECTION 3: 단기 영향 -->
+<section class="fade-in">
+  <div class="section-label">단기 시장 영향</div>
+  <h2>내일 시장, 어떻게 움직이나</h2>
+
+  <div class="card-grid">
+    <div class="card fade-in">
+      <div class="card-title">다우존스</div>
+      <div class="card-value">–1%+</div>
+      <div class="card-desc">수출입·전통 산업 비중 높아 가장 민감하게 반응 예상</div>
+    </div>
+    <div class="card fade-in">
+      <div class="card-title">테크 (나스닥)</div>
+      <div class="card-value">상대 강세</div>
+      <div class="card-desc">지정학 이벤트에 상대적으로 덜 민감한 섹터</div>
+    </div>
+    <div class="card fade-in">
+      <div class="card-title">국제 유가</div>
+      <div class="card-value">급등 예상</div>
+      <div class="card-desc">호르무즈 해협 봉쇄 우려 → 선물 시장 즉각 반응</div>
+    </div>
+    <div class="card fade-in">
+      <div class="card-title">금 (Gold)</div>
+      <div class="card-value">추가 상승</div>
+      <div class="card-desc">불확실성 헤지 수요 → 이미 상승 추세 유지 중</div>
+    </div>
+  </div>
+</section>
+
+<!-- 차트 2: 섹터별 지정학 민감도 -->
+<div class="fade-in" style="margin-top:16px;">
+  <div class="chart-title">지정학적 충격 시 섹터별 상대적 민감도 (낮을수록 방어적)</div>
+  <div class="chart-container fade-in">
+    <canvas id="chart2" height="240"></canvas>
+  </div>
+  <div class="chart-note">※ 영상 분석 기반 상대 지수 (1=매우 민감, 5=매우 방어적)</div>
+</div>
+
+<hr class="divider">
+
+<!-- SECTION 4: 미국 에너지 독립 -->
+<section class="fade-in">
+  <div class="section-label">에너지 구조</div>
+  <h2>미국은 왜 원유 리스크에서 자유로운가</h2>
+  <p>한국은 원유의 <strong class="hl">100%를 중동에서 수입</strong>하기 때문에 호르무즈 해협 봉쇄가 경제적 직격탄이 된다. 반면 미국의 상황은 완전히 다르다.</p>
+
+  <div class="callout fade-in">
+    <p>미국의 하루 원유 생산량은 <strong>1,400만~1,500만 배럴</strong>로, 사우디아라비아보다 매장량이 많다. 셰일가스 혁명 이후 에너지 자립도는 사실상 완성 단계에 있다.</p>
+  </div>
+
+  <p>따라서 이란 폭격으로 인해 국제 유가가 급등하더라도, <strong class="hl">미국 경제에 직접적인 인플레이션 리스크는 극히 제한적</strong>이다. 오히려 미국 에너지 기업들에게는 수익 개선 기회가 될 수 있다.</p>
+</section>
+
+<!-- 차트 3: 미국 원유 생산량 추이 -->
+<div class="fade-in" style="margin-top:16px;">
+  <div class="chart-title">미국 일일 원유 생산량 추이 (백만 배럴/일)</div>
+  <div class="chart-container fade-in">
+    <canvas id="chart3" height="220"></canvas>
+  </div>
+  <div class="chart-note">※ EIA 데이터 기반 / 셰일 혁명 이후 급증</div>
+</div>
+
+<hr class="divider">
+
+<!-- SECTION 5: 진짜 리스크 -->
+<section class="fade-in">
+  <div class="section-label">투자 리스크 분석</div>
+  <h2>미국 증시의 진짜 리스크는 따로 있다</h2>
+  <p>이란 폭격은 현재 미국이 안고 있는 <strong class="hl">전체 투자 리스크의 20~30% 수준</strong>에 불과하다. 나머지 70~80%는 내부 요인이다.</p>
+
+  <div class="tbl-wrap fade-in">
+    <table>
+      <thead>
+        <tr>
+          <th>리스크 유형</th>
+          <th>핵심 내용</th>
+          <th>비중</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>AI 성장 둔화 우려</strong></td>
+          <td>AI 도입으로 가격 상승 → 수요 감소 가능성, 경제 성장 속도 저하</td>
+          <td><span class="badge badge-red">높음</span></td>
+        </tr>
+        <tr>
+          <td><strong>인플레이션 고착화</strong></td>
+          <td>물가가 안 내려가면 연준 금리 인하 지연 → 하이퍼스케일러 자금 조달 비용 증가</td>
+          <td><span class="badge badge-red">높음</span></td>
+        </tr>
+        <tr>
+          <td><strong>계절적 부진</strong></td>
+          <td>2월·9월은 역사적으로 약세 시즌 → 2월 통과 후 회복 기대</td>
+          <td><span class="badge badge-gray">중간</span></td>
+        </tr>
+        <tr>
+          <td><strong>지정학적 리스크</strong></td>
+          <td>이란 폭격 포함 해외 군사 충돌</td>
+          <td><span class="badge badge-green">낮음</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>특히 <strong class="hl">AI 인프라에 대규모 투자 중인 하이퍼스케일러(MS, Google, Meta 등)</strong>는 고금리 지속 시 자금 조달 부담이 커져 실적에 영향을 줄 수 있다.</p>
+</section>
+
+<!-- 차트 4: 도넛 - 리스크 구성 -->
+<div class="fade-in" style="margin-top:16px;">
+  <div class="chart-title">미국 증시 주요 리스크 구성 (전문가 추정치)</div>
+  <div class="chart-container fade-in">
+    <canvas id="chart4" height="220"></canvas>
+  </div>
+  <div class="chart-note">※ 영상 분석 기반 추정 구성비</div>
+</div>
+
+<hr class="divider">
+
+<!-- SECTION 6: 시장 전망 -->
+<section class="fade-in">
+  <div class="section-label">시장 전망</div>
+  <h2>S&P 500, 어디로 가나</h2>
+  <p>현재 대부분의 기관들은 <strong class="hl">S&P 500의 최소 목표치를 7,500pt</strong>로 보고 있다. 2월 약세장은 예정된 계절성이었으며, 이번 공습은 그 방향성을 바꾸지 않는다는 것이 중론이다.</p>
+
+  <div class="callout fade-in">
+    <p>2월과 9월은 역사적으로 증시 약세 시즌이다. 투자자들은 이를 이미 알고 있으며, 이 구간의 하락은 추세 전환이 아닌 <strong>일시적 조정</strong>으로 해석해야 한다.</p>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- SECTION 7: 투자 심리 -->
+<section class="fade-in">
+  <div class="section-label">투자자 행동론</div>
+  <h2>공포에 말리는 3가지 유형</h2>
+  <p>26년 경력의 투자자 관점에서, 공포에 의해 잘못된 투자 결정을 내리는 사람들에는 세 가지 공통된 패턴이 있다.</p>
+
+  <div class="card-grid">
+    <div class="card fade-in" style="grid-column: 1/-1;">
+      <div class="card-title">유형 1 — 레버리지 투자자</div>
+      <div style="font-size:13.5px; color:var(--text); margin-top:4px;">마진 계좌(빌린 돈)로 투자 → 변동성에 즉각 반응, 작은 하락에도 강제 청산</div>
+    </div>
+    <div class="card fade-in" style="grid-column: 1/-1;">
+      <div class="card-title">유형 2 — 단기 수익 추구자</div>
+      <div style="font-size:13.5px; color:var(--text); margin-top:4px;">단기 방향성에만 집중 → 빅픽처 상실, 뉴스 하나에 매매 결정</div>
+    </div>
+    <div class="card fade-in" style="grid-column: 1/-1;">
+      <div class="card-title">유형 3 — 피해의식형 투자자</div>
+      <div style="font-size:13.5px; color:var(--text); margin-top:4px;">음모론·세력론에 집착 → 부정적 정보 확대 해석, 시장을 투기 영역으로 인식</div>
+    </div>
+  </div>
+
+  <div class="pull-quote fade-in">
+    <p>"주식이 문제가 아니다. 여러분의 심리 상태가 더 중요하다."</p>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- SECTION 8: 한국 vs 미국 -->
+<section class="fade-in">
+  <div class="section-label">시각 차이</div>
+  <h2>왜 한국만 불안한가</h2>
+  <p>이번 이란 공습에 대한 공포는 <strong class="hl">유일하게 한국에서만 극심하게 나타나는 현상</strong>이다. 미국 현지에서는 일상적 뉴스 수준으로 소비된다.</p>
+
+  <div class="tbl-wrap fade-in">
+    <table>
+      <thead>
+        <tr><th>항목</th><th>한국</th><th>미국</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>원유 의존도</td>
+          <td>중동 100%</td>
+          <td>자체 생산 충분</td>
+        </tr>
+        <tr>
+          <td>지정학적 거리감</td>
+          <td>가깝게 느낌</td>
+          <td>먼 외국 사건</td>
+        </tr>
+        <tr>
+          <td>미디어 반응</td>
+          <td>3차 대전 우려 강조</td>
+          <td>브레이킹 뉴스 1회</td>
+        </tr>
+        <tr>
+          <td>증시 반응</td>
+          <td>심리적 과민 반응</td>
+          <td>단기 변동성만</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- 결론 -->
+<div class="bottom-note fade-in">
+  <h3>📌 투자자 핵심 체크리스트</h3>
+  <ul>
+    <li>이란 폭격은 <strong>전쟁이 아닌 군사 작전</strong> — 3차 대전 가능성은 과장된 해석</li>
+    <li>단기 <strong>다우존스 1% 내외 하락</strong> 예상, 테크주는 상대적 방어</li>
+    <li><strong>금·유가 단기 급등</strong> 예상 — 미국 에너지 기업에는 오히려 기회</li>
+    <li>진짜 리스크는 <strong>AI 수요 둔화·고금리 장기화</strong> 등 내부 요인</li>
+    <li>S&P 500 기관 목표치 <strong>최소 7,500pt</strong> — 방향성은 유효</li>
+    <li>빌린 돈 투자·단기 매매·음모론은 손실의 주요 원인 — <strong>원칙 투자가 해답</strong></li>
+  </ul>
+</div>
+
+<div style="margin-top:32px; text-align:center; font-size:11px; color:var(--text2); padding-top:20px; border-top:1px solid var(--border);">
+  본 문서는 유튜브 영상 내용을 분석·정리한 참고 자료입니다. 투자 권유가 아니며 최종 투자 결정은 본인의 판단에 따릅니다.
+</div>
+
+<script>
+  // Observer 1: 일반 섹션 fade-in
+  const fadeObs = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 80);
+        fadeObs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.fade-in').forEach(el => fadeObs.observe(el));
+
+  // chartConfigs 딕셔너리
+  const chartConfigs = {};
+
+  // 차트 1: 역사적 회복 기간 (가로 막대)
+  chartConfigs['chart1'] = () => {
+    new Chart(document.getElementById('chart1'), {
+      type: 'bar',
+      data: {
+        labels: ['9·11 테러 (2001)', '이라크전 (2003)', '러·우 전쟁 (2022)', '코로나19 (2020)'],
+        datasets: [{
+          label: '회복 거래일 수',
+          data: [19, 22, 23, 33],
+          backgroundColor: ['#e11d48', '#f43f5e', '#6b7280', '#2563eb'],
+          borderRadius: 4,
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        indexAxis: 'y',
+        animations: { x: { from: 0 } },
+        animation: { duration: 1500, easing: 'easeInOutQuart' },
+        plugins: {
+          legend: { display: false },
+          tooltip: { callbacks: { label: ctx => ` ${ctx.raw}일` } }
+        },
+        scales: {
+          x: { grid: { color: '#f0f0f0' }, ticks: { font: { size: 11 } } },
+          y: { grid: { display: false }, ticks: { font: { size: 11 } } }
+        }
+      }
+    });
+  };
+
+  // 차트 2: 섹터별 민감도 (레이더)
+  chartConfigs['chart2'] = () => {
+    new Chart(document.getElementById('chart2'), {
+      type: 'radar',
+      data: {
+        labels: ['다우존스\n(전통산업)', '에너지', '테크/나스닥', '헬스케어', '금'],
+        datasets: [{
+          label: '지정학 리스크 방어도',
+          data: [1.5, 2.5, 4.2, 3.8, 4.8],
+          backgroundColor: 'rgba(225,29,72,0.15)',
+          borderColor: '#e11d48',
+          borderWidth: 2,
+          pointBackgroundColor: '#e11d48',
+          pointRadius: 4,
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: { duration: 1800, easing: 'easeInOutQuart', delay: ctx => ctx.dataIndex * 120 },
+        plugins: {
+          legend: { display: false },
+          tooltip: { callbacks: { label: ctx => ` 방어도: ${ctx.raw}/5` } }
+        },
+        scales: {
+          r: {
+            min: 0, max: 5,
+            ticks: { stepSize: 1, font: { size: 10 } },
+            pointLabels: { font: { size: 11 } },
+            grid: { color: '#e5e5e5' }
+          }
+        }
+      }
+    });
+  };
+
+  // 차트 3: 미국 원유 생산량 (라인)
+  chartConfigs['chart3'] = () => {
+    new Chart(document.getElementById('chart3'), {
+      type: 'line',
+      data: {
+        labels: ['2010', '2012', '2014', '2016', '2018', '2020', '2022', '2025'],
+        datasets: [{
+          label: '일일 생산량 (백만 배럴)',
+          data: [5.5, 6.5, 8.7, 8.8, 11.0, 11.3, 12.9, 14.5],
+          borderColor: '#e11d48',
+          backgroundColor: 'rgba(225,29,72,0.08)',
+          borderWidth: 2.5,
+          fill: true,
+          tension: 0.4,
+          pointBackgroundColor: '#e11d48',
+          pointRadius: 4,
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: { duration: 1800, easing: 'easeInOutQuart' },
+        plugins: {
+          legend: { display: false },
+          tooltip: { callbacks: { label: ctx => ` ${ctx.raw}M bbl/day` } }
+        },
+        scales: {
+          x: { grid: { color: '#f5f5f5' }, ticks: { font: { size: 11 } } },
+          y: {
+            min: 4, max: 16,
+            grid: { color: '#f5f5f5' },
+            ticks: { font: { size: 11 }, callback: v => v + 'M' }
+          }
+        }
+      }
+    });
+  };
+
+  // 차트 4: 리스크 도넛
+  chartConfigs['chart4'] = () => {
+    new Chart(document.getElementById('chart4'), {
+      type: 'doughnut',
+      data: {
+        labels: ['AI 성장 둔화', '인플레/금리 리스크', '계절적 약세', '지정학 리스크'],
+        datasets: [{
+          data: [35, 30, 15, 20],
+          backgroundColor: ['#e11d48', '#1a1a1a', '#6b7280', '#2563eb'],
+          borderWidth: 0,
+          hoverOffset: 8,
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: { animateRotate: true, animateScale: true, duration: 2000, easing: 'easeInOutQuart' },
+        cutout: '60%',
+        plugins: {
+          legend: {
+            position: 'bottom',
+            labels: { font: { size: 11 }, padding: 14, boxWidth: 12 }
+          },
+          tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ${ctx.raw}%` } }
+        }
+      }
+    });
+  };
+
+  // Observer 2: 차트 전용
+  const chartObs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const canvas = entry.target.querySelector('canvas');
+        if (canvas && chartConfigs[canvas.id]) {
+          setTimeout(() => {
+            chartConfigs[canvas.id]();
+            entry.target.classList.add('chart-ready');
+            delete chartConfigs[canvas.id];
+          }, 200);
+        }
+        chartObs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.25 });
+
+  document.querySelectorAll('.chart-container').forEach(el => chartObs.observe(el));
+</script>
+</body>
+</html>
