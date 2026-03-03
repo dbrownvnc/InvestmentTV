@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>투자는인생TV — 미국 증시 분석 | 2026.03.03</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,300&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg: #ffffff;
+    --bg2: #fafafa;
+    --text: #1a1a1a;
+    --text2: #777777;
+    --accent: #e11d48;
+    --accent2: #f43f5e;
+    --border: #e5e5e5;
+    --table-header: #e11d48;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Source Serif 4', serif;
+    font-size: 16px;
+    line-height: 1.75;
+  }
+
+  /* ── HEADER ── */
+  .masthead {
+    border-bottom: 3px solid var(--text);
+    padding: 28px 20px 18px;
+    background: var(--bg);
+  }
+  .masthead-meta {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: var(--text2);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .masthead h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(26px, 7vw, 38px);
+    font-weight: 900;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+  .masthead h1 span { color: var(--accent); }
+  .masthead-sub {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--text2);
+    margin-top: 10px;
+    letter-spacing: 0.06em;
+  }
+
+  /* ── LAYOUT ── */
+  .container { max-width: 680px; margin: 0 auto; padding: 0 20px; }
+
+  /* ── SECTION ── */
+  .section { padding: 36px 0 28px; border-bottom: 1px solid var(--border); }
+  .section:last-of-type { border-bottom: none; }
+
+  .section-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .section h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(20px, 5vw, 26px);
+    font-weight: 700;
+    line-height: 1.25;
+    margin-bottom: 16px;
+  }
+  .section p {
+    color: #2a2a2a;
+    margin-bottom: 14px;
+    font-weight: 300;
+  }
+
+  /* ── PULL QUOTE ── */
+  .pullquote {
+    border-left: 4px solid var(--accent);
+    padding: 14px 18px;
+    margin: 24px 0;
+    background: var(--bg2);
+  }
+  .pullquote p {
+    font-family: 'Playfair Display', serif;
+    font-size: 17px;
+    font-style: italic;
+    color: var(--text);
+    margin: 0;
+    line-height: 1.6;
+  }
+
+  /* ── SCENARIO CARDS ── */
+  .cards { display: flex; flex-direction: column; gap: 14px; margin: 20px 0; }
+  .card {
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    padding: 16px 18px;
+    background: var(--bg2);
+    position: relative;
+  }
+  .card-num {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    margin-bottom: 6px;
+  }
+  .card h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 15px;
+    margin-bottom: 6px;
+  }
+  .card p { font-size: 14px; color: var(--text2); margin: 0; }
+  .card.highlight { border-color: var(--accent); background: #fff5f7; }
+  .card.highlight .card-num::after { content: " ★ 가장 유력"; color: var(--accent); }
+
+  /* ── TABLE ── */
+  .tbl-wrap { overflow-x: auto; margin: 20px 0; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th {
+    background: var(--table-header);
+    color: #fff;
+    padding: 10px 12px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-align: left;
+  }
+  td { padding: 9px 12px; border-bottom: 1px solid var(--border); color: var(--text); }
+  tr:nth-child(even) td { background: var(--bg2); }
+
+  /* ── STAT BOXES ── */
+  .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 20px 0; }
+  .stat {
+    border: 1px solid var(--border);
+    padding: 14px;
+    background: var(--bg2);
+    text-align: center;
+  }
+  .stat-val {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1;
+  }
+  .stat-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    color: var(--text2);
+    margin-top: 4px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  /* ── CHART ── */
+  .chart-container {
+    position: relative;
+    max-height: 340px;
+    margin: 20px 0;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    padding: 16px;
+  }
+  .chart-container canvas {
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    max-height: 300px;
+  }
+  .chart-container.chart-ready canvas { opacity: 1; }
+
+  /* ── FADE IN ── */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ── TAG ── */
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 16px 0; }
+  .tag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    padding: 4px 9px;
+    border: 1px solid var(--border);
+    color: var(--text2);
+    text-transform: uppercase;
+  }
+  .tag.red { border-color: var(--accent); color: var(--accent); }
+
+  /* ── DIVIDER ── */
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 10px 0;
+    color: var(--text2);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+  }
+  .divider::before, .divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* ── LIST ── */
+  .styled-list { list-style: none; margin: 14px 0; }
+  .styled-list li {
+    padding: 8px 0 8px 22px;
+    position: relative;
+    border-bottom: 1px solid var(--border);
+    font-size: 15px;
+    font-weight: 300;
+  }
+  .styled-list li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 3px solid var(--text);
+    padding: 24px 20px;
+    text-align: center;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    color: var(--text2);
+    letter-spacing: 0.1em;
+  }
+
+  /* ── CHART TITLE ── */
+  .chart-title {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--text2);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+</style>
+</head>
+<body>
+
+<!-- MASTHEAD -->
+<header class="masthead">
+  <div class="container">
+    <div class="masthead-meta">투자는인생TV · Market Focus · 2026년 03월 03일</div>
+    <h1>이란 폭격,<br><span>미증시는 움직이지 않는다</span></h1>
+    <div class="masthead-sub">미국 증시 및 거시경제 분석 리포트 · by David</div>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- 요약 -->
+  <section class="section fade-in">
+    <div class="section-label">Executive Summary</div>
+    <h2>핵심 요약</h2>
+    <p>미국·이스라엘의 이란 공격이 현실화됐지만, 미 증시는 이를 <strong>시장 리스크로 인식하지 않았다</strong>. 다우는 장 초반 1% 이상 하락했다가 0.5% 하락으로 마감했고, S&P500은 6,881 수준, 나스닥은 22,700에서 소폭 반등했다. 80년 치 데이터 기반으로 중동 분쟁이 미 증시에 미치는 직접적 영향은 제한적임이 다시 확인됐다.</p>
+    <div class="tags">
+      <span class="tag red">이란 폭격</span>
+      <span class="tag red">연준 금리</span>
+      <span class="tag">3월 변동성</span>
+      <span class="tag">SpaceX IPO</span>
+      <span class="tag">AI 섹터 리스크</span>
+      <span class="tag">이머징마켓 ETF</span>
+    </div>
+  </section>
+
+  <!-- 지수 현황 -->
+  <section class="section fade-in">
+    <div class="section-label">Market Snapshot</div>
+    <h2>주요 지수 현황</h2>
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-val">48,000+</div>
+        <div class="stat-label">다우존스 (목표 5만선)</div>
+      </div>
+      <div class="stat">
+        <div class="stat-val">6,881</div>
+        <div class="stat-label">S&P 500</div>
+      </div>
+      <div class="stat">
+        <div class="stat-val">22,700</div>
+        <div class="stat-label">나스닥 (소폭 상승)</div>
+      </div>
+      <div class="stat">
+        <div class="stat-val">$71</div>
+        <div class="stat-label">WTI 원유 (배럴)</div>
+      </div>
+    </div>
+
+    <p>원유는 배럴당 71달러선으로 소폭 상승했으나 역사적 평균 범위 내에 머물렀다. 금 가격도 2% 미만 상승 후 반락하며 대규모 안전자산 이탈은 없었음이 확인됐다. 10년 국채 금리는 7bp 상승(안전자산 일부 유입)했고 달러 가치는 강세를 보였다.</p>
+
+    <div class="chart-container fade-in">
+      <div class="chart-title">주요 자산 반응 (이란 폭격 전후 변동 %)</div>
+      <canvas id="chartAsset" height="220"></canvas>
+    </div>
+  </section>
+
+  <!-- 이란 4대 시나리오 -->
+  <section class="section fade-in">
+    <div class="section-label">Scenario Analysis</div>
+    <h2>이란 사태 4대 시나리오</h2>
+    <p>미 기관들이 제시하는 이란 분쟁 전개 시나리오와 증시·유가에 대한 영향을 정리했다.</p>
+
+    <div class="cards">
+      <div class="card fade-in">
+        <div class="card-num">시나리오 01 · 중립</div>
+        <h4>긴장 완화 / 호르무즈 해협 안정</h4>
+        <p>간헐적 소규모 충돌은 있으나 글로벌 공급망 이상 없음. 증시 변동 1% 미만 내외로 제한적.</p>
+      </div>
+      <div class="card fade-in">
+        <div class="card-num">시나리오 02 · 부정</div>
+        <h4>공급 차질 / 유가 급등</h4>
+        <p>호르무즈 해협 장기 봉쇄 시 유가 100달러 이상 급등 가능. 스태그플레이션(가격 상승 + 경기 침체) 위험. 단, 발생 가능성 희박. 미국은 자체 산유국으로 직접 타격 없음.</p>
+      </div>
+      <div class="card highlight fade-in">
+        <div class="card-num">시나리오 03 · 긍정</div>
+        <h4>이란 정권 붕괴 / 신속 해결</h4>
+        <p>유가 안정 → 에너지 가격 하락 → 중앙은행 금리 인하 속도 가속 가능. 이머징마켓 상승 기대. 안전자산(금·국채) 가격은 하락. 이란 국민의 자유 확대 긍정적.</p>
+      </div>
+      <div class="card fade-in">
+        <div class="card-num">시나리오 04 · 재앙</div>
+        <h4>핵 사용 / 전면전 확대</h4>
+        <p>이란 국가 소멸 수준. 현실적으로 발생 가능성 극히 낮음. 과도한 공포를 조장하는 미디어 콘텐츠에 노출 자제 권고.</p>
+      </div>
+    </div>
+
+    <div class="pullquote">
+      <p>"재앙적 결과는 가능성이 없습니다. 단, 미증시는 물론 완전히 영향권에서 벗어나지는 않을 것이며 유가·금 등 안전자산의 변화는 분명히 있습니다."</p>
+    </div>
+  </section>
+
+  <!-- 지정학적 수혜·피해 -->
+  <section class="section fade-in">
+    <div class="section-label">Geopolitical Impact</div>
+    <h2>지정학적 수혜 vs. 피해</h2>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr><th>구분</th><th>영향</th><th>이유</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>미국</strong></td><td style="color:#16a34a">거의 무영향</td><td>하루 14억 배럴 자체 생산, 전략비축유 미사용도 충분</td></tr>
+          <tr><td><strong>중국</strong></td><td style="color:#dc2626">최대 피해</td><td>이란산 원유 수입 80%가 중동, 수입 가격 급등</td></tr>
+          <tr><td><strong>한국</strong></td><td style="color:#2563eb">기회 요인</td><td>방산 수출 증가(풍산·한화), 잠수함 등 무기 공급 수요</td></tr>
+          <tr><td><strong>영국</strong></td><td style="color:#dc2626">부정적</td><td>모기지 대출기관 파산 신청, 금융 시스템 우려</td></tr>
+          <tr><td><strong>이머징마켓</strong></td><td style="color:#16a34a">시나리오3 시 긍정</td><td>유가 안정 + 금리 인하 가속 기대</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 3월 투자 캘린더 -->
+  <section class="section fade-in">
+    <div class="section-label">Investment Calendar</div>
+    <h2>3월 주요 일정 및 시장 전망</h2>
+
+    <ul class="styled-list">
+      <li><strong>3월 초~15일</strong> — 변동성 확대 구간. 단기 배팅 자제, 기존 포트폴리오 유지.</li>
+      <li><strong>3월 16일 이후</strong> — 상승장 전환 가능성 증가.</li>
+      <li><strong>3월 18일 (FOMC)</strong> — 연준 금리 결정 발표. 금리 동결 가능성 90% 이상. 파월 의장의 <em>향후 금리 인하 시그널</em> 발언에 주목.</li>
+      <li><strong>4월</strong> — 역사적으로 강세 월. 금리 인하 가능성이 커지는 구간. 섹터 비중 5~10% 조정 고려.</li>
+      <li><strong>연말 S&P 예상</strong> — EPS 기준 9~11%, 주가 기준 8~10% 성장 전망(과거 통계 기반).</li>
+    </ul>
+
+    <div class="chart-container fade-in">
+      <div class="chart-title">2026 3월 이후 시장 전망 (상대적 가능성 개념도)</div>
+      <canvas id="chartOutlook" height="220"></canvas>
+    </div>
+  </section>
+
+  <!-- 섹터 분석 -->
+  <section class="section fade-in">
+    <div class="section-label">Sector Watch</div>
+    <h2>섹터별 전망</h2>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr><th>섹터</th><th>방향</th><th>비고</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>반도체 (Semiconductor)</td><td style="color:#16a34a">↑ 강세</td><td>3개월 기준 최상위권 유지</td></tr>
+          <tr><td>방위산업·건설·엔지니어링</td><td style="color:#16a34a">↑ 강세</td><td>3개월 기준 +35% 수준</td></tr>
+          <tr><td>유틸리티</td><td style="color:#2563eb">↑ 특이 상승</td><td>AI 전력 수요 기대</td></tr>
+          <tr><td>에너지</td><td style="color:#6b7280">→ 단기 제한적</td><td>이란 이슈 단기 +1.7%, 장기 흐름 중요</td></tr>
+          <tr><td>IT 컨설팅·소프트웨어</td><td style="color:#dc2626">↓ 약세</td><td>AI가 대체 — Adobe 등 주의</td></tr>
+          <tr><td>방송·미디어</td><td style="color:#dc2626">↓ 약세</td><td>AI 대체 타격 3단계 진행 중</td></tr>
+          <tr><td>이머징마켓 ETF (SCHE)</td><td style="color:#2563eb">조건부 ↑</td><td>이란 사태 긍정 해결 시 수혜</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- SpaceX IPO -->
+  <section class="section fade-in">
+    <div class="section-label">Hot Topic</div>
+    <h2>SpaceX / xAI — IPO 사전 동향</h2>
+    <p>xAI가 기존 발행 채권을 바이백(자사 채권 매입)하며 기업가치 제고 작업에 착수했다. SpaceX와 xAI는 동일 IPO로 상장될 계획이다.</p>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-val">$1.755T</div>
+        <div class="stat-label">예상 기업가치</div>
+      </div>
+      <div class="stat">
+        <div class="stat-val">$850</div>
+        <div class="stat-label">프리마켓 비딩가 (주당)</div>
+      </div>
+    </div>
+
+    <ul class="styled-list">
+      <li>비공개 IPO 신청 후 약 2개월 소요 → <strong>6월 28일(일론 머스크 생일) 전후</strong> 상장 가능성.</li>
+      <li>이번 달 스타십(Starship) 발사 성공 시 기업가치 추가 상승 기대 → 성공 직후 10분 내 매수 유리.</li>
+      <li>우주항공 부품·파츠 기업(H로 시작)은 사전 매수 고려. SpaceX 상장 전 동반 상승 가능성.</li>
+      <li>IPO 첫날 급등 후 3일차 전후 약 20% 조정이 역사적 패턴.</li>
+    </ul>
+  </section>
+
+  <!-- 거시경제 포인트 -->
+  <section class="section fade-in">
+    <div class="section-label">Macro</div>
+    <h2>거시경제 핵심 포인트</h2>
+
+    <ul class="styled-list">
+      <li><strong>연준 금리</strong> — 3월 동결 유력. 인플레이션 2% 초반 미달, 실업수당 청구 감소 추세. 파월 발언 톤이 시장 방향 결정.</li>
+      <li><strong>비농업 고용(NFP)</strong> — 이번 주 금요일 발표. CPI와 함께 연준 6월 인하 여부 판단 지표.</li>
+      <li><strong>AI 리스크</strong> — 이란 이슈보다 AI로 인한 산업 파괴가 증시 변동성의 더 큰 축. 고용 대체 우려.</li>
+      <li><strong>스태그플레이션</strong> — 가격 상승 + 경기 침체 동시 발생. 이란 장기화 시 이론적 위험이지만 발생 가능성 희박. 직접적 주가 타격은 <em>리세션(경기 침체)</em>.</li>
+      <li><strong>EPS 실적</strong> — S&P500 기업 74~76%가 예상치 상회. 기업 펀더멘털 건전.</li>
+      <li><strong>비트코인</strong> — 예측 기준 부재. 단기 투자 위험. 2028년 슈퍼사이클만 통계적 예측 가능.</li>
+    </ul>
+  </section>
+
+  <!-- 투자 시사점 -->
+  <section class="section fade-in">
+    <div class="section-label">Investment Insight</div>
+    <h2>투자 시사점 요약</h2>
+
+    <div class="pullquote">
+      <p>"뉴스를 기반으로 포트폴리오를 짜면 언론사의 아젠다에 끌려다닌다. 투자자의 아젠다는 자산 보호와 수익이다."</p>
+    </div>
+
+    <div class="cards">
+      <div class="card fade-in">
+        <div class="card-num">원칙 01</div>
+        <h4>과감한 베팅 자제</h4>
+        <p>불확실성 높은 시기에 무리한 추가 진입 금지. 기존 포트폴리오 유지.</p>
+      </div>
+      <div class="card fade-in">
+        <div class="card-num">원칙 02</div>
+        <h4>단기 노이즈 필터링</h4>
+        <p>중동 전쟁·3차대전 공포 콘텐츠 노출 자제. 80년 데이터 기반 확률적 판단 우선.</p>
+      </div>
+      <div class="card fade-in">
+        <div class="card-num">원칙 03</div>
+        <h4>섹터 비중 미세 조정</h4>
+        <p>AI 수혜(반도체·방산·유틸리티) 비중 유지, AI 피해(컨설팅·소프트웨어) 축소. 4~5% 범위 내 조정.</p>
+      </div>
+      <div class="card fade-in">
+        <div class="card-num">원칙 04</div>
+        <h4>4월까지 인내</h4>
+        <p>역사적으로 4월은 강세 월. 3월 중순 변동성을 견디면 상승장 진입 가능성.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 단어 설명 -->
+  <section class="section fade-in">
+    <div class="section-label">Glossary</div>
+    <h2>전문용어 설명</h2>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>용어</th><th>설명</th></tr></thead>
+        <tbody>
+          <tr><td>스태그플레이션</td><td>경기 침체(Stagnation) + 물가 상승(Inflation). 가격은 오르는데 소비·성장은 둔화.</td></tr>
+          <tr><td>리세션</td><td>2분기 이상 GDP 역성장. 주가에 직접적 타격을 주는 실질적 위험.</td></tr>
+          <tr><td>바이백(Buyback)</td><td>기업이 자사 주식 또는 채권을 시장에서 다시 매입. 기업가치 제고 목적.</td></tr>
+          <tr><td>EPS</td><td>주당순이익(Earnings Per Share). 기업 수익성 핵심 지표.</td></tr>
+          <tr><td>가이던스</td><td>기업이 발표하는 미래 실적 전망치. 현재 주가보다 가이던스가 중요.</td></tr>
+          <tr><td>NFP (비농업 고용)</td><td>Non-Farm Payroll. 월간 신규 고용 발표 지표. 연준 정책 결정에 직접 영향.</td></tr>
+          <tr><td>FOMC</td><td>연방공개시장위원회. 미국 기준금리 결정 기구.</td></tr>
+          <tr><td>Catalyst</td><td>주가를 단기적으로 움직이는 계기·촉매. 분기마다 달라짐.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+</div><!-- /container -->
+
+<footer>
+  <div class="container">
+    투자는인생TV · 2026.03.03 · 본 자료는 방송 내용 요약으로 투자 권유가 아닙니다 · 최종 투자 판단은 본인 책임
+  </div>
+</footer>
+
+<script>
+// ── FADE OBSERVER
+const fadeObs = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), i * 80);
+      fadeObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.12 });
+document.querySelectorAll('.fade-in').forEach(el => fadeObs.observe(el));
+
+// ── CHART CONFIGS
+const chartConfigs = {};
+
+chartConfigs['chartAsset'] = () => {
+  new Chart(document.getElementById('chartAsset'), {
+    type: 'bar',
+    data: {
+      labels: ['다우존스', 'S&P 500', '나스닥', 'WTI 원유', '금 가격', '10년 국채'],
+      datasets: [{
+        label: '변동률 (%)',
+        data: [-0.5, 0.2, 0.3, 1.4, 1.0, 0.07],
+        backgroundColor: [
+          '#e11d48','#6b7280','#2563eb','#e11d48','#1a1a1a','#6b7280'
+        ],
+        borderRadius: 2,
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { display: false } },
+      scales: {
+        y: { grid: { color: '#e5e5e5' }, ticks: { font: { family: 'IBM Plex Mono', size: 10 } } },
+        x: { grid: { display: false }, ticks: { font: { family: 'IBM Plex Mono', size: 10 } } }
+      }
+    }
+  });
+};
+
+chartConfigs['chartOutlook'] = () => {
+  new Chart(document.getElementById('chartOutlook'), {
+    type: 'line',
+    data: {
+      labels: ['3월 초', '3월 15일', '3월 18일\nFOMC', '3월 말', '4월', '연말'],
+      datasets: [{
+        label: '기준 시나리오 (상승 가능성)',
+        data: [40, 35, 50, 60, 72, 85],
+        borderColor: '#e11d48',
+        backgroundColor: 'rgba(225,29,72,0.08)',
+        fill: true,
+        tension: 0.4,
+        pointBackgroundColor: '#e11d48',
+        pointRadius: 5,
+      },{
+        label: '보수적 시나리오',
+        data: [35, 30, 40, 50, 60, 70],
+        borderColor: '#6b7280',
+        backgroundColor: 'transparent',
+        borderDash: [5,4],
+        tension: 0.4,
+        pointBackgroundColor: '#6b7280',
+        pointRadius: 3,
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { labels: { font: { family: 'IBM Plex Mono', size: 10 } } } },
+      scales: {
+        y: {
+          min: 20, max: 100,
+          grid: { color: '#e5e5e5' },
+          ticks: { font: { family: 'IBM Plex Mono', size: 10 }, callback: v => v + '%' }
+        },
+        x: { grid: { display: false }, ticks: { font: { family: 'IBM Plex Mono', size: 10 } } }
+      }
+    }
+  });
+};
+
+// ── CHART OBSERVER
+const chartObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const canvas = e.target.querySelector('canvas');
+      if (canvas && chartConfigs[canvas.id]) {
+        chartConfigs[canvas.id]();
+        e.target.classList.add('chart-ready');
+        chartObs.unobserve(e.target);
+      }
+    }
+  });
+}, { threshold: 0.15 });
+document.querySelectorAll('.chart-container').forEach(el => chartObs.observe(el));
+</script>
+</body>
+</html>

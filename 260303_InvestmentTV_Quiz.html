@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>시험문제 + 정답 해설 | 투자는인생TV 2026.03.03</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,300&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #ffffff;
+    --bg2: #fafafa;
+    --text: #1a1a1a;
+    --text2: #777777;
+    --accent: #e11d48;
+    --accent2: #f43f5e;
+    --border: #e5e5e5;
+    --green: #16a34a;
+    --blue: #2563eb;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Source Serif 4', serif;
+    font-size: 16px;
+    line-height: 1.75;
+  }
+
+  .masthead {
+    border-bottom: 3px solid var(--text);
+    padding: 28px 20px 18px;
+    background: var(--bg);
+  }
+  .masthead-meta {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: var(--text2);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .masthead h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(22px, 6vw, 32px);
+    font-weight: 900;
+    line-height: 1.15;
+  }
+  .masthead h1 span { color: var(--accent); }
+  .masthead-sub {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--text2);
+    margin-top: 10px;
+  }
+
+  .container { max-width: 680px; margin: 0 auto; padding: 0 20px; }
+
+  /* ── PART DIVIDER ── */
+  .part-header {
+    padding: 36px 0 20px;
+    border-bottom: 3px double var(--text);
+    margin-bottom: 28px;
+  }
+  .part-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .part-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(20px, 5vw, 28px);
+    font-weight: 900;
+  }
+
+  /* ── QUESTION CARD ── */
+  .q-card {
+    border: 1px solid var(--border);
+    margin-bottom: 24px;
+    background: var(--bg2);
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .q-card.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .q-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg);
+  }
+  .q-num {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    white-space: nowrap;
+    letter-spacing: 0.08em;
+  }
+  .q-badge {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    padding: 2px 7px;
+    border: 1px solid currentColor;
+    border-radius: 2px;
+    white-space: nowrap;
+    letter-spacing: 0.06em;
+  }
+  .badge-easy { color: var(--green); }
+  .badge-med { color: var(--blue); }
+  .badge-hard { color: var(--accent); }
+
+  .q-body { padding: 16px; }
+  .q-text {
+    font-size: 15px;
+    font-weight: 400;
+    margin-bottom: 14px;
+    line-height: 1.65;
+  }
+
+  /* choices */
+  .choices { list-style: none; margin-bottom: 0; }
+  .choices li {
+    padding: 8px 12px;
+    border: 1px solid var(--border);
+    margin-bottom: 6px;
+    font-size: 14px;
+    font-weight: 300;
+    cursor: default;
+    background: var(--bg);
+    transition: background 0.2s;
+  }
+  .choices li:last-child { margin-bottom: 0; }
+
+  /* OX */
+  .ox-wrap { display: flex; gap: 10px; }
+  .ox-btn {
+    flex: 1;
+    padding: 12px;
+    border: 1px solid var(--border);
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    font-weight: 700;
+    text-align: center;
+    background: var(--bg);
+  }
+
+  /* short answer */
+  .short-line {
+    border-bottom: 2px solid var(--text);
+    height: 32px;
+    margin-top: 8px;
+    background: none;
+  }
+
+  /* ── ANSWER SECTION ── */
+  .answer-block {
+    background: #fff5f7;
+    border-left: 4px solid var(--accent);
+    padding: 14px 16px;
+    margin-top: 16px;
+  }
+  .answer-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .answer-val {
+    font-family: 'Playfair Display', serif;
+    font-size: 17px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .answer-explain {
+    font-size: 13px;
+    font-weight: 300;
+    color: #3a3a3a;
+    line-height: 1.7;
+  }
+
+  /* ── SCORE TABLE ── */
+  .score-table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 13px; }
+  .score-table th {
+    background: var(--accent);
+    color: #fff;
+    padding: 8px 12px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    text-align: left;
+    letter-spacing: 0.06em;
+  }
+  .score-table td { padding: 8px 12px; border-bottom: 1px solid var(--border); }
+  .score-table tr:nth-child(even) td { background: var(--bg2); }
+
+  footer {
+    border-top: 3px solid var(--text);
+    padding: 24px 20px;
+    text-align: center;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    color: var(--text2);
+    letter-spacing: 0.1em;
+    margin-top: 48px;
+  }
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="container">
+    <div class="masthead-meta">투자는인생TV · 시험문제 + 정답 해설 · 2026.03.03</div>
+    <h1>미국 증시 분석<br><span>10문제 시험지</span></h1>
+    <div class="masthead-sub">객관식 · 단답형 · OX 혼합 / 난이도: 쉬움 30% · 보통 50% · 어려움 20%</div>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- ── PART 1: 문제 ── -->
+  <div class="part-header">
+    <div class="part-label">Part 1</div>
+    <h2>시험 문제 (10문제)</h2>
+  </div>
+
+  <!-- Q1 -->
+  <div class="q-card">
+    <div class="q-header">
+      <span class="q-num">Q.01</span>
+      <span class="q-badge badge-easy">객관식 · 쉬움</span>
+    </div>
+    <div class="q-body">
+      <p class="q-text">미국·이스라엘의 이란 공격 당일, 다우존스 지수는 장 시작 시 얼마나 하락했다가 최종 몇 %로 마감했는가?</p>
+      <ul class="choices">
+        <li>① 장 초반 0.5% 하락 → 마감 1% 하락</li>
+        <li>② 장 초반 1% 이상 하락 → 마감 0.5% 하락</li>
+        <li>③ 장 초반 2% 하락 → 마감 1% 하락</li>
+        <li>④ 장 초반 0.3% 하락 → 마감 보합</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Q2 -->
+  <div class="q-card">
+    <div class="q-header">
+      <span class="q-num">Q.02</span>
+      <span class="q-badge badge-easy">OX · 쉬움</span>
+    </div>
+    <div class="q-body">
+      <p class="q-text">미국은 자체 원유 생산량이 충분하기 때문에 호르무즈 해협이 봉쇄되더라도 에너지 공급에 거의 영향이 없다. (O / X)</p>
+      <div class="ox-wrap">
+        <div class="ox-btn">O</div>
+        <div class="ox-btn">X</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q3 -->
+  <div class="q-card">
+    <div class="q-header">
+      <span class="q-num">Q.03</span>
+      <span class="q-badge badge-easy">객관식 · 쉬움</span>
+    </div>
+    <div class="q-body">
+      <p class="q-text">이란·중동 분쟁이 발생했을 때, 가장 큰 경제적 타격을 받는 나라는?</p>
+      <ul class="choices">
+        <li>① 미국</li>
+        <li>② 일본</li>
+        <li>③ 중국</li>
+        <li>④ 한국</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Q4 -->
+  <div class="q-card">
+    <div class="q-header">
+      <span class="q-num">Q.04</span>
+      <span class="q-badge badge-med">단답형 · 보통</span>
+    </div>
+    <div class="q-body">
+      <p class="q-text">방송에서 언급된 연준(FOMC) 금리 결정 회의 날짜는 3월 며칠인가?</p>
+      <div class="short-line"></div>
+    </div>
+  </div>
+
+  <!-- Q5 -->
+  <div class="q-card">
+    <div class="q-header">
+      <span class="q-num">Q.05</span>
+      <span class="q-badge badge-med">객관식 · 보통</span>
+    </div>
+    <div class="q-body">
+      <p class="q-text">이란 분쟁 4가지 시나리오 중 발표자가 '현재 가장 현실적이고 유력하다'고 지목한 시나리오는?</p>
+      <ul class="choices">
+        <li>① 호르무즈 해협 봉쇄 / 유가 100달러 이상 급등</li>
+        <li>② 긴장 완화 / 현상 유지</li>
+        <li>③ 이란 정권 붕괴 / 신속 해결</li>
+        <li>④ 핵 사용 / 재앙적 결과</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Q6 -->
+  <div class="q-card">
+    <div class="q-header">
+      <span class="q-num">Q.06</span>
+      <span class="q-badge badge-med">OX · 보통</span>
+    </div>
+    <div class="q-body">
+      <p class="q-text">발표자는 비트코인이 전쟁·지정학 이슈와 상관관계가 있어서 이번 이란 폭격 이후 하락했다고 설명했다. (O / X)</p>
+      <div class="ox-wrap">
+        <div class="ox-btn">O</div>
+        <div class="ox-btn">X</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q7 -->
+  <div class="q-card">
+    <div class="q-header">
+      <span class="q-num">Q.07</span>
+      <span class="q-badge badge-med">단답형 · 보통</span>
+    </div>
+    <div class="q-body">
+      <p class="q-text">SpaceX의 예상 IPO 기업가치는 약 얼마(달러 기준)이며, 프리마켓에서 비딩 시 주당 가격은 얼마까지 올라갔는가? 두 가지를 모두 쓰시오.</p>
+      <div class="short-line"></div>
+      <div class="short-line" style="margin-top:10px;"></div>
+    </div>
+  </div>
+
+  <!-- Q8 -->
+  <div class="q-card">
+    <div class="q-header">
+      <span class="q-num">Q.08</span>
+      <span class="q-badge badge-med">객관식 · 보통</span>
+    </div>
+    <div class="q-body">
+      <p class="q-text">발표자가 이란 사태 해결 시 '이머징마켓(신흥시장)에 유리하다'고 본 근거로 가장 적절한 것은?</p>
+      <ul class="choices">
+        <li>① 미국 달러 가치 약세로 신흥국 부채 부담 완화</li>
+        <li>② 유가 안정 + 중앙은행 금리 인하 속도 가속 기대</li>
+        <li>③ 중국의 원유 수입 비용 감소로 제조업 경쟁력 상승</li>
+        <li>④ 이란 재건 수요로 신흥국 건설 기업 수혜</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Q9 -->
+  <div class="q-card">
+    <div class="q-header">
+      <span class="q-num">Q.09</span>
+      <span class="q-badge badge-hard">객관식 · 어려움</span>
+    </div>
+    <div class="q-body">
+      <p class="q-text">발표자가 "리튬 광산 투자는 단순 논리로 접근하면 안 된다"고 설명한 핵심 이유를 가장 잘 설명한 것은?</p>
+      <ul class="choices">
+        <li>① 리튬 광산 회사는 상장되어 있지 않아 개인 투자자가 직접 투자할 수 없기 때문이다.</li>
+        <li>② 전기차 보급 확대 → 리튬 수요 증가 → 광산 기업 호황이라는 논리는 맞지 않는 경우가 많다. 수요 증가 시 오히려 가격이 하락하거나, 증산 위해 고정자산 투자가 늘어 이익률이 감소할 수 있기 때문이다.</li>
+        <li>③ 리튬 광산은 대부분 국유화되어 있어 민간 기업이 수익을 내기 어렵기 때문이다.</li>
+        <li>④ 전기차 시대에는 리튬이 아닌 나트륨 배터리로 전환되기 때문에 리튬 수요 자체가 줄어들기 때문이다.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Q10 -->
+  <div class="q-card">
+    <div class="q-header">
+      <span class="q-num">Q.10</span>
+      <span class="q-badge badge-hard">단답형 · 어려움</span>
+    </div>
+    <div class="q-body">
+      <p class="q-text">발표자가 3월 변동성 이후 4월이 중요하다고 본 이유 두 가지를 설명하고, 연말까지 S&P500 주가 성장 예상치(%)를 함께 서술하시오.</p>
+      <div class="short-line"></div>
+      <div class="short-line" style="margin-top:10px;"></div>
+      <div class="short-line" style="margin-top:10px;"></div>
+    </div>
+  </div>
+
+  <!-- ── PART 2: 정답 및 해설 ── -->
+  <div class="part-header" style="margin-top: 48px; border-top: 3px solid var(--text); padding-top: 36px;">
+    <div class="part-label">Part 2</div>
+    <h2>정답 및 해설</h2>
+  </div>
+
+  <!-- 난이도 분포 -->
+  <table class="score-table" style="margin-bottom: 32px;">
+    <thead>
+      <tr><th>난이도</th><th>해당 문제</th><th>비율</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>🟢 쉬움</td><td>Q1, Q2, Q3</td><td>30%</td></tr>
+      <tr><td>🔵 보통</td><td>Q4, Q5, Q6, Q7, Q8</td><td>50%</td></tr>
+      <tr><td>🔴 어려움</td><td>Q9, Q10</td><td>20%</td></tr>
+    </tbody>
+  </table>
+
+  <!-- A1 -->
+  <div class="q-card">
+    <div class="q-header">
+      <span class="q-num">A.01</span>
+      <span class="q-badge badge-easy">객관식 · 쉬움</span>
+    </div>
+    <div class="q-body">
+      <p class="q-text">미국·이스라엘의 이란 공격 당일, 다우존스 지수는 장 시작 시 얼마나 하락했다가 최종 몇 %로 마감했는가?</p>
+      <div class="answer-block">
+        <div class="answer-label">정답</div>
+        <div class="answer-val">② 장 초반 1% 이상 하락 → 마감 0.5% 하락</div>
+        <p class="answer-explain">방송 원문: "다우전스 지수는 장이 열릴 때쯤에는 1% 이상 떨어졌었어요. 하지만 0.5%로 약간 하락한 마무리를 했습니다." 이란 폭격이 공포 심리를 일으켰지만, 실제 미 증시에 대한 영향이 제한적임을 보여주는 수치다.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- A2 -->
+  <div class="q-card">
+    <div class="q-header">
+      <span class="q-num">A.02</span>
+      <span class="q-badge badge-easy">OX · 쉬움</span>
+    </div>
+    <div class="q-body">
+      <p class="q-text">미국은 자체 원유 생산량이 충분하기 때문에 호르무즈 해협이 봉쇄되더라도 에너지 공급에 거의 영향이 없다.</p>
+      <div class="answer-block">
+        <div class="answer-label">정답</div>
+        <div class="answer-val">O (맞다)</div>
+        <p class="answer-explain">방송 내 근거: 미국은 하루 약 14억 배럴을 자체 생산하며 전략비축유도 사용 전 상태다. 발표자는 "미국은 타격감 자체가 없다. 아예 하나도 없다"고 단언했다. 반면 중국은 중동 원유 수입의 80%가 해당 루트에 의존해 가장 큰 타격을 받는다.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- A3 -->
+  <div class="q-card">
+    <div class="q-header">
+      <span class="q-num">A.03</span>
+      <span class="q-badge badge-easy">객관식 · 쉬움</span>
+    </div>
+    <div class="q-body">
+      <p class="q-text">이란·중동 분쟁이 발생했을 때, 가장 큰 경제적 타격을 받는 나라는?</p>
+      <div class="answer-block">
+        <div class="answer-label">정답</div>
+        <div class="answer-val">③ 중국</div>
+        <p class="answer-explain">중국은 이란산 원유를 포함한 중동 원유를 대규모로 수입한다. 분쟁으로 공급이 차질을 빚으면 수입 가격이 급등하고 더 이상 저가 원유를 공급받지 못하게 된다. 발표자는 이것이 미국의 중국 견제 전략일 수 있다고 분석했다.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- A4 -->
+  <div class="q-card">
+    <div class="q-header">
+      <span class="q-num">A.04</span>
+      <span class="q-badge badge-med">단답형 · 보통</span>
+    </div>
+    <div class="q-body">
+      <p class="q-text">방송에서 언급된 연준(FOMC) 금리 결정 회의 날짜는 3월 며칠인가?</p>
+      <div class="answer-block">
+        <div class="answer-label">정답</div>
+        <div class="answer-val">3월 18일 (또는 17~18일)</div>
+        <p class="answer-explain">방송 원문: "연준의 다음 금리 결정이 어떻게 될 건지… 3월 18일에서 아마 3월 중후반에는 상승장에 올 가능성이 크다." 또한 "연준 미팅이 3월 17일이 있으니까"라는 표현도 등장. 회의 전후(3월 15~18일) 변동성이 집중된다.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- A5 -->
+  <div class="q-card">
+    <div class="q-header">
+      <span class="q-num">A.05</span>
+      <span class="q-badge badge-med">객관식 · 보통</span>
+    </div>
+    <div class="q-body">
+      <p class="q-text">이란 분쟁 4가지 시나리오 중 발표자가 '현재 가장 현실적이고 유력하다'고 지목한 시나리오는?</p>
+      <div class="answer-block">
+        <div class="answer-label">정답</div>
+        <div class="answer-val">③ 이란 정권 붕괴 / 신속 해결</div>
+        <p class="answer-explain">방송 원문: "긍정적일 때 이게 아마 3번이 제가 가능성이 제일 크지 않을까." 이란 국민들이 정권에 반감을 가지고 있고, 혁명수비대가 나타나도 제거될 것이라는 근거에서 정권 붕괴를 가장 현실적 시나리오로 제시했다.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- A6 -->
+  <div class="q-card">
+    <div class="q-header">
+      <span class="q-num">A.06</span>
+      <span class="q-badge badge-med">OX · 보통</span>
+    </div>
+    <div class="q-body">
+      <p class="q-text">발표자는 비트코인이 전쟁·지정학 이슈와 상관관계가 있어서 이번 이란 폭격 이후 하락했다고 설명했다.</p>
+      <div class="answer-block">
+        <div class="answer-label">정답</div>
+        <div class="answer-val">X (틀리다)</div>
+        <p class="answer-explain">방송 원문: "비트코인은 원래는 사실 전쟁이나 이런 거라면 떨어지는 상관관계가 있었어요. 그런데 올라왔죠." 오히려 예상과 반대로 상승했으며, 이 때문에 "비트코인을 예측하는 것은 불가능하다"는 결론을 강조했다.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- A7 -->
+  <div class="q-card">
+    <div class="q-header">
+      <span class="q-num">A.07</span>
+      <span class="q-badge badge-med">단답형 · 보통</span>
+    </div>
+    <div class="q-body">
+      <p class="q-text">SpaceX의 예상 IPO 기업가치는 약 얼마(달러)이며, 프리마켓 비딩 시 주당 가격은 얼마까지 올라갔는가?</p>
+      <div class="answer-block">
+        <div class="answer-label">정답</div>
+        <div class="answer-val">기업가치 약 1.755조 달러 / 주당 약 850달러</div>
+        <p class="answer-explain">방송 원문: "컴퓨팅 밸류에이션이 기업가치가 1.755까지 가지 않을까 생각을 합니다. 실제로 비딩을 하면 700에서 한 850불 줘야 됩니다." 공개 발행가 595달러와 실제 비딩가 850달러의 차이에 주목해야 한다.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- A8 -->
+  <div class="q-card">
+    <div class="q-header">
+      <span class="q-num">A.08</span>
+      <span class="q-badge badge-med">객관식 · 보통</span>
+    </div>
+    <div class="q-body">
+      <p class="q-text">발표자가 이란 사태 해결 시 '이머징마켓에 유리하다'고 본 근거로 가장 적절한 것은?</p>
+      <div class="answer-block">
+        <div class="answer-label">정답</div>
+        <div class="answer-val">② 유가 안정 + 중앙은행 금리 인하 속도 가속 기대</div>
+        <p class="answer-explain">방송 원문(시나리오 3 분석): "유가가 안정되니까 아무래도 한국에는 더 좋겠죠. 에너지 가격이 하락세. 중앙은행들이 금리 인하 속도를 가속할 수 있다." 이 두 조건이 이머징마켓 ETF(SCHE) 상승 모멘텀의 핵심 근거다.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- A9 -->
+  <div class="q-card">
+    <div class="q-header">
+      <span class="q-num">A.09</span>
+      <span class="q-badge badge-hard">객관식 · 어려움</span>
+    </div>
+    <div class="q-body">
+      <p class="q-text">발표자가 "리튬 광산 투자는 단순 논리로 접근하면 안 된다"고 설명한 핵심 이유를 가장 잘 설명한 것은?</p>
+      <div class="answer-block">
+        <div class="answer-label">정답</div>
+        <div class="answer-val">② (전기차 수요 증가 → 가격 하락 가능, 고정자산 투자 증가로 이익률 감소)</div>
+        <p class="answer-explain">방송 원문: "전기차가 많아지면 가격이 떨어지겠죠. 리튬 가격이 떨어져요. 그거는 리튬 광산 입장에서는 안 좋은 거죠. 금 가격이 올라간다고 금광이 올라가는 건 아닙니다. 더 파야 되니까 장비를 또 사야 됩니다. Profit Margin이 떨어질 수가 있습니다." 수요-공급-비용 구조를 한 단계 더 깊이 분석해야 함을 강조한다.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- A10 -->
+  <div class="q-card">
+    <div class="q-header">
+      <span class="q-num">A.10</span>
+      <span class="q-badge badge-hard">단답형 · 어려움</span>
+    </div>
+    <div class="q-body">
+      <p class="q-text">발표자가 3월 변동성 이후 4월이 중요하다고 본 이유 두 가지와 연말 S&P500 주가 성장 예상치(%)</p>
+      <div class="answer-block">
+        <div class="answer-label">정답 (핵심 2가지 + 수치)</div>
+        <div class="answer-val">① 역사적으로 4월은 강세 월 ② 4월 발표 경제 데이터가 금리 인하 여부를 결정 / 연말 주가 8~10% 성장 예상</div>
+        <p class="answer-explain">방송 원문: "4월은 굿뉴스는 뭐냐면 4월은 아무리 안 좋은 시장도 4월은 성장성이 큰 날입니다." + "아마 4월에 나오는 자료를 보고 아마 나오지 않을까 저는 그렇게 생각하거든요(금리 인하)." + "주가 중심으로는 8에서 10% 정도 저는 그렇게 보고 있습니다." EPS 기준으로는 9~11% 성장 전망도 병기 가능.</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <div class="container">
+    투자는인생TV · 시험문제 및 해설 · 2026.03.03 · 본 자료는 방송 내용 기반 교육 목적이며 투자 권유가 아닙니다
+  </div>
+</footer>
+
+<script>
+const obs = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), i * 60);
+      obs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.q-card').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
