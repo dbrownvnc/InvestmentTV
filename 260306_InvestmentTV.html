@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Market Analysis | March 5, 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Source+Serif+4:opsz,wght@8..60,300;8..60,400;8..60,600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg: #ffffff;
+    --bg2: #fafafa;
+    --text: #1a1a1a;
+    --text2: #777777;
+    --accent: #e11d48;
+    --accent2: #f43f5e;
+    --border: #e5e5e5;
+    --chart1: #e11d48;
+    --chart2: #1a1a1a;
+    --chart3: #6b7280;
+    --chart4: #2563eb;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Source Serif 4', serif;
+    font-size: 16px;
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Header ── */
+  .masthead {
+    background: var(--text);
+    color: #fff;
+    padding: 36px 20px 28px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .masthead::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 60px,
+      rgba(255,255,255,.03) 60px,
+      rgba(255,255,255,.03) 61px
+    );
+  }
+  .masthead-kicker {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: .2em;
+    color: var(--accent2);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .masthead-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px, 7vw, 44px);
+    font-weight: 900;
+    line-height: 1.1;
+    letter-spacing: -.5px;
+  }
+  .masthead-title em {
+    color: var(--accent2);
+    font-style: italic;
+  }
+  .masthead-sub {
+    margin-top: 10px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: rgba(255,255,255,.5);
+    letter-spacing: .12em;
+  }
+
+  /* ── Rule ── */
+  .rule {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0 20px;
+    margin: 28px 0 0;
+  }
+  .rule span { flex: 1; height: 1px; background: var(--border); }
+  .rule strong {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: .2em;
+    color: var(--accent);
+    text-transform: uppercase;
+  }
+
+  /* ── Section ── */
+  section { padding: 0 20px 32px; }
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+  h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1.25;
+    margin-bottom: 14px;
+    color: var(--text);
+  }
+  h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--text);
+    margin: 20px 0 8px;
+  }
+  p { margin-bottom: 12px; color: var(--text); font-size: 15px; }
+  p:last-child { margin-bottom: 0; }
+
+  /* ── Highlight Box ── */
+  .highlight-box {
+    background: var(--bg2);
+    border-left: 3px solid var(--accent);
+    padding: 14px 16px;
+    margin: 16px 0;
+    border-radius: 0 4px 4px 0;
+  }
+  .highlight-box p { font-size: 14px; margin: 0; }
+  .highlight-box strong { color: var(--accent); }
+
+  /* ── Stat Cards ── */
+  .stat-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin: 16px 0;
+  }
+  .stat-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 14px 12px;
+  }
+  .stat-card .label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    color: var(--text2);
+    margin-bottom: 4px;
+  }
+  .stat-card .value {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1;
+  }
+  .stat-card .change {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    margin-top: 3px;
+  }
+  .up { color: var(--accent); }
+  .dn { color: var(--chart4); }
+
+  /* ── Table ── */
+  .tbl-wrap { overflow-x: auto; margin: 14px 0; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    background: var(--bg2);
+  }
+  thead th {
+    background: var(--accent);
+    color: #fff;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    padding: 9px 10px;
+    text-align: left;
+  }
+  tbody td {
+    border-bottom: 1px solid var(--border);
+    padding: 9px 10px;
+    vertical-align: top;
+  }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr:hover { background: #f5f5f5; }
+
+  /* ── Tag ── */
+  .tag {
+    display: inline-block;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 2px;
+    margin: 2px 3px 2px 0;
+  }
+  .tag-red { background: #fef2f4; color: var(--accent); border: 1px solid #fca5a5; }
+  .tag-blue { background: #eff6ff; color: var(--chart4); border: 1px solid #93c5fd; }
+  .tag-gray { background: #f3f4f6; color: var(--chart3); border: 1px solid #d1d5db; }
+  .tag-dark { background: #f0fdf4; color: #166534; border: 1px solid #86efac; }
+
+  /* ── Pull Quote ── */
+  .pull-quote {
+    border-top: 2px solid var(--accent);
+    border-bottom: 1px solid var(--border);
+    padding: 18px 0;
+    margin: 20px 0;
+    text-align: center;
+  }
+  .pull-quote p {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    font-style: italic;
+    line-height: 1.5;
+    color: var(--text);
+  }
+  .pull-quote cite {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--text2);
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    margin-top: 8px;
+    display: block;
+  }
+
+  /* ── Chart ── */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .chart-container {
+    position: relative;
+    max-height: 340px;
+    margin: 16px 0;
+  }
+  .chart-container canvas {
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    max-height: 300px;
+  }
+  .chart-container.chart-ready canvas {
+    opacity: 1;
+  }
+  .chart-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--text2);
+    margin-bottom: 8px;
+  }
+
+  /* ── Divider ── */
+  hr { border: none; border-top: 1px solid var(--border); margin: 0; }
+
+  /* ── Stock Row ── */
+  .stock-list { margin: 12px 0; }
+  .stock-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg2);
+  }
+  .stock-item:first-child { border-radius: 6px 6px 0 0; }
+  .stock-item:last-child { border-radius: 0 0 6px 6px; border-bottom: none; }
+  .stock-name { font-weight: 600; font-size: 14px; }
+  .stock-note { font-size: 12px; color: var(--text2); }
+  .stock-badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    padding: 3px 8px;
+    border-radius: 3px;
+  }
+  .badge-buy { background: #fef2f4; color: var(--accent); }
+  .badge-hold { background: #f3f4f6; color: #374151; }
+  .badge-reduce { background: #eff6ff; color: var(--chart4); }
+  .badge-avoid { background: #fafafa; color: #9ca3af; border: 1px solid var(--border); }
+
+  /* ── Footer ── */
+  footer {
+    background: var(--text);
+    color: rgba(255,255,255,.45);
+    text-align: center;
+    padding: 24px 20px;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: .1em;
+    line-height: 1.8;
+  }
+
+  /* ── Exam section ── */
+  .exam-header {
+    background: var(--accent);
+    color: #fff;
+    padding: 20px 20px 14px;
+    margin-top: 8px;
+  }
+  .exam-header h2 {
+    font-family: 'Playfair Display', serif;
+    color: #fff;
+    font-size: 20px;
+    margin: 0;
+  }
+  .exam-header p {
+    color: rgba(255,255,255,.75);
+    font-size: 12px;
+    font-family: 'DM Mono', monospace;
+    margin: 6px 0 0;
+  }
+  .q-block {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    margin: 14px 20px;
+    overflow: hidden;
+  }
+  .q-head {
+    background: var(--bg2);
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .q-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    background: var(--accent);
+    color: #fff;
+    padding: 2px 7px;
+    border-radius: 2px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .q-type {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--text2);
+    flex-shrink: 0;
+    margin-top: 4px;
+  }
+  .q-text { font-size: 14px; line-height: 1.55; flex: 1; }
+  .q-options { padding: 10px 14px 14px; }
+  .q-options li {
+    font-size: 13px;
+    padding: 4px 0;
+    list-style: none;
+    border-bottom: 1px dashed var(--border);
+    color: var(--text);
+  }
+  .q-options li:last-child { border-bottom: none; }
+  .diff-badge {
+    display: inline-block;
+    font-family: 'DM Mono', monospace;
+    font-size: 8px;
+    padding: 1px 5px;
+    border-radius: 2px;
+    margin-left: 6px;
+    vertical-align: middle;
+  }
+  .diff-easy { background: #f0fdf4; color: #166534; }
+  .diff-med { background: #fffbeb; color: #92400e; }
+  .diff-hard { background: #fef2f4; color: var(--accent); }
+
+  /* Answers section */
+  .ans-block {
+    background: var(--bg2);
+    border-left: 3px solid var(--chart4);
+    padding: 12px 14px;
+    margin: 0 20px 14px;
+    border-radius: 0 6px 6px 0;
+  }
+  .ans-block .ans-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: .1em;
+    color: var(--chart4);
+    margin-bottom: 4px;
+  }
+  .ans-block p { font-size: 13px; margin: 0; }
+  .ans-block strong { color: var(--text); }
+</style>
+</head>
+<body>
+
+<!-- ════════════════════ MASTHEAD ════════════════════ -->
+<div class="masthead">
+  <div class="masthead-kicker">투자는인생TV · Members Only Broadcast</div>
+  <div class="masthead-title">US Market &amp;<br><em>Geopolitical Risk</em><br>Analysis</div>
+  <div class="masthead-sub">March 5, 2026 · Financial Intelligence Report</div>
+</div>
+
+<!-- ════════════════════ EXECUTIVE SUMMARY ════════════════════ -->
+<div class="rule"><span></span><strong>Executive Summary</strong><span></span></div>
+<section class="fade-in">
+  <div class="section-label">Overview</div>
+  <h2>지정학 리스크가 시장을 흔들다</h2>
+  <p>이란과의 전쟁 장기화 조짐, 호르무즈 해협 봉쇄로 인한 유조선 통항 마비가 글로벌 원자재 가격을 자극하고 있다. 강달러·강유가·강금속의 '3강(强)' 국면이 전개되며 인플레이션 재상승 우려가 연준(Fed)의 금리 인하 경로에 직접적인 압력을 가하고 있다.</p>
+  <div class="highlight-box">
+    <p><strong>핵심 키워드:</strong> 호르무즈 봉쇄 · 알루미늄 급등(+32%) · 달러 강세 · 고용보고서 · 소프트웨어 섹터 반등</p>
+  </div>
+</section>
+
+<!-- ════════════════════ MARKET SNAPSHOT ════════════════════ -->
+<hr>
+<div class="rule"><span></span><strong>Market Snapshot · Mar 5</strong><span></span></div>
+<section>
+  <div class="section-label">주요 지표</div>
+  <h2>당일 시장 데이터</h2>
+  <div class="stat-grid fade-in">
+    <div class="stat-card">
+      <div class="label">S&amp;P 500</div>
+      <div class="value">▼ 0.56%</div>
+      <div class="change dn">장 마감 전 낙폭 축소</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">Dow Jones</div>
+      <div class="value">▼ 1.6%</div>
+      <div class="change dn">30대 구성종목 주도 하락</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">10yr Treasury</div>
+      <div class="value">4.129%</div>
+      <div class="change up">+5bps · 리스크 프리미엄↑</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">Dollar Index</div>
+      <div class="value">99.29</div>
+      <div class="change up">+0.52pt · 강달러 지속</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">WTI Crude</div>
+      <div class="value">$78.68</div>
+      <div class="change up">$77 → $78대 상승 중</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">Aluminum</div>
+      <div class="value">$3,300/t</div>
+      <div class="change up">$2,500 대비 +32%</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">Bitcoin</div>
+      <div class="value">~$69–71K</div>
+      <div class="change dn">당일 소폭 하락</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">Natural Gas</div>
+      <div class="value">$2.943</div>
+      <div class="change up">$0.89 수준에서 급등</div>
+    </div>
+  </div>
+
+  <div class="chart-title fade-in">지수별 당일 등락률 비교</div>
+  <div class="chart-container fade-in">
+    <canvas id="indexChart" height="220"></canvas>
+  </div>
+</section>
+
+<!-- ════════════════════ GEOPOLITICAL RISK ════════════════════ -->
+<hr>
+<div class="rule"><span></span><strong>Geopolitical Risk</strong><span></span></div>
+<section>
+  <div class="section-label">지정학 분석</div>
+  <h2>호르무즈 봉쇄와 이란 전쟁 장기화</h2>
+
+  <p>이란 전쟁이 예상보다 장기화되면서 <strong>호르무즈 해협에 수백 척의 유조선이 묶인 상황</strong>이 지속되고 있다. 유조선은 군함과 달리 방어 수단이 없어 드론 공격에 극히 취약한 '소프트 타깃'이며, 한 두 척이라도 피격·침몰할 경우 전체 통항이 사실상 중단될 수 있다는 우려가 크다.</p>
+
+  <div class="pull-quote">
+    <p>"전쟁은 쉽게 시작해도 끝내기는 어렵다."</p>
+    <cite>방송 진행자 · 2026년 3월 5일</cite>
+  </div>
+
+  <h3>시나리오 분석</h3>
+  <div class="tbl-wrap fade-in">
+    <table>
+      <thead>
+        <tr>
+          <th>시나리오</th>
+          <th>유가</th>
+          <th>시장 영향</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>단기 해결</strong><br><span style="font-size:12px;color:var(--text2)">미국 대규모 폭격 → 4주 이내 종결</span></td>
+          <td style="color:#166534">$70↓</td>
+          <td>인플레 완화 → 금리 인하 기대 복원, 증시 반등</td>
+        </tr>
+        <tr>
+          <td><strong>장기화 (현재 경로)</strong><br><span style="font-size:12px;color:var(--text2)">지도부 교체 반복, 협상 난항</span></td>
+          <td style="color:var(--accent)">$80–100↑</td>
+          <td>인플레 재점화, 금리 인하 축소·지연, 성장주 압박</td>
+        </tr>
+        <tr>
+          <td><strong>유조선 피격 사고</strong><br><span style="font-size:12px;color:var(--text2)">드론 타격 → 해협 사실상 차단</span></td>
+          <td style="color:var(--accent)">$100+</td>
+          <td>에너지 쇼크, 글로벌 공급망 마비, VIX 급등</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>미국 군사적 대응 전망</h3>
+  <p>방송에서는 미군 사망자가 이미 6명 발생했으며, 역사적으로 미군 희생 시 대규모 보복이 뒤따랐다고 분석했다. B-2 스텔스 전략폭격기를 선두로 B-52, B-1B가 순차 투입되는 시나리오가 거론되었다. 트럼프 행정부가 4주 이내의 단기 결전을 목표로 한다는 관측도 제시되었다.</p>
+</section>
+
+<!-- ════════════════════ COMMODITY IMPACT ════════════════════ -->
+<hr>
+<div class="rule"><span></span><strong>Commodity Markets</strong><span></span></div>
+<section>
+  <div class="section-label">원자재 분석</div>
+  <h2>알루미늄 32% 급등 — 한국에 직격탄</h2>
+
+  <p>알루미늄 가격이 올해 초 <strong>톤당 약 $2,500에서 $3,300으로 32% 이상 급등</strong>하며 2022년 이후 최고치를 기록했다. 중동에서 전 세계 알루미늄 수출량의 약 8%를 담당하는 점을 감안하면, 현재의 가격 급등은 단순 수급을 넘어선 공급망 공포에서 비롯된 것이다.</p>
+
+  <div class="chart-container fade-in">
+    <canvas id="aluminumChart" height="220"></canvas>
+  </div>
+
+  <div class="highlight-box">
+    <p><strong>한국 취약점:</strong> 알루미늄 해외 수입 의존도 100% · 원화 약세(달러 강세) 중첩 · 에너지 수입 전량 해외 의존 → 수입 물가 이중 압박</p>
+  </div>
+
+  <h3>에너지·귀금속 현황</h3>
+  <div class="tbl-wrap fade-in">
+    <table>
+      <thead>
+        <tr><th>자산</th><th>현재 가격</th><th>방향성</th><th>투자 시사점</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>WTI 원유</td>
+          <td>$78.68</td>
+          <td class="up">↑ ($80+ 가능)</td>
+          <td>에너지 섹터 단기 수혜, 인플레 악재</td>
+        </tr>
+        <tr>
+          <td>금(Gold)</td>
+          <td>소폭 조정 중</td>
+          <td class="up">↑ 연말 목표 $5,500</td>
+          <td>포트폴리오 30대 그룹 꾸준히 보유</td>
+        </tr>
+        <tr>
+          <td>알루미늄</td>
+          <td>$3,300/t</td>
+          <td class="up">↑ 연중 최고</td>
+          <td>제조업 원가 상승 압박</td>
+        </tr>
+        <tr>
+          <td>천연가스</td>
+          <td>$2.943</td>
+          <td class="up">↑ 급등</td>
+          <td>유럽·아시아 에너지 비용 상승</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ════════════════════ MACRO / FED ════════════════════ -->
+<hr>
+<div class="rule"><span></span><strong>Macro & Fed Policy</strong><span></span></div>
+<section>
+  <div class="section-label">거시경제 · 연준</div>
+  <h2>인플레이션 재상승 — 금리 인하 경로의 함정</h2>
+
+  <p>강유가·강달러·강원자재가 결합되면 수입물가가 이중으로 상승하며 인플레이션을 자극한다. 이는 연준의 금리 인하 사이클에 직접적인 제동을 건다. 방송에서는 <strong>금리 인하가 이루어지려면 이란 전쟁이 어느 정도 봉합되어야 한다</strong>는 점을 명확히 언급했다.</p>
+
+  <div class="stat-grid fade-in">
+    <div class="stat-card">
+      <div class="label">현재 실업률</div>
+      <div class="value">4.3%</div>
+      <div class="change" style="color:var(--chart3)">정상 범위 내</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">비정상 임계선</div>
+      <div class="value">4.5%</div>
+      <div class="change dn">초과 시 금리 인하 압력↑</div>
+    </div>
+  </div>
+
+  <div class="chart-container fade-in">
+    <canvas id="scenarioChart" height="220"></canvas>
+  </div>
+
+  <h3>3월 비농업 고용보고서 (NFP) 전망</h3>
+  <p>이번 금요일 발표 예정인 NFP는 1월 수치의 절반 수준으로 예상된다. 급여 수령자 수 감소는 실업률 상승 가능성을 시사하며, 발표 당일 추가 변동성이 예상된다. 단, 실업률이 4.5% 이상으로 치솟는다면 연준의 금리 인하 여지가 다시 열릴 수 있다는 양면성도 존재한다.</p>
+
+  <div class="highlight-box">
+    <p><strong>핵심 딜레마:</strong> 전쟁 장기화 → 유가↑ → 인플레↑ → 금리 인하 불가 / 반면 NFP 급감 → 실업률 상승 → 금리 인하 압력 → 투자자에게는 호재. 두 방향이 서로 충돌하는 구조.</p>
+  </div>
+</section>
+
+<!-- ════════════════════ SECTOR ROTATION ════════════════════ -->
+<hr>
+<div class="rule"><span></span><strong>Sector Rotation</strong><span></span></div>
+<section>
+  <div class="section-label">섹터 배치 전략</div>
+  <h2>최근 1개월 섹터 성과 &amp; 전략</h2>
+
+  <div class="chart-container fade-in">
+    <canvas id="sectorChart" height="240"></canvas>
+  </div>
+
+  <div class="tbl-wrap fade-in">
+    <table>
+      <thead>
+        <tr><th>섹터</th><th>방향</th><th>주요 이유</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Communication Services</strong></td>
+          <td><span class="tag tag-dark">▲ 최고</span></td>
+          <td>메타·구글 등 AI 광고 매출 호조</td>
+        </tr>
+        <tr>
+          <td><strong>Utilities</strong></td>
+          <td><span class="tag tag-dark">▲ 상승</span></td>
+          <td>버라이존 등 방어주 선호, 금리 민감도 낮음</td>
+        </tr>
+        <tr>
+          <td><strong>Energy</strong></td>
+          <td><span class="tag tag-dark">▲ 상승</span></td>
+          <td>유가 상승 직접 수혜</td>
+        </tr>
+        <tr>
+          <td><strong>IT (Application Software)</strong></td>
+          <td><span class="tag tag-dark">▲ +3%</span></td>
+          <td>딥시크 AI 공포 과매도 해소, CRM·APP·NOW 반등</td>
+        </tr>
+        <tr>
+          <td><strong>Financials</strong></td>
+          <td><span class="tag tag-red">▼ 최악</span></td>
+          <td>영국 모기지사 파산 + 트럼프 신용카드 금리 상한 + JPMorgan 갈등</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>파이낸셜 섹터 3대 악재</h3>
+  <p>① 영국 모기지 회사 파산 → 금융 시스템 리스크 재부각, ② 트럼프의 신용카드 이자율 10% 상한 정책 → 은행 이익 압박, ③ 트럼프 행정부와 JP모건 CEO 다이먼의 공개적 앙숙 관계 → 규제 리스크 확대.</p>
+  <p>방송에서는 <strong>다음 달 FOMC 기준금리 발표 이후</strong> 파이낸셜 섹터 재진입을 검토하라고 조언했다. MS(Morgan Stanley) 주가 하락과 직원 2,500명 감원 발표는 오히려 비용 효율화로 주가 회복 가능성이 있다고 평가했다.</p>
+</section>
+
+<!-- ════════════════════ STOCK MOVERS ════════════════════ -->
+<hr>
+<div class="rule"><span></span><strong>Individual Stock Movers</strong><span></span></div>
+<section>
+  <div class="section-label">주요 개별주 동향</div>
+  <h2>실적 발표 &amp; 이슈 종목</h2>
+
+  <div class="stock-list fade-in">
+    <div class="stock-item">
+      <div>
+        <div class="stock-name">Broadcom (AVGO)</div>
+        <div class="stock-note">반도체 솔루션 매출 YoY +50% · AI 매출 YoY +106% · 가이던스 상향</div>
+      </div>
+      <div class="stock-badge badge-buy">장초 +6%</div>
+    </div>
+    <div class="stock-item">
+      <div>
+        <div class="stock-name">AppLovin (APP)</div>
+        <div class="stock-note">EPS 연간 성장률 ~120% · 2–3주 전 진입 권고 → +17%</div>
+      </div>
+      <div class="stock-badge badge-buy">보유 ↑</div>
+    </div>
+    <div class="stock-item">
+      <div>
+        <div class="stock-name">Salesforce (CRM)</div>
+        <div class="stock-note">최근 30대 그룹 편입 · AI 기반 SaaS 성장성 유효</div>
+      </div>
+      <div class="stock-badge badge-buy">신규 편입</div>
+    </div>
+    <div class="stock-item">
+      <div>
+        <div class="stock-name">ServiceNow (NOW)</div>
+        <div class="stock-note">과매도 구간 진입 · 향후 30–40% 반등 가능성 제시</div>
+      </div>
+      <div class="stock-badge badge-buy">보유 유지</div>
+    </div>
+    <div class="stock-item">
+      <div>
+        <div class="stock-name">NVIDIA (NVDA)</div>
+        <div class="stock-note">H20 칩 대중국 수출 생산 중단 발표 · 억만장자 100만주 매입으로 반등</div>
+      </div>
+      <div class="stock-badge badge-hold">Must Have</div>
+    </div>
+    <div class="stock-item">
+      <div>
+        <div class="stock-name">Oracle (ORCL)</div>
+        <div class="stock-note">다음 주 실적 발표 예정 · 현재 Hold 의견 다수</div>
+      </div>
+      <div class="stock-badge badge-hold">발표 후 판단</div>
+    </div>
+    <div class="stock-item">
+      <div>
+        <div class="stock-name">Ciena (CIEN)</div>
+        <div class="stock-note">순이익·매출 기록 경신에도 주가 –4.5% · "소문에 사서 사실에 팔아" 패턴</div>
+      </div>
+      <div class="stock-badge badge-hold">관망</div>
+    </div>
+    <div class="stock-item">
+      <div>
+        <div class="stock-name">American Eagle (AEO)</div>
+        <div class="stock-note">인종차별 광고 논란 · CEO 리스크 · 관세 영향 마진 악화</div>
+      </div>
+      <div class="stock-badge badge-avoid">투자 제외</div>
+    </div>
+  </div>
+
+  <h3>암호화폐 섹터: AI 에이전트와 비트코인</h3>
+  <p>2025년 벤처캐피탈이 암호화폐 기업에 투자한 달러 중 <strong>40%가 AI 제품 개발사에 배분</strong>되었다. 코인베이스는 AI 에이전트를 위한 최초의 암호화폐 지갑 구축을 발표했으며, 마스터카드와 비자도 AI 에이전트용 결제 솔루션을 서두르고 있다. 비트코인이 스테이블코인보다 AI 결제 통화로 선호될 가능성이 있다는 분석이 제기된다.</p>
+  <div class="highlight-box">
+    <p><strong>비트코인 슈퍼사이클:</strong> 2028년 목표, 10만 달러 이상 가능성 제시. 단, 현재는 투자 리스크가 높은 상태. MicroStrategy(MSTR) 평균 보유 단가 약 $76,000.</p>
+  </div>
+</section>
+
+<!-- ════════════════════ PORTFOLIO STRATEGY ════════════════════ -->
+<hr>
+<div class="rule"><span></span><strong>Portfolio Strategy</strong><span></span></div>
+<section>
+  <div class="section-label">포트폴리오 전략</div>
+  <h2>4.11 법칙 &amp; 섹터 로테이션 원칙</h2>
+
+  <p>방송에서 반복적으로 강조된 핵심 원칙은 개별 종목 수익률보다 <strong>전체 포트폴리오 안정성</strong>이 우선한다는 것이다. 올라갈 때 더 많이 올라가고, 떨어질 때 덜 떨어지는 구조를 만드는 것이 목표다.</p>
+
+  <div class="tbl-wrap fade-in">
+    <table>
+      <thead>
+        <tr><th>원칙</th><th>내용</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>현금 보유</strong></td>
+          <td>최소 10% 현금 상시 보유. 폭락 시 저가 매수 재원. 현재 시장 상황에서는 20–30%보다 10–15% 수준이 적절.</td>
+        </tr>
+        <tr>
+          <td><strong>섹터 로테이션</strong></td>
+          <td>3개월 주기로 섹터 비중 조정. 기관 보유량 증가 추세 확인 후 진입. 현재: 파이낸셜 줄이고, 소프트웨어·유틸리티 비중 확대.</td>
+        </tr>
+        <tr>
+          <td><strong>분산 투자</strong></td>
+          <td>한 종목에 60% 이상 집중 금지. 포트폴리오 분산이 수익률 안정화의 핵심.</td>
+        </tr>
+        <tr>
+          <td><strong>WACC 모니터링</strong></td>
+          <td>S&amp;P 500 베타 1 기준 수익률 비교. 베타 1.19에 WACC 9.7% = 양호. 연간 기준으로 평가 필요(연말까지 누적 산정).</td>
+        </tr>
+        <tr>
+          <td><strong>4월 회복 전망</strong></td>
+          <td>호르무즈 해협 해결 시 4월 반등 가능성 높음. 현재 저점에서 과도한 현금화 자제.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="chart-container fade-in">
+    <canvas id="portfolioChart" height="220"></canvas>
+  </div>
+
+  <h3>단기 진입 전략</h3>
+  <p>방송에서는 <strong>위젤(Wezel) 컴퓨팅</strong>의 경우 5% 이상 폭락 시 3분의 1씩 분할 매수를 제안했다. 오라클은 실적 발표 이후 진입을 권고했으며, 워크데이(Workday)는 현재 불안정하므로 발표 이후 판단하는 것이 낫다고 판단했다.</p>
+</section>
+
+<!-- ════════════════════ KOREA IMPACT ════════════════════ -->
+<hr>
+<div class="rule"><span></span><strong>Korea Impact</strong><span></span></div>
+<section>
+  <div class="section-label">한국 경제 영향</div>
+  <h2>강달러·강유가의 한국 직격탄</h2>
+
+  <p>강달러는 달러 자산 보유자에게 유리하지만, 수출 의존 국가인 한국에는 수입 원가 상승과 외채 부담 증가라는 이중 압박으로 작용한다. 원/달러 환율이 1,500원을 넘어 1,600원에 근접할 경우 충격이 매우 커진다고 경고했다.</p>
+
+  <div class="highlight-box">
+    <p><strong>한국은행 딜레마:</strong> 금리 인하를 원하지만 유가 상승 → 인플레이션 압력 → 인하 불가. 오히려 인상 가능성도 있어 서민 경제에 직접 타격.</p>
+  </div>
+
+  <div class="tbl-wrap fade-in">
+    <table>
+      <thead>
+        <tr><th>항목</th><th>한국 영향</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>달러 강세 (달러당 1,500원+)</td><td>수입 물가 급등, 원자재·에너지 비용 이중 상승</td></tr>
+        <tr><td>유가 급등</td><td>휘발유 가격 상승, 제조업 원가 압박</td></tr>
+        <tr><td>알루미늄 +32%</td><td>자동차·건설·전자 등 전 산업 생산비 상승</td></tr>
+        <tr><td>반도체(삼성·SK하이닉스)</td><td>변동성 심화, 글로벌 수요 둔화 우려</td></tr>
+        <tr><td>한국은행 금리 정책</td><td>인플레 심화 시 금리 인하 불가 → 가계 이자 부담 유지</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ════════════════════ INVESTMENT IMPLICATIONS ════════════════════ -->
+<hr>
+<div class="rule"><span></span><strong>Investment Implications</strong><span></span></div>
+<section>
+  <div class="section-label">투자 시사점</div>
+  <h2>지금 무엇을 담고 무엇을 줄일 것인가</h2>
+
+  <div class="tbl-wrap fade-in">
+    <table>
+      <thead>
+        <tr><th>전략</th><th>자산·섹터</th><th>근거</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="tag tag-dark">비중 확대</span></td>
+          <td>AI 소프트웨어 (APP, CRM, NOW)</td>
+          <td>딥시크 쇼크 과매도 해소, EPS 고성장 지속</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-dark">비중 확대</span></td>
+          <td>에너지 섹터</td>
+          <td>유가 상승 직접 수혜, 단기 모멘텀 유효</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-dark">장기 보유</span></td>
+          <td>금(Gold), NVDA, META, MU</td>
+          <td>금 연말 $5,500 목표 / NVDA·META·MU 목표가 $1,000 이상 가능</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-gray">현상 유지</span></td>
+          <td>유틸리티 (Verizon 등)</td>
+          <td>방어주 특성, 금리 인하 수혜 기대</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-red">비중 축소</span></td>
+          <td>파이낸셜 섹터</td>
+          <td>3중 악재 지속 → FOMC 이후 재검토</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-blue">관망</span></td>
+          <td>Oracle, Workday</td>
+          <td>실적 발표 이후 진입 판단</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ════════════════════ FOOTER ════════════════════ -->
+<footer>
+  <p>투자는인생TV · Members Only · March 5, 2026</p>
+  <p style="margin-top:6px;font-size:9px">본 문서는 방송 내용 분석 목적으로 제작된 교육 자료입니다.<br>투자 결정은 본인 책임 하에 이루어져야 하며, 이 자료는 투자 권유가 아닙니다.</p>
+</footer>
+
+<script>
+// ── Fade-in Observer ──
+const fadeObs = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), i * 80);
+      fadeObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.12 });
+document.querySelectorAll('.fade-in').forEach(el => fadeObs.observe(el));
+
+// ── Chart Configs ──
+const chartConfigs = {};
+
+chartConfigs['indexChart'] = () => {
+  new Chart(document.getElementById('indexChart'), {
+    type: 'bar',
+    data: {
+      labels: ['S&P 500', 'Dow Jones', '10yr Treasury\n(bps)', 'Dollar Index\n(pts)'],
+      datasets: [{
+        label: '당일 변동',
+        data: [-0.56, -1.6, 0.05, 0.52],
+        backgroundColor: ['#e11d48','#e11d48','#2563eb','#2563eb'],
+        borderRadius: 3,
+        borderSkipped: false,
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: ctx => {
+              const v = ctx.raw;
+              return `${v > 0 ? '+' : ''}${v}%`;
+            }
+          }
+        }
+      },
+      scales: {
+        y: {
+          ticks: { font: { family: 'DM Mono', size: 10 }, color: '#777' },
+          grid: { color: '#f0f0f0' }
+        },
+        x: {
+          ticks: { font: { family: 'DM Mono', size: 9 }, color: '#777' },
+          grid: { display: false }
+        }
+      }
+    }
+  });
+};
+
+chartConfigs['aluminumChart'] = () => {
+  new Chart(document.getElementById('aluminumChart'), {
+    type: 'line',
+    data: {
+      labels: ['2022\n고점', '2024 초', '2025 초\n(올해초)', '현재\n(2026.3)'],
+      datasets: [{
+        label: '알루미늄 가격 ($/t)',
+        data: [3800, 2200, 2500, 3300],
+        borderColor: '#e11d48',
+        backgroundColor: 'rgba(225,29,72,.08)',
+        borderWidth: 2.5,
+        tension: 0.4,
+        fill: true,
+        pointBackgroundColor: '#e11d48',
+        pointRadius: 5,
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: ctx => `$${ctx.raw}/t` } }
+      },
+      scales: {
+        y: {
+          min: 1800,
+          ticks: { font: { family: 'DM Mono', size: 10 }, color: '#777', callback: v => `$${v}` },
+          grid: { color: '#f0f0f0' }
+        },
+        x: {
+          ticks: { font: { family: 'DM Mono', size: 9 }, color: '#777' },
+          grid: { display: false }
+        }
+      }
+    }
+  });
+};
+
+chartConfigs['scenarioChart'] = () => {
+  new Chart(document.getElementById('scenarioChart'), {
+    type: 'bar',
+    data: {
+      labels: ['단기 해결\n(유가↓)', '현재 경로\n(장기화)', '최악 시나리오\n(유조선 피격)'],
+      datasets: [
+        {
+          label: '유가 전망 ($/bbl)',
+          data: [68, 90, 110],
+          backgroundColor: ['#86efac','#fbbf24','#e11d48'],
+          borderRadius: 3,
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: ctx => `유가 $${ctx.raw}/bbl` } }
+      },
+      scales: {
+        y: {
+          min: 50,
+          ticks: { font: { family: 'DM Mono', size: 10 }, color: '#777', callback: v => `$${v}` },
+          grid: { color: '#f0f0f0' }
+        },
+        x: {
+          ticks: { font: { family: 'DM Mono', size: 9 }, color: '#777', maxRotation: 0 },
+          grid: { display: false }
+        }
+      }
+    }
+  });
+};
+
+chartConfigs['sectorChart'] = () => {
+  new Chart(document.getElementById('sectorChart'), {
+    type: 'bar',
+    data: {
+      labels: ['Comm.\nServices', 'Utilities', 'Energy', 'IT\n(Software)', 'Financials'],
+      datasets: [{
+        label: '1개월 수익률 (%)',
+        data: [6.5, 4.2, 3.8, 3.0, -4.5],
+        backgroundColor: ctx => ctx.raw >= 0 ? '#e11d48' : '#2563eb',
+        borderRadius: 3,
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: ctx => `${ctx.raw > 0 ? '+' : ''}${ctx.raw}%` } }
+      },
+      scales: {
+        y: {
+          ticks: { font: { family: 'DM Mono', size: 10 }, color: '#777', callback: v => `${v}%` },
+          grid: { color: '#f0f0f0' }
+        },
+        x: {
+          ticks: { font: { family: 'DM Mono', size: 9 }, color: '#777', maxRotation: 0 },
+          grid: { display: false }
+        }
+      }
+    }
+  });
+};
+
+chartConfigs['portfolioChart'] = () => {
+  new Chart(document.getElementById('portfolioChart'), {
+    type: 'doughnut',
+    data: {
+      labels: ['AI 소프트웨어', '에너지', '금·귀금속', '유틸리티', '현금', '파이낸셜'],
+      datasets: [{
+        data: [30, 15, 15, 10, 15, 15],
+        backgroundColor: ['#e11d48','#f97316','#eab308','#22c55e','#94a3b8','#3b82f6'],
+        borderWidth: 0,
+        hoverOffset: 6,
+      }]
+    },
+    options: {
+      responsive: true,
+      cutout: '62%',
+      plugins: {
+        legend: {
+          position: 'bottom',
+          labels: { font: { family: 'DM Mono', size: 9 }, padding: 10, boxWidth: 10 }
+        },
+        tooltip: { callbacks: { label: ctx => `${ctx.label}: ${ctx.raw}%` } }
+      }
+    }
+  });
+};
+
+// ── Chart Observer ──
+const chartObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const canvas = e.target.querySelector('canvas');
+      if (canvas && chartConfigs[canvas.id]) {
+        chartConfigs[canvas.id]();
+        e.target.classList.add('chart-ready');
+        chartObs.unobserve(e.target);
+      }
+    }
+  });
+}, { threshold: 0.15 });
+document.querySelectorAll('.chart-container').forEach(el => chartObs.observe(el));
+</script>
+</body>
+</html>

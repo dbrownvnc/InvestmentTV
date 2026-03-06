@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>시험 문제 &amp; 정답 | March 5, 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Source+Serif+4:opsz,wght@8..60,300;8..60,400;8..60,600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #ffffff;
+    --bg2: #fafafa;
+    --text: #1a1a1a;
+    --text2: #777777;
+    --accent: #e11d48;
+    --accent2: #f43f5e;
+    --border: #e5e5e5;
+    --chart4: #2563eb;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Source Serif 4', serif;
+    font-size: 16px;
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Masthead */
+  .masthead {
+    background: var(--text);
+    color: #fff;
+    padding: 36px 20px 28px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .masthead::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      90deg, transparent, transparent 60px,
+      rgba(255,255,255,.03) 60px, rgba(255,255,255,.03) 61px
+    );
+  }
+  .masthead-kicker {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: .2em;
+    color: var(--accent2);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .masthead-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(26px, 6vw, 40px);
+    font-weight: 900;
+    line-height: 1.1;
+    letter-spacing: -.5px;
+  }
+  .masthead-title em { color: var(--accent2); font-style: italic; }
+  .masthead-sub {
+    margin-top: 10px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: rgba(255,255,255,.5);
+    letter-spacing: .12em;
+  }
+
+  /* Difficulty legend */
+  .legend-bar {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    padding: 14px 20px;
+    background: var(--bg2);
+    border-bottom: 1px solid var(--border);
+  }
+  .legend-item {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  /* Exam header block */
+  .exam-header {
+    background: var(--accent);
+    color: #fff;
+    padding: 20px 20px 14px;
+  }
+  .exam-header h2 {
+    font-family: 'Playfair Display', serif;
+    color: #fff;
+    font-size: 20px;
+    margin: 0;
+  }
+  .exam-header p {
+    color: rgba(255,255,255,.75);
+    font-size: 12px;
+    font-family: 'DM Mono', monospace;
+    margin: 6px 0 0;
+  }
+
+  /* Section rule */
+  .rule {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0 20px;
+    margin: 28px 0 0;
+  }
+  .rule span { flex: 1; height: 1px; background: var(--border); }
+  .rule strong {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: .2em;
+    color: var(--accent);
+    text-transform: uppercase;
+  }
+
+  /* Question block */
+  .q-block {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    margin: 14px 20px;
+    overflow: hidden;
+  }
+  .q-head {
+    background: var(--bg2);
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .q-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    background: var(--accent);
+    color: #fff;
+    padding: 2px 7px;
+    border-radius: 2px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .q-type {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--text2);
+    flex-shrink: 0;
+    margin-top: 4px;
+  }
+  .q-text { font-size: 14px; line-height: 1.55; flex: 1; }
+  .q-options { padding: 10px 14px 14px; }
+  .q-options li {
+    font-size: 13px;
+    padding: 4px 0;
+    list-style: none;
+    border-bottom: 1px dashed var(--border);
+    color: var(--text);
+  }
+  .q-options li:last-child { border-bottom: none; }
+
+  /* Difficulty badge */
+  .diff-badge {
+    display: inline-block;
+    font-family: 'DM Mono', monospace;
+    font-size: 8px;
+    padding: 1px 5px;
+    border-radius: 2px;
+    margin-left: 6px;
+    vertical-align: middle;
+  }
+  .diff-easy { background: #f0fdf4; color: #166534; }
+  .diff-med  { background: #fffbeb; color: #92400e; }
+  .diff-hard { background: #fef2f4; color: var(--accent); }
+
+  /* Answer block */
+  .ans-block {
+    background: var(--bg2);
+    border-left: 3px solid var(--chart4);
+    padding: 12px 14px;
+    margin: 0 20px 14px;
+    border-radius: 0 6px 6px 0;
+  }
+  .ans-block .ans-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: .1em;
+    color: var(--chart4);
+    margin-bottom: 4px;
+  }
+  .ans-block p { font-size: 13px; margin: 0; }
+  .ans-block strong { color: var(--text); }
+
+  /* Fade animation */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Footer */
+  footer {
+    background: var(--text);
+    color: rgba(255,255,255,.45);
+    text-align: center;
+    padding: 24px 20px;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: .1em;
+    line-height: 1.8;
+    margin-top: 24px;
+  }
+</style>
+</head>
+<body>
+
+<!-- MASTHEAD -->
+<div class="masthead">
+  <div class="masthead-kicker">투자는인생TV · Members Only · Quiz Sheet</div>
+  <div class="masthead-title">시험 문제<br>&amp; <em>정답·해설</em></div>
+  <div class="masthead-sub">March 5, 2026 Broadcast · 10 Questions</div>
+</div>
+
+<!-- Difficulty legend -->
+<div class="legend-bar">
+  <span class="legend-item"><span class="diff-badge diff-easy">쉬움</span> 30% (3문항)</span>
+  <span class="legend-item"><span class="diff-badge diff-med">보통</span> 50% (5문항)</span>
+  <span class="legend-item"><span class="diff-badge diff-hard">어려움</span> 20% (2문항)</span>
+  <span style="font-family:'DM Mono',monospace;font-size:10px;color:#999;margin-left:auto">객관식 · 단답형 · OX · 서술형</span>
+</div>
+
+<!-- ════ EXAM SECTION ════ -->
+<div class="exam-header">
+  <h2>📝 시험 문제 (10문항)</h2>
+  <p>Based on March 5, 2026 Broadcast Analysis · 객관식·단답형·OX 혼합</p>
+</div>
+
+<!-- Q1 -->
+<div class="q-block fade-in">
+  <div class="q-head">
+    <span class="q-num">Q1</span>
+    <span class="q-type">객관식</span>
+    <div class="q-text">이번 방송에서 언급된 알루미늄 가격 상승폭은 얼마인가? <span class="diff-badge diff-easy">쉬움</span></div>
+  </div>
+  <ul class="q-options">
+    <li>① 톤당 $2,000 → $2,500 (약 25% 상승)</li>
+    <li>② 톤당 $2,500 → $3,300 (약 32% 상승)</li>
+    <li>③ 톤당 $1,800 → $2,200 (약 22% 상승)</li>
+    <li>④ 톤당 $3,000 → $3,600 (약 20% 상승)</li>
+  </ul>
+</div>
+
+<!-- Q2 -->
+<div class="q-block fade-in">
+  <div class="q-head">
+    <span class="q-num">Q2</span>
+    <span class="q-type">OX</span>
+    <div class="q-text">강달러 환경에서 미국 달러 자산을 보유한 한국 투자자는 환차익 측면에서 유리한 위치에 있다. <span class="diff-badge diff-easy">쉬움</span></div>
+  </div>
+  <ul class="q-options">
+    <li>O — 달러 강세 시 달러 자산의 원화 환산 가치가 올라간다</li>
+    <li>X — 강달러는 한국 투자자에게도 불리하다</li>
+  </ul>
+</div>
+
+<!-- Q3 -->
+<div class="q-block fade-in">
+  <div class="q-head">
+    <span class="q-num">Q3</span>
+    <span class="q-type">객관식</span>
+    <div class="q-text">방송에서 언급한 미국 실업률 '비정상' 기준선은? <span class="diff-badge diff-easy">쉬움</span></div>
+  </div>
+  <ul class="q-options">
+    <li>① 3.5%</li>
+    <li>② 4.0%</li>
+    <li>③ 4.5%</li>
+    <li>④ 5.0%</li>
+  </ul>
+</div>
+
+<!-- Q4 -->
+<div class="q-block fade-in">
+  <div class="q-head">
+    <span class="q-num">Q4</span>
+    <span class="q-type">단답형</span>
+    <div class="q-text">방송에서 파이낸셜 섹터가 가장 부진한 이유로 제시된 3가지 악재를 쓰시오. <span class="diff-badge diff-med">보통</span></div>
+  </div>
+  <ul class="q-options">
+    <li>① ___________________________________________</li>
+    <li>② ___________________________________________</li>
+    <li>③ ___________________________________________</li>
+  </ul>
+</div>
+
+<!-- Q5 -->
+<div class="q-block fade-in">
+  <div class="q-head">
+    <span class="q-num">Q5</span>
+    <span class="q-type">객관식</span>
+    <div class="q-text">브로드컴(Broadcom)의 AI 관련 매출 성장률(YoY)은 얼마인가? <span class="diff-badge diff-med">보통</span></div>
+  </div>
+  <ul class="q-options">
+    <li>① 전년 대비 약 50% 성장</li>
+    <li>② 전년 대비 약 75% 성장</li>
+    <li>③ 전년 대비 약 106% 성장</li>
+    <li>④ 전년 대비 약 130% 성장</li>
+  </ul>
+</div>
+
+<!-- Q6 -->
+<div class="q-block fade-in">
+  <div class="q-head">
+    <span class="q-num">Q6</span>
+    <span class="q-type">OX</span>
+    <div class="q-text">포트폴리오 내 현금 비중은 어떤 시장 상황에서도 최소 20–30%를 유지해야 한다. <span class="diff-badge diff-med">보통</span></div>
+  </div>
+  <ul class="q-options">
+    <li>O — 변동성 대비를 위해 항상 30%를 유지해야 한다</li>
+    <li>X — 시장 상황에 따라 조정하며, 저점 구간에서는 10% 수준으로도 충분하다</li>
+  </ul>
+</div>
+
+<!-- Q7 -->
+<div class="q-block fade-in">
+  <div class="q-head">
+    <span class="q-num">Q7</span>
+    <span class="q-type">단답형</span>
+    <div class="q-text">방송에서 코인베이스(Coinbase)가 발표한 AI 관련 신규 사업은 무엇인가? <span class="diff-badge diff-med">보통</span></div>
+  </div>
+  <ul class="q-options">
+    <li>답안란: ___________________________________________</li>
+  </ul>
+</div>
+
+<!-- Q8 -->
+<div class="q-block fade-in">
+  <div class="q-head">
+    <span class="q-num">Q8</span>
+    <span class="q-type">객관식</span>
+    <div class="q-text">이란 전쟁 장기화 시 '강달러'가 발생하는 메커니즘으로 가장 적절한 것은? <span class="diff-badge diff-med">보통</span></div>
+  </div>
+  <ul class="q-options">
+    <li>① 미국 주식 매수 수요 증가로 달러 유입 확대</li>
+    <li>② 지정학 리스크 확대로 안전자산 수요 증가 → 달러 강세 + 금리 인하 가능성 감소 → 달러 수요 유지</li>
+    <li>③ 원유 수입 감소로 달러 지출이 줄어들어 달러 가치 상승</li>
+    <li>④ 연준이 금리를 인상하여 달러 매력도가 상승</li>
+  </ul>
+</div>
+
+<!-- Q9 -->
+<div class="q-block fade-in">
+  <div class="q-head">
+    <span class="q-num">Q9</span>
+    <span class="q-type">단답형</span>
+    <div class="q-text">방송에서 섹터 로테이션 시 현금을 항상 일정 비율 보유해야 하는 이유를 두 가지 이상 설명하시오. <span class="diff-badge diff-hard">어려움</span></div>
+  </div>
+  <ul class="q-options">
+    <li>① ___________________________________________</li>
+    <li style="padding-top:6px">② ___________________________________________</li>
+  </ul>
+</div>
+
+<!-- Q10 -->
+<div class="q-block fade-in">
+  <div class="q-head">
+    <span class="q-num">Q10</span>
+    <span class="q-type">서술형</span>
+    <div class="q-text">포트폴리오 베타(Beta)가 1.19이고 WACC이 9.7%일 때, 이 포트폴리오를 "잘 운용되고 있다"고 평가할 수 있는 이유를 S&amp;P 500 기준점 및 해당 연도 시장 환경을 연결하여 논하시오. <span class="diff-badge diff-hard">어려움</span></div>
+  </div>
+  <ul class="q-options">
+    <li>답안란: (자유 서술)</li>
+  </ul>
+</div>
+
+<!-- ════ ANSWER KEY ════ -->
+<div class="rule" style="margin-top:28px"><span></span><strong>Answer Key &amp; Explanations</strong><span></span></div>
+
+<div style="height:16px"></div>
+
+<div class="ans-block fade-in">
+  <div class="ans-num">Q1 정답 · 객관식</div>
+  <p><strong>② 톤당 $2,500 → $3,300 (약 32% 상승)</strong><br>방송에서 "올해 초 $2,500에서 지금 $3,300으로 급등"하며 2022년 이후 최고치를 기록했다고 명시했다.</p>
+</div>
+
+<div class="ans-block fade-in">
+  <div class="ans-num">Q2 정답 · OX</div>
+  <p><strong>O (정답)</strong><br>달러 자산(미국 주식·ETF 등)을 보유한 한국 투자자는 달러 강세 시 원화 환산 가치가 상승하므로 환차익이 발생한다. 방송에서도 "달러 강세는 미국에 투자하시는 분들에게 유리하다"고 명확히 언급했다.</p>
+</div>
+
+<div class="ans-block fade-in">
+  <div class="ans-num">Q3 정답 · 객관식</div>
+  <p><strong>③ 4.5%</strong><br>"4.5%가 넘으면 비정상"이라고 방송에서 직접 언급. 당시 실업률 4.3%는 정상 범위 내. 4.5% 초과 시 오히려 금리 인하 압력이 생겨 시장에 호재가 될 수 있다는 양면성도 설명했다.</p>
+</div>
+
+<div class="ans-block fade-in">
+  <div class="ans-num">Q4 정답 · 단답형</div>
+  <p><strong>① 영국 모기지 회사 파산</strong> — 금융 시스템 리스크 재부각<br><strong>② 트럼프의 신용카드 금리 10% 상한 정책 제안</strong> — 은행 이자 수익 압박<br><strong>③ 트럼프 행정부와 JP모건 CEO 다이먼의 공개적 갈등</strong> — 규제 리스크 확대</p>
+</div>
+
+<div class="ans-block fade-in">
+  <div class="ans-num">Q5 정답 · 객관식</div>
+  <p><strong>③ 전년 대비 약 106% 성장</strong><br>"AI 관련 매출은 전년 대비 106% 정도 성장하고 전망치도 상회했다"고 명시. 반도체 솔루션 전체 부문은 +50% YoY로 별도 수치를 제시했다.</p>
+</div>
+
+<div class="ans-block fade-in">
+  <div class="ans-num">Q6 정답 · OX</div>
+  <p><strong>X (정답)</strong><br>"지금은 현금을 20–30% 보유할 때가 아니다"라고 방송에서 명확히 언급. 현재가 저점 구간이므로 오히려 더 투자해야 하며, 4월 반등 가능성도 제시했다. 현금 비중은 시장 상황에 따라 최소 10%~투자 고점 시 최대 30% 사이에서 조정하는 것이다.</p>
+</div>
+
+<div class="ans-block fade-in">
+  <div class="ans-num">Q7 정답 · 단답형</div>
+  <p><strong>AI 에이전트를 위한 최초의 암호화폐 지갑(Wallet) 구축</strong><br>AI 에이전트가 자금을 보유하고 결제를 주고받을 수 있는 암호화폐 지갑을 구축 중이라고 발표. 결제 수단으로 비트코인 활용 가능성이 높다고 언급했다.</p>
+</div>
+
+<div class="ans-block fade-in">
+  <div class="ans-num">Q8 정답 · 객관식</div>
+  <p><strong>② 지정학 리스크 확대 → 안전자산 수요 증가 → 달러 강세 + 금리 인하 가능성 감소 → 달러 수요 유지</strong><br>지정학 리스크 확대 시 안전자산인 달러 수요가 증가하고, 동시에 인플레이션 압력으로 금리 인하 가능성이 줄어 달러 자산 매력이 유지된다. 10년 국채 금리가 5bps 상승한 것도 같은 메커니즘이다.</p>
+</div>
+
+<div class="ans-block fade-in">
+  <div class="ans-num">Q9 정답 · 단답형</div>
+  <p><strong>① 폭락 시 저가 매수 재원 확보:</strong> "내가 사라 할 때 살 수 있으려면 10%는 들고 있어야 한다"고 강조. 폭락 시 기회 종목 진입에 현금이 필수적이다.<br><strong>② 섹터 로테이션 실행 가능성 확보:</strong> 특정 섹터를 줄이면 현금이 생기고, 그 현금으로 더 유망한 섹터로 갈아탈 수 있다. 외부 신규 자금이 없는 일반 투자자는 내부 현금 유동성이 유일한 투자 재원이다.</p>
+</div>
+
+<div class="ans-block fade-in">
+  <div class="ans-num">Q10 모범 답안 · 서술형</div>
+  <p><strong>핵심 논지:</strong> S&amp;P 500의 베타는 정의상 1.0이며, 2026년 3월 기준 S&amp;P 500의 연초 대비 수익률은 0% 수준이다. 베타 1.19의 포트폴리오라면 시장 대비 1.19배의 변동성을 갖는데, S&amp;P 500이 0% 수익인 상황에서 WACC 9.7%를 달성했다는 것은 <strong>시장 초과 수익(Alpha)을 창출</strong>한 것을 의미한다. 즉, 시장이 제자리인 환경에서 9.7% 수익은 섹터 로테이션과 종목 선별이 효과를 발휘했다는 증거다. 단, 베타가 1을 초과하므로 시장 하락 시 낙폭도 크다는 점을 인지해야 하며, 최종 평가는 12월 말 누적 기준으로 해야 한다.</p>
+</div>
+
+<footer>
+  <p>투자는인생TV · Members Only · March 5, 2026</p>
+  <p style="margin-top:6px;font-size:9px">본 문서는 방송 내용 분석 목적으로 제작된 교육 자료입니다.<br>투자 결정은 본인 책임 하에 이루어져야 하며, 이 자료는 투자 권유가 아닙니다.</p>
+</footer>
+
+<script>
+const fadeObs = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), i * 80);
+      fadeObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.12 });
+document.querySelectorAll('.fade-in').forEach(el => fadeObs.observe(el));
+</script>
+</body>
+</html>
