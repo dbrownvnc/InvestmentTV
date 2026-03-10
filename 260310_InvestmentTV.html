@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>미국 증시 분석 | 투자는인생TV · 2026.03.10</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Noto+Serif+KR:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg: #ffffff;
+    --bg2: #fafafa;
+    --text: #1a1a1a;
+    --sub: #777777;
+    --accent: #e11d48;
+    --accent2: #f43f5e;
+    --border: #e5e5e5;
+    --c1: #e11d48;
+    --c2: #1a1a1a;
+    --c3: #6b7280;
+    --c4: #2563eb;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', 'Noto Serif KR', sans-serif;
+    line-height: 1.7;
+    font-size: 15px;
+  }
+  .masthead {
+    background: var(--text);
+    color: #fff;
+    padding: 28px 20px 20px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .masthead::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2), var(--c4));
+  }
+  .masthead-label {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent2);
+    margin-bottom: 8px;
+  }
+  .masthead-title {
+    font-family: 'Playfair Display', 'Noto Serif KR', serif;
+    font-size: 26px;
+    font-weight: 900;
+    line-height: 1.2;
+    color: #fff;
+    margin-bottom: 6px;
+  }
+  .masthead-title span { color: var(--accent2); }
+  .masthead-meta { font-size: 11px; color: #999; letter-spacing: 1px; }
+  .masthead-source { margin-top: 10px; font-size: 11px; color: #666; }
+
+  .container { max-width: 520px; margin: 0 auto; padding: 0 18px; }
+
+  .section { padding: 28px 0 0; }
+  .section-label { display: flex; align-items: center; gap: 8px; margin-bottom: 14px; }
+  .section-label-bar { width: 4px; height: 18px; background: var(--accent); border-radius: 2px; flex-shrink: 0; }
+  .section-label-text { font-family: 'DM Sans', sans-serif; font-size: 10px; letter-spacing: 2.5px; text-transform: uppercase; color: var(--accent); font-weight: 500; }
+  .section-title { font-family: 'Playfair Display', 'Noto Serif KR', serif; font-size: 20px; font-weight: 700; color: var(--text); margin-bottom: 12px; line-height: 1.3; }
+  .section-body { color: var(--text); font-size: 14.5px; line-height: 1.8; }
+  .section-body p { margin-bottom: 10px; }
+
+  .divider { height: 1px; background: var(--border); margin: 24px 0 0; }
+  .divider-heavy { height: 2px; background: var(--text); margin: 24px 0 0; }
+
+  .highlight-card {
+    background: var(--bg2);
+    border-left: 3px solid var(--accent);
+    padding: 14px 16px;
+    margin: 14px 0;
+    border-radius: 0 6px 6px 0;
+  }
+  .highlight-card p { font-size: 14px; color: var(--text); line-height: 1.7; }
+  .highlight-card strong { color: var(--accent); }
+
+  .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 14px 0; }
+  .stat-box { background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 14px 12px; text-align: center; }
+  .stat-box .val { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: var(--accent); display: block; }
+  .stat-box .val.up { color: var(--c4); }
+  .stat-box .val.down { color: var(--accent); }
+  .stat-box .lbl { font-size: 11px; color: var(--sub); margin-top: 3px; display: block; letter-spacing: 0.5px; }
+
+  .tbl-wrap { overflow-x: auto; margin: 14px 0; border-radius: 8px; border: 1px solid var(--border); }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  thead th { background: var(--accent); color: #fff; padding: 9px 12px; text-align: left; font-weight: 500; letter-spacing: 0.3px; }
+  tbody tr { border-bottom: 1px solid var(--border); }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:nth-child(even) td { background: var(--bg2); }
+  tbody td { padding: 9px 12px; color: var(--text); vertical-align: top; }
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 20px; font-size: 11px; font-weight: 500; }
+  .badge-red { background: #fee2e8; color: var(--accent); }
+  .badge-blue { background: #dbeafe; color: var(--c4); }
+  .badge-gray { background: #f3f4f6; color: var(--c3); }
+
+  .fade-in { opacity: 0; transform: translateY(18px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .fade-in.visible { opacity: 1; transform: translateY(0); }
+  .chart-container { position: relative; max-height: 340px; margin: 14px 0; background: var(--bg2); border-radius: 10px; padding: 14px 10px 10px; border: 1px solid var(--border); }
+  .chart-container canvas { opacity: 0; transition: opacity 0.4s ease; max-height: 300px; }
+  .chart-container.chart-ready canvas { opacity: 1; }
+  .chart-title { font-size: 12px; font-weight: 500; color: var(--sub); letter-spacing: 0.5px; margin-bottom: 8px; text-transform: uppercase; }
+
+  .quote-block { border-top: 2px solid var(--accent); border-bottom: 1px solid var(--border); padding: 16px 0; margin: 18px 0; }
+  .quote-text { font-family: 'Playfair Display', serif; font-size: 17px; font-style: italic; color: var(--text); line-height: 1.5; }
+  .quote-source { font-size: 11px; color: var(--sub); margin-top: 6px; letter-spacing: 1px; text-transform: uppercase; }
+
+  .tag-row { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0; }
+  .tag { font-size: 11px; padding: 3px 10px; border-radius: 20px; border: 1px solid var(--border); color: var(--sub); background: var(--bg2); }
+
+  .risk-row { display: flex; align-items: center; gap: 8px; margin: 6px 0; }
+  .risk-label { font-size: 13px; min-width: 120px; color: var(--text); }
+  .risk-bar-wrap { flex: 1; height: 6px; background: #f3f4f6; border-radius: 3px; overflow: hidden; }
+  .risk-bar { height: 100%; border-radius: 3px; }
+
+  .footer { background: var(--text); color: #666; text-align: center; padding: 20px; font-size: 11px; letter-spacing: 0.5px; }
+  .footer strong { color: #999; }
+</style>
+</head>
+<body>
+
+<div class="masthead">
+  <div class="masthead-label">Market Intelligence · Analysis</div>
+  <div class="masthead-title">미국 증시 <span>&</span> 거시경제<br>심층 분석</div>
+  <div class="masthead-meta">2026년 03월 10일 · 데일라이트 세이빙 첫날</div>
+  <div class="masthead-source">Source: 투자는인생TV by 데이빗</div>
+</div>
+
+<div class="container">
+
+  <!-- S1: 시장 요약 -->
+  <div class="section fade-in">
+    <div class="section-label"><div class="section-label-bar"></div><div class="section-label-text">시장 요약</div></div>
+    <div class="section-title">3월 10일 미국 증시 — 약반등 속 기회</div>
+    <div class="section-body">
+      <p>이날 미국 증시는 전반적인 <strong>약상승</strong>으로 마감했다. 트럼프 대통령이 "이란전 조기 종식 기대"를 언급하면서 상승장을 견인했으며, 상승 주도 섹터는 예측대로 <strong>IT·테크</strong>였다.</p>
+    </div>
+    <div class="stat-grid">
+      <div class="stat-box fade-in"><span class="val up">+0.5%</span><span class="lbl">다우존스 지수</span></div>
+      <div class="stat-box fade-in"><span class="val up">+1.38%</span><span class="lbl">나스닥 (308pt↑)</span></div>
+      <div class="stat-box fade-in"><span class="val down">6,795</span><span class="lbl">S&P 500 (연초比 하락)</span></div>
+      <div class="stat-box fade-in"><span class="val down">$85</span><span class="lbl">WTI 유가 (배럴)</span></div>
+    </div>
+    <div class="quote-block fade-in">
+      <div class="quote-text">"하락장 때는 잘 견디고 상승장 때는 빨리 올라가는 특성 — 테크 섹터의 변별력"</div>
+      <div class="quote-source">방송 발언 요약</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- S2: 유가 -->
+  <div class="section fade-in">
+    <div class="section-label"><div class="section-label-bar"></div><div class="section-label-text">유가 & 지정학</div></div>
+    <div class="section-title">원유 가격 급락 — 하루 만에 정상화</div>
+    <div class="section-body">
+      <p>이란 분쟁 긴장으로 WTI 유가가 배럴당 <strong>$120</strong>까지 급등했다가, 트럼프의 종전 기대 발언 한마디에 <strong>$85 수준</strong>으로 급반락했다. 80달러대는 시장이 '정상 범위'로 인식하는 구간이다.</p>
+    </div>
+    <div class="chart-container fade-in">
+      <div class="chart-title">WTI 유가 움직임 시나리오 (개략적 흐름)</div>
+      <canvas id="oilChart" height="220"></canvas>
+    </div>
+    <div class="highlight-card fade-in">
+      <p>⚠️ <strong>투자 경고:</strong> 유가 급등 시 "에너지 관련 주식 매수" 논리는 통하지 않았다. 실제로 유가가 120달러까지 오르는 동안 에너지 섹터는 <strong>1% 미만</strong> 상승에 그쳤다. "논리적 접근 ≠ 시장 반응"임을 방송은 반복 강조했다.</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- S3: 연준 & 금리 -->
+  <div class="section fade-in">
+    <div class="section-label"><div class="section-label-bar"></div><div class="section-label-text">연준 & 금리</div></div>
+    <div class="section-title">금리 인하 지연 — 나스닥 성장의 발목</div>
+    <div class="section-body">
+      <p>방송은 나스닥의 <em>회복 속도는 빠르지만 성장 속도는 제한적</em>이라고 분석했다. 핵심 이유는 두 가지다.</p>
+      <p>① <strong>고용 악화:</strong> 비농업 고용이 예상 대비 <strong>92,000명 감소</strong> — 예상 밖의 충격. 실업수당 신청 증가, 실업률 상승이 동반됐다.<br>
+      ② <strong>인플레이션 압력:</strong> 유가 상승이 CPI에 직결되어 금리 인하 여건이 악화.</p>
+      <p><strong>0.25%p 금리 인하 시</strong> 나스닥은 약 2~3% 추가 상승이 기대되지만, 현재 5월 인하 가능성은 낮게 본다. 6월 새 연준 의장 취임 이후 1~2회 인하 가능성을 점친다.</p>
+    </div>
+    <div class="chart-container fade-in">
+      <div class="chart-title">나스닥 지지선 & 저항선 (포인트)</div>
+      <canvas id="nasdaqChart" height="220"></canvas>
+    </div>
+    <div class="tbl-wrap fade-in">
+      <table>
+        <thead><tr><th>지표</th><th>수치</th><th>시사점</th></tr></thead>
+        <tbody>
+          <tr><td>S&P 500 지지선</td><td>6,521</td><td><span class="badge badge-blue">모니터링</span></td></tr>
+          <tr><td>S&P 500 저항선</td><td>7,200</td><td><span class="badge badge-gray">돌파 시 27,800 목표</span></td></tr>
+          <tr><td>S&P 500 51일 MA</td><td>6,902</td><td><span class="badge badge-blue">단기 기준</span></td></tr>
+          <tr><td>S&P 500 200일 MA</td><td>6,583</td><td><span class="badge badge-blue">장기 기준</span></td></tr>
+          <tr><td>나스닥 지지선</td><td>21,898</td><td><span class="badge badge-blue">모니터링</span></td></tr>
+          <tr><td>나스닥 저항선</td><td>23,982</td><td><span class="badge badge-gray">도달까지 시간 소요</span></td></tr>
+          <tr><td>비농업 고용 변화</td><td>-92,000명</td><td><span class="badge badge-red">예상 외 악화</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- S4: 섹터 -->
+  <div class="section fade-in">
+    <div class="section-label"><div class="section-label-bar"></div><div class="section-label-text">섹터 분석</div></div>
+    <div class="section-title">섹터별 명암 — 테크 vs 소비재</div>
+    <div class="section-body">
+      <p>이날 섹터 성적에서 특이한 현상이 나타났다. 경기방어주인 <strong>컨슈머 스테이플(생활필수재)</strong>이 하락한 반면, 성장주인 <strong>정보기술(IT) 섹터</strong>가 선전했다. 이는 시장이 아직 "경기침체 회피"보다 "성장 기대" 모드에 있음을 시사한다.</p>
+    </div>
+    <div class="chart-container fade-in">
+      <div class="chart-title">당일 섹터별 상대 강도 (개략)</div>
+      <canvas id="sectorChart" height="240"></canvas>
+    </div>
+    <div class="tbl-wrap fade-in">
+      <table>
+        <thead><tr><th>섹터</th><th>방향</th><th>메모</th></tr></thead>
+        <tbody>
+          <tr><td>정보기술 (IT)</td><td><span class="badge badge-blue">↑ 선전</span></td><td>방송 예측 적중</td></tr>
+          <tr><td>컨슈머 디스크레셔너리</td><td><span class="badge badge-blue">↑ 소폭</span></td><td>예측과 다소 달리 상승</td></tr>
+          <tr><td>컨슈머 스테이플</td><td><span class="badge badge-red">↓ 하락</span></td><td>방어주 약세 = 위험선호 유지 신호</td></tr>
+          <tr><td>에너지</td><td><span class="badge badge-gray">~1% 미만</span></td><td>유가 급등에도 저조</td></tr>
+          <tr><td>금융</td><td><span class="badge badge-red">↓ 매도</span></td><td>초기 매도세 주도</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- S5: 투자 심리 -->
+  <div class="section fade-in">
+    <div class="section-label"><div class="section-label-bar"></div><div class="section-label-text">투자 심리</div></div>
+    <div class="section-title">옵션 시장 & 심리 지표</div>
+    <div class="section-body">
+      <p>5일 풋/콜 비율 기준으로 <strong>콜(상승 베팅)이 풋(하락 베팅)보다 소폭 우세</strong>했다. 뮤추얼 펀드의 현금 비중이 마이너스(현금 줄고 투자 늘림)인 점도 IT 섹터 중심의 포지션이 이미 자리잡혔음을 보여준다.</p>
+    </div>
+    <div class="highlight-card fade-in">
+      <p>📅 <strong>계절성 주목:</strong> 방송은 "4월은 전통적으로 상승장"이라는 불리시 센티먼트를 유지했다. Fear/Greed류 지표는 30(중립)까지 하락 후 회복 중이며, 전쟁 변수로 완전한 낙관은 아직 이르다.</p>
+    </div>
+    <div style="margin: 14px 0;">
+      <div class="risk-row fade-in">
+        <div class="risk-label">📈 콜 옵션 우세</div>
+        <div class="risk-bar-wrap"><div class="risk-bar" style="width:60%;background:var(--c4);"></div></div>
+        <span style="font-size:12px;color:var(--sub);margin-left:8px;">상승 우위</span>
+      </div>
+      <div class="risk-row fade-in">
+        <div class="risk-label">😰 변동성 지수</div>
+        <div class="risk-bar-wrap"><div class="risk-bar" style="width:72%;background:var(--accent);"></div></div>
+        <span style="font-size:12px;color:var(--sub);margin-left:8px;">높음</span>
+      </div>
+      <div class="risk-row fade-in">
+        <div class="risk-label">💵 MF 현금 비중</div>
+        <div class="risk-bar-wrap"><div class="risk-bar" style="width:20%;background:var(--c3);"></div></div>
+        <span style="font-size:12px;color:var(--sub);margin-left:8px;">낮음(투자↑)</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- S6: 기업 실적 -->
+  <div class="section fade-in">
+    <div class="section-label"><div class="section-label-bar"></div><div class="section-label-text">기업 실적 전망</div></div>
+    <div class="section-title">S&P 500 기업 수익 — 에너지 비용이 변수</div>
+    <div class="section-body">
+      <p>분석가들은 S&P 500 기업 1분기 순이익 성장률을 <strong>11.5%</strong>로 추정하며, 연간 전망치는 <strong>15%</strong>다. 에너지 가격 급등이 지속되면 기업들의 <em>가이던스(실적 전망) 하향 조정</em>이 잇따를 수 있고, 이 경우 주가 상승 폭이 제한된다.</p>
+      <p>4월 실적 발표 시즌까지 이 수치의 변동 여부가 투자 결정의 핵심 기준이다.</p>
+    </div>
+    <div class="chart-container fade-in">
+      <div class="chart-title">S&P 500 EPS 성장률 전망</div>
+      <canvas id="epsChart" height="220"></canvas>
+    </div>
+    <div class="tbl-wrap fade-in">
+      <table>
+        <thead><tr><th>실적 발표 일정</th><th>기업</th><th>주목 포인트</th></tr></thead>
+        <tbody>
+          <tr><td>화요일</td><td>오라클(ORCL)</td><td>소프트웨어 전체 변동성 주의</td></tr>
+          <tr><td>목요일</td><td>어도비(ADBE)</td><td>전년比 ~15% 성장 예상</td></tr>
+          <tr><td>목요일</td><td>WPM</td><td>전년比 100% 증가, 거시경제 민감도 高</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- S7: 안전자산 -->
+  <div class="section fade-in">
+    <div class="section-label"><div class="section-label-bar"></div><div class="section-label-text">안전자산</div></div>
+    <div class="section-title">국채 & 금 — 달러 패권의 지속</div>
+    <div class="section-body">
+      <p>10년 만기 미국 국채 수익률이 <strong>4.13%로 0.17%p 상승</strong>했다. 이는 안전자산 수요 유입을 의미한다. 방송은 "달러 거래 기반이 유지되는 한 미국 부채 규모에 관계없이 국채는 여전히 강력한 피난처"라고 강조했다.</p>
+      <p>반면 금(Gold)은 소폭 하락했는데, 국채·오일 등 더 높은 수익률 자산으로 자금이 이동한 결과다.</p>
+    </div>
+    <div class="highlight-card fade-in">
+      <p>💡 <strong>포트폴리오 전략:</strong> 변동성이 큰 시장에서는 일부 자금을 <strong>10년 미국 국채</strong>에 배분하는 것이 방어력을 높인다. 금은 단기 변동성 회피보다 장기 인플레이션 헤지 용도로 접근.</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- S8: 리스크 -->
+  <div class="section fade-in">
+    <div class="section-label"><div class="section-label-bar"></div><div class="section-label-text">리스크 & 정책</div></div>
+    <div class="section-title">트럼프 변수 — 약달러·저유가·저인플레이션 삼각편대</div>
+    <div class="section-body">
+      <p>트럼프 행정부가 동시에 원하는 세 가지 목표는 <strong>①약달러 ②저인플레이션 ③저유가</strong>다. 이란 분쟁 장기화는 세 목표를 모두 저해하기 때문에, 방송은 2~3주 내 외교적 해결 시도가 강해질 것으로 전망한다. 분쟁이 60일 이상 지속되면 의회 승인 없는 전쟁으로 법적 리스크가 커진다는 해석이다.</p>
+    </div>
+    <div class="tag-row fade-in">
+      <span class="tag">이란 분쟁 2~3주 변수</span>
+      <span class="tag">CPI 수요일 발표</span>
+      <span class="tag">오라클 실적 화요일</span>
+      <span class="tag">연준 새 의장 6월</span>
+      <span class="tag">블랙록 펀드 이슈</span>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- S9: 투자 원칙 -->
+  <div class="section fade-in">
+    <div class="section-label"><div class="section-label-bar"></div><div class="section-label-text">투자 원칙</div></div>
+    <div class="section-title">변동성 시장에서의 5가지 행동 지침</div>
+    <div class="tbl-wrap fade-in">
+      <table>
+        <thead><tr><th>#</th><th>원칙</th><th>근거</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>포트폴리오 분산 필수</td><td>변동성 클수록 분산 효과 극대화</td></tr>
+          <tr><td>2</td><td>빚 투자 최소화</td><td>마진콜로 심리적 강제 손절 위험</td></tr>
+          <tr><td>3</td><td>단기 언론 노이즈 무시</td><td>언론의 99.9%는 과대해석</td></tr>
+          <tr><td>4</td><td>유가 급등 → 에너지주 매수 금지</td><td>주가는 논리적으로만 움직이지 않음</td></tr>
+          <tr><td>5</td><td>공매도 노출 高 기업 회피</td><td>반토막 위험 존재</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="highlight-card fade-in">
+      <p>🚨 <strong>블랙록(BlackRock) 주의:</strong> 프라이빗 크레딧 펀드의 <strong>1억 달러 이상 환매를 차단</strong>하는 사태가 발생했다. 방송은 당분간 블랙록 관련 상품 투자를 피하도록 강하게 경고했다. 금요일 -7.2%, 이날 -1.5% 추가 하락.</p>
+    </div>
+  </div>
+
+  <div class="divider-heavy" style="margin-bottom:28px;"></div>
+
+</div>
+
+<div class="footer">
+  <strong>투자는인생TV</strong> · 2026.03.10 방송 분석 요약<br>
+  본 자료는 교육 목적의 분석 요약이며, 투자 권유가 아닙니다.<br>
+  Investment products are not FDIC insured · May lose value
+</div>
+
+<script>
+const fadeObs = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), i * 80);
+      fadeObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.12 });
+document.querySelectorAll('.fade-in').forEach(el => fadeObs.observe(el));
+
+const chartConfigs = {};
+
+chartConfigs['oilChart'] = () => {
+  new Chart(document.getElementById('oilChart'), {
+    type: 'line',
+    data: {
+      labels: ['전쟁 전','2/27','3/1','3/3','3/5','3/7','3/10(고점)','3/10(종가)'],
+      datasets: [{
+        label: 'WTI 유가 ($/배럴)',
+        data: [72, 76, 82, 90, 98, 110, 120, 85],
+        borderColor: '#e11d48',
+        backgroundColor: 'rgba(225,29,72,0.08)',
+        borderWidth: 2.5,
+        pointRadius: 4,
+        pointBackgroundColor: '#e11d48',
+        tension: 0.4,
+        fill: true
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { display: false } },
+      scales: {
+        y: { min: 60, ticks: { callback: v => `$${v}`, font: { size: 11 } }, grid: { color: '#f0f0f0' } },
+        x: { ticks: { font: { size: 10 } }, grid: { display: false } }
+      }
+    }
+  });
+};
+
+chartConfigs['nasdaqChart'] = () => {
+  new Chart(document.getElementById('nasdaqChart'), {
+    type: 'bar',
+    data: {
+      labels: ['지지선', '현재 수준', '51일 MA', '200일 MA', '저항선'],
+      datasets: [{
+        label: '나스닥 (포인트)',
+        data: [21898, 22400, 22100, 21900, 23982],
+        backgroundColor: ['#2563eb','#1a1a1a','#6b7280','#6b7280','#e11d48'],
+        borderRadius: 5,
+        borderSkipped: false
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { display: false } },
+      scales: {
+        y: { min: 20000, ticks: { callback: v => v.toLocaleString(), font: { size: 10 } }, grid: { color: '#f0f0f0' } },
+        x: { ticks: { font: { size: 10 } }, grid: { display: false } }
+      }
+    }
+  });
+};
+
+chartConfigs['sectorChart'] = () => {
+  new Chart(document.getElementById('sectorChart'), {
+    type: 'bar',
+    data: {
+      labels: ['IT/테크', '컨슈머\n디스크레셔너리', '컨슈머\n스테이플', '에너지', '금융'],
+      datasets: [{
+        label: '당일 상대 수익률 (%)',
+        data: [2.1, 0.2, -0.8, 0.9, -0.5],
+        backgroundColor: ['#2563eb','#2563eb','#e11d48','#6b7280','#e11d48'],
+        borderRadius: 4,
+        borderSkipped: false
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { display: false } },
+      scales: {
+        y: { ticks: { callback: v => `${v}%`, font: { size: 11 } }, grid: { color: '#f0f0f0' } },
+        x: { ticks: { font: { size: 10 } }, grid: { display: false } }
+      }
+    }
+  });
+};
+
+chartConfigs['epsChart'] = () => {
+  new Chart(document.getElementById('epsChart'), {
+    type: 'bar',
+    data: {
+      labels: ['1Q 성장률 (추정)', '연간 전망치 (목표)', '하향 시 리스크'],
+      datasets: [{
+        label: 'EPS 성장률 (%)',
+        data: [11.5, 15, 7],
+        backgroundColor: ['#2563eb', '#e11d48', '#6b7280'],
+        borderRadius: 6,
+        borderSkipped: false
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { display: false } },
+      scales: {
+        y: { ticks: { callback: v => `${v}%`, font: { size: 11 } }, grid: { color: '#f0f0f0' }, max: 20 },
+        x: { ticks: { font: { size: 10 } }, grid: { display: false } }
+      }
+    }
+  });
+};
+
+const chartObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const canvas = e.target.querySelector('canvas');
+      if (canvas && chartConfigs[canvas.id]) {
+        chartConfigs[canvas.id]();
+        e.target.classList.add('chart-ready');
+        chartObs.unobserve(e.target);
+      }
+    }
+  });
+}, { threshold: 0.15 });
+document.querySelectorAll('.chart-container').forEach(el => chartObs.observe(el));
+</script>
+</body>
+</html>

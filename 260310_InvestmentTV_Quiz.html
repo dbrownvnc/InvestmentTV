@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>시험 문제 & 정답 | 투자는인생TV · 2026.03.10</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Noto+Serif+KR:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #ffffff;
+    --bg2: #fafafa;
+    --text: #1a1a1a;
+    --sub: #777777;
+    --accent: #e11d48;
+    --accent2: #f43f5e;
+    --border: #e5e5e5;
+    --c4: #2563eb;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', 'Noto Serif KR', sans-serif;
+    line-height: 1.7;
+    font-size: 15px;
+  }
+
+  /* MASTHEAD */
+  .masthead {
+    background: var(--text);
+    color: #fff;
+    padding: 28px 20px 20px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .masthead::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2), var(--c4));
+  }
+  .masthead-label { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--accent2); margin-bottom: 8px; }
+  .masthead-title { font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 900; line-height: 1.2; color: #fff; margin-bottom: 6px; }
+  .masthead-title span { color: var(--accent2); }
+  .masthead-meta { font-size: 11px; color: #999; letter-spacing: 1px; }
+
+  /* NOTICE BAR */
+  .notice-bar {
+    background: #fff8f0;
+    border-bottom: 2px solid var(--accent);
+    padding: 10px 20px;
+    text-align: center;
+    font-size: 12px;
+    color: #b45309;
+    letter-spacing: 0.3px;
+  }
+
+  /* TABS */
+  .tab-bar {
+    display: flex;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: #fff;
+    border-bottom: 2px solid var(--border);
+  }
+  .tab-btn {
+    flex: 1;
+    padding: 14px 10px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--sub);
+    background: none;
+    border: none;
+    cursor: pointer;
+    letter-spacing: 0.3px;
+    transition: color 0.2s, border-bottom 0.2s;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px;
+  }
+  .tab-btn.active {
+    color: var(--accent);
+    border-bottom: 3px solid var(--accent);
+  }
+
+  /* PANELS */
+  .panel { display: none; }
+  .panel.active { display: block; }
+
+  .container { max-width: 520px; margin: 0 auto; padding: 0 18px 32px; }
+
+  /* DIFFICULTY LEGEND */
+  .legend {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    padding: 16px 0 4px;
+    font-size: 12px;
+    color: var(--sub);
+  }
+  .legend-item { display: flex; align-items: center; gap: 5px; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+  /* QUESTION CARD */
+  .q-card {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin: 14px 0;
+    overflow: hidden;
+    transition: box-shadow 0.2s;
+  }
+  .q-card:hover { box-shadow: 0 2px 12px rgba(0,0,0,0.07); }
+  .q-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px 8px;
+    background: var(--bg2);
+    border-bottom: 1px solid var(--border);
+  }
+  .q-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1;
+    min-width: 28px;
+  }
+  .q-meta { display: flex; flex-direction: column; gap: 2px; }
+  .q-type {
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--sub);
+    font-weight: 500;
+  }
+  .difficulty-badge {
+    display: inline-block;
+    padding: 1px 8px;
+    border-radius: 20px;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+  .diff-easy { background: #dcfce7; color: #166534; }
+  .diff-mid { background: #fef9c3; color: #854d0e; }
+  .diff-hard { background: #fee2e8; color: var(--accent); }
+
+  .q-body { padding: 14px 16px; }
+  .q-text { font-size: 14.5px; color: var(--text); line-height: 1.7; margin-bottom: 10px; }
+  .q-options { list-style: none; }
+  .q-options li {
+    font-size: 13.5px;
+    color: #444;
+    padding: 5px 0 5px 22px;
+    position: relative;
+    border-bottom: 1px dashed #f0f0f0;
+  }
+  .q-options li:last-child { border-bottom: none; }
+  .q-options li::before { content: attr(data-opt); position: absolute; left: 0; color: var(--sub); font-size: 12px; font-weight: 600; top: 6px; }
+  .q-blank {
+    background: var(--bg2);
+    border: 1px dashed var(--border);
+    border-radius: 6px;
+    padding: 10px 14px;
+    font-size: 13px;
+    color: #bbb;
+    font-style: italic;
+    margin-top: 4px;
+  }
+
+  /* DIVIDER */
+  .section-divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 28px 0 4px;
+  }
+  .section-divider-line { flex: 1; height: 1px; background: var(--border); }
+  .section-divider-text { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--sub); white-space: nowrap; }
+
+  /* ANSWER CARDS */
+  .ans-card {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin: 14px 0;
+    overflow: hidden;
+  }
+  .ans-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px 10px;
+    background: var(--text);
+    cursor: pointer;
+    user-select: none;
+  }
+  .ans-q-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--accent2);
+    min-width: 26px;
+    line-height: 1;
+  }
+  .ans-q-preview { font-size: 13px; color: #bbb; flex: 1; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+  .ans-toggle { font-size: 16px; color: #666; transition: transform 0.3s; }
+  .ans-header.open .ans-toggle { transform: rotate(180deg); }
+
+  .ans-body {
+    display: none;
+    padding: 14px 16px;
+    background: #fff;
+    border-top: 1px solid var(--border);
+  }
+  .ans-body.open { display: block; }
+
+  .ans-answer-box {
+    background: #fff0f3;
+    border: 1.5px solid var(--accent);
+    border-radius: 6px;
+    padding: 8px 14px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--accent);
+    margin-bottom: 10px;
+    display: inline-block;
+  }
+  .ans-question-ref { font-size: 12px; color: var(--sub); margin-bottom: 8px; font-style: italic; }
+  .ans-explain { font-size: 13.5px; color: #333; line-height: 1.75; }
+  .ans-explain strong { color: var(--text); }
+
+  /* SCORE BOX */
+  .score-box {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    margin: 20px 0 0;
+    text-align: center;
+  }
+  .score-box-title { font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--sub); margin-bottom: 8px; }
+  .score-input-row { display: flex; align-items: center; justify-content: center; gap: 10px; }
+  .score-input {
+    width: 60px;
+    font-size: 22px;
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    color: var(--accent);
+    text-align: center;
+    border: none;
+    border-bottom: 2px solid var(--accent);
+    background: transparent;
+    outline: none;
+  }
+  .score-total { font-size: 16px; color: var(--sub); font-weight: 500; }
+  .score-msg { font-size: 13px; color: var(--sub); margin-top: 8px; min-height: 20px; }
+
+  /* FOOTER */
+  .footer { background: var(--text); color: #666; text-align: center; padding: 20px; font-size: 11px; letter-spacing: 0.5px; margin-top: 10px; }
+  .footer strong { color: #999; }
+
+  /* FADE IN */
+  .fade-in { opacity: 0; transform: translateY(14px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-in.visible { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<div class="masthead">
+  <div class="masthead-label">Quiz & Review · 이해도 점검</div>
+  <div class="masthead-title">📝 시험 문제 <span>&</span> 정답</div>
+  <div class="masthead-meta">투자는인생TV · 2026.03.10 방송 기반</div>
+</div>
+
+<div class="notice-bar">
+  ✏️ 문제 탭에서 풀고 → 정답 탭에서 확인하세요
+</div>
+
+<!-- TAB BAR -->
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="switchTab('questions', this)">📋 문제 (10문제)</button>
+  <button class="tab-btn" onclick="switchTab('answers', this)">✅ 정답 & 해설</button>
+</div>
+
+<!-- ====== QUESTIONS PANEL ====== -->
+<div id="panel-questions" class="panel active">
+  <div class="container">
+
+    <div class="legend">
+      <div class="legend-item"><div class="dot" style="background:#166534;"></div> 쉬움 (Q1~3)</div>
+      <div class="legend-item"><div class="dot" style="background:#854d0e;"></div> 보통 (Q4~8)</div>
+      <div class="legend-item"><div class="dot" style="background:#e11d48;"></div> 어려움 (Q9~10)</div>
+    </div>
+
+    <!-- Q1 -->
+    <div class="q-card fade-in">
+      <div class="q-header">
+        <div class="q-number">1</div>
+        <div class="q-meta">
+          <div class="q-type">OX 문제</div>
+          <span class="difficulty-badge diff-easy">쉬움</span>
+        </div>
+      </div>
+      <div class="q-body">
+        <div class="q-text">이날(3월 10일) 미국 증시 상승을 주도한 섹터는 에너지 섹터였다.</div>
+        <div class="q-blank">O 또는 X</div>
+      </div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="q-card fade-in">
+      <div class="q-header">
+        <div class="q-number">2</div>
+        <div class="q-meta">
+          <div class="q-type">객관식</div>
+          <span class="difficulty-badge diff-easy">쉬움</span>
+        </div>
+      </div>
+      <div class="q-body">
+        <div class="q-text">이날 WTI 원유 가격이 배럴당 $120에서 $85 수준으로 급락한 주요 원인은 무엇인가?</div>
+        <ul class="q-options">
+          <li data-opt="①">OPEC의 증산 발표</li>
+          <li data-opt="②">트럼프 대통령의 이란 종전 기대 발언</li>
+          <li data-opt="③">미국 셰일오일 생산 급증</li>
+          <li data-opt="④">연준의 금리 인하 결정</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="q-card fade-in">
+      <div class="q-header">
+        <div class="q-number">3</div>
+        <div class="q-meta">
+          <div class="q-type">객관식</div>
+          <span class="difficulty-badge diff-easy">쉬움</span>
+        </div>
+      </div>
+      <div class="q-body">
+        <div class="q-text">방송에서 언급된 S&P 500의 지지선은 얼마인가?</div>
+        <ul class="q-options">
+          <li data-opt="①">6,200</li>
+          <li data-opt="②">6,521</li>
+          <li data-opt="③">6,795</li>
+          <li data-opt="④">7,200</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="section-divider">
+      <div class="section-divider-line"></div>
+      <div class="section-divider-text">보통 난이도</div>
+      <div class="section-divider-line"></div>
+    </div>
+
+    <!-- Q4 -->
+    <div class="q-card fade-in">
+      <div class="q-header">
+        <div class="q-number">4</div>
+        <div class="q-meta">
+          <div class="q-type">단답형</div>
+          <span class="difficulty-badge diff-mid">보통</span>
+        </div>
+      </div>
+      <div class="q-body">
+        <div class="q-text">10년 만기 미국 국채 수익률이 상승한 것이 이날 맥락에서는 좋은 신호인가, 나쁜 신호인가? 그 이유를 간략히 설명하시오.</div>
+        <div class="q-blank">서술 답란</div>
+      </div>
+    </div>
+
+    <!-- Q5 -->
+    <div class="q-card fade-in">
+      <div class="q-header">
+        <div class="q-number">5</div>
+        <div class="q-meta">
+          <div class="q-type">객관식</div>
+          <span class="difficulty-badge diff-mid">보통</span>
+        </div>
+      </div>
+      <div class="q-body">
+        <div class="q-text">비농업 고용이 시장 예상 대비 92,000명 감소한 것이 금리 정책에 미치는 영향으로 가장 적절한 것은?</div>
+        <ul class="q-options">
+          <li data-opt="①">경기침체 우려로 즉각 금리 인하</li>
+          <li data-opt="②">고용 악화로 인플레이션 압력이 낮아져 금리 인하 용이</li>
+          <li data-opt="③">고용 악화 + 유가 상승이 동시 발생하여 금리 인하가 어려워짐</li>
+          <li data-opt="④">연준은 고용 지표를 금리 결정에 반영하지 않음</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Q6 -->
+    <div class="q-card fade-in">
+      <div class="q-header">
+        <div class="q-number">6</div>
+        <div class="q-meta">
+          <div class="q-type">단답형</div>
+          <span class="difficulty-badge diff-mid">보통</span>
+        </div>
+      </div>
+      <div class="q-body">
+        <div class="q-text">이날 금(Gold) 가격이 소폭 하락한 이유를 방송 내용을 바탕으로 설명하시오.</div>
+        <div class="q-blank">서술 답란</div>
+      </div>
+    </div>
+
+    <!-- Q7 -->
+    <div class="q-card fade-in">
+      <div class="q-header">
+        <div class="q-number">7</div>
+        <div class="q-meta">
+          <div class="q-type">객관식</div>
+          <span class="difficulty-badge diff-mid">보통</span>
+        </div>
+      </div>
+      <div class="q-body">
+        <div class="q-text">방송에서 "컨슈머 스테이플(생활필수재)이 하락한 것이 희소식"이라고 해석한 이유는?</div>
+        <ul class="q-options">
+          <li data-opt="①">소비재 기업 실적이 부진해서</li>
+          <li data-opt="②">방어주 약세는 시장이 아직 위험자산 선호 모드임을 시사하기 때문</li>
+          <li data-opt="③">소비재 주식을 이미 모두 매도했기 때문</li>
+          <li data-opt="④">인플레이션이 완전히 해결됐다는 신호이기 때문</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Q8 -->
+    <div class="q-card fade-in">
+      <div class="q-header">
+        <div class="q-number">8</div>
+        <div class="q-meta">
+          <div class="q-type">OX 문제</div>
+          <span class="difficulty-badge diff-mid">보통</span>
+        </div>
+      </div>
+      <div class="q-body">
+        <div class="q-text">방송에 따르면, 유가가 상승할 때 에너지 관련 주식을 매수하는 것은 논리적으로도, 실제 성과로도 효과적인 전략이다.</div>
+        <div class="q-blank">O 또는 X</div>
+      </div>
+    </div>
+
+    <div class="section-divider">
+      <div class="section-divider-line"></div>
+      <div class="section-divider-text">어려운 난이도</div>
+      <div class="section-divider-line"></div>
+    </div>
+
+    <!-- Q9 -->
+    <div class="q-card fade-in">
+      <div class="q-header">
+        <div class="q-number">9</div>
+        <div class="q-meta">
+          <div class="q-type">단답형</div>
+          <span class="difficulty-badge diff-hard">어려움</span>
+        </div>
+      </div>
+      <div class="q-body">
+        <div class="q-text">트럼프 행정부가 동시에 달성하려는 세 가지 경제 목표를 쓰고, 이란 분쟁과 어떻게 상충하는지 설명하시오.</div>
+        <div class="q-blank">서술 답란 (3가지 + 상충 관계)</div>
+      </div>
+    </div>
+
+    <!-- Q10 -->
+    <div class="q-card fade-in">
+      <div class="q-header">
+        <div class="q-number">10</div>
+        <div class="q-meta">
+          <div class="q-type">객관식</div>
+          <span class="difficulty-badge diff-hard">어려움</span>
+        </div>
+      </div>
+      <div class="q-body">
+        <div class="q-text">다음 중 방송이 언급한 "주식 매각 경계 신호(bearish signal)"에 해당하지 않는 것은?</div>
+        <ul class="q-options">
+          <li data-opt="①">좋은 실적 발표에도 주가가 하락하는 경우 (good news = bad news)</li>
+          <li data-opt="②">저점 매수자가 보상받지 못하고 추가 하락하는 경우</li>
+          <li data-opt="③">거래량이 평소의 3배로 급증했는데 매도 물량이 매수보다 2배 많을 때</li>
+          <li data-opt="④">기관 투자자의 순매수가 지속적으로 증가할 때</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- SCORE BOX -->
+    <div class="score-box fade-in">
+      <div class="score-box-title">🎯 내 점수 계산</div>
+      <div class="score-input-row">
+        <input class="score-input" type="number" min="0" max="10" placeholder="0" id="scoreInput" oninput="calcScore()">
+        <span class="score-total">/ 10</span>
+      </div>
+      <div class="score-msg" id="scoreMsg"></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ====== ANSWERS PANEL ====== -->
+<div id="panel-answers" class="panel">
+  <div class="container">
+
+    <p style="font-size:13px;color:var(--sub);padding:16px 0 4px;">각 항목을 탭하면 정답과 해설이 펼쳐집니다.</p>
+
+    <!-- A1 -->
+    <div class="ans-card fade-in">
+      <div class="ans-header" onclick="toggleAns(this)">
+        <div class="ans-q-num">1</div>
+        <div class="ans-q-preview">이날 미국 증시 상승을 주도한 섹터는 에너지 섹터였다.</div>
+        <div class="ans-toggle">▾</div>
+      </div>
+      <div class="ans-body">
+        <div class="ans-answer-box">✗ X (오답)</div>
+        <div class="ans-explain">이날 증시 상승을 주도한 것은 <strong>IT·테크 섹터</strong>였다. 에너지 섹터는 유가가 큰 폭 상승했음에도 불구하고 <strong>1% 미만</strong> 상승에 그쳤다. 방송은 이를 "유가 상승 = 에너지주 상승"이라는 논리가 시장에서 통하지 않음의 대표 사례로 들었다.</div>
+      </div>
+    </div>
+
+    <!-- A2 -->
+    <div class="ans-card fade-in">
+      <div class="ans-header" onclick="toggleAns(this)">
+        <div class="ans-q-num">2</div>
+        <div class="ans-q-preview">WTI 원유 가격 급락의 주요 원인은?</div>
+        <div class="ans-toggle">▾</div>
+      </div>
+      <div class="ans-body">
+        <div class="ans-answer-box">정답: ②</div>
+        <div class="ans-explain">트럼프 대통령이 "이란 전쟁이 곧 해결될 것"이라고 언급하자, 시장은 지정학적 리스크 완화로 받아들여 유가가 배럴당 $120에서 $85 수준으로 급락했다. 단 한마디의 정치적 발언이 원자재 시장에 미치는 영향을 보여주는 사례로, 방송은 이를 "트럼프의 위력"이라고 표현했다.</div>
+      </div>
+    </div>
+
+    <!-- A3 -->
+    <div class="ans-card fade-in">
+      <div class="ans-header" onclick="toggleAns(this)">
+        <div class="ans-q-num">3</div>
+        <div class="ans-q-preview">S&P 500 지지선은 얼마인가?</div>
+        <div class="ans-toggle">▾</div>
+      </div>
+      <div class="ans-body">
+        <div class="ans-answer-box">정답: ② 6,521</div>
+        <div class="ans-explain">방송에서 S&P 500 지지선을 <strong>6,521</strong>로 명시했고, 저항선은 <strong>7,200</strong>으로 언급했다. 저항선 돌파 시 27,800까지 목표로 설정할 수 있다고 했다. 200일 이동평균(6,583)이 지지선에 근접해 기술적으로 중요한 구간이다.</div>
+      </div>
+    </div>
+
+    <!-- A4 -->
+    <div class="ans-card fade-in">
+      <div class="ans-header" onclick="toggleAns(this)">
+        <div class="ans-q-num">4</div>
+        <div class="ans-q-preview">10년 국채 수익률 상승 — 이날 맥락의 해석</div>
+        <div class="ans-toggle">▾</div>
+      </div>
+      <div class="ans-body">
+        <div class="ans-answer-box">좋은 신호 (안전자산 수요 증가)</div>
+        <div class="ans-explain">방송은 국채 수익률 상승을 <strong>"투자량이 늘었다"</strong>는 긍정 신호로 해석했다. 일반적으로 수익률 상승은 채권 가격 하락(매도)을 의미하지만, 이날 맥락은 불안한 시장에서 안전자산 수요가 몰린 결과였다. 미국은 부채가 많아도 달러 기축통화 지위 덕분에 국채 수요가 꾸준히 유지된다는 점도 강조했다. 수익률은 <strong>4.13%로 0.17%p 상승</strong>했다.</div>
+      </div>
+    </div>
+
+    <!-- A5 -->
+    <div class="ans-card fade-in">
+      <div class="ans-header" onclick="toggleAns(this)">
+        <div class="ans-q-num">5</div>
+        <div class="ans-q-preview">비농업 고용 -92,000명의 금리 정책 영향</div>
+        <div class="ans-toggle">▾</div>
+      </div>
+      <div class="ans-body">
+        <div class="ans-answer-box">정답: ③</div>
+        <div class="ans-explain">고용 악화만 있다면 금리 인하 여지가 생기지만, 유가 급등으로 <strong>인플레이션 압력이 동시에</strong> 존재하기 때문에 연준이 금리를 내리기 어렵다. 경기둔화 + 물가상승이 겹치는 스태그플레이션 우려가 연준을 옥죄고 있다. 방송은 5월 인하 가능성을 낮게 봤고, 6월 새 연준 의장 취임 이후를 주목했다.</div>
+      </div>
+    </div>
+
+    <!-- A6 -->
+    <div class="ans-card fade-in">
+      <div class="ans-header" onclick="toggleAns(this)">
+        <div class="ans-q-num">6</div>
+        <div class="ans-q-preview">금(Gold) 소폭 하락 이유</div>
+        <div class="ans-toggle">▾</div>
+      </div>
+      <div class="ans-body">
+        <div class="ans-answer-box">더 높은 수익률 자산으로 자금 이동</div>
+        <div class="ans-explain">방송은 "골드보다 수익률이 좋은 다른 자산 클래스(오일, 국채 등)가 있어서 자금이 이동했다"고 설명했다. 금이 하락한다는 것은 다른 자산의 매력이 상대적으로 높아졌다는 신호다. 아울러 방송은 "금값이 오른다고 금광주를 매수하는 것은 완전히 다른 얘기"라며 단순 논리 투자를 경계했다.</div>
+      </div>
+    </div>
+
+    <!-- A7 -->
+    <div class="ans-card fade-in">
+      <div class="ans-header" onclick="toggleAns(this)">
+        <div class="ans-q-num">7</div>
+        <div class="ans-q-preview">컨슈머 스테이플 하락이 희소식인 이유</div>
+        <div class="ans-toggle">▾</div>
+      </div>
+      <div class="ans-body">
+        <div class="ans-answer-box">정답: ②</div>
+        <div class="ans-explain">컨슈머 스테이플(식품·생활용품 등)은 경기 불안 시 방어 목적으로 매수되는 섹터다. 이 섹터가 오히려 하락한다는 것은 투자자들이 경기침체를 심각하게 우려하지 않고 <strong>위험자산(성장주)을 계속 선호</strong>한다는 의미다. 방송은 이를 성장주 포트폴리오에 유리한 신호로 해석했다.</div>
+      </div>
+    </div>
+
+    <!-- A8 -->
+    <div class="ans-card fade-in">
+      <div class="ans-header" onclick="toggleAns(this)">
+        <div class="ans-q-num">8</div>
+        <div class="ans-q-preview">유가 상승 시 에너지주 매수 전략의 유효성</div>
+        <div class="ans-toggle">▾</div>
+      </div>
+      <div class="ans-body">
+        <div class="ans-answer-box">✗ X (오답)</div>
+        <div class="ans-explain">방송은 유가가 $120까지 급등했음에도 에너지 섹터가 1% 미만 상승에 그친 실제 사례를 들며, <strong>"1+1=2 식의 단순 논리가 주식 시장에서 통하지 않는다"</strong>고 반복 강조했다. 논리적으로 생각하는 것과 시장 움직임은 다양한 다이나믹이 작용하기 때문에 다르다는 것이 핵심 메시지다.</div>
+      </div>
+    </div>
+
+    <!-- A9 -->
+    <div class="ans-card fade-in">
+      <div class="ans-header" onclick="toggleAns(this)">
+        <div class="ans-q-num">9</div>
+        <div class="ans-q-preview">트럼프의 3대 경제 목표와 이란 분쟁의 상충</div>
+        <div class="ans-toggle">▾</div>
+      </div>
+      <div class="ans-body">
+        <div class="ans-answer-box">① 약달러 ② 저인플레이션 ③ 저유가</div>
+        <div class="ans-explain">이란 분쟁이 지속되면 세 목표 모두 저해된다. ①유가 상승으로 저유가 목표 불가, ②유가 상승 → CPI 상승으로 저인플레이션 불가, ③전쟁 비용 증가로 재정 악화 및 경제 불확실성 증대. 세 목표가 모두 저해되므로 트럼프는 조기 종식을 추구할 강한 유인이 있다. 방송은 분쟁이 <strong>60일 이상 지속되면 의회 승인 없는 전쟁으로 법적 리스크(탄핵 가능성)</strong>도 커진다고 분석했다.</div>
+      </div>
+    </div>
+
+    <!-- A10 -->
+    <div class="ans-card fade-in">
+      <div class="ans-header" onclick="toggleAns(this)">
+        <div class="ans-q-num">10</div>
+        <div class="ans-q-preview">베어리시 신호에 해당하지 않는 것은?</div>
+        <div class="ans-toggle">▾</div>
+      </div>
+      <div class="ans-body">
+        <div class="ans-answer-box">정답: ④</div>
+        <div class="ans-explain">①②③은 모두 방송에서 언급된 경계 신호다. ①은 "good news = bad news" 현상(주가에 이미 선반영됨), ②는 저점 매수에도 추가 하락하는 value trap, ③은 매도 거래량이 매수를 크게 앞서는 경우다. 반면 ④ <strong>기관 투자자의 순매수 지속 증가</strong>는 방송이 "줄 서는 식당"에 비유하며 따르라고 권한 긍정적 신호다. 방송의 핵심 원칙 중 하나가 "기관이 몰리는 방향으로 가라"이다.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="footer">
+  <strong>투자는인생TV</strong> · 2026.03.10 방송 기반 시험 문제<br>
+  본 자료는 교육 목적이며, 투자 권유가 아닙니다.<br>
+  Investment products are not FDIC insured · May lose value
+</div>
+
+<script>
+// TAB SWITCH
+function switchTab(panelId, btn) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('panel-' + panelId).classList.add('active');
+  btn.classList.add('active');
+  // re-trigger fade-in for newly visible panel
+  document.querySelectorAll('#panel-' + panelId + ' .fade-in').forEach(el => {
+    if (!el.classList.contains('visible')) {
+      fadeObs.observe(el);
+    }
+  });
+}
+
+// ANSWER TOGGLE
+function toggleAns(header) {
+  const body = header.nextElementSibling;
+  const isOpen = body.classList.contains('open');
+  body.classList.toggle('open', !isOpen);
+  header.classList.toggle('open', !isOpen);
+}
+
+// SCORE CALCULATOR
+function calcScore() {
+  const val = parseInt(document.getElementById('scoreInput').value);
+  const msg = document.getElementById('scoreMsg');
+  if (isNaN(val) || val < 0 || val > 10) { msg.textContent = ''; return; }
+  const msgs = [
+    '다시 한번 방송을 처음부터 복습해보세요 📖',
+    '기초 개념부터 차근차근 정리해보세요.',
+    '조금 더 집중해서 복습이 필요합니다.',
+    '기본기는 갖췄네요. 심화 학습으로 나아가세요.',
+    '절반 통과! 놓친 문제 위주로 복습하세요.',
+    '준수한 수준입니다. 조금만 더 다듬어봐요.',
+    '상당히 잘 이해하고 있습니다 👍',
+    '좋은 결과입니다! 실전 적용도 해보세요.',
+    '훌륭합니다! 거의 완벽한 이해입니다 🎉',
+    '아주 아쉽네요. 한 문제만 더! 💪',
+    '완벽합니다! 멤버십 가입을 고려해볼 때 🏆'
+  ];
+  msg.textContent = msgs[val] || '';
+}
+
+// FADE IN OBSERVER
+const fadeObs = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), i * 70);
+      fadeObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.fade-in').forEach(el => fadeObs.observe(el));
+</script>
+</body>
+</html>
