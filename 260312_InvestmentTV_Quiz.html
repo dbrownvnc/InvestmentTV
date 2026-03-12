@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>시험문제 — 3월 11일 증시 브리핑</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #ffffff;
+    --bg2: #fafafa;
+    --text: #1a1a1a;
+    --text2: #777777;
+    --accent: #e11d48;
+    --accent2: #f43f5e;
+    --border: #e5e5e5;
+    --correct: #16a34a;
+    --wrong: #dc2626;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 400;
+    line-height: 1.7;
+  }
+
+  .masthead {
+    border-bottom: 3px solid var(--accent);
+    padding: 28px 20px 16px;
+    text-align: center;
+    background: var(--bg);
+  }
+  .masthead-label {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.25em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .masthead-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(24px, 6vw, 38px);
+    font-weight: 900;
+    line-height: 1.15;
+    color: var(--text);
+  }
+  .masthead-title em { font-style: italic; color: var(--accent); }
+  .masthead-sub {
+    font-size: 12px;
+    color: var(--text2);
+    margin-top: 8px;
+    letter-spacing: 0.1em;
+  }
+
+  .score-banner {
+    background: var(--bg2);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 20px;
+    text-align: center;
+    font-size: 14px;
+    color: var(--text2);
+  }
+  .score-banner b { color: var(--accent); font-size: 18px; }
+
+  .container { max-width: 680px; margin: 0 auto; padding: 0 18px 40px; }
+
+  /* PROGRESS */
+  .progress-wrap { padding: 24px 0 0; }
+  .progress-bar-bg {
+    height: 4px; background: var(--border); border-radius: 2px; overflow: hidden;
+    margin-bottom: 8px;
+  }
+  .progress-bar-fill {
+    height: 100%; background: var(--accent);
+    transition: width 0.4s ease;
+    border-radius: 2px;
+    width: 0%;
+  }
+  .progress-label { font-size: 11px; color: var(--text2); text-align: right; }
+
+  /* QUESTION CARD */
+  .q-card {
+    border: 1px solid var(--border);
+    background: var(--bg2);
+    margin: 20px 0;
+    overflow: hidden;
+    transition: border-color 0.3s;
+  }
+  .q-card.answered { border-color: var(--accent); }
+
+  .q-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 18px 18px 14px;
+    border-bottom: 1px solid var(--border);
+  }
+  .q-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-weight: 900;
+    color: var(--accent);
+    line-height: 1;
+    flex-shrink: 0;
+    width: 32px;
+  }
+  .q-meta { flex: 1; }
+  .q-tags { display: flex; gap: 6px; margin-bottom: 6px; flex-wrap: wrap; }
+  .q-tag {
+    font-size: 9px;
+    font-weight: 500;
+    padding: 2px 8px;
+    border-radius: 2px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .tag-easy { background: #dcfce7; color: #16a34a; }
+  .tag-med { background: #fef9c3; color: #92400e; }
+  .tag-hard { background: #fff1f2; color: var(--accent); }
+  .tag-ox { background: #ede9fe; color: #7c3aed; }
+  .tag-mc { background: #e0f2fe; color: #0369a1; }
+  .tag-sa { background: #f0fdf4; color: #15803d; }
+  .q-text {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text);
+    line-height: 1.6;
+  }
+
+  /* OPTIONS */
+  .q-options { padding: 14px 18px; display: flex; flex-direction: column; gap: 8px; }
+  .option {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 14px;
+    color: var(--text);
+    border-radius: 2px;
+    user-select: none;
+  }
+  .option:hover { border-color: var(--accent2); background: #fff5f7; }
+  .option.selected { border-color: var(--accent); background: #fff5f7; }
+  .option.correct-ans { border-color: var(--correct); background: #f0fdf4; color: var(--correct); font-weight: 500; }
+  .option.wrong-ans { border-color: var(--wrong); background: #fef2f2; color: var(--wrong); text-decoration: line-through; }
+  .opt-letter {
+    font-family: 'Playfair Display', serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--accent);
+    flex-shrink: 0;
+    width: 18px;
+  }
+  .option.correct-ans .opt-letter { color: var(--correct); }
+  .option.wrong-ans .opt-letter { color: var(--wrong); }
+
+  /* OX */
+  .ox-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 14px 18px; }
+  .ox-btn {
+    padding: 16px;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    text-align: center;
+    cursor: pointer;
+    font-size: 22px;
+    transition: all 0.2s;
+    border-radius: 2px;
+  }
+  .ox-btn:hover { border-color: var(--accent2); background: #fff5f7; }
+  .ox-btn.selected { border-color: var(--accent); background: #fff5f7; }
+  .ox-btn.correct-ans { border-color: var(--correct); background: #f0fdf4; }
+  .ox-btn.wrong-ans { border-color: var(--wrong); background: #fef2f2; }
+
+  /* SHORT ANSWER */
+  .sa-wrap { padding: 14px 18px; }
+  .sa-input {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .sa-input:focus { border-color: var(--accent); }
+  .sa-input.correct-ans { border-color: var(--correct); background: #f0fdf4; }
+  .sa-input.wrong-ans { border-color: var(--wrong); background: #fef2f2; }
+
+  /* SUBMIT BTN */
+  .q-footer { padding: 0 18px 16px; display: flex; gap: 8px; align-items: center; }
+  .btn-submit {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 8px 18px;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s;
+    border-radius: 2px;
+  }
+  .btn-submit:hover { background: var(--accent2); }
+  .btn-submit:disabled { background: #ccc; cursor: default; }
+
+  /* ANSWER REVEAL */
+  .answer-box {
+    margin: 0 18px 16px;
+    padding: 12px 14px;
+    border-left: 3px solid var(--correct);
+    background: #f0fdf4;
+    display: none;
+  }
+  .answer-box.show { display: block; }
+  .answer-box.wrong { border-left-color: var(--wrong); background: #fef2f2; }
+  .ans-label {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--correct);
+    margin-bottom: 4px;
+  }
+  .answer-box.wrong .ans-label { color: var(--wrong); }
+  .ans-text { font-size: 14px; color: var(--text); line-height: 1.6; }
+  .ans-explanation { font-size: 13px; color: var(--text2); margin-top: 6px; }
+
+  /* FINAL SCORE */
+  .final-card {
+    border: 2px solid var(--accent);
+    padding: 28px 20px;
+    margin: 30px 0;
+    text-align: center;
+    background: #fff5f7;
+    display: none;
+  }
+  .final-card.show { display: block; }
+  .final-score-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 56px;
+    font-weight: 900;
+    color: var(--accent);
+    line-height: 1;
+  }
+  .final-label { font-size: 13px; color: var(--text2); margin-top: 8px; margin-bottom: 16px; }
+  .final-msg { font-size: 15px; color: var(--text); font-weight: 500; }
+
+  .btn-reset {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 10px 24px;
+    background: var(--text);
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    margin-top: 16px;
+    border-radius: 2px;
+  }
+
+  .divider { height: 2px; background: var(--border); margin: 10px 0; }
+
+  /* ===== ANSWER SECTION (별도 구획) ===== */
+  .ans-section {
+    background: var(--bg2);
+    border-top: 3px solid var(--text);
+    margin-top: 40px;
+    padding: 0;
+  }
+  .ans-section-header {
+    background: var(--text);
+    color: #fff;
+    padding: 20px 20px;
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+  }
+  .ans-section-header span {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    color: #aaa;
+    display: block;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+  }
+  .ans-item {
+    border-bottom: 1px solid var(--border);
+    padding: 20px 20px;
+  }
+  .ans-item-q {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 10px;
+  }
+  .ans-item-q b { color: var(--accent); }
+  .ans-correct {
+    font-size: 14px;
+    color: var(--correct);
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .ans-explain {
+    font-size: 13px;
+    color: var(--text2);
+    line-height: 1.6;
+  }
+</style>
+</head>
+<body>
+
+<div class="masthead">
+  <div class="masthead-label">시험문제 &amp; 정답 해설</div>
+  <div class="masthead-title">3월 11일 브리핑<br><em>10문항 테스트</em></div>
+  <div class="masthead-sub">객관식 · 단답형 · OX &nbsp;|&nbsp; 쉬움 3 · 보통 5 · 어려움 2</div>
+</div>
+
+<div class="score-banner">
+  현재 점수: <b id="liveScore">0 / 10</b>
+</div>
+
+<div class="container">
+  <div class="progress-wrap">
+    <div class="progress-bar-bg"><div class="progress-bar-fill" id="progressFill"></div></div>
+    <div class="progress-label" id="progressLabel">0 / 10 완료</div>
+  </div>
+
+  <!-- Q1 -->
+  <div class="q-card" id="q1">
+    <div class="q-header">
+      <div class="q-num">1</div>
+      <div class="q-meta">
+        <div class="q-tags">
+          <span class="q-tag tag-easy">쉬움</span>
+          <span class="q-tag tag-mc">객관식</span>
+        </div>
+        <div class="q-text">이날 브리핑에서 30대 포트폴리오에서 완전히 제외(탈락)된 섹터는 무엇인가?</div>
+      </div>
+    </div>
+    <div class="q-options" id="opts1">
+      <div class="option" onclick="selectOpt(1,'A')" id="q1A"><span class="opt-letter">A</span>반도체 섹터</div>
+      <div class="option" onclick="selectOpt(1,'B')" id="q1B"><span class="opt-letter">B</span>금융 섹터</div>
+      <div class="option" onclick="selectOpt(1,'C')" id="q1C"><span class="opt-letter">C</span>헬스케어 섹터</div>
+      <div class="option" onclick="selectOpt(1,'D')" id="q1D"><span class="opt-letter">D</span>에너지 섹터</div>
+    </div>
+    <div class="q-footer">
+      <button class="btn-submit" onclick="submitQ(1)" id="btn1" disabled>확인</button>
+    </div>
+    <div class="answer-box" id="ans1">
+      <div class="ans-label">✓ 정답</div>
+      <div class="ans-text">B — 금융 섹터</div>
+      <div class="ans-explanation">JPM(JP Morgan), HNR, BKR, MS(Morgan Stanley), MET(MetLife) 5개 금융주가 모두 탈락했다. 밸류에이션 고평가, 기관 신규 매수 부재, 금리 인하 지연 등이 이유다.</div>
+    </div>
+  </div>
+
+  <!-- Q2 -->
+  <div class="q-card" id="q2">
+    <div class="q-header">
+      <div class="q-num">2</div>
+      <div class="q-meta">
+        <div class="q-tags">
+          <span class="q-tag tag-easy">쉬움</span>
+          <span class="q-tag tag-ox">OX</span>
+        </div>
+        <div class="q-text">호르무즈 해협이 장기 봉쇄될 경우 미국보다 한국·유럽 경제가 더 큰 타격을 입는다. (O / X)</div>
+      </div>
+    </div>
+    <div class="ox-row" id="opts2">
+      <div class="ox-btn" onclick="selectOX(2,'O')" id="q2O">⭕ O</div>
+      <div class="ox-btn" onclick="selectOX(2,'X')" id="q2X">❌ X</div>
+    </div>
+    <div class="q-footer">
+      <button class="btn-submit" onclick="submitQ(2)" id="btn2" disabled>확인</button>
+    </div>
+    <div class="answer-box" id="ans2">
+      <div class="ans-label">✓ 정답</div>
+      <div class="ans-text">O</div>
+      <div class="ans-explanation">미국은 국내 에너지 생산 기반이 있어 상대적으로 피해가 적다. 반면 한국·일본은 원유 수입의 핵심 통로이며, 유럽도 에너지 공급망이 직격된다.</div>
+    </div>
+  </div>
+
+  <!-- Q3 -->
+  <div class="q-card" id="q3">
+    <div class="q-header">
+      <div class="q-num">3</div>
+      <div class="q-meta">
+        <div class="q-tags">
+          <span class="q-tag tag-easy">쉬움</span>
+          <span class="q-tag tag-sa">단답형</span>
+        </div>
+        <div class="q-text">3월 18일에 예정된 두 가지 주요 이벤트를 쓰시오. (① ____ 실적 발표, ② ____ 금리 결정)</div>
+      </div>
+    </div>
+    <div class="sa-wrap">
+      <input type="text" class="sa-input" id="sa3" placeholder="예: 마이크론 실적발표 / FOMC 금리결정" oninput="enableBtn(3)">
+    </div>
+    <div class="q-footer">
+      <button class="btn-submit" onclick="submitSA(3)" id="btn3" disabled>확인</button>
+    </div>
+    <div class="answer-box" id="ans3">
+      <div class="ans-label">✓ 정답</div>
+      <div class="ans-text">① 마이크론(Micron) 실적 발표 &nbsp; ② FOMC 금리 결정 (동결 예상)</div>
+      <div class="ans-explanation">두 이벤트가 같은 날 겹쳐 있어 시장 변동성이 클 수 있는 날이다. FOMC는 금리 동결이 거의 확실하다고 평가됐다.</div>
+    </div>
+  </div>
+
+  <!-- Q4 -->
+  <div class="q-card" id="q4">
+    <div class="q-header">
+      <div class="q-num">4</div>
+      <div class="q-meta">
+        <div class="q-tags">
+          <span class="q-tag tag-med">보통</span>
+          <span class="q-tag tag-mc">객관식</span>
+        </div>
+        <div class="q-text">연준 의장 후보 케빈 워시(Kevin Warsh)의 AI에 관한 견해로 가장 적절한 것은?</div>
+      </div>
+    </div>
+    <div class="q-options" id="opts4">
+      <div class="option" onclick="selectOpt(4,'A')" id="q4A"><span class="opt-letter">A</span>AI는 일자리를 빼앗아 수요를 감소시키므로 추가 금리 인상이 필요하다.</div>
+      <div class="option" onclick="selectOpt(4,'B')" id="q4B"><span class="opt-letter">B</span>AI가 생산성을 높여 인플레이션을 낮추므로 금리 인상 필요성이 줄어든다.</div>
+      <div class="option" onclick="selectOpt(4,'C')" id="q4C"><span class="opt-letter">C</span>AI의 효과는 불확실하므로 금리를 즉시 대폭 인하해야 한다.</div>
+      <div class="option" onclick="selectOpt(4,'D')" id="q4D"><span class="opt-letter">D</span>AI는 인플레이션과 무관하며 금리 결정에 고려하지 않아야 한다.</div>
+    </div>
+    <div class="q-footer">
+      <button class="btn-submit" onclick="submitQ(4)" id="btn4" disabled>확인</button>
+    </div>
+    <div class="answer-box" id="ans4">
+      <div class="ans-label">✓ 정답</div>
+      <div class="ans-text">B</div>
+      <div class="ans-explanation">워시는 "AI가 생산성을 크게 향상시켜 인플레이션을 낮게 유지하면서 경제 성장을 돕는다"고 발언했다. 다만 이 견해는 연준 내부에서도 보편적으로 받아들여지지는 않는다.</div>
+    </div>
+  </div>
+
+  <!-- Q5 -->
+  <div class="q-card" id="q5">
+    <div class="q-header">
+      <div class="q-num">5</div>
+      <div class="q-meta">
+        <div class="q-tags">
+          <span class="q-tag tag-med">보통</span>
+          <span class="q-tag tag-ox">OX</span>
+        </div>
+        <div class="q-text">스태그플레이션은 물가가 오르면서 동시에 경기 침체가 나타나는 현상으로, 기업의 매출과 이익 마진에 동시에 부정적 영향을 줄 수 있다. (O / X)</div>
+      </div>
+    </div>
+    <div class="ox-row" id="opts5">
+      <div class="ox-btn" onclick="selectOX(5,'O')" id="q5O">⭕ O</div>
+      <div class="ox-btn" onclick="selectOX(5,'X')" id="q5X">❌ X</div>
+    </div>
+    <div class="q-footer">
+      <button class="btn-submit" onclick="submitQ(5)" id="btn5" disabled>확인</button>
+    </div>
+    <div class="answer-box" id="ans5">
+      <div class="ans-label">✓ 정답</div>
+      <div class="ans-text">O</div>
+      <div class="ans-explanation">가격은 오르지만 소비자 수가 줄어들면, 기업은 원가 상승(인플레이션)과 매출 감소(경기 침체)를 동시에 겪는다. S&P 기업들의 순이익 마진 11% 유지 여부가 핵심 관전 포인트로 제시됐다.</div>
+    </div>
+  </div>
+
+  <!-- Q6 -->
+  <div class="q-card" id="q6">
+    <div class="q-header">
+      <div class="q-num">6</div>
+      <div class="q-meta">
+        <div class="q-tags">
+          <span class="q-tag tag-med">보통</span>
+          <span class="q-tag tag-mc">객관식</span>
+        </div>
+        <div class="q-text">이번에 30대 포트폴리오에 신규 편입된 기업(HIMS)의 핵심 성장 동력은 무엇인가?</div>
+      </div>
+    </div>
+    <div class="q-options" id="opts6">
+      <div class="option" onclick="selectOpt(6,'A')" id="q6A"><span class="opt-letter">A</span>AI 반도체 칩 설계 사업 진출</div>
+      <div class="option" onclick="selectOpt(6,'B')" id="q6B"><span class="opt-letter">B</span>GLP-1 계열 체중 감량약(오젬픽·위고비) 판매 파트너십 체결</div>
+      <div class="option" onclick="selectOpt(6,'C')" id="q6C"><span class="opt-letter">C</span>우주 인프라 투자 확대</div>
+      <div class="option" onclick="selectOpt(6,'D')" id="q6D"><span class="opt-letter">D</span>유럽 전자결제 시장 독점 계약</div>
+    </div>
+    <div class="q-footer">
+      <button class="btn-submit" onclick="submitQ(6)" id="btn6" disabled>확인</button>
+    </div>
+    <div class="answer-box" id="ans6">
+      <div class="ans-label">✓ 정답</div>
+      <div class="ans-text">B</div>
+      <div class="ans-explanation">Hims & Hers Health(HIMS)는 노보 노르디스크와 GLP-1 체중 관리약 판매 파트너십을 체결하면서 저성장→고성장 기업으로 인식이 전환됐다. 기존 구독자 250만 명 중 약 30%가 체중 관리 GLP-1 서비스를 이용 중이며, 연간 추정 판매 규모는 $2.8B에 달한다.</div>
+    </div>
+  </div>
+
+  <!-- Q7 -->
+  <div class="q-card" id="q7">
+    <div class="q-header">
+      <div class="q-num">7</div>
+      <div class="q-meta">
+        <div class="q-tags">
+          <span class="q-tag tag-med">보통</span>
+          <span class="q-tag tag-sa">단답형</span>
+        </div>
+        <div class="q-text">마이크론(MU)의 현재 기관 보유율(%)은 얼마이며, 이는 작년 초 대비 얼마나 증가했는가?</div>
+      </div>
+    </div>
+    <div class="sa-wrap">
+      <input type="text" class="sa-input" id="sa7" placeholder="현재 __%  / 작년 초 __%  (증가폭 __p)" oninput="enableBtn(7)">
+    </div>
+    <div class="q-footer">
+      <button class="btn-submit" onclick="submitSA(7)" id="btn7" disabled>확인</button>
+    </div>
+    <div class="answer-box" id="ans7">
+      <div class="ans-label">✓ 정답</div>
+      <div class="ans-text">현재 약 79.6% / 작년 초 약 44% → 약 35%p 증가</div>
+      <div class="ans-explanation">기관 보유율 60% 이상이면 안정적 운용이 가능하며, 80%에 근접한 마이크론은 기관 중심의 견고한 수요 기반을 보여준다.</div>
+    </div>
+  </div>
+
+  <!-- Q8 -->
+  <div class="q-card" id="q8">
+    <div class="q-header">
+      <div class="q-num">8</div>
+      <div class="q-meta">
+        <div class="q-tags">
+          <span class="q-tag tag-med">보통</span>
+          <span class="q-tag tag-mc">객관식</span>
+        </div>
+        <div class="q-text">다음 중 이날 브리핑에서 '비중 축소(Reduce)'를 권고한 종목이 아닌 것은?</div>
+      </div>
+    </div>
+    <div class="q-options" id="opts8">
+      <div class="option" onclick="selectOpt(8,'A')" id="q8A"><span class="opt-letter">A</span>META</div>
+      <div class="option" onclick="selectOpt(8,'B')" id="q8B"><span class="opt-letter">B</span>Google (GOOGL)</div>
+      <div class="option" onclick="selectOpt(8,'C')" id="q8C"><span class="opt-letter">C</span>AMD</div>
+      <div class="option" onclick="selectOpt(8,'D')" id="q8D"><span class="opt-letter">D</span>Micron (MU)</div>
+    </div>
+    <div class="q-footer">
+      <button class="btn-submit" onclick="submitQ(8)" id="btn8" disabled>확인</button>
+    </div>
+    <div class="answer-box" id="ans8">
+      <div class="ans-label">✓ 정답</div>
+      <div class="ans-text">D — Micron(MU)</div>
+      <div class="ans-explanation">마이크론은 비중 축소 대상이 아니라 '보유 유지'를 권고한 종목이다. META, GOOGL, AMD는 비중 10~30% 축소가 권고됐다.</div>
+    </div>
+  </div>
+
+  <!-- Q9 -->
+  <div class="q-card" id="q9">
+    <div class="q-header">
+      <div class="q-num">9</div>
+      <div class="q-meta">
+        <div class="q-tags">
+          <span class="q-tag tag-hard">어려움</span>
+          <span class="q-tag tag-mc">객관식</span>
+        </div>
+        <div class="q-text">결제 회사 Block(구 Square)이 직원을 대거 감원한다고 발표했다. 이 사례가 경제적으로 시사하는 바와 가장 거리가 먼 것은?</div>
+      </div>
+    </div>
+    <div class="q-options" id="opts9">
+      <div class="option" onclick="selectOpt(9,'A')" id="q9A"><span class="opt-letter">A</span>AI 도입이 화이트칼라 일자리를 빠르게 대체하고 있다.</div>
+      <div class="option" onclick="selectOpt(9,'B')" id="q9B"><span class="opt-letter">B</span>AI 생산성 향상이 반드시 인플레이션을 낮추는지는 불확실하다.</div>
+      <div class="option" onclick="selectOpt(9,'C')" id="q9C"><span class="opt-letter">C</span>고용 감소는 소비를 위축시켜 스태그플레이션을 심화시킬 수 있다.</div>
+      <div class="option" onclick="selectOpt(9,'D')" id="q9D"><span class="opt-letter">D</span>AI 도입 기업은 단기적으로 주가가 반드시 하락한다.</div>
+    </div>
+    <div class="q-footer">
+      <button class="btn-submit" onclick="submitQ(9)" id="btn9" disabled>확인</button>
+    </div>
+    <div class="answer-box" id="ans9">
+      <div class="ans-label">✓ 정답</div>
+      <div class="ans-text">D</div>
+      <div class="ans-explanation">AI를 통한 효율화(감원 포함)는 단기적으로 비용 절감 효과로 주가가 오를 수도 있다. 반드시 주가 하락을 의미하지는 않는다. A·B·C는 모두 브리핑에서 실질적으로 제기된 시사점이다.</div>
+    </div>
+  </div>
+
+  <!-- Q10 -->
+  <div class="q-card" id="q10">
+    <div class="q-header">
+      <div class="q-num">10</div>
+      <div class="q-meta">
+        <div class="q-tags">
+          <span class="q-tag tag-hard">어려움</span>
+          <span class="q-tag tag-sa">단답형</span>
+        </div>
+        <div class="q-text">브리핑에서 제시한 '333 매수 법칙'을 설명하고, 이 방법이 왜 변동성이 큰 장에서 유리한지 서술하시오.</div>
+      </div>
+    </div>
+    <div class="sa-wrap">
+      <input type="text" class="sa-input" id="sa10" placeholder="예: 총 매수 금액의 30%씩 3일에 나누어..." oninput="enableBtn(10)">
+    </div>
+    <div class="q-footer">
+      <button class="btn-submit" onclick="submitSA(10)" id="btn10" disabled>확인</button>
+    </div>
+    <div class="answer-box" id="ans10">
+      <div class="ans-label">✓ 정답 (예시 답안)</div>
+      <div class="ans-text">총 매수 목표 금액의 30%씩 3일에 걸쳐 분할 매수하는 방법.</div>
+      <div class="ans-explanation">기술적 분석상 주가는 상승 또는 하락 이후 약 3일간 반대 방향으로 움직일 가능성이 높다. 분할 매수 시 ① 단가 평준화 효과(Dollar-Cost Averaging)로 고점 집중 매수 위험을 낮추고, ② 심리적 부담을 줄여 충동적 대량 매수를 방지한다. 특히 변동성이 큰 장에서 손실 리스크를 분산하는 데 효과적이다.</div>
+    </div>
+  </div>
+
+  <!-- Final Score -->
+  <div class="final-card" id="finalCard">
+    <div class="final-score-num" id="finalNum">0</div>
+    <div class="final-label">/ 10점</div>
+    <div class="final-msg" id="finalMsg"></div>
+    <button class="btn-reset" onclick="resetAll()">다시 풀기</button>
+  </div>
+</div>
+
+<!-- ===== 정답 & 해설 구획 (명확 분리) ===== -->
+<div class="ans-section">
+  <div class="ans-section-header">
+    <span>Answer Sheet</span>
+    정답 &amp; 해설 모음
+  </div>
+
+  <div class="ans-item">
+    <div class="ans-item-q"><b>Q1 [객관식·쉬움]</b> 30대 탈락 섹터는?</div>
+    <div class="ans-correct">✓ 정답: B — 금융 섹터</div>
+    <div class="ans-explain">JPM, HNR, BKR, MS, MET 5개 금융주가 동시에 탈락. 밸류에이션 고평가 + 기관 신규 유입 없음 + 금리 인하 지연 + 크레딧카드 스프레드 압박 + 유럽의 Visa·MC 대안 추진이 복합 원인.</div>
+  </div>
+
+  <div class="ans-item">
+    <div class="ans-item-q"><b>Q2 [OX·쉬움]</b> 호르무즈 봉쇄 시 한국·유럽이 미국보다 피해가 크다?</div>
+    <div class="ans-correct">✓ 정답: O</div>
+    <div class="ans-explain">미국은 자국 에너지 생산 기반을 보유. 한국은 원유 수입의 핵심 통로이며, 전략비축유는 약 200일분으로 장기화 시 소진 위험이 있다. 유럽도 에너지 공급망이 직격된다.</div>
+  </div>
+
+  <div class="ans-item">
+    <div class="ans-item-q"><b>Q3 [단답형·쉬움]</b> 3월 18일 두 가지 이벤트는?</div>
+    <div class="ans-correct">✓ 정답: ① 마이크론 실적 발표 &nbsp; ② FOMC 금리 결정 (동결 예상)</div>
+    <div class="ans-explain">두 이벤트가 같은 날 겹쳐 시장 변동성이 확대될 수 있다. FOMC 금리 인하 가능성은 거의 없음으로 평가됐다.</div>
+  </div>
+
+  <div class="ans-item">
+    <div class="ans-item-q"><b>Q4 [객관식·보통]</b> 케빈 워시의 AI 견해는?</div>
+    <div class="ans-correct">✓ 정답: B — AI 생산성 향상 → 인플레이션 낮춤 → 금리 인상 필요성 감소</div>
+    <div class="ans-explain">다만 이 견해는 연준 내부에서도 이견이 있고, 2020년 코로나 이후 인플레이션 실기 교훈으로 인해 실제 정책은 신중할 것으로 예상됐다.</div>
+  </div>
+
+  <div class="ans-item">
+    <div class="ans-item-q"><b>Q5 [OX·보통]</b> 스태그플레이션이 기업 실적에 이중 압박을 주나?</div>
+    <div class="ans-correct">✓ 정답: O</div>
+    <div class="ans-explain">물가 상승으로 원가가 오르고, 동시에 경기 침체로 소비자가 줄어 매출이 감소한다. S&P 기업 평균 순이익 마진 11% 사수 여부가 한 달 안에 결판 난다고 언급됐다.</div>
+  </div>
+
+  <div class="ans-item">
+    <div class="ans-item-q"><b>Q6 [객관식·보통]</b> HIMS 신규 편입의 핵심 성장 동력?</div>
+    <div class="ans-correct">✓ 정답: B — GLP-1 체중 감량약 판매 파트너십</div>
+    <div class="ans-explain">노보 노르디스크와 오젬픽·위고비 판매 파트너십 체결. 기존 250만 구독자 기반에 체중 관리 서비스 확장. 연간 추정 매출 $2.8B, 기관 보유율 75%→90%+ 예상.</div>
+  </div>
+
+  <div class="ans-item">
+    <div class="ans-item-q"><b>Q7 [단답형·보통]</b> 마이크론의 기관 보유율 변화?</div>
+    <div class="ans-correct">✓ 정답: 현재 79.6% / 작년 초 44% → 약 35%p 증가</div>
+    <div class="ans-explain">기관 보유율 60% 이상이면 안정적 주가 운용이 가능하다는 기준 적용 시, 마이크론은 이를 훨씬 상회한다. 기관들의 신뢰가 높음을 의미한다.</div>
+  </div>
+
+  <div class="ans-item">
+    <div class="ans-item-q"><b>Q8 [객관식·보통]</b> 비중 축소 권고가 아닌 종목은?</div>
+    <div class="ans-correct">✓ 정답: D — Micron (MU)</div>
+    <div class="ans-explain">마이크론은 3분기까지 보유 유지 권고 종목이다. META·GOOGL·AMD 3종목이 비중 10~30% 축소 권고를 받았다.</div>
+  </div>
+
+  <div class="ans-item">
+    <div class="ans-item-q"><b>Q9 [객관식·어려움]</b> Block 감원 사례의 경제적 시사점과 거리가 먼 것은?</div>
+    <div class="ans-correct">✓ 정답: D — AI 도입 기업은 단기 주가가 반드시 하락한다</div>
+    <div class="ans-explain">AI 기반 효율화·감원은 오히려 비용 절감으로 단기 주가 상승 요인이 될 수 있다. A(고용 대체), B(인플레 효과 불확실), C(소비 위축→스태그플레이션)는 모두 유효한 시사점이다.</div>
+  </div>
+
+  <div class="ans-item">
+    <div class="ans-item-q"><b>Q10 [단답형·어려움]</b> 333 매수 법칙이란?</div>
+    <div class="ans-correct">✓ 정답: 총 매수 목표 금액의 30%씩 3일에 걸쳐 분할 매수</div>
+    <div class="ans-explain">주가는 움직임 후 약 3일간 반대 방향 움직임이 나타날 가능성이 높다는 경험적 패턴에 기반. 분할 매수로 ① 평균 단가 평준화, ② 심리적 압박 감소, ③ 변동성 큰 장에서의 리스크 분산 효과를 얻는다. 특히 HIMS처럼 변동성이 큰 신규 편입 종목에 적용 권고됐다.</div>
+  </div>
+</div>
+
+<script>
+const answers = {
+  1: 'B', 2: 'O', 4: 'B', 5: 'O', 6: 'B', 8: 'D', 9: 'D'
+};
+const saQuestions = [3, 7, 10];
+const userAnswers = {};
+let score = 0;
+let completed = 0;
+
+function selectOpt(qNum, letter) {
+  if (userAnswers[qNum] !== undefined) return;
+  document.querySelectorAll(`#opts${qNum} .option`).forEach(el => el.classList.remove('selected'));
+  document.getElementById(`q${qNum}${letter}`).classList.add('selected');
+  userAnswers[qNum] = letter;
+  document.getElementById(`btn${qNum}`).disabled = false;
+}
+
+function selectOX(qNum, val) {
+  if (userAnswers[qNum] !== undefined) return;
+  document.querySelectorAll(`#opts${qNum} .ox-btn`).forEach(el => el.classList.remove('selected'));
+  document.getElementById(`q${qNum}${val}`).classList.add('selected');
+  userAnswers[qNum] = val;
+  document.getElementById(`btn${qNum}`).disabled = false;
+}
+
+function enableBtn(qNum) {
+  const val = document.getElementById(`sa${qNum}`).value.trim();
+  document.getElementById(`btn${qNum}`).disabled = val.length < 2;
+}
+
+function submitQ(qNum) {
+  const userAns = userAnswers[qNum];
+  const correct = answers[qNum];
+  const isCorrect = userAns === correct;
+  if (isCorrect) score++;
+  completed++;
+
+  // style options
+  if (qNum === 2 || qNum === 5) {
+    // OX
+    const opts = document.querySelectorAll(`#opts${qNum} .ox-btn`);
+    opts.forEach(el => {
+      const v = el.id.endsWith(correct) ? 'correct-ans' : (el.classList.contains('selected') ? 'wrong-ans' : '');
+      if (v) el.classList.add(v);
+      el.style.cursor = 'default';
+      el.onclick = null;
+    });
+  } else {
+    document.querySelectorAll(`#opts${qNum} .option`).forEach(el => {
+      const letter = el.id.replace(`q${qNum}`, '');
+      if (letter === correct) el.classList.add('correct-ans');
+      else if (el.classList.contains('selected')) el.classList.add('wrong-ans');
+      el.onclick = null;
+      el.style.cursor = 'default';
+    });
+  }
+
+  const ansBox = document.getElementById(`ans${qNum}`);
+  ansBox.classList.add('show');
+  if (!isCorrect) ansBox.classList.add('wrong');
+  document.getElementById(`btn${qNum}`).disabled = true;
+  document.getElementById(`q${qNum}`).classList.add('answered');
+  updateProgress();
+}
+
+function submitSA(qNum) {
+  score++; // short answer = full credit on submission (honor system)
+  completed++;
+  const input = document.getElementById(`sa${qNum}`);
+  input.classList.add('correct-ans');
+  input.disabled = true;
+  document.getElementById(`ans${qNum}`).classList.add('show');
+  document.getElementById(`btn${qNum}`).disabled = true;
+  document.getElementById(`q${qNum}`).classList.add('answered');
+  updateProgress();
+}
+
+function updateProgress() {
+  const pct = Math.round((completed / 10) * 100);
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressLabel').textContent = `${completed} / 10 완료`;
+  document.getElementById('liveScore').textContent = `${score} / 10`;
+
+  if (completed === 10) {
+    const fc = document.getElementById('finalCard');
+    fc.classList.add('show');
+    document.getElementById('finalNum').textContent = score;
+    const msgs = [
+      [0,4,'다시 한 번 브리핑을 꼼꼼히 복습해보세요! 💪'],
+      [5,7,'절반 이상 맞추셨네요! 조금 더 다듬어봅시다. 📈'],
+      [8,9,'훌륭합니다! 핵심 내용을 잘 파악하셨습니다. 🎯'],
+      [10,10,'만점! 브리핑을 완벽하게 이해하셨습니다. 🏆']
+    ];
+    const [,, msg] = msgs.find(([lo,hi]) => score >= lo && score <= hi);
+    document.getElementById('finalMsg').textContent = msg;
+    fc.scrollIntoView({ behavior: 'smooth' });
+  }
+}
+
+function resetAll() {
+  location.reload();
+}
+</script>
+</body>
+</html>
