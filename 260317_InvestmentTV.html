@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>3월 16일 시황 분석 — 만족스럽지 않은 반등</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Noto+Serif+KR:wght@400;600;700&family=Noto+Sans+KR:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+  :root {
+    --bg: #ffffff;
+    --bg-sub: #fafafa;
+    --text: #1a1a1a;
+    --text-sub: #777777;
+    --accent: #e11d48;
+    --accent2: #f43f5e;
+    --border: #e5e5e5;
+    --chart1: #e11d48;
+    --chart2: #1a1a1a;
+    --chart3: #6b7280;
+    --chart4: #2563eb;
+    --table-bg: #fafafa;
+    --table-header: #e11d48;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 15px;
+    line-height: 1.75;
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 0;
+  }
+
+  /* ── HEADER ── */
+  .site-header {
+    background: var(--text);
+    color: #fff;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .site-header .logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 16px;
+    font-weight: 900;
+    letter-spacing: 0.04em;
+    color: var(--accent2);
+  }
+
+  /* ── HERO ── */
+  .hero {
+    background: var(--text);
+    padding: 40px 20px 32px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    right: -30px; bottom: -40px;
+    width: 180px; height: 180px;
+    border-radius: 50%;
+    border: 40px solid rgba(225,29,72,0.15);
+  }
+  .hero-tag {
+    display: inline-block;
+    background: var(--accent);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    margin-bottom: 16px;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-weight: 900;
+    color: #fff;
+    line-height: 1.2;
+    margin-bottom: 12px;
+  }
+  .hero h1 span { color: var(--accent2); }
+  .hero-sub {
+    color: rgba(255,255,255,0.55);
+    font-size: 12px;
+    letter-spacing: 0.06em;
+  }
+
+  /* ── VERDICT BANNER ── */
+  .verdict {
+    background: var(--accent);
+    color: #fff;
+    padding: 18px 20px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .verdict-icon { font-size: 28px; flex-shrink: 0; }
+  .verdict-text { font-size: 14px; font-weight: 600; line-height: 1.5; }
+  .verdict-text strong { font-size: 16px; display: block; margin-bottom: 2px; }
+
+  /* ── CONTENT ── */
+  .content { padding: 0 20px; }
+
+  section { padding: 32px 0; border-bottom: 1px solid var(--border); }
+  section:last-child { border-bottom: none; }
+
+  .section-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+  h2 {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.35;
+    margin-bottom: 16px;
+  }
+  p { color: var(--text); margin-bottom: 12px; font-size: 14px; }
+  p:last-child { margin-bottom: 0; }
+
+  .highlight-box {
+    background: var(--bg-sub);
+    border-left: 3px solid var(--accent);
+    padding: 14px 16px;
+    margin: 16px 0;
+    font-size: 13px;
+    color: var(--text);
+    font-family: 'Noto Serif KR', serif;
+    line-height: 1.65;
+  }
+  .highlight-box strong { color: var(--accent); }
+
+  /* ── STAT GRID ── */
+  .stat-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin: 16px 0;
+  }
+  .stat-card {
+    background: var(--bg-sub);
+    border: 1px solid var(--border);
+    padding: 14px 12px;
+    text-align: center;
+  }
+  .stat-card .val {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--accent);
+    display: block;
+    line-height: 1.1;
+  }
+  .stat-card .val.neg { color: #1a1a1a; }
+  .stat-card .val.blue { color: var(--chart4); }
+  .stat-card .label {
+    font-size: 11px;
+    color: var(--text-sub);
+    margin-top: 4px;
+    display: block;
+  }
+
+  /* ── CHART ── */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .chart-container {
+    position: relative;
+    max-height: 340px;
+    margin: 16px 0;
+  }
+  .chart-container canvas {
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    max-height: 300px;
+  }
+  .chart-container.chart-ready canvas {
+    opacity: 1;
+  }
+  .chart-title {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-sub);
+    letter-spacing: 0.05em;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+  }
+
+  /* ── TABLE ── */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-size: 13px;
+  }
+  th {
+    background: var(--table-header);
+    color: #fff;
+    padding: 9px 10px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 0.04em;
+  }
+  td {
+    background: var(--table-bg);
+    padding: 9px 10px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+    vertical-align: top;
+  }
+  tr:nth-child(even) td { background: #f3f3f3; }
+  .tag-neg { color: var(--accent); font-weight: 700; }
+  .tag-pos { color: var(--chart4); font-weight: 700; }
+  .tag-warn { color: #d97706; font-weight: 700; }
+
+  /* ── RULE LIST ── */
+  .rule-list { list-style: none; margin: 12px 0; }
+  .rule-list li {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 14px;
+  }
+  .rule-list li:last-child { border-bottom: none; }
+  .rule-num {
+    background: var(--accent);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    min-width: 24px; height: 24px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+
+  /* ── RISK METER ── */
+  .risk-meter { margin: 16px 0; }
+  .risk-label { font-size: 12px; color: var(--text-sub); margin-bottom: 6px; display: flex; justify-content: space-between; }
+  .risk-bar-bg { background: var(--border); height: 8px; border-radius: 0; overflow: hidden; }
+  .risk-bar-fill { height: 100%; background: linear-gradient(90deg, var(--chart4), var(--accent)); transition: width 1.2s ease; width: 0; border-radius: 0; }
+
+  /* ── QUOTE ── */
+  .pull-quote {
+    border-top: 3px solid var(--accent);
+    border-bottom: 3px solid var(--accent);
+    padding: 20px 0;
+    margin: 20px 0;
+    text-align: center;
+  }
+  .pull-quote p {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 17px;
+    font-weight: 600;
+    line-height: 1.55;
+    color: var(--text);
+    margin: 0;
+  }
+  .pull-quote span { color: var(--accent); }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--text);
+    color: rgba(255,255,255,0.4);
+    text-align: center;
+    padding: 24px 20px;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+  }
+  footer strong { color: rgba(255,255,255,0.7); display: block; margin-bottom: 4px; }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <span class="logo">MARKET BRIEF</span>
+  <span>2026. 03. 17 · 미국증시분석</span>
+</header>
+
+<div class="hero fade-in">
+  <div class="hero-tag">📉 시황 분석 — 3월 16일</div>
+  <h1>만족스럽지 않은 반등,<br><span>예후가 좋지 않다</span></h1>
+  <p class="hero-sub">S&P 500 · 나스닥 · 연준 · 이란전쟁 · 마이크론 / 분석 브리핑</p>
+</div>
+
+<div class="verdict fade-in">
+  <div class="verdict-icon">⚠️</div>
+  <div class="verdict-text">
+    <strong>핵심 결론</strong>
+    반등폭이 작고 셀링 프레셔(매도 압력)가 강하다. 이번 주는 "절벽에서 추락"을 조심해야 하는 기간. 투자 리스크는 확실히 커졌다.
+  </div>
+</div>
+
+<div class="content">
+
+  <!-- 1. 주요 지수 현황 -->
+  <section>
+    <div class="section-label fade-in">01 / 주요 지수 현황</div>
+    <h2 class="fade-in">3주 연속 하락, 4개월 만의 저점</h2>
+
+    <div class="stat-grid fade-in">
+      <div class="stat-card">
+        <span class="val">6,707</span>
+        <span class="label">S&P 500 (3/16 잠정)</span>
+      </div>
+      <div class="stat-card">
+        <span class="val">+1.13%</span>
+        <span class="label">당일 반등폭 — "실망스러운 수준"</span>
+      </div>
+      <div class="stat-card">
+        <span class="val neg">22,415</span>
+        <span class="label">나스닥 잠정 마감</span>
+      </div>
+      <div class="stat-card">
+        <span class="val blue">−4.4%</span>
+        <span class="label">S&P 500 · 사상 최고 대비 낙폭</span>
+      </div>
+    </div>
+
+    <div class="chart-container fade-in">
+      <div class="chart-title">S&P 500 이동평균선 이상 종목 비율 (%)</div>
+      <canvas id="breadthChart" height="200"></canvas>
+    </div>
+
+    <div class="highlight-box fade-in">
+      <strong>시장폭(Market Breadth) 경고</strong><br>
+      3/14(금) 기준 S&P 500 종목 중 50일 이동평균 위에 있는 종목 비율이 <strong>32%</strong>에 그쳤다. 6개월 평균 <strong>59%</strong> 대비 급락 — 투자 심리 위축의 명확한 신호.
+    </div>
+
+    <p>나스닥은 금요일 <strong>200일 이동평균선</strong>을 5월 이후 처음으로 하향 돌파하며 마감했다. 이는 중·장기 추세 전환의 부정적 신호로 해석된다.</p>
+  </section>
+
+  <!-- 2. 이란 전쟁과 유가 -->
+  <section>
+    <div class="section-label fade-in">02 / 지정학적 리스크</div>
+    <h2 class="fade-in">이란 전쟁: 지역 분쟁에서 글로벌 에너지 공급 충격으로 진화</h2>
+
+    <p>미국이 이란의 카르그 섬(호르무즈 해협 인근 요새화 섬)을 공격했다. 다국적 연합이 형성됐다고 알려졌으나 이란이 호르무즈 해협을 쉽게 개방할 가능성은 낮다고 본다.</p>
+
+    <div class="pull-quote fade-in">
+      <p>"이란과의 전쟁은 단기에 끝나지 않을 것.<br><span>인플레이션 장기화 리스크가 현실화되고 있다."</span></p>
+    </div>
+
+    <p>과거 이라크·아프가니스탄·베트남 전쟁의 사례를 보면, 40년 이상 뿌리내린 정치 세력을 군사력만으로 단기에 제압하는 것은 역사적으로 반복된 실패 패턴이다.</p>
+
+    <div class="chart-container fade-in">
+      <div class="chart-title">이란 리스크 — 섹터별 영향 강도</div>
+      <canvas id="riskChart" height="220"></canvas>
+    </div>
+
+    <p><strong>한국·일본의 특수 취약성:</strong> 원유 100% 수입국으로, 유가 상승 → 원화 약세(현재 1,500원 초과, 최악 1,800원 가능) → 수입 원가 급등의 이중 타격이 예상된다.</p>
+  </section>
+
+  <!-- 3. 연준 정책 딜레마 -->
+  <section>
+    <div class="section-label fade-in">03 / 연준(Fed) 정책</div>
+    <h2 class="fade-in">금리 동결 거의 확실 — 스태그플레이션 딜레마</h2>
+
+    <p>이번 주 FOMC 회의(수요일)에서 <strong>금리 동결</strong>이 유력하다. 이란 전쟁이 단기적으로 끝날 것이라는 기존 전제가 흔들리면서 인플레이션 장기화 우려가 커졌기 때문이다.</p>
+
+    <div class="highlight-box fade-in">
+      <strong>연준의 딜레마 (스태그플레이션 시나리오)</strong><br>
+      <br>
+      • 에너지 가격 상승 → <strong>인플레이션↑</strong><br>
+      • 금리 동결 유지 → <strong>고용 성장 약화↑</strong><br>
+      • 금리 인하 시 → 인플레이션 재점화 위험<br>
+      <br>
+      연준의 두 가지 의무(물가 안정 + 고용 극대화)가 충돌하는 상황. 이런 정책 불확실성이 커지면 <strong>투자 리스크는 올라간다.</strong>
+    </div>
+
+    <p>미국 인플레이션이 그나마 2%대 중후반을 유지할 수 있었던 핵심 원인은 에너지 가격 하락이었다. 이제 그 방어막이 무너진 셈이다. 다른 품목(식료품, 임대료)은 이미 올라 있어 역기저 효과(상쇄 효과)가 없다.</p>
+
+    <table class="fade-in">
+      <thead>
+        <tr><th>시나리오</th><th>연준 행동</th><th>증시 영향</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>에너지 가격 안정</td><td>금리 인하 가능</td><td class="tag-pos">+5% 이상 반등</td></tr>
+        <tr><td>전쟁 장기화 (기본 시나리오)</td><td>금리 동결</td><td class="tag-neg">테크주 하락 압력</td></tr>
+        <tr><td>전쟁 확전·유가 급등</td><td>인하 불가</td><td class="tag-neg">경기침체 진입 위험</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 4. 주요 기업 동향 -->
+  <section>
+    <div class="section-label fade-in">04 / 주요 기업 동향</div>
+    <h2 class="fade-in">엔비디아 GTC · 마이크론 실적 · 메타 감원</h2>
+
+    <table class="fade-in">
+      <thead>
+        <tr><th>기업</th><th>이슈</th><th>시장 반응</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>엔비디아</strong></td>
+          <td>GTC 컨퍼런스 — 하드웨어 혁신 발표</td>
+          <td class="tag-warn">+1.3% (기대 미달)</td>
+        </tr>
+        <tr>
+          <td><strong>마이크론</strong></td>
+          <td>수요일 장마감 후 실적 발표 예정<br><small>전년 동기比 매출 약 7배 성장 전망</small></td>
+          <td class="tag-warn">목요일 칩 섹터 변동성 확대</td>
+        </tr>
+        <tr>
+          <td><strong>메타</strong></td>
+          <td>AI 활용으로 인력 20% 감축 예고</td>
+          <td class="tag-pos">초반 +2.9%</td>
+        </tr>
+        <tr>
+          <td><strong>NBIS</strong></td>
+          <td>메타와 5년 AI 인프라 공급 계약</td>
+          <td class="tag-pos">초반 +14%</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="highlight-box fade-in">
+      <strong>엔비디아 GTC 해석</strong><br>
+      좋은 발표에도 시장 반응이 냉담한 이유는 현재 시장이 AI 뉴스보다 더 큰 문제(이란 전쟁, 금리, 유가)에 집중하고 있기 때문이다. "호재를 소화할 여력이 없는 시장"이다.
+    </div>
+
+    <p><strong>데이터센터와 전력 문제:</strong> AI 데이터센터는 도시 하나 수준의 전력이 필요하다. 에너지 가격이 20% 오르면 수익성(마진)이 직접 타격을 받는다. 핵발전소 신설은 10~15년 소요로 단기 해법이 없다.</p>
+  </section>
+
+  <!-- 5. 섹터별 전망 -->
+  <section>
+    <div class="section-label fade-in">05 / 섹터별 전망</div>
+    <h2 class="fade-in">방어주 vs. 성장주: 二分法</h2>
+
+    <div class="chart-container fade-in">
+      <div class="chart-title">섹터별 현 시장 선호도 (개략)</div>
+      <canvas id="sectorChart" height="220"></canvas>
+    </div>
+
+    <table class="fade-in">
+      <thead>
+        <tr><th>섹터</th><th>전망</th><th>이유</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>에너지 · 유틸리티</td><td class="tag-warn">단기 상승, 장기 불확실</td><td>지난주 유일 상승 — 그러나 장기 보유는 주의</td></tr>
+        <tr><td>헬스케어</td><td class="tag-pos">상대적 강세</td><td>하락장에서 방어력 있음</td></tr>
+        <tr><td>커뮤니케이션 서비스</td><td class="tag-pos">상대적 강세</td><td>경기방어적 특성</td></tr>
+        <tr><td>IT · 반도체</td><td class="tag-neg">고위험</td><td>금리 동결 + 유가 상승 이중 타격</td></tr>
+        <tr><td>소비재(임의소비재)</td><td class="tag-neg">약세</td><td>소비 심리 위축</td></tr>
+        <tr><td>수입 의존 대형주</td><td class="tag-neg">약세</td><td>달러 강세 + 원가 상승</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 6. 투자 규칙 -->
+  <section>
+    <div class="section-label fade-in">06 / 지금 실행할 투자 규칙</div>
+    <h2 class="fade-in">4가지 핵심 원칙</h2>
+    <ul class="rule-list fade-in">
+      <li>
+        <div class="rule-num">1</div>
+        <div><strong>비중 과다 테크주는 줄여라</strong><br><small>과도한 확신과 과신 금지. 비중이 커진 종목은 리밸런싱.</small></div>
+      </li>
+      <li>
+        <div class="rule-num">2</div>
+        <div><strong>현금 비중을 소폭 확대하라</strong><br><small>불확실성이 큰 시장에서 현금은 옵션이다.</small></div>
+      </li>
+      <li>
+        <div class="rule-num">3</div>
+        <div><strong>에너지·방산·반도체에 과도한 확신 금물</strong><br><small>고유가 = 경기 둔화 → 반도체 수요 감소 연결 고리 주의.</small></div>
+      </li>
+      <li>
+        <div class="rule-num">4</div>
+        <div><strong>보수적 포트폴리오로 전환</strong><br><small>시장폭 축소 국면에선 방어적 운영이 정답. 경기 하락에서도 살아남는 종목 선별 집중.</small></div>
+      </li>
+    </ul>
+  </section>
+
+  <!-- 7. 기술적 분석 -->
+  <section>
+    <div class="section-label fade-in">07 / 기술적 분석 요약</div>
+    <h2 class="fade-in">과매도 상태, 그러나 반등 보장 없다</h2>
+
+    <div class="risk-meter fade-in" id="rsiMeter">
+      <div class="risk-label"><span>RSI 지표 (과매도 기준 20↓)</span><span>현재 약 20 — 극단적 과매도</span></div>
+      <div class="risk-bar-bg"><div class="risk-bar-fill" id="rsiFill" style="width:0%"></div></div>
+    </div>
+
+    <div class="highlight-box fade-in">
+      <strong>과매도 ≠ 즉각 반등</strong><br>
+      RSI가 과매도 구간에 진입해도 외부 악재(전쟁, 정책 불확실성)가 지속되면 기술적 지표는 의미를 잃는다. 지난 금요일 종목 하락폭은 2024년 이후 최저점 수준.
+    </div>
+
+    <p>중간선거(미드텀) 해의 역사적 패턴: 2차 세계대전 이후 중간선거가 있는 해에 <strong>약 62~76% 확률</strong>로 저점 하향 돌파(언더커팅) 현상이 나타났으며, 해당 연도 평균 수익률은 <strong>약 −3.6%</strong>였다.</p>
+  </section>
+
+  <!-- 8. 이번 주 일정 -->
+  <section>
+    <div class="section-label fade-in">08 / 이번 주 핵심 일정</div>
+    <h2 class="fade-in">수요일 · 목요일이 분수령</h2>
+
+    <table class="fade-in">
+      <thead>
+        <tr><th>날짜</th><th>이벤트</th><th>주목 포인트</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>월~화</td><td>FOMC 회의</td><td>금리 동결 예상 — 파월 발언 주시</td></tr>
+        <tr><td><strong>수요일</strong></td><td>FOMC 결과 발표<br>마이크론 실적 발표(장후)</td><td>금리 동결 시 테크주 추가 하락 가능</td></tr>
+        <tr><td><strong>목요일</strong></td><td>마이크론 반응 + 칩 섹터 변동</td><td>반도체 주의 운명의 날 — 위아래 변동성 모두 가능</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 9. 거시경제 종합 -->
+  <section>
+    <div class="section-label fade-in">09 / 거시경제 종합 평가</div>
+    <h2 class="fade-in">인플레이션 + 경기침체 우려 동시 부상</h2>
+
+    <p>에너지 가격 상승이 전체 물가를 끌어올리는 데는 <strong>수개월의 시차</strong>가 존재한다. 오늘 전쟁이 끝나더라도 물가 충격은 3~4개월 지속된다. 전쟁이 계속되면 그 영향은 6~7월까지 이어진다.</p>
+
+    <div class="chart-container fade-in">
+      <div class="chart-title">인플레이션 → 연준 → 증시 파급 경로</div>
+      <canvas id="pathChart" height="200"></canvas>
+    </div>
+
+    <div class="highlight-box fade-in">
+      <strong>핵심 시나리오 (현재 기본 가정)</strong><br>
+      이란 전쟁 장기화 → 고유가 → 인플레이션 상승 → 연준 동결 → 기업 수익성 악화 → 고용 감소 → 소비 위축 → 경기침체 확률 상승
+    </div>
+  </section>
+
+</div><!-- /content -->
+
+<footer>
+  <strong>MARKET BRIEF · 미국증시 분석 브리핑</strong>
+  본 자료는 특정 시황 방송을 분석한 정보 제공 목적이며, 투자 권유가 아닙니다. 모든 투자 결정의 책임은 투자자 본인에게 있습니다.
+</footer>
+
+<script>
+// ── Fade Intersection Observer ──
+const fadeObs = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), i * 80);
+      fadeObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.12 });
+document.querySelectorAll('.fade-in').forEach(el => fadeObs.observe(el));
+
+// ── RSI Bar Animation ──
+const rsiObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      setTimeout(() => { document.getElementById('rsiFill').style.width = '20%'; }, 300);
+      rsiObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.2 });
+const rsiEl = document.getElementById('rsiMeter');
+if (rsiEl) rsiObs.observe(rsiEl);
+
+// ── Chart Configs ──
+const chartConfigs = {};
+
+chartConfigs['breadthChart'] = () => {
+  new Chart(document.getElementById('breadthChart'), {
+    type: 'bar',
+    data: {
+      labels: ['연초(1월)', '6개월 평균', '최근(3/14)'],
+      datasets: [{
+        label: '50일 MA 이상 종목 비율 (%)',
+        data: [65, 59, 32],
+        backgroundColor: ['#2563eb', '#6b7280', '#e11d48'],
+        borderWidth: 0
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { display: false } },
+      scales: {
+        y: { min: 0, max: 80, ticks: { font: { size: 10 } }, grid: { color: '#e5e5e5' } },
+        x: { ticks: { font: { size: 10 } }, grid: { display: false } }
+      }
+    }
+  });
+};
+
+chartConfigs['riskChart'] = () => {
+  new Chart(document.getElementById('riskChart'), {
+    type: 'bar',
+    data: {
+      labels: ['에너지/유틸리티', '방산', '헬스케어', 'IT/반도체', '소비재(임의)', '수입의존 대형주'],
+      datasets: [{
+        label: '리스크 강도 (높을수록 불리)',
+        data: [30, 25, 20, 90, 75, 70],
+        backgroundColor: ['#2563eb','#6b7280','#6b7280','#e11d48','#e11d48','#e11d48'],
+        borderWidth: 0
+      }]
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { min: 0, max: 100, ticks: { font: { size: 10 } }, grid: { color: '#e5e5e5' } },
+        y: { ticks: { font: { size: 10 } }, grid: { display: false } }
+      }
+    }
+  });
+};
+
+chartConfigs['sectorChart'] = () => {
+  new Chart(document.getElementById('sectorChart'), {
+    type: 'radar',
+    data: {
+      labels: ['에너지', '유틸리티', '헬스케어', '통신서비스', 'IT/반도체', '소비재'],
+      datasets: [{
+        label: '상대 선호도',
+        data: [60, 55, 70, 65, 25, 30],
+        backgroundColor: 'rgba(225,29,72,0.12)',
+        borderColor: '#e11d48',
+        pointBackgroundColor: '#e11d48',
+        pointRadius: 4,
+        borderWidth: 2
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { display: false } },
+      scales: {
+        r: {
+          min: 0, max: 100,
+          ticks: { font: { size: 9 }, stepSize: 25 },
+          pointLabels: { font: { size: 10 } },
+          grid: { color: '#e5e5e5' }
+        }
+      }
+    }
+  });
+};
+
+chartConfigs['pathChart'] = () => {
+  new Chart(document.getElementById('pathChart'), {
+    type: 'line',
+    data: {
+      labels: ['현재','1개월','2개월','3개월','4~5개월','6개월'],
+      datasets: [
+        {
+          label: '유가 충격 강도',
+          data: [80, 85, 75, 65, 55, 45],
+          borderColor: '#e11d48', backgroundColor: 'rgba(225,29,72,0.08)',
+          tension: 0.4, fill: true, pointRadius: 3, borderWidth: 2
+        },
+        {
+          label: '증시 하방 압력',
+          data: [60, 70, 75, 65, 55, 40],
+          borderColor: '#2563eb', backgroundColor: 'rgba(37,99,235,0.05)',
+          tension: 0.4, fill: false, pointRadius: 3, borderWidth: 2, borderDash: [4,3]
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { labels: { font: { size: 10 }, boxWidth: 12 } } },
+      scales: {
+        y: { min: 0, max: 100, ticks: { font: { size: 10 } }, grid: { color: '#e5e5e5' } },
+        x: { ticks: { font: { size: 10 } }, grid: { display: false } }
+      }
+    }
+  });
+};
+
+// ── Chart Intersection Observer ──
+const chartObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const canvas = e.target.querySelector('canvas');
+      if (canvas && chartConfigs[canvas.id]) {
+        chartConfigs[canvas.id]();
+        e.target.classList.add('chart-ready');
+        chartObs.unobserve(e.target);
+      }
+    }
+  });
+}, { threshold: 0.15 });
+document.querySelectorAll('.chart-container').forEach(el => chartObs.observe(el));
+</script>
+</body>
+</html>

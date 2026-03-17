@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>시험문제 — 3월16일 시황 분석</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif+KR:wght@700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#ffffff; --bg-sub:#fafafa; --text:#1a1a1a; --text-sub:#777777;
+    --accent:#e11d48; --accent2:#f43f5e; --border:#e5e5e5;
+    --easy:#2563eb; --mid:#d97706; --hard:#e11d48;
+  }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { background:var(--bg); color:var(--text); font-family:'Noto Sans KR',sans-serif;
+    font-size:14px; line-height:1.75; max-width:480px; margin:0 auto; }
+
+  header {
+    background:var(--text); color:#fff; padding:24px 20px 20px;
+  }
+  header .logo { font-family:'Noto Serif KR',serif; font-size:22px; font-weight:700;
+    color:var(--accent2); display:block; margin-bottom:6px; }
+  header p { font-size:12px; color:rgba(255,255,255,0.55); }
+
+  .tab-bar {
+    display:flex; border-bottom:2px solid var(--border); background:var(--bg-sub);
+    position:sticky; top:0; z-index:10;
+  }
+  .tab-btn {
+    flex:1; padding:13px 0; text-align:center; font-size:13px; font-weight:700;
+    cursor:pointer; border:none; background:transparent; color:var(--text-sub);
+    letter-spacing:0.04em; transition:color .2s;
+  }
+  .tab-btn.active { color:var(--accent); border-bottom:2px solid var(--accent); margin-bottom:-2px; }
+
+  .panel { display:none; padding:20px; }
+  .panel.active { display:block; }
+
+  /* difficulty badge */
+  .badge {
+    display:inline-block; font-size:10px; font-weight:700; letter-spacing:0.1em;
+    padding:2px 8px; margin-left:8px; vertical-align:middle;
+    text-transform:uppercase;
+  }
+  .badge.easy { background:rgba(37,99,235,0.1); color:var(--easy); }
+  .badge.mid  { background:rgba(217,119,6,0.1);  color:var(--mid);  }
+  .badge.hard { background:rgba(225,29,72,0.1);  color:var(--hard); }
+
+  /* question card */
+  .q-card {
+    border:1px solid var(--border); background:var(--bg-sub);
+    padding:18px; margin-bottom:14px;
+  }
+  .q-num {
+    font-size:11px; font-weight:700; color:var(--accent); letter-spacing:0.12em;
+    text-transform:uppercase; margin-bottom:8px;
+  }
+  .q-text { font-size:15px; font-weight:600; line-height:1.5; margin-bottom:10px; }
+  .q-type { font-size:11px; color:var(--text-sub); margin-bottom:12px; }
+  .options { list-style:none; }
+  .options li {
+    padding:8px 12px; border:1px solid var(--border); margin-bottom:6px;
+    font-size:13px; background:#fff; cursor:default;
+  }
+  .blank-line {
+    display:inline-block; border-bottom:2px solid var(--text); min-width:80px; margin:0 4px;
+  }
+
+  /* answer card */
+  .a-card {
+    border-left:3px solid var(--accent); background:var(--bg-sub);
+    padding:16px; margin-bottom:14px;
+  }
+  .a-qnum { font-size:11px; font-weight:700; color:var(--text-sub); margin-bottom:4px; }
+  .a-answer { font-size:15px; font-weight:700; color:var(--accent); margin-bottom:8px; }
+  .a-explain { font-size:13px; color:var(--text); line-height:1.65; }
+
+  .legend {
+    display:flex; gap:14px; padding:14px 20px; background:var(--bg-sub);
+    border-bottom:1px solid var(--border); font-size:11px;
+  }
+  .legend span { display:flex; align-items:center; gap:5px; }
+  .dot { width:8px; height:8px; border-radius:50%; display:inline-block; }
+  .dot.easy { background:var(--easy); }
+  .dot.mid  { background:var(--mid);  }
+  .dot.hard { background:var(--hard); }
+</style>
+</head>
+<body>
+
+<header>
+  <span class="logo">QUIZ</span>
+  <p>3월 16일 시황 분석 — 시험문제 10선 (문제 / 정답 분리)</p>
+</header>
+
+<div class="legend">
+  <span><span class="dot easy"></span> 쉬움 (3문)</span>
+  <span><span class="dot mid"></span> 보통 (5문)</span>
+  <span><span class="dot hard"></span> 어려움 (2문)</span>
+</div>
+
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="showTab('questions')">📝 문제</button>
+  <button class="tab-btn" onclick="showTab('answers')">✅ 정답 &amp; 해설</button>
+</div>
+
+<!-- ══════════ 문제 패널 ══════════ -->
+<div class="panel active" id="panel-questions">
+
+  <!-- Q1 -->
+  <div class="q-card">
+    <div class="q-num">Q1 <span class="badge easy">쉬움</span></div>
+    <div class="q-type">객관식</div>
+    <div class="q-text">3월 16일 S&amp;P 500 지수의 당일 반등폭은 얼마였는가?</div>
+    <ul class="options">
+      <li>① 0.45%</li>
+      <li>② 1.13%</li>
+      <li>③ 2.30%</li>
+      <li>④ 3.10%</li>
+    </ul>
+  </div>
+
+  <!-- Q2 -->
+  <div class="q-card">
+    <div class="q-num">Q2 <span class="badge easy">쉬움</span></div>
+    <div class="q-type">OX 문제</div>
+    <div class="q-text">나스닥 지수는 3월 14일(금요일) 200일 이동평균선을 상향 돌파하며 마감했다. (O / X)</div>
+  </div>
+
+  <!-- Q3 -->
+  <div class="q-card">
+    <div class="q-num">Q3 <span class="badge easy">쉬움</span></div>
+    <div class="q-type">객관식</div>
+    <div class="q-text">지난주(3/10~3/14) 미국 증시에서 유일하게 상승한 섹터는?</div>
+    <ul class="options">
+      <li>① IT · 반도체</li>
+      <li>② 에너지 · 유틸리티</li>
+      <li>③ 헬스케어 · 제약</li>
+      <li>④ 금융 · 은행</li>
+    </ul>
+  </div>
+
+  <!-- Q4 -->
+  <div class="q-card">
+    <div class="q-num">Q4 <span class="badge mid">보통</span></div>
+    <div class="q-type">단답형</div>
+    <div class="q-text">3월 14일 기준, S&amp;P 500 종목 중 50일 이동평균선(MA) 위에 있는 종목의 비율은 몇 %였는가? (6개월 평균 59%와 비교)</div>
+    <p style="margin-top:10px;font-size:13px;">정답: <span class="blank-line"></span> %</p>
+  </div>
+
+  <!-- Q5 -->
+  <div class="q-card">
+    <div class="q-num">Q5 <span class="badge mid">보통</span></div>
+    <div class="q-type">객관식</div>
+    <div class="q-text">이 방송에서 분석한 이란 전쟁의 경제적 파급 경로를 가장 올바르게 나열한 것은?</div>
+    <ul class="options">
+      <li>① 이란 전쟁 → 금리 하락 → 증시 상승</li>
+      <li>② 이란 전쟁 → 유가 하락 → 인플레이션 완화</li>
+      <li>③ 이란 전쟁 → 유가 상승 → 인플레이션 상승 → 연준 금리 동결 → 테크주 하락</li>
+      <li>④ 이란 전쟁 → 달러 약세 → 원화 강세</li>
+    </ul>
+  </div>
+
+  <!-- Q6 -->
+  <div class="q-card">
+    <div class="q-num">Q6 <span class="badge mid">보통</span></div>
+    <div class="q-type">OX 문제</div>
+    <div class="q-text">분석가에 따르면, 이번 FOMC(수요일)에서 금리가 인하될 가능성이 높다. (O / X)</div>
+  </div>
+
+  <!-- Q7 -->
+  <div class="q-card">
+    <div class="q-num">Q7 <span class="badge mid">보통</span></div>
+    <div class="q-type">단답형</div>
+    <div class="q-text">분석가가 미국의 인플레이션이 그나마 2%대를 유지할 수 있었던 핵심 이유로 꼽은 한 가지 요인은 무엇인가?</div>
+    <p style="margin-top:10px;font-size:13px;">정답: <span class="blank-line" style="min-width:160px;"></span></p>
+  </div>
+
+  <!-- Q8 -->
+  <div class="q-card">
+    <div class="q-num">Q8 <span class="badge mid">보통</span></div>
+    <div class="q-type">객관식</div>
+    <div class="q-text">메타(Meta)가 AI 도입을 이유로 발표한 감원 규모는 전체 인력의 약 몇 %인가?</div>
+    <ul class="options">
+      <li>① 5%</li>
+      <li>② 10%</li>
+      <li>③ 20%</li>
+      <li>④ 35%</li>
+    </ul>
+  </div>
+
+  <!-- Q9 -->
+  <div class="q-card">
+    <div class="q-num">Q9 <span class="badge hard">어려움</span></div>
+    <div class="q-type">서술형</div>
+    <div class="q-text">분석가는 연준이 현재 "스태그플레이션 딜레마"에 직면해 있다고 설명했다. 이 딜레마의 구조를 연준의 두 가지 의무(듀얼 맨데이트)와 연결하여 간략히 서술하시오.</div>
+  </div>
+
+  <!-- Q10 -->
+  <div class="q-card">
+    <div class="q-num">Q10 <span class="badge hard">어려움</span></div>
+    <div class="q-type">서술형</div>
+    <div class="q-text">분석 방송에서 언급된 "시장폭(Market Breadth) 축소" 현상이란 무엇이며, 이 현상이 나타날 때 투자자들의 행동 패턴은 어떻게 변화한다고 설명되었는가?</div>
+  </div>
+
+</div><!-- /panel-questions -->
+
+<!-- ══════════ 정답 & 해설 패널 ══════════ -->
+<div class="panel" id="panel-answers">
+
+  <div class="a-card">
+    <div class="a-qnum">Q1 (객관식 · 쉬움)</div>
+    <div class="a-answer">정답: ② 1.13%</div>
+    <div class="a-explain">방송에서 S&amp;P 500의 3월 16일 반등폭을 1.13%로 언급하며 "실망스러운 수준"이라고 평가했다. 7천 선을 넘었다가 6,600대까지 내려온 뒤 6,707 수준에서 마감 예정이었다.</div>
+  </div>
+
+  <div class="a-card">
+    <div class="a-qnum">Q2 (OX · 쉬움)</div>
+    <div class="a-answer">정답: X (틀림)</div>
+    <div class="a-explain">나스닥은 200일 이동평균선을 <strong>하향 돌파</strong>하며 마감했다. 이는 5월 이후 처음이며 "안 좋은 시그널"로 해석된다. 상향이 아닌 하향이므로 X가 정답이다.</div>
+  </div>
+
+  <div class="a-card">
+    <div class="a-qnum">Q3 (객관식 · 쉬움)</div>
+    <div class="a-answer">정답: ② 에너지 · 유틸리티</div>
+    <div class="a-explain">지난주에 에너지와 유틸리티 섹터만 유일하게 상승했다. 단, 분석가는 이것이 장기적이지 않으며, 에너지 가격 상승이 반드시 에너지 주식 상승으로 이어지지는 않는다고 강조했다.</div>
+  </div>
+
+  <div class="a-card">
+    <div class="a-qnum">Q4 (단답형 · 보통)</div>
+    <div class="a-answer">정답: 32%</div>
+    <div class="a-explain">금요일 S&amp;P 500 종목 중 50일 이동평균선 위에 있는 종목이 32%에 그쳤다. 6개월 평균인 59%보다 크게 낮은 수치이며, 연초(1월)의 65%와 비교해도 현저히 떨어진 수준이다. 시장폭 축소의 강력한 신호다.</div>
+  </div>
+
+  <div class="a-card">
+    <div class="a-qnum">Q5 (객관식 · 보통)</div>
+    <div class="a-answer">정답: ③</div>
+    <div class="a-explain">이란 전쟁 → 호르무즈 해협 위기 → 유가 상승 → 인플레이션 상승 → 연준 금리 동결(인하 불가) → 테크주 등 성장주 하락 압력. 이것이 방송에서 분석된 파급 경로다. 이란 전쟁이 단기에 끝나지 않을 것이라는 전제 하에 성립한다.</div>
+  </div>
+
+  <div class="a-card">
+    <div class="a-qnum">Q6 (OX · 보통)</div>
+    <div class="a-answer">정답: X (틀림)</div>
+    <div class="a-explain">분석가는 이번 FOMC에서 금리 <strong>동결</strong>을 "거의 확실"하다고 전망했다. 이란 전쟁 장기화 가능성으로 인플레이션 상방 리스크가 커졌기 때문에 연준이 금리를 인하하기 어려운 상황이라고 설명했다.</div>
+  </div>
+
+  <div class="a-card">
+    <div class="a-qnum">Q7 (단답형 · 보통)</div>
+    <div class="a-answer">정답: 에너지 가격 하락 (유가 하락)</div>
+    <div class="a-explain">블룸버그 통신도 같은 분석을 했다고 언급된 바와 같이, 임대료·식료품 등이 이미 오른 상황에서도 미국 인플레이션이 2%대를 유지할 수 있었던 것은 에너지 가격이 낮게 유지됐기 때문이다. 이제 에너지 가격이 오르면 상쇄 효과가 사라진다.</div>
+  </div>
+
+  <div class="a-card">
+    <div class="a-qnum">Q8 (객관식 · 보통)</div>
+    <div class="a-answer">정답: ③ 20%</div>
+    <div class="a-explain">메타는 AI 도입으로 업무 효율이 높아지면서 인력을 약 20% 줄일 수 있다고 발표했다. 주가는 초반 +2.9% 상승. 분석가는 미국 자본주의 관점에서 이 결정이 주주 이익을 위한 합리적 판단임을 설명했다.</div>
+  </div>
+
+  <div class="a-card">
+    <div class="a-qnum">Q9 (서술형 · 어려움)</div>
+    <div class="a-answer">모범 답안</div>
+    <div class="a-explain">
+      연준의 듀얼 맨데이트(이중 의무)는 ①물가 안정(인플레이션 억제)과 ②완전 고용(실업률 최소화)이다.<br><br>
+      현재 이란 전쟁으로 에너지 가격이 상승하면서 인플레이션이 올라가고 있다. 인플레이션을 잡으려면 금리를 높게 유지하거나 올려야 한다. 그러나 금리를 높게 유지하면 기업 차입 비용 증가 → 투자·생산 감소 → 고용 감소로 이어져 두 번째 의무(고용 극대화)에 반하게 된다. 반대로 금리를 낮추면 고용은 살아나지만 인플레이션을 자극한다. 이 두 가지 목표가 동시에 충돌하는 상황이 스태그플레이션 딜레마이며, 연준의 정책 결정이 극도로 어려워진다.
+    </div>
+  </div>
+
+  <div class="a-card">
+    <div class="a-qnum">Q10 (서술형 · 어려움)</div>
+    <div class="a-answer">모범 답안</div>
+    <div class="a-explain">
+      <strong>시장폭(Market Breadth) 축소</strong>란 주식시장에서 다양한 종목에 걸쳐 고르게 상승하지 않고, 일부 대형주(메가캡)나 특정 섹터로만 매수가 쏠리는 현상을 말한다. S&amp;P 500 종목 중 이동평균선 위에 있는 종목 비율이 줄어드는 것으로 측정한다.<br><br>
+      이 현상이 나타날 때 투자자 행동 패턴: ①라지캡·미드캡·스몰캡에 고르게 분산 투자하던 방식에서 벗어나 일부 선택적 종목에만 집중하는 쏠림 현상이 나타난다. ②투자 리스크 회피 심리로 현금 또는 현금성 자산 비중이 늘어난다. ③광범위한 자산 클래스 투자가 줄어든다. 이는 시장 전체의 투자 심리가 위축되고 건강하지 않은 상태임을 의미한다.
+    </div>
+  </div>
+
+</div><!-- /panel-answers -->
+
+<script>
+function showTab(id) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('panel-' + id).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>
+</body>
+</html>
