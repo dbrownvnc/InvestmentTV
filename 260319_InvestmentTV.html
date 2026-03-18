@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>마이크론 실적 발표 이후 분석 — 반도체 전망</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Noto+Serif+KR:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+  :root {
+    --bg: #ffffff;
+    --bg2: #fafafa;
+    --text: #1a1a1a;
+    --text2: #777777;
+    --accent: #e11d48;
+    --accent2: #f43f5e;
+    --chart1: #e11d48;
+    --chart2: #1a1a1a;
+    --chart3: #6b7280;
+    --chart4: #2563eb;
+    --table-bg: #fafafa;
+    --table-header: #e11d48;
+    --border: #e5e5e5;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    line-height: 1.75;
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 0 0 60px;
+  }
+
+  /* HERO */
+  .hero {
+    background: var(--text);
+    color: #fff;
+    padding: 44px 24px 36px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: var(--accent);
+    opacity: 0.15;
+  }
+  .hero-tag {
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent2);
+    margin-bottom: 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    line-height: 1.25;
+    font-weight: 900;
+    margin-bottom: 16px;
+  }
+  .hero h1 em {
+    color: var(--accent2);
+    font-style: italic;
+  }
+  .hero-meta {
+    font-size: 12px;
+    color: #aaa;
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .hero-meta span::before { content: '— '; }
+
+  /* SECTION */
+  section { padding: 32px 24px 0; }
+  section + section { padding-top: 24px; }
+
+  .section-label {
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
+  h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.35;
+    margin-bottom: 14px;
+    color: var(--text);
+  }
+  p {
+    color: var(--text);
+    margin-bottom: 12px;
+    font-size: 14.5px;
+  }
+  .lead {
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.6;
+    color: var(--text);
+    border-left: 3px solid var(--accent);
+    padding-left: 14px;
+    margin-bottom: 16px;
+  }
+  .muted { color: var(--text2); font-size: 13px; }
+
+  /* DIVIDER */
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 32px 24px 0;
+  }
+  .divider-thick {
+    height: 3px;
+    background: var(--accent);
+    width: 40px;
+    margin: 28px 24px 0;
+  }
+
+  /* PULL QUOTE */
+  .pull-quote {
+    background: var(--bg2);
+    border-left: 4px solid var(--accent);
+    margin: 20px 24px;
+    padding: 18px 20px;
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 17px;
+    color: var(--text);
+    line-height: 1.5;
+  }
+
+  /* STAT CARDS */
+  .stat-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 16px 0 0;
+  }
+  .stat-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px 14px;
+  }
+  .stat-card .val {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .stat-card .val.blue { color: var(--chart4); }
+  .stat-card .val.dark { color: var(--text); }
+  .stat-card .lbl { font-size: 12px; color: var(--text2); line-height: 1.3; }
+
+  /* CHART */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .chart-container {
+    position: relative;
+    max-height: 340px;
+    margin: 20px 0 0;
+  }
+  .chart-container canvas {
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    max-height: 300px;
+  }
+  .chart-container.chart-ready canvas { opacity: 1; }
+  .chart-title {
+    font-size: 12px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text2);
+    margin-bottom: 6px;
+    font-weight: 500;
+  }
+
+  /* TABLE */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    margin: 16px 0 0;
+    background: var(--table-bg);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  th {
+    background: var(--table-header);
+    color: #fff;
+    padding: 10px 12px;
+    text-align: left;
+    font-weight: 500;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+  }
+  td {
+    padding: 9px 12px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+  }
+  tr:last-child td { border-bottom: none; }
+  tr:nth-child(even) td { background: #f5f5f5; }
+
+  /* RISK TAGS */
+  .risk-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 14px 0 0;
+  }
+  .risk-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--bg2);
+  }
+  .risk-icon {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+  .risk-icon.red { background: #fef2f4; }
+  .risk-icon.orange { background: #fff7ed; }
+  .risk-icon.blue { background: #eff6ff; }
+  .risk-title { font-weight: 500; font-size: 13.5px; margin-bottom: 2px; }
+  .risk-desc { font-size: 12px; color: var(--text2); line-height: 1.45; }
+
+  /* SIMULATOR */
+  .sim-box {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    margin: 16px 0 0;
+  }
+  .sim-box h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 16px;
+    margin-bottom: 16px;
+    color: var(--text);
+  }
+  .slider-row {
+    margin-bottom: 16px;
+  }
+  .slider-row label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    margin-bottom: 6px;
+    color: var(--text);
+  }
+  .slider-row label span {
+    font-weight: 600;
+    color: var(--accent);
+  }
+  input[type=range] {
+    width: 100%;
+    accent-color: var(--accent);
+    cursor: pointer;
+  }
+  .sim-result {
+    background: var(--text);
+    color: #fff;
+    border-radius: 8px;
+    padding: 16px;
+    margin-top: 14px;
+  }
+  .sim-result .r-label { font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #aaa; margin-bottom: 4px; }
+  .sim-result .r-val {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 2px;
+  }
+  .sim-result .r-sub { font-size: 12px; color: #aaa; }
+  .sim-result .r-row { display: flex; justify-content: space-between; gap: 10px; }
+  .sim-result .r-col { flex: 1; }
+  .reset-btn {
+    margin-top: 12px;
+    background: transparent;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    border-radius: 6px;
+    padding: 7px 16px;
+    font-size: 12px;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: background 0.2s, color 0.2s;
+  }
+  .reset-btn:hover { background: var(--accent); color: #fff; }
+
+  /* ACTION ITEMS */
+  .action-list { margin: 14px 0 0; }
+  .action-item {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 13px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .action-item:last-child { border-bottom: none; }
+  .action-num {
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .action-text { font-size: 13.5px; line-height: 1.5; }
+  .action-text strong { color: var(--accent); }
+
+  /* CAPEX TIMELINE */
+  .capex-timeline { margin: 16px 0 0; }
+  .capex-year {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 10px;
+  }
+  .capex-yr-label {
+    font-family: 'Playfair Display', serif;
+    font-size: 15px;
+    font-weight: 700;
+    min-width: 36px;
+    color: var(--text2);
+  }
+  .capex-bar-wrap { flex: 1; background: var(--border); border-radius: 4px; height: 20px; overflow: hidden; }
+  .capex-bar { height: 100%; border-radius: 4px; background: var(--accent); transition: width 1s ease; }
+  .capex-amt {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--accent);
+    min-width: 52px;
+    text-align: right;
+  }
+
+  /* FOOTER */
+  .doc-footer {
+    margin: 40px 24px 0;
+    padding: 20px 0;
+    border-top: 1px solid var(--border);
+    font-size: 11.5px;
+    color: var(--text2);
+    line-height: 1.6;
+  }
+  .doc-footer strong { color: var(--text); }
+
+  /* QUIZ CTA */
+  .quiz-cta {
+    margin: 32px 24px 0;
+    background: var(--text);
+    border-radius: 12px;
+    padding: 24px 20px;
+    color: #fff;
+    text-align: center;
+  }
+  .quiz-cta p { color: #ccc; margin-bottom: 14px; font-size: 13px; }
+  .quiz-btn {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 28px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: background 0.2s;
+  }
+  .quiz-btn:hover { background: var(--accent2); }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-tag">Market Analysis · 2026.03.19</div>
+  <h1>마이크론 실적 발표 <em>이후</em><br>반도체 전망 분석</h1>
+  <div class="hero-meta">
+    <span>미국 증시 관점</span>
+    <span>거시경제·투자 시사점</span>
+  </div>
+</div>
+
+<!-- 핵심 요약 -->
+<section class="fade-in">
+  <div class="section-label">Executive Summary</div>
+  <h2>예상 상회 실적, 그런데 왜 주가는 하락했나?</h2>
+  <p class="lead">마이크론(MU)은 2026년 2분기(2월 26일 마감) 매출 <strong>238억 6천만 달러</strong>를 기록해 예상치 200억 달러를 크게 웃돌았다. 그러나 실적 발표 직후 주가는 약 <strong>-4~5%</strong> 하락했다.</p>
+  <p>이는 "좋은 실적 + 나쁜 가이던스"의 전형적인 패턴이다. 핵심 원인은 <strong>자본지출(CapEx) 대폭 확대 계획</strong> 발표로, 이는 단기 이익 마진 압박으로 연결된다.</p>
+</section>
+
+<!-- 핵심 수치 -->
+<section class="fade-in">
+  <div class="section-label">Key Numbers</div>
+  <div class="stat-grid">
+    <div class="stat-card">
+      <div class="val">$23.9B</div>
+      <div class="lbl">2Q 실제 매출<br><span style="color:#e11d48">예상치 대비 +19%↑</span></div>
+    </div>
+    <div class="stat-card">
+      <div class="val dark">$20.0B</div>
+      <div class="lbl">2Q 예상 매출<br>(월스트리트 컨센서스)</div>
+    </div>
+    <div class="stat-card">
+      <div class="val blue">$25B+</div>
+      <div class="lbl">2026 회계연도<br>CapEx 계획</div>
+    </div>
+    <div class="stat-card">
+      <div class="val" style="font-size:20px">-4~5%</div>
+      <div class="lbl">실적 발표 직후<br>주가 하락폭</div>
+    </div>
+  </div>
+</section>
+
+<!-- CapEx 타임라인 -->
+<section class="fade-in">
+  <div class="section-label">Capital Expenditure Plan</div>
+  <h2>마이크론의 자본지출 로드맵</h2>
+  <p>마이크론은 AI 메모리(HBM) 수요 폭발에 대응하기 위해 제조 시설을 공격적으로 확장 중이다.</p>
+  <div class="capex-timeline" id="capexTimeline">
+    <div class="capex-year">
+      <div class="capex-yr-label">2026</div>
+      <div class="capex-bar-wrap"><div class="capex-bar" data-w="100" style="width:0%"></div></div>
+      <div class="capex-amt">$25B+</div>
+    </div>
+    <div class="capex-year">
+      <div class="capex-yr-label">2027</div>
+      <div class="capex-bar-wrap"><div class="capex-bar" data-w="42" style="width:0%;background:#2563eb"></div></div>
+      <div class="capex-amt" style="color:#2563eb">$10B+</div>
+    </div>
+    <div class="capex-year">
+      <div class="capex-yr-label">추가</div>
+      <div class="capex-bar-wrap"><div class="capex-bar" data-w="21" style="width:0%;background:#6b7280"></div></div>
+      <div class="capex-amt" style="color:#6b7280">$5B</div>
+    </div>
+  </div>
+  <p class="muted" style="margin-top:10px">※ 2027년은 제조시설 건설 관련 비용만 $10B 이상 별도 계상</p>
+</section>
+
+<!-- 주가 반응 차트 -->
+<section class="fade-in">
+  <div class="section-label">Market Reaction</div>
+  <h2>실적 서프라이즈 vs 주가 반응</h2>
+  <p>실적이 좋아도 주가가 하락하는 이유 — CapEx 증가로 <strong>주당순이익(EPS)</strong>이 압박받고, 이미 높은 주가수익비율(PER)에서 추가 성장 기대가 선반영되어 있기 때문이다.</p>
+  <div class="chart-container fade-in">
+    <canvas id="chart1" height="220"></canvas>
+  </div>
+  <p class="muted" style="margin-top:8px">※ 차트 바를 터치/클릭하면 상세 정보 확인 가능</p>
+</section>
+
+<!-- 3대 리스크 -->
+<div class="divider-thick"></div>
+<section class="fade-in">
+  <div class="section-label">Macro Risk Factors</div>
+  <h2>현재 시장을 짓누르는 3대 리스크</h2>
+  <p>마이크론 개별 이슈 외에도, 전체 증시에 영향을 미치는 구조적 리스크가 복합적으로 작용 중이다.</p>
+  <div class="risk-list">
+    <div class="risk-item">
+      <div class="risk-icon red">🛃</div>
+      <div>
+        <div class="risk-title">① 관세 리스크 (진행 중)</div>
+        <div class="risk-desc">트럼프 행정부의 관세 정책이 현재 진행 중이며, 반도체 공급망과 소비자 물가에 복합적 영향. 아직 최종 결과 미확정.</div>
+      </div>
+    </div>
+    <div class="risk-item">
+      <div class="risk-icon orange">🛢️</div>
+      <div>
+        <div class="risk-title">② 유가 상승 → 인플레이션 재점화</div>
+        <div class="risk-desc">호르무즈 해협 긴장 지속, 단기적 유가 상승. 연준의 금리 인하 시기를 더욱 불확실하게 만드는 요인.</div>
+      </div>
+    </div>
+    <div class="risk-item">
+      <div class="risk-icon blue">🏠</div>
+      <div>
+        <div class="risk-title">③ 부동산 경기 침체 우려</div>
+        <div class="risk-desc">매입가보다 가치가 하락한 주택이 100만 채 초과. 소비 심리 위축 → 경기 둔화 신호.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 연준 정책 -->
+<div class="divider"></div>
+<section class="fade-in">
+  <div class="section-label">Fed Policy</div>
+  <h2>연준 금리 동결 — 시장의 실망</h2>
+  <div class="pull-quote fade-in">"금리를 빨리 내려야 한다, 아니면 미국 경제가 더 안 좋을 것이다 — 내부 불협화음 감지"</div>
+  <p>이번 FOMC에서 연준은 예상대로 금리를 동결했다. 시장은 결과를 알고 있었지만 내부 의견 불일치 신호에 실망했다. 인플레이션보다 경기 침체를 더 걱정해야 하는 게 아니냐는 시각이 나타나고 있다.</p>
+  <table>
+    <thead>
+      <tr><th>구분</th><th>시장 기대</th><th>실제 결과</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>금리 결정</td><td>동결</td><td>동결 ✓</td></tr>
+      <tr><td>내부 발언</td><td>중립적</td><td>불협화음 감지 ⚠️</td></tr>
+      <tr><td>시장 반응</td><td>중립</td><td>실망 매도 ↓</td></tr>
+      <tr><td>공포지수(VIX)</td><td>안정</td><td>30 이상 급등 🔴</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- AI 메모리 수요 차트 -->
+<section class="fade-in">
+  <div class="section-label">AI Semiconductor Outlook</div>
+  <h2>AI 데이터센터 → 고급 메모리 수요 폭발</h2>
+  <p>AGI 경쟁이 격화되면서 데이터센터 투자가 장기적으로 약속되고 있다. HBM(고대역폭메모리)을 포함한 고급 메모리와 스토리지 수요가 급증 중이다.</p>
+  <div class="chart-container fade-in">
+    <canvas id="chart2" height="220"></canvas>
+  </div>
+  <p class="muted" style="margin-top:8px">※ HBM = High Bandwidth Memory. AI 가속기(GPU 등)에 탑재되는 초고속 메모리</p>
+</section>
+
+<!-- 투자 시뮬레이터 -->
+<div class="divider-thick"></div>
+<section class="fade-in">
+  <div class="section-label">Interactive Simulator</div>
+  <h2>마이크론 매입 타이밍 시뮬레이터</h2>
+  <p>하락폭과 매입 비중에 따른 포트폴리오 영향을 시뮬레이션해 보세요.</p>
+  <div class="sim-box">
+    <h3>📊 333 법칙 기반 매입 시뮬레이터</h3>
+    <div class="slider-row">
+      <label>현재 포트폴리오 규모 (만원) <span id="pf_val">3,000</span></label>
+      <input type="range" id="pf_size" min="500" max="50000" step="500" value="3000">
+    </div>
+    <div class="slider-row">
+      <label>마이크론 하락폭 (%) <span id="drop_val">-5%</span></label>
+      <input type="range" id="drop_pct" min="1" max="15" step="0.5" value="5">
+    </div>
+    <div class="slider-row">
+      <label>추가 매입 비중 (포트폴리오 %) <span id="buy_val">5%</span></label>
+      <input type="range" id="buy_pct" min="1" max="20" step="1" value="5">
+    </div>
+    <div class="sim-result">
+      <div class="r-row">
+        <div class="r-col">
+          <div class="r-label">추가 매입금액</div>
+          <div class="r-val" id="buy_amt">150만원</div>
+          <div class="r-sub" id="buy_sub">포트의 5.0%</div>
+        </div>
+        <div class="r-col">
+          <div class="r-label">예상 손익 (단기)</div>
+          <div class="r-val" id="pnl_val" style="color:#f43f5e">-7.5만원</div>
+          <div class="r-sub" id="pnl_sub">하락 -5% 기준</div>
+        </div>
+      </div>
+      <div style="margin-top:12px; font-size:12px; color:#aaa" id="sim_note">
+        ※ 추가 매입 후 5% 추가 하락 시 예상 손실
+      </div>
+    </div>
+    <button class="reset-btn" onclick="resetSim()">↺ 초기화</button>
+  </div>
+</section>
+
+<!-- 액션 아이템 -->
+<div class="divider"></div>
+<section class="fade-in">
+  <div class="section-label">Investment Action Items</div>
+  <h2>투자 액션 플랜</h2>
+  <div class="action-list">
+    <div class="action-item">
+      <div class="action-num">1</div>
+      <div class="action-text"><strong>테크주 비중 축소</strong> — 고점 근처에서 10~30% 줄이고 현금 비중을 확대. "줄여놓으면 변동성이 줄어든다"</div>
+    </div>
+    <div class="action-item">
+      <div class="action-num">2</div>
+      <div class="action-text"><strong>마이크론 -4% 이상 하락 시 분할 매입</strong> — 333 법칙 적용, 한 번에 몰아사지 않고 3회 이상 나눠 매입</div>
+    </div>
+    <div class="action-item">
+      <div class="action-num">3</div>
+      <div class="action-text"><strong>샌디스크 1~2%만 고려</strong> — 5% 이상 하락 시 포트의 1~2%만 편입. 장기 리스크 높음</div>
+    </div>
+    <div class="action-item">
+      <div class="action-num">4</div>
+      <div class="action-text"><strong>메타는 20% 대량 해고 공식화 이후</strong> 재진입 시점 탐색. 현재는 관망</div>
+    </div>
+    <div class="action-item">
+      <div class="action-num">5</div>
+      <div class="action-text"><strong>에너지·방산·반도체주</strong> — 지나친 쏠림 금지. 경기 방어주로 일부 보수적 투자 유지</div>
+    </div>
+    <div class="action-item">
+      <div class="action-num">6</div>
+      <div class="action-text"><strong>오요 법칙</strong> — 한 종목이 포트폴리오의 20% 초과 시 반드시 일부 매도. 집중도 리스크 관리</div>
+    </div>
+  </div>
+</section>
+
+<!-- 긍정 요인 -->
+<div class="divider"></div>
+<section class="fade-in">
+  <div class="section-label">Positive Signals</div>
+  <h2>그래도 마이크론의 긍정적 신호들</h2>
+  <div class="stat-grid">
+    <div class="stat-card">
+      <div class="val" style="font-size:18px">배당 +30%</div>
+      <div class="lbl">분기 배당금 30% 증가 발표 → 중장기 매력도 상승</div>
+    </div>
+    <div class="stat-card">
+      <div class="val blue" style="font-size:18px">HBM 수요</div>
+      <div class="lbl">AI 메모리 계약 선확보, 물량 납품 확대 중</div>
+    </div>
+  </div>
+  <div class="pull-quote fade-in" style="margin:20px 0 0">"배당금 증가는 많은 투자자들이 다시 돌아오는 중장기 어트랙션(attraction)이 된다"</div>
+</section>
+
+<!-- 투자자 주의사항 -->
+<div class="divider-thick"></div>
+<section class="fade-in">
+  <div class="section-label">Investor Guidance</div>
+  <h2>포트폴리오 운영 원칙</h2>
+  <p>단기 뉴스에만 반응하는 투자는 위험하다. 한국 주식과 미국 주식은 전혀 다른 시장이며, 상식이 통하지 않는 경우가 많다.</p>
+  <table>
+    <thead><tr><th>원칙</th><th>내용</th></tr></thead>
+    <tbody>
+      <tr><td><strong>333 법칙</strong></td><td>매입·매도를 3회로 나눠 분할 실행</td></tr>
+      <tr><td><strong>오요 법칙</strong></td><td>단일 종목 비중 20% 초과 금지</td></tr>
+      <tr><td><strong>현금 비중</strong></td><td>변동성 확대 국면에서 현금 확보 우선</td></tr>
+      <tr><td><strong>분산 투자</strong></td><td>테크·에너지·방산·방어주 균형 유지</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- 퀴즈 CTA -->
+<div class="quiz-cta fade-in">
+  <div style="font-family:'Playfair Display',serif;font-size:20px;font-weight:700;margin-bottom:8px">📝 이해도 확인</div>
+  <p>본 분석 내용을 바탕으로 시험문제 10문제가 아래 파일에 포함되어 있습니다.<br>정답·해설은 별도 섹션에서 확인하세요.</p>
+  <div style="font-size:13px;color:#f43f5e;margin-top:4px">→ micron_quiz.html 파일 참조</div>
+</div>
+
+<!-- FOOTER -->
+<div class="doc-footer fade-in">
+  <strong>⚠️ 투자 주의사항</strong><br>
+  본 문서는 교육 및 정보 제공 목적으로 작성되었습니다. 특정 종목의 매수·매도를 권유하는 것이 아니며, 투자 결정은 본인의 판단과 책임 하에 이루어져야 합니다. 과거 수익률이 미래 수익을 보장하지 않습니다.
+</div>
+
+<script>
+// === FADE-IN Observer ===
+const fadeObs = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), i * 80);
+      fadeObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.12 });
+document.querySelectorAll('.fade-in').forEach(el => fadeObs.observe(el));
+
+// === CapEx bars ===
+const capexObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.querySelectorAll('.capex-bar').forEach(bar => {
+        bar.style.width = bar.dataset.w + '%';
+      });
+      capexObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.3 });
+const capexEl = document.getElementById('capexTimeline');
+if (capexEl) capexObs.observe(capexEl);
+
+// === Chart Configs ===
+const chartConfigs = {};
+chartConfigs['chart1'] = () => {
+  new Chart(document.getElementById('chart1'), {
+    type: 'bar',
+    data: {
+      labels: ['예상 매출', '실제 매출', '주가 변동\n(실적 후)'],
+      datasets: [{
+        label: '수치',
+        data: [200, 238.6, -5],
+        backgroundColor: ['#6b7280', '#e11d48', '#2563eb'],
+        borderRadius: 6,
+        borderSkipped: false,
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: (ctx) => {
+              const labels = ['억 달러', '억 달러', '%'];
+              return ` ${ctx.raw}${labels[ctx.dataIndex]}`;
+            }
+          }
+        }
+      },
+      scales: {
+        y: {
+          grid: { color: '#f0f0f0' },
+          ticks: { font: { size: 11 }, color: '#777' }
+        },
+        x: {
+          grid: { display: false },
+          ticks: { font: { size: 11 }, color: '#333' }
+        }
+      }
+    }
+  });
+};
+
+chartConfigs['chart2'] = () => {
+  new Chart(document.getElementById('chart2'), {
+    type: 'line',
+    data: {
+      labels: ['2023', '2024', '2025', '2026E', '2027E'],
+      datasets: [
+        {
+          label: 'HBM 수요 (상대지수)',
+          data: [30, 55, 90, 150, 230],
+          borderColor: '#e11d48',
+          backgroundColor: 'rgba(225,29,72,0.08)',
+          fill: true,
+          tension: 0.4,
+          pointBackgroundColor: '#e11d48',
+          pointRadius: 5,
+        },
+        {
+          label: '일반 DRAM 수요',
+          data: [80, 88, 95, 102, 108],
+          borderColor: '#6b7280',
+          backgroundColor: 'rgba(107,114,128,0.05)',
+          fill: true,
+          tension: 0.4,
+          pointBackgroundColor: '#6b7280',
+          pointRadius: 4,
+          borderDash: [4, 4],
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: {
+          labels: { font: { size: 11 }, color: '#333', boxWidth: 14 }
+        },
+        tooltip: { mode: 'index' }
+      },
+      scales: {
+        y: {
+          grid: { color: '#f0f0f0' },
+          ticks: { font: { size: 11 }, color: '#777' },
+          title: { display: true, text: '상대 수요 지수', font: { size: 10 }, color: '#aaa' }
+        },
+        x: {
+          grid: { display: false },
+          ticks: { font: { size: 11 }, color: '#333' }
+        }
+      }
+    }
+  });
+};
+
+// === Chart Observer ===
+const chartObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const canvas = e.target.querySelector('canvas');
+      if (canvas && chartConfigs[canvas.id]) {
+        chartConfigs[canvas.id]();
+        e.target.classList.add('chart-ready');
+        chartObs.unobserve(e.target);
+      }
+    }
+  });
+}, { threshold: 0.15 });
+document.querySelectorAll('.chart-container').forEach(el => chartObs.observe(el));
+
+// === Simulator ===
+const pfSize = document.getElementById('pf_size');
+const dropPct = document.getElementById('drop_pct');
+const buyPct = document.getElementById('buy_pct');
+
+function updateSim() {
+  const pf = parseInt(pfSize.value);
+  const drop = parseFloat(dropPct.value);
+  const buy = parseInt(buyPct.value);
+
+  document.getElementById('pf_val').textContent = pf.toLocaleString();
+  document.getElementById('drop_val').textContent = `-${drop}%`;
+  document.getElementById('buy_val').textContent = `${buy}%`;
+
+  const buyAmt = Math.round(pf * buy / 100);
+  const pnl = -(buyAmt * drop / 100);
+
+  document.getElementById('buy_amt').textContent = buyAmt.toLocaleString() + '만원';
+  document.getElementById('buy_sub').textContent = `포트의 ${buy}.0%`;
+  document.getElementById('pnl_val').textContent = pnl.toLocaleString() + '만원';
+  document.getElementById('pnl_sub').textContent = `하락 -${drop}% 기준`;
+  document.getElementById('sim_note').textContent = `※ 추가 매입 후 ${drop}% 추가 하락 시 예상 손실액`;
+}
+
+function resetSim() {
+  pfSize.value = 3000; dropPct.value = 5; buyPct.value = 5;
+  updateSim();
+}
+
+pfSize.addEventListener('input', updateSim);
+dropPct.addEventListener('input', updateSim);
+buyPct.addEventListener('input', updateSim);
+updateSim();
+</script>
+</body>
+</html>

@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>시험문제 — 마이크론 실적 분석</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #ffffff; --bg2: #fafafa;
+    --text: #1a1a1a; --text2: #777777;
+    --accent: #e11d48; --accent2: #f43f5e;
+    --border: #e5e5e5;
+    --correct: #16a34a; --wrong: #dc2626;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    max-width: 480px;
+    margin: 0 auto;
+    padding-bottom: 60px;
+  }
+
+  .hero {
+    background: var(--text);
+    color: #fff;
+    padding: 36px 24px 28px;
+  }
+  .hero-tag { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--accent2); margin-bottom: 10px; }
+  .hero h1 { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 900; line-height: 1.3; margin-bottom: 8px; }
+  .hero p { font-size: 12px; color: #aaa; }
+
+  .progress-bar-wrap { height: 4px; background: var(--border); }
+  .progress-bar { height: 100%; background: var(--accent); transition: width 0.4s ease; }
+
+  .score-board {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 24px;
+    background: var(--bg2);
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+  }
+  .score-board .sc { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: var(--accent); }
+
+  /* QUIZ CARD */
+  .quiz-area { padding: 24px; }
+  .q-card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 16px;
+    display: none;
+  }
+  .q-card.active { display: block; }
+
+  .q-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+  }
+  .q-num {
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 500;
+  }
+  .q-type {
+    font-size: 11px;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 3px 10px;
+    color: var(--text2);
+  }
+  .q-diff { font-size: 11px; }
+
+  .q-text {
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1.6;
+    margin-bottom: 18px;
+    color: var(--text);
+  }
+
+  /* OPTIONS */
+  .options { display: flex; flex-direction: column; gap: 10px; }
+  .opt-btn {
+    background: var(--bg2);
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 14px;
+    text-align: left;
+    font-size: 14px;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    color: var(--text);
+    transition: border-color 0.2s, background 0.2s;
+    line-height: 1.45;
+  }
+  .opt-btn:hover:not(:disabled) { border-color: var(--accent); background: #fff5f7; }
+  .opt-btn.correct { background: #f0fdf4; border-color: var(--correct); color: var(--correct); font-weight: 600; }
+  .opt-btn.wrong { background: #fef2f2; border-color: var(--wrong); color: var(--wrong); }
+  .opt-btn:disabled { cursor: default; }
+
+  /* SHORT ANSWER / OX */
+  .input-wrap { display: flex; gap: 8px; }
+  .q-input {
+    flex: 1;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    padding: 11px 14px;
+    font-size: 14px;
+    font-family: 'DM Sans', sans-serif;
+    color: var(--text);
+    background: var(--bg2);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .q-input:focus { border-color: var(--accent); }
+  .q-input.correct { border-color: var(--correct); background: #f0fdf4; color: var(--correct); }
+  .q-input.wrong { border-color: var(--wrong); background: #fef2f2; color: var(--wrong); }
+
+  .ox-btns { display: flex; gap: 10px; }
+  .ox-btn {
+    flex: 1;
+    padding: 14px;
+    font-size: 24px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    background: var(--bg2);
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .ox-btn:hover:not(:disabled) { border-color: var(--accent); background: #fff5f7; }
+  .ox-btn.correct { background: #f0fdf4; border-color: var(--correct); }
+  .ox-btn.wrong { background: #fef2f2; border-color: var(--wrong); }
+  .ox-btn:disabled { cursor: default; }
+
+  .submit-btn {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 11px 20px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    white-space: nowrap;
+    transition: background 0.2s;
+  }
+  .submit-btn:hover { background: var(--accent2); }
+  .submit-btn:disabled { background: var(--border); color: #aaa; cursor: default; }
+
+  /* FEEDBACK */
+  .feedback {
+    margin-top: 14px;
+    padding: 14px;
+    border-radius: 8px;
+    font-size: 13.5px;
+    line-height: 1.55;
+    display: none;
+  }
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: #f0fdf4; border: 1px solid #bbf7d0; color: #15803d; }
+  .feedback.wrong-fb { background: #fef2f2; border: 1px solid #fecaca; color: #b91c1c; }
+  .feedback strong { display: block; margin-bottom: 4px; font-size: 14px; }
+
+  /* NAV */
+  .q-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    gap: 10px;
+  }
+  .nav-btn {
+    padding: 10px 20px;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    background: var(--bg);
+    cursor: pointer;
+    font-size: 13px;
+    font-family: 'DM Sans', sans-serif;
+    color: var(--text);
+    transition: all 0.2s;
+  }
+  .nav-btn:hover:not(:disabled) { border-color: var(--text); }
+  .nav-btn:disabled { opacity: 0.4; cursor: default; }
+  .nav-btn.primary {
+    background: var(--text);
+    color: #fff;
+    border-color: var(--text);
+  }
+  .nav-btn.primary:hover:not(:disabled) { background: #333; }
+
+  /* RESULT PAGE */
+  #result-page { display: none; padding: 32px 24px; }
+  .result-circle {
+    width: 110px; height: 110px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 24px;
+  }
+  .result-circle .big { font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 900; line-height: 1; }
+  .result-circle .sm { font-size: 12px; opacity: 0.8; }
+  .result-title { font-family: 'Playfair Display', serif; font-size: 22px; text-align: center; margin-bottom: 8px; }
+  .result-sub { text-align: center; color: var(--text2); font-size: 13px; margin-bottom: 24px; }
+
+  /* ANSWER KEY */
+  .answer-section {
+    background: var(--bg2);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 12px;
+  }
+  .answer-section h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 17px;
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--accent);
+  }
+  .ans-item {
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 13.5px;
+    line-height: 1.55;
+  }
+  .ans-item:last-child { border-bottom: none; }
+  .ans-item .q-label { color: var(--text2); font-size: 12px; margin-bottom: 3px; }
+  .ans-item .q-body { font-weight: 500; margin-bottom: 4px; }
+  .ans-item .ans { color: var(--correct); font-weight: 600; }
+  .ans-item .exp { color: var(--text2); font-size: 12.5px; margin-top: 4px; }
+  .retry-btn {
+    width: 100%;
+    padding: 14px;
+    background: var(--text);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    margin-top: 8px;
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-tag">Quiz · 10 Questions</div>
+  <h1>마이크론 실적 분석<br>이해도 시험</h1>
+  <p>객관식 · 단답형 · OX 혼합 | 쉬움 30% · 보통 50% · 어려움 20%</p>
+</div>
+
+<div class="progress-bar-wrap">
+  <div class="progress-bar" id="progressBar" style="width:0%"></div>
+</div>
+
+<div class="score-board">
+  <div>문제 <strong id="qIndicator">1</strong> / 10</div>
+  <div>점수 <span class="sc" id="scoreDisp">0</span></div>
+</div>
+
+<div class="quiz-area" id="quizArea"></div>
+
+<div id="result-page">
+  <div class="result-circle">
+    <div class="big" id="finalScore">0</div>
+    <div class="sm">/ 10점</div>
+  </div>
+  <div class="result-title" id="resultTitle">결과</div>
+  <div class="result-sub" id="resultSub"></div>
+
+  <div class="answer-section">
+    <h3>📋 정답 및 해설</h3>
+    <div id="answerKey"></div>
+  </div>
+  <button class="retry-btn" onclick="restartQuiz()">↺ 다시 풀기</button>
+</div>
+
+<script>
+const questions = [
+  // 쉬움 (3문제)
+  {
+    id: 1, type: 'mc', diff: '🟢 쉬움',
+    q: '마이크론의 2026년 2분기(2월 26일 마감) 실제 매출은 얼마인가?',
+    opts: ['약 180억 달러', '약 200억 달러', '약 238억 달러', '약 300억 달러'],
+    ans: 2,
+    exp: '마이크론의 실제 매출은 238억 6천만 달러로, 예상치 200억 달러를 크게 상회했습니다.'
+  },
+  {
+    id: 2, type: 'ox', diff: '🟢 쉬움',
+    q: '마이크론은 이번 실적 발표와 함께 분기 배당금을 30% 인상하겠다고 발표했다.',
+    ans: 'O',
+    exp: '맞습니다. 배당금 30% 증가 발표는 중장기 투자자 매력도를 높이는 긍정적 신호입니다.'
+  },
+  {
+    id: 3, type: 'mc', diff: '🟢 쉬움',
+    q: '마이크론 실적 발표 직후 주가 변동은?',
+    opts: ['+5% 상승', '+10% 상승', '-4~5% 하락', '-15% 폭락'],
+    ans: 2,
+    exp: '실적이 크게 예상을 상회했음에도 주가는 약 4~5% 하락했습니다. 자본지출 확대 계획이 주된 원인입니다.'
+  },
+
+  // 보통 (5문제)
+  {
+    id: 4, type: 'mc', diff: '🟡 보통',
+    q: '실적이 예상을 상회했는데도 마이크론 주가가 하락한 핵심 원인은?',
+    opts: ['경쟁사 삼성의 신제품 출시', '2026년 자본지출(CapEx) 대폭 확대 계획 발표', '경영진 교체 발표', '미국 정부의 반도체 수출 규제'],
+    ans: 1,
+    exp: '자본지출 확대는 단기 이익 마진(EPS)을 압박하며, 이미 높은 PER 상태에서 추가 성장 기대를 꺾는 요인입니다.'
+  },
+  {
+    id: 5, type: 'short', diff: '🟡 보통',
+    q: '마이크론이 대규모 자본지출을 집행하는 근본적인 이유는 무엇인가? (핵심 키워드 포함)',
+    ans: ['HBM', 'AI', '메모리', '수요'],
+    exp: 'AI 데이터센터 확장으로 HBM(고대역폭메모리) 등 고급 메모리 수요가 폭발적으로 증가했고, 이에 대응하기 위해 제조 시설을 공격적으로 확장해야 하기 때문입니다.'
+  },
+  {
+    id: 6, type: 'mc', diff: '🟡 보통',
+    q: '다음 중 "오요 법칙"에 대한 설명으로 가장 올바른 것은?',
+    opts: [
+      '한 종목의 비중이 10%를 초과하면 매도해야 한다',
+      '한 종목의 비중이 20%를 초과하면 일부 매도해야 한다',
+      '오전 오후 각각 매매하는 원칙이다',
+      '5개 이상 종목에 분산 투자해야 한다'
+    ],
+    ans: 1,
+    exp: '오요 법칙은 단일 종목의 포트폴리오 비중이 20%를 초과할 경우 집중 리스크를 관리하기 위해 일부 매도해야 한다는 원칙입니다.'
+  },
+  {
+    id: 7, type: 'ox', diff: '🟡 보통',
+    q: '이번 FOMC에서 연준이 금리를 인하하면서 시장은 긍정적으로 반응했다.',
+    ans: 'X',
+    exp: '연준은 이번에 금리를 동결했습니다. 결과 자체는 예상 범위였지만, 내부 불협화음 신호가 감지되어 시장이 실망 매도로 반응했습니다.'
+  },
+  {
+    id: 8, type: 'mc', diff: '🟡 보통',
+    q: '트럼프 행정부가 만든 3대 시장 리스크가 아닌 것은?',
+    opts: ['관세 리스크', '유가 상승으로 인한 인플레이션', '부동산 경기 침체', '반도체 기술 유출 방지법'],
+    ans: 3,
+    exp: '3대 리스크는 ① 관세 리스크, ② 유가 상승 인플레이션, ③ 부동산 경기 침체입니다. 반도체 기술 유출 방지법은 언급되지 않았습니다.'
+  },
+
+  // 어려움 (2문제)
+  {
+    id: 9, type: 'mc', diff: '🔴 어려움',
+    q: '마이크론의 2026 회계연도 자본지출 계획액은 얼마 이상인가? (기존 계획 대비 50억 달러 추가 확대 발표 포함)',
+    opts: ['100억 달러', '150억 달러', '200억 달러', '250억 달러'],
+    ans: 3,
+    exp: '마이크론은 2026 회계연도에 250억 달러 이상을 지출할 계획이라고 발표했으며, 이는 기존 대비 50억 달러(5빌리언)를 추가 확대한 금액입니다.'
+  },
+  {
+    id: 10, type: 'mc', diff: '🔴 어려움',
+    q: '다음 중 마이크론 주가의 "단기 하락 후 재진입"을 지지하는 근거로 가장 부적절한 것은?',
+    opts: [
+      '예상을 크게 웃도는 실적 서프라이즈',
+      '배당금 30% 인상으로 장기 투자자 유입 기대',
+      'HBM 수요 증가에 따른 계약 물량 확보',
+      'CapEx 확대로 인한 단기 EPS 개선 전망'
+    ],
+    ans: 3,
+    exp: 'CapEx(자본지출) 확대는 오히려 단기 EPS(주당순이익)를 악화시키는 요인입니다. 공장 투자가 수익으로 전환되기까지 시간이 걸리기 때문에, 이것은 재진입 근거가 아닌 하락 원인에 해당합니다.'
+  }
+];
+
+let current = 0;
+let score = 0;
+let answered = new Array(10).fill(false);
+let userAnswers = new Array(10).fill(null);
+
+function renderQuestion(idx) {
+  const q = questions[idx];
+  const area = document.getElementById('quizArea');
+
+  let html = `
+    <div class="q-card active" id="qcard-${idx}">
+      <div class="q-meta">
+        <div class="q-num">Q${idx + 1} / 10</div>
+        <div style="display:flex;gap:6px;align-items:center">
+          <span class="q-diff">${q.diff}</span>
+          <span class="q-type">${q.type === 'mc' ? '객관식' : q.type === 'ox' ? 'OX' : '단답형'}</span>
+        </div>
+      </div>
+      <div class="q-text">${q.q}</div>
+  `;
+
+  if (q.type === 'mc') {
+    html += `<div class="options">`;
+    q.opts.forEach((opt, i) => {
+      const cls = answered[idx]
+        ? (i === q.ans ? 'opt-btn correct' : (userAnswers[idx] === i ? 'opt-btn wrong' : 'opt-btn'))
+        : 'opt-btn';
+      const dis = answered[idx] ? 'disabled' : '';
+      html += `<button class="${cls}" ${dis} onclick="submitMC(${idx},${i})">${opt}</button>`;
+    });
+    html += `</div>`;
+  } else if (q.type === 'ox') {
+    const oClass = answered[idx] && userAnswers[idx] === 'O' ? (userAnswers[idx] === q.ans ? 'ox-btn correct' : 'ox-btn wrong') : 'ox-btn';
+    const xClass = answered[idx] && userAnswers[idx] === 'X' ? (userAnswers[idx] === q.ans ? 'ox-btn correct' : 'ox-btn wrong') : 'ox-btn';
+    const dis = answered[idx] ? 'disabled' : '';
+    html += `<div class="ox-btns">
+      <button class="${oClass}" ${dis} onclick="submitOX(${idx},'O')">⭕ O</button>
+      <button class="${xClass}" ${dis} onclick="submitOX(${idx},'X')">❌ X</button>
+    </div>`;
+  } else {
+    const inputCls = answered[idx] ? (userAnswers[idx] ? 'q-input correct' : 'q-input wrong') : 'q-input';
+    const dis = answered[idx] ? 'disabled' : '';
+    html += `<div class="input-wrap">
+      <input type="text" id="short-${idx}" class="${inputCls}" placeholder="답을 입력하세요" ${dis} value="${answered[idx] && userAnswers[idx] ? userAnswers[idx] : ''}">
+      <button class="submit-btn" id="sbtn-${idx}" onclick="submitShort(${idx})" ${dis}>확인</button>
+    </div>`;
+  }
+
+  if (answered[idx]) {
+    const isCorrect = checkAnswer(idx);
+    html += `<div class="feedback show ${isCorrect ? 'correct-fb' : 'wrong-fb'}">
+      <strong>${isCorrect ? '✅ 정답입니다!' : '❌ 오답입니다'}</strong>
+      ${!isCorrect ? `<span style="color:inherit">정답: <strong>${getCorrectLabel(idx)}</strong></span><br>` : ''}
+      ${q.exp}
+    </div>`;
+  }
+
+  html += `
+      <div class="q-nav">
+        <button class="nav-btn" onclick="goQuestion(${idx - 1})" ${idx === 0 ? 'disabled' : ''}>← 이전</button>
+        ${idx < 9
+          ? `<button class="nav-btn primary" onclick="goQuestion(${idx + 1})" ${!answered[idx] && idx < 9 ? '' : ''}>다음 →</button>`
+          : `<button class="nav-btn primary" onclick="showResult()" style="background:var(--accent);border-color:var(--accent)">결과 보기</button>`
+        }
+      </div>
+    </div>
+  `;
+
+  area.innerHTML = html;
+  updateProgress();
+}
+
+function getCorrectLabel(idx) {
+  const q = questions[idx];
+  if (q.type === 'mc') return q.opts[q.ans];
+  if (q.type === 'ox') return q.ans;
+  return Array.isArray(q.ans) ? q.ans.join(' / ') : q.ans;
+}
+
+function checkAnswer(idx) {
+  const q = questions[idx];
+  if (q.type === 'mc') return userAnswers[idx] === q.ans;
+  if (q.type === 'ox') return userAnswers[idx] === q.ans;
+  if (q.type === 'short') {
+    const ua = (userAnswers[idx] || '').trim();
+    return q.ans.some(kw => ua.includes(kw));
+  }
+  return false;
+}
+
+function submitMC(idx, chosen) {
+  if (answered[idx]) return;
+  userAnswers[idx] = chosen;
+  answered[idx] = true;
+  if (checkAnswer(idx)) score++;
+  document.getElementById('scoreDisp').textContent = score;
+  renderQuestion(idx);
+}
+
+function submitOX(idx, val) {
+  if (answered[idx]) return;
+  userAnswers[idx] = val;
+  answered[idx] = true;
+  if (checkAnswer(idx)) score++;
+  document.getElementById('scoreDisp').textContent = score;
+  renderQuestion(idx);
+}
+
+function submitShort(idx) {
+  if (answered[idx]) return;
+  const inp = document.getElementById(`short-${idx}`);
+  const val = inp.value.trim();
+  if (!val) return;
+  userAnswers[idx] = val;
+  answered[idx] = true;
+  if (checkAnswer(idx)) score++;
+  document.getElementById('scoreDisp').textContent = score;
+  renderQuestion(idx);
+}
+
+function goQuestion(idx) {
+  if (idx < 0 || idx > 9) return;
+  current = idx;
+  document.getElementById('qIndicator').textContent = idx + 1;
+  renderQuestion(idx);
+}
+
+function updateProgress() {
+  const pct = ((current + 1) / 10) * 100;
+  document.getElementById('progressBar').style.width = pct + '%';
+}
+
+function showResult() {
+  document.getElementById('quizArea').style.display = 'none';
+  document.querySelector('.score-board').style.display = 'none';
+  document.querySelector('.progress-bar-wrap').style.display = 'none';
+
+  const rp = document.getElementById('result-page');
+  rp.style.display = 'block';
+
+  document.getElementById('finalScore').textContent = score;
+  const titles = ['다시 도전하세요! 💪', '조금 더 공부해봐요 📖', '잘 하셨습니다! 👍', '훌륭합니다! 🎉', '완벽합니다! 🏆'];
+  const ti = score <= 3 ? 0 : score <= 5 ? 1 : score <= 7 ? 2 : score <= 9 ? 3 : 4;
+  document.getElementById('resultTitle').textContent = titles[ti];
+  document.getElementById('resultSub').textContent = `10문제 중 ${score}문제 정답 · 정답률 ${score * 10}%`;
+
+  // Build answer key
+  let akHtml = '';
+  questions.forEach((q, i) => {
+    akHtml += `<div class="ans-item">
+      <div class="q-label">Q${i+1} ${q.diff} · ${q.type === 'mc' ? '객관식' : q.type === 'ox' ? 'OX' : '단답형'}</div>
+      <div class="q-body">${q.q}</div>
+      <div class="ans">정답: ${getCorrectLabel(i)}</div>
+      <div class="exp">${q.exp}</div>
+    </div>`;
+  });
+  document.getElementById('answerKey').innerHTML = akHtml;
+}
+
+function restartQuiz() {
+  current = 0; score = 0;
+  answered = new Array(10).fill(false);
+  userAnswers = new Array(10).fill(null);
+  document.getElementById('scoreDisp').textContent = 0;
+  document.getElementById('qIndicator').textContent = 1;
+  document.getElementById('result-page').style.display = 'none';
+  document.getElementById('quizArea').style.display = 'block';
+  document.querySelector('.score-board').style.display = 'flex';
+  document.querySelector('.progress-bar-wrap').style.display = 'block';
+  renderQuestion(0);
+}
+
+// Init
+renderQuestion(0);
+</script>
+</body>
+</html>
