@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>시험문제 | 3월 19일 미국 증시 분석</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #ffffff;
+    --bg2: #fafafa;
+    --text: #1a1a1a;
+    --text2: #777777;
+    --accent: #e11d48;
+    --accent2: #f43f5e;
+    --border: #e5e5e5;
+    --green: #16a34a;
+    --green-bg: #f0fdf4;
+    --red-bg: #fff1f2;
+    --yellow-bg: #fefce8;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+    max-width: 520px;
+    margin: 0 auto;
+    padding: 0 0 60px 0;
+  }
+
+  /* HEADER */
+  .masthead {
+    border-bottom: 3px solid var(--accent);
+    padding: 24px 20px 16px;
+    background: var(--bg2);
+  }
+  .masthead-eyebrow {
+    font-size: 10px; font-weight: 500;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 8px;
+  }
+  .masthead-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(24px, 7vw, 32px);
+    font-weight: 900; line-height: 1.1;
+    color: var(--text); margin-bottom: 8px;
+  }
+  .masthead-title em { color: var(--accent); font-style: italic; }
+  .masthead-meta {
+    font-size: 11px; color: var(--text2);
+    letter-spacing: 0.05em;
+  }
+
+  /* MODE SELECTOR */
+  .mode-bar {
+    display: flex;
+    background: var(--bg2);
+    border-bottom: 1px solid var(--border);
+    padding: 0 20px;
+  }
+  .mode-btn {
+    flex: 1; padding: 12px 4px;
+    border: none; background: none;
+    font-size: 13px; font-weight: 500;
+    color: var(--text2);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    transition: all 0.2s;
+  }
+  .mode-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+  /* QUIZ AREA */
+  .quiz-area { padding: 20px; }
+
+  /* PROGRESS */
+  .progress-bar {
+    background: var(--border);
+    height: 4px;
+    margin-bottom: 16px;
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--accent);
+    transition: width 0.4s ease;
+    border-radius: 2px;
+  }
+  .progress-text {
+    font-size: 11px; color: var(--text2);
+    margin-bottom: 6px;
+    display: flex; justify-content: space-between;
+  }
+
+  /* QUESTION CARD */
+  .q-card {
+    border: 1px solid var(--border);
+    padding: 16px;
+    margin-bottom: 16px;
+    background: var(--bg);
+    display: none;
+  }
+  .q-card.active { display: block; }
+  .q-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+  .q-num {
+    background: var(--accent);
+    color: #fff;
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700;
+    flex-shrink: 0;
+  }
+  .q-meta {
+    display: flex; gap: 6px; align-items: center; flex-wrap: wrap;
+  }
+  .q-type-badge {
+    font-size: 10px; padding: 2px 7px;
+    border-radius: 2px; font-weight: 500;
+  }
+  .badge-mc { background: #dbeafe; color: #1d4ed8; }
+  .badge-sa { background: #dcfce7; color: #166534; }
+  .badge-ox { background: #fef9c3; color: #92400e; }
+  .q-diff {
+    font-size: 10px; color: var(--text2);
+    padding: 2px 6px;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+  }
+  .q-text {
+    font-size: 15px; font-weight: 500;
+    color: var(--text); line-height: 1.6;
+    margin-bottom: 14px;
+  }
+
+  /* OPTIONS */
+  .options { display: flex; flex-direction: column; gap: 8px; }
+  .option {
+    padding: 10px 14px;
+    border: 1.5px solid var(--border);
+    cursor: pointer;
+    font-size: 13.5px;
+    color: var(--text);
+    transition: all 0.15s;
+    background: var(--bg);
+    text-align: left;
+    line-height: 1.5;
+  }
+  .option:hover { border-color: var(--accent); background: var(--red-bg); }
+  .option.correct { border-color: var(--green); background: var(--green-bg); color: var(--green); font-weight: 500; }
+  .option.wrong { border-color: var(--accent); background: var(--red-bg); color: var(--accent); font-weight: 500; }
+  .option.reveal-correct { border-color: var(--green); background: var(--green-bg); }
+  .option:disabled, .option[disabled] { cursor: default; }
+
+  /* OX BUTTONS */
+  .ox-row { display: flex; gap: 10px; }
+  .ox-btn {
+    flex: 1; padding: 18px;
+    font-size: 28px; border: 1.5px solid var(--border);
+    cursor: pointer; background: var(--bg);
+    transition: all 0.15s;
+  }
+  .ox-btn:hover { border-color: var(--accent); }
+  .ox-btn.correct { border-color: var(--green); background: var(--green-bg); }
+  .ox-btn.wrong { border-color: var(--accent); background: var(--red-bg); }
+  .ox-btn.reveal-correct { border-color: var(--green); background: var(--green-bg); }
+
+  /* SHORT ANSWER */
+  .sa-area { display: flex; flex-direction: column; gap: 8px; }
+  .sa-input {
+    padding: 10px 12px;
+    border: 1.5px solid var(--border);
+    font-size: 14px;
+    font-family: 'DM Sans', sans-serif;
+    outline: none;
+    width: 100%;
+    transition: border-color 0.15s;
+  }
+  .sa-input:focus { border-color: var(--accent); }
+  .sa-submit {
+    padding: 9px 18px;
+    background: var(--text);
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    font-size: 13px;
+    transition: background 0.2s;
+    align-self: flex-start;
+  }
+  .sa-submit:hover { background: var(--accent); }
+
+  /* ANSWER REVEAL */
+  .answer-reveal {
+    margin-top: 12px;
+    padding: 12px 14px;
+    background: var(--bg2);
+    border-left: 3px solid var(--green);
+    display: none;
+  }
+  .answer-reveal.wrong-reveal { border-left-color: var(--accent); }
+  .answer-reveal.show { display: block; }
+  .answer-label {
+    font-size: 10px; font-weight: 500;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--green); margin-bottom: 4px;
+  }
+  .answer-label.wrong-lbl { color: var(--accent); }
+  .answer-text { font-size: 13.5px; color: var(--text); line-height: 1.6; }
+  .explanation {
+    margin-top: 6px;
+    font-size: 12.5px;
+    color: var(--text2);
+    line-height: 1.6;
+  }
+
+  /* NAV BUTTONS */
+  .nav-row {
+    display: flex; gap: 8px; margin-top: 14px;
+  }
+  .nav-btn {
+    flex: 1; padding: 11px;
+    border: 1.5px solid var(--border);
+    background: var(--bg);
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 500;
+    transition: all 0.2s;
+    color: var(--text);
+  }
+  .nav-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .nav-btn.primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .nav-btn.primary:hover { background: #c81d42; }
+  .nav-btn:disabled { opacity: 0.35; cursor: default; }
+
+  /* SCORE SCREEN */
+  .score-screen { display: none; padding: 20px; }
+  .score-screen.show { display: block; }
+  .score-big {
+    text-align: center;
+    padding: 30px 20px;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    margin-bottom: 16px;
+  }
+  .score-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 64px; font-weight: 900;
+    color: var(--accent); line-height: 1;
+  }
+  .score-label { font-size: 14px; color: var(--text2); margin-top: 6px; }
+  .score-grade {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px; font-weight: 700;
+    color: var(--text); margin-top: 8px;
+  }
+  .score-breakdown { margin-top: 14px; }
+  .sb-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 8px 0; border-bottom: 1px solid var(--border);
+    font-size: 13px;
+  }
+  .sb-row:last-child { border-bottom: none; }
+  .sb-icon { width: 20px; text-align: center; }
+  .retry-btn {
+    width: 100%; padding: 13px;
+    background: var(--text); color: #fff;
+    border: none; cursor: pointer;
+    font-size: 14px; font-weight: 500;
+    margin-top: 16px;
+    transition: background 0.2s;
+  }
+  .retry-btn:hover { background: var(--accent); }
+
+  /* ANSWER SHEET (mode 2) */
+  .answer-sheet { padding: 16px 20px; }
+  .as-question {
+    border: 1px solid var(--border);
+    margin-bottom: 14px;
+    background: var(--bg2);
+  }
+  .as-q-header {
+    display: flex; gap: 8px; align-items: center;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg);
+  }
+  .as-q-num {
+    background: var(--accent); color: #fff;
+    width: 22px; height: 22px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 700; flex-shrink: 0;
+  }
+  .as-q-text { font-size: 13.5px; font-weight: 500; color: var(--text); line-height: 1.5; }
+  .as-answer-block { padding: 10px 14px; }
+  .as-answer-label { font-size: 10px; color: var(--green); font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 4px; }
+  .as-answer-text { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+  .as-explanation { font-size: 12px; color: var(--text2); line-height: 1.6; }
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="masthead-eyebrow">Study Quiz</div>
+  <h1 class="masthead-title">미국 증시 분석<br><em>10문제</em></h1>
+  <div class="masthead-meta">3월 19일 멤버온리 방송 기반 | 객관식·단답형·OX</div>
+</header>
+
+<div class="mode-bar">
+  <button class="mode-btn active" onclick="setMode('quiz')">📝 퀴즈 풀기</button>
+  <button class="mode-btn" onclick="setMode('sheet')">📋 정답·해설 보기</button>
+</div>
+
+<!-- ═══ QUIZ MODE ═══ -->
+<div id="quizMode">
+  <div class="quiz-area">
+    <div class="progress-text">
+      <span id="progressLabel">문제 1 / 10</span>
+      <span id="scoreLabel">점수: 0점</span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:10%"></div></div>
+
+    <!-- Q1 -->
+    <div class="q-card active" id="q1">
+      <div class="q-header">
+        <div class="q-num">1</div>
+        <div class="q-meta">
+          <span class="q-type-badge badge-mc">객관식</span>
+          <span class="q-diff">쉬움</span>
+        </div>
+      </div>
+      <div class="q-text">이날 S&P 500의 핵심 1차 지지선은 얼마였나요?</div>
+      <div class="options">
+        <button class="option" onclick="checkMC(this,'wrong','q1')">① 6,400</button>
+        <button class="option" onclick="checkMC(this,'wrong','q1')">② 6,500</button>
+        <button class="option" onclick="checkMC(this,'correct','q1')">③ 6,600</button>
+        <button class="option" onclick="checkMC(this,'wrong','q1')">④ 6,800</button>
+      </div>
+      <div class="answer-reveal" id="rev_q1">
+        <div class="answer-label">✓ 정답</div>
+        <div class="answer-text">③ 6,600</div>
+        <div class="explanation">방송에서 "지지선이 6,600이었는데 다행히 6,600 이상으로 올라왔다"고 했습니다. 만약 6,600 아래로 마감하면 6,500까지 추가 하락 가능성이 있다고 경고했습니다.</div>
+      </div>
+      <div class="nav-row">
+        <button class="nav-btn" disabled>← 이전</button>
+        <button class="nav-btn primary" onclick="nextQ(2)">다음 →</button>
+      </div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="q-card" id="q2">
+      <div class="q-header">
+        <div class="q-num">2</div>
+        <div class="q-meta">
+          <span class="q-type-badge badge-ox">OX</span>
+          <span class="q-diff">쉬움</span>
+        </div>
+      </div>
+      <div class="q-text">마이크론은 이번 실적 발표에서 예상을 하회(미스)하여 주가가 하락했다.</div>
+      <div class="ox-row">
+        <button class="ox-btn" onclick="checkOX(this,'X','q2')">⭕</button>
+        <button class="ox-btn" onclick="checkOX(this,'O','q2')">❌</button>
+      </div>
+      <div class="answer-reveal" id="rev_q2">
+        <div class="answer-label">✓ 정답</div>
+        <div class="answer-text">X (틀림)</div>
+        <div class="explanation">마이크론은 오히려 실적 어닝서프라이즈(예상 상회)를 기록했음에도 주가가 7%가량 하락했습니다. 이는 "Buy the rumor, Sell the news" 패턴 — 이미 호실적을 가격에 반영한 뒤 차익 실현 매물이 쏟아진 것입니다.</div>
+      </div>
+      <div class="nav-row">
+        <button class="nav-btn" onclick="nextQ(1)">← 이전</button>
+        <button class="nav-btn primary" onclick="nextQ(3)">다음 →</button>
+      </div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="q-card" id="q3">
+      <div class="q-header">
+        <div class="q-num">3</div>
+        <div class="q-meta">
+          <span class="q-type-badge badge-mc">객관식</span>
+          <span class="q-diff">보통</span>
+        </div>
+      </div>
+      <div class="q-text">방송에서 제시된 메타(META)의 장기 목표 주가는 얼마인가요?</div>
+      <div class="options">
+        <button class="option" onclick="checkMC(this,'wrong','q3')">① $600</button>
+        <button class="option" onclick="checkMC(this,'wrong','q3')">② $750</button>
+        <button class="option" onclick="checkMC(this,'wrong','q3')">③ $850</button>
+        <button class="option" onclick="checkMC(this,'correct','q3')">④ $1,000</button>
+      </div>
+      <div class="answer-reveal" id="rev_q3">
+        <div class="answer-label">✓ 정답</div>
+        <div class="answer-text">④ $1,000</div>
+        <div class="explanation">"제가 목표가를 1000불이라 했기 때문에 뭐 600불에서 하나 610불에서 하나 크게 차이가 없습니다"라고 언급했습니다. 메타의 20% 인원 감축 공식화 이후가 매입 타이밍으로 제시됐습니다.</div>
+      </div>
+      <div class="nav-row">
+        <button class="nav-btn" onclick="nextQ(2)">← 이전</button>
+        <button class="nav-btn primary" onclick="nextQ(4)">다음 →</button>
+      </div>
+    </div>
+
+    <!-- Q4 -->
+    <div class="q-card" id="q4">
+      <div class="q-header">
+        <div class="q-num">4</div>
+        <div class="q-meta">
+          <span class="q-type-badge badge-sa">단답형</span>
+          <span class="q-diff">보통</span>
+        </div>
+      </div>
+      <div class="q-text">이날 금(Gold) 가격이 하락한 이유와 관련한 기술적 지표는 무엇인가요? (이동평균선 기준)</div>
+      <div class="sa-area">
+        <input type="text" class="sa-input" id="sa_q4" placeholder="예: 00일 이동평균선 이탈">
+        <button class="sa-submit" onclick="checkSA('q4')">제출</button>
+      </div>
+      <div class="answer-reveal" id="rev_q4">
+        <div class="answer-label">✓ 정답</div>
+        <div class="answer-text">100일 이동평균선(100일 MA) 이탈</div>
+        <div class="explanation">"오늘 금 가격 하락 100일 무빙에버리지 이하로 내려왔습니다"라는 발언이 있었습니다. 금이 안전자산 선호 심리가 일부 해소됨을 반영하며 당일 4% 이상 하락했습니다.</div>
+      </div>
+      <div class="nav-row">
+        <button class="nav-btn" onclick="nextQ(3)">← 이전</button>
+        <button class="nav-btn primary" onclick="nextQ(5)">다음 →</button>
+      </div>
+    </div>
+
+    <!-- Q5 -->
+    <div class="q-card" id="q5">
+      <div class="q-header">
+        <div class="q-num">5</div>
+        <div class="q-meta">
+          <span class="q-type-badge badge-mc">객관식</span>
+          <span class="q-diff">보통</span>
+        </div>
+      </div>
+      <div class="q-text">방송에서 분석한 2026년 YTD(연초 대비) 낙폭이 가장 큰 지수는?</div>
+      <div class="options">
+        <button class="option" onclick="checkMC(this,'wrong','q5')">① 다우존스 (-5.8%)</button>
+        <button class="option" onclick="checkMC(this,'wrong','q5')">② S&P 500 (-5.0%)</button>
+        <button class="option" onclick="checkMC(this,'correct','q5')">③ 나스닥 (-6.2%)</button>
+        <button class="option" onclick="checkMC(this,'wrong','q5')">④ 러셀 2000</button>
+      </div>
+      <div class="answer-reveal" id="rev_q5">
+        <div class="answer-label">✓ 정답</div>
+        <div class="answer-text">③ 나스닥 (-6.2%)</div>
+        <div class="explanation">"다우전스가 올해만 5.8% 떨어졌죠, S&P500가 거의 5% 떨어졌습니다, 나스닥은 6.2% 떨어진 거예요"라고 명시됐습니다. 기술주 비중이 높은 나스닥이 가장 큰 타격을 받았습니다.</div>
+      </div>
+      <div class="nav-row">
+        <button class="nav-btn" onclick="nextQ(4)">← 이전</button>
+        <button class="nav-btn primary" onclick="nextQ(6)">다음 →</button>
+      </div>
+    </div>
+
+    <!-- Q6 -->
+    <div class="q-card" id="q6">
+      <div class="q-header">
+        <div class="q-num">6</div>
+        <div class="q-meta">
+          <span class="q-type-badge badge-ox">OX</span>
+          <span class="q-diff">보통</span>
+        </div>
+      </div>
+      <div class="q-text">방송 분석가는 FOMC 위원들의 발언을 근거로, 올해 최소 1회의 금리 인하를 예상하고 있다.</div>
+      <div class="ox-row">
+        <button class="ox-btn" onclick="checkOX(this,'O','q6')">⭕</button>
+        <button class="ox-btn" onclick="checkOX(this,'X','q6')">❌</button>
+      </div>
+      <div class="answer-reveal" id="rev_q6">
+        <div class="answer-label">✓ 정답</div>
+        <div class="answer-text">X (틀림)</div>
+        <div class="explanation">"FOMC 7명 위원들을 정확히 볼 때 올해 금리 인하는 물건도 같다, 기대치를 싹 다 줄여버린 거에요"라고 했습니다. 오히려 최악의 시나리오로 금리 인상 가능성까지 언급됐습니다.</div>
+      </div>
+      <div class="nav-row">
+        <button class="nav-btn" onclick="nextQ(5)">← 이전</button>
+        <button class="nav-btn primary" onclick="nextQ(7)">다음 →</button>
+      </div>
+    </div>
+
+    <!-- Q7 -->
+    <div class="q-card" id="q7">
+      <div class="q-header">
+        <div class="q-num">7</div>
+        <div class="q-meta">
+          <span class="q-type-badge badge-mc">객관식</span>
+          <span class="q-diff">보통</span>
+        </div>
+      </div>
+      <div class="q-text">유틸리티 섹터에서 AI 전력 수요 수혜주로 언급된 종목과 그 목표 주가는?</div>
+      <div class="options">
+        <button class="option" onclick="checkMC(this,'wrong','q7')">① 넥스트에라 에너지 — $280</button>
+        <button class="option" onclick="checkMC(this,'correct','q7')">② 컨스텔레이션 에너지 — $360</button>
+        <button class="option" onclick="checkMC(this,'wrong','q7')">③ 듀크 에너지 — $400</button>
+        <button class="option" onclick="checkMC(this,'wrong','q7')">④ 도미니언 에너지 — $320</button>
+      </div>
+      <div class="answer-reveal" id="rev_q7">
+        <div class="answer-label">✓ 정답</div>
+        <div class="answer-text">② 컨스텔레이션 에너지 — $360</div>
+        <div class="explanation">"컨스텔레이션 에너지의 시신 타겟 프라이스가 360불입니다"라고 했습니다. 마이크로소프트·메타 등 하이퍼스케일러에 전력을 공급하며 AI 시대 전기 수요 증가의 핵심 수혜주로 꼽혔습니다.</div>
+      </div>
+      <div class="nav-row">
+        <button class="nav-btn" onclick="nextQ(6)">← 이전</button>
+        <button class="nav-btn primary" onclick="nextQ(8)">다음 →</button>
+      </div>
+    </div>
+
+    <!-- Q8 -->
+    <div class="q-card" id="q8">
+      <div class="q-header">
+        <div class="q-num">8</div>
+        <div class="q-meta">
+          <span class="q-type-badge badge-sa">단답형</span>
+          <span class="q-diff">어려움</span>
+        </div>
+      </div>
+      <div class="q-text">방송에서 "장기 투자"와 구별해야 한다고 강조한 잘못된 투자 행태는 무엇인가요?</div>
+      <div class="sa-area">
+        <input type="text" class="sa-input" id="sa_q8" placeholder="답을 입력하세요">
+        <button class="sa-submit" onclick="checkSA('q8')">제출</button>
+      </div>
+      <div class="answer-reveal" id="rev_q8">
+        <div class="answer-label">✓ 정답</div>
+        <div class="answer-text">주식 장기 보유 (한 종목을 팔지 않고 계속 보유)</div>
+        <div class="explanation">"장기 투자를 했지 언제 내가 주식을 장기 보유하라고 했어, 그런 적 없어요"라고 강조했습니다. 장기투자는 미국 시장에 꾸준히 투자하는 것이고, 개별 주식은 정기적으로 섹터 로테이션을 해야 합니다.</div>
+      </div>
+      <div class="nav-row">
+        <button class="nav-btn" onclick="nextQ(7)">← 이전</button>
+        <button class="nav-btn primary" onclick="nextQ(9)">다음 →</button>
+      </div>
+    </div>
+
+    <!-- Q9 -->
+    <div class="q-card" id="q9">
+      <div class="q-header">
+        <div class="q-num">9</div>
+        <div class="q-meta">
+          <span class="q-type-badge badge-mc">객관식</span>
+          <span class="q-diff">어려움</span>
+        </div>
+      </div>
+      <div class="q-text">방송에서 이란 전쟁 관련 최악의 시나리오로 언급된 사건과 그에 따른 S&P 500 예상 반응은?</div>
+      <div class="options">
+        <button class="option" onclick="checkMC(this,'wrong','q9')">① 이란 핵무기 개발 → S&P -10%</button>
+        <button class="option" onclick="checkMC(this,'correct','q9')">② 호르무즈 해협 완전 봉쇄 → S&P -4~5%</button>
+        <button class="option" onclick="checkMC(this,'wrong','q9')">③ 이란의 미국 본토 공격 → S&P -20%</button>
+        <button class="option" onclick="checkMC(this,'wrong','q9')">④ OPEC 생산 중단 → S&P -15%</button>
+      </div>
+      <div class="answer-reveal" id="rev_q9">
+        <div class="answer-label">✓ 정답</div>
+        <div class="answer-text">② 호르무즈 해협 완전 봉쇄 → S&P -4~5%</div>
+        <div class="explanation">"호르몬을(호르무즈를) 조금씩 그래서 호르지모가 완전히 뚫렸다 그러면 주가가 4,5% S&M 팝으로 4,5% 팍 늘어날 거예요"라는 발언을 통해 호르무즈 해협 봉쇄 시 S&P 4~5% 하락을 경고했습니다.</div>
+      </div>
+      <div class="nav-row">
+        <button class="nav-btn" onclick="nextQ(8)">← 이전</button>
+        <button class="nav-btn primary" onclick="nextQ(10)">다음 →</button>
+      </div>
+    </div>
+
+    <!-- Q10 -->
+    <div class="q-card" id="q10">
+      <div class="q-header">
+        <div class="q-num">10</div>
+        <div class="q-meta">
+          <span class="q-type-badge badge-sa">단답형</span>
+          <span class="q-diff">어려움</span>
+        </div>
+      </div>
+      <div class="q-text">방송에서 메타의 내부자 거래 동향이 중요한 신호로 언급됐습니다. 지속적으로 주식을 매도(셀)하고 있다고 지목된 메타 내부자의 이름은?</div>
+      <div class="sa-area">
+        <input type="text" class="sa-input" id="sa_q10" placeholder="이름을 입력하세요">
+        <button class="sa-submit" onclick="checkSA('q10')">제출</button>
+      </div>
+      <div class="answer-reveal" id="rev_q10">
+        <div class="answer-label">✓ 정답</div>
+        <div class="answer-text">하비에르 올리베가 (Javier Olivan, 메타 COO)</div>
+        <div class="explanation">"내부자 거래 최근에 셀밖에 없습니다. 특히 CO라는 사람이 하비어 올리벤, 하비어라는 친구가 계속 팔아요. 뭔가 내부적으로 어나운스(발표)가 하기 전인 것 같아요"라고 했습니다. 내부자의 지속적인 매도는 회사 내 중요 발표가 임박했다는 신호로 해석됐습니다.</div>
+      </div>
+      <div class="nav-row">
+        <button class="nav-btn" onclick="nextQ(9)">← 이전</button>
+        <button class="nav-btn primary" onclick="showScore()">결과 보기 🎯</button>
+      </div>
+    </div>
+
+  </div><!-- /quiz-area -->
+
+  <!-- SCORE SCREEN -->
+  <div class="score-screen" id="scoreScreen">
+    <div class="score-big">
+      <div class="score-num" id="finalScore">0</div>
+      <div class="score-label">10문제 중 <span id="correctCount">0</span>개 정답</div>
+      <div class="score-grade" id="gradeText">—</div>
+    </div>
+    <div class="score-breakdown" id="scoreBreakdown"></div>
+    <button class="retry-btn" onclick="retryQuiz()">↺ 처음부터 다시 풀기</button>
+  </div>
+
+</div><!-- /quizMode -->
+
+<!-- ═══ ANSWER SHEET MODE ═══ -->
+<div id="sheetMode" style="display:none">
+  <div class="answer-sheet">
+
+    <div class="as-question">
+      <div class="as-q-header">
+        <div class="as-q-num">1</div>
+        <div class="as-q-text">[객관식·쉬움] 이날 S&P 500의 핵심 1차 지지선은?</div>
+      </div>
+      <div class="as-answer-block">
+        <div class="as-answer-label">정답</div>
+        <div class="as-answer-text">③ 6,600</div>
+        <div class="as-explanation">방송에서 "지지선이 6,600이었는데 6,600 이상으로 올라왔다"고 했으며, 이탈 시 6,500까지 추가 하락을 경고했습니다.</div>
+      </div>
+    </div>
+
+    <div class="as-question">
+      <div class="as-q-header">
+        <div class="as-q-num">2</div>
+        <div class="as-q-text">[OX·쉬움] 마이크론은 실적 미스(하회)로 주가가 하락했다.</div>
+      </div>
+      <div class="as-answer-block">
+        <div class="as-answer-label">정답</div>
+        <div class="as-answer-text">X (틀림)</div>
+        <div class="as-explanation">마이크론은 어닝서프라이즈(실적 예상 상회)를 기록했지만 주가는 7% 급락했습니다. "Buy the rumor, Sell the news" 현상입니다.</div>
+      </div>
+    </div>
+
+    <div class="as-question">
+      <div class="as-q-header">
+        <div class="as-q-num">3</div>
+        <div class="as-q-text">[객관식·보통] 방송에서 제시된 메타(META)의 장기 목표 주가는?</div>
+      </div>
+      <div class="as-answer-block">
+        <div class="as-answer-label">정답</div>
+        <div class="as-answer-text">④ $1,000</div>
+        <div class="as-explanation">"목표가를 1000불이라 했기 때문에 600불에서 하나 610불에서 하나 크게 차이가 없습니다"라고 직접 언급됐습니다.</div>
+      </div>
+    </div>
+
+    <div class="as-question">
+      <div class="as-q-header">
+        <div class="as-q-num">4</div>
+        <div class="as-q-text">[단답형·보통] 금 가격 하락과 관련한 기술적 지표는?</div>
+      </div>
+      <div class="as-answer-block">
+        <div class="as-answer-label">정답</div>
+        <div class="as-answer-text">100일 이동평균선(100일 MA) 이탈</div>
+        <div class="as-explanation">안전자산 선호 심리 완화와 이익 실현이 겹치며 금이 100일 MA 아래로 내려왔고, 당일 4% 이상 하락했습니다.</div>
+      </div>
+    </div>
+
+    <div class="as-question">
+      <div class="as-q-header">
+        <div class="as-q-num">5</div>
+        <div class="as-q-text">[객관식·보통] YTD 낙폭이 가장 큰 지수는?</div>
+      </div>
+      <div class="as-answer-block">
+        <div class="as-answer-label">정답</div>
+        <div class="as-answer-text">③ 나스닥 (-6.2%)</div>
+        <div class="as-explanation">다우 -5.8%, S&P -5.0%, 나스닥 -6.2%로, 기술주 집중도가 높은 나스닥이 가장 큰 낙폭을 기록했습니다.</div>
+      </div>
+    </div>
+
+    <div class="as-question">
+      <div class="as-q-header">
+        <div class="as-q-num">6</div>
+        <div class="as-q-text">[OX·보통] 분석가는 FOMC 위원 발언을 근거로 올해 최소 1회 금리 인하를 예상한다.</div>
+      </div>
+      <div class="as-answer-block">
+        <div class="as-answer-label">정답</div>
+        <div class="as-answer-text">X (틀림)</div>
+        <div class="as-explanation">FOMC 7명 위원 모두 올해 금리 인하 기대치를 없앤 것으로 분석됐으며, 최악의 경우 금리 인상 가능성까지 언급됐습니다.</div>
+      </div>
+    </div>
+
+    <div class="as-question">
+      <div class="as-q-header">
+        <div class="as-q-num">7</div>
+        <div class="as-q-text">[객관식·보통] AI 전력 수요 수혜주로 언급된 유틸리티 종목과 목표가는?</div>
+      </div>
+      <div class="as-answer-block">
+        <div class="as-answer-label">정답</div>
+        <div class="as-answer-text">② 컨스텔레이션 에너지(CEG) — $360</div>
+        <div class="as-explanation">MS·메타 등에 전력을 공급하는 원자력 기반 전력 회사로, AI 시대 안정적 전력 공급의 핵심 수혜주로 꼽혔습니다.</div>
+      </div>
+    </div>
+
+    <div class="as-question">
+      <div class="as-q-header">
+        <div class="as-q-num">8</div>
+        <div class="as-q-text">[단답형·어려움] "장기 투자"와 구별해야 한다고 강조한 잘못된 투자 행태는?</div>
+      </div>
+      <div class="as-answer-block">
+        <div class="as-answer-label">정답</div>
+        <div class="as-answer-text">주식 장기 보유 (한 종목을 매매 없이 계속 보유)</div>
+        <div class="as-explanation">장기투자(미국 시장에 꾸준히 투자)와 장기보유(개별 종목을 팔지 않고 들고 있음)는 다릅니다. 정기적인 섹터 로테이션과 리밸런싱이 필요합니다.</div>
+      </div>
+    </div>
+
+    <div class="as-question">
+      <div class="as-q-header">
+        <div class="as-q-num">9</div>
+        <div class="as-q-text">[객관식·어려움] 이란 전쟁 최악의 시나리오와 S&P 예상 반응은?</div>
+      </div>
+      <div class="as-answer-block">
+        <div class="as-answer-label">정답</div>
+        <div class="as-answer-text">② 호르무즈 해협 완전 봉쇄 → S&P -4~5%</div>
+        <div class="as-explanation">전 세계 석유 수송의 20%가 지나는 호르무즈 해협 봉쇄 시 유가 급등 → 인플레이션 → S&P 4~5% 급락이 우려됩니다.</div>
+      </div>
+    </div>
+
+    <div class="as-question">
+      <div class="as-q-header">
+        <div class="as-q-num">10</div>
+        <div class="as-q-text">[단답형·어려움] 메타에서 지속적으로 주식을 매도 중인 내부자는?</div>
+      </div>
+      <div class="as-answer-block">
+        <div class="as-answer-label">정답</div>
+        <div class="as-answer-text">하비에르 올리베가 (Javier Olivan, 메타 COO)</div>
+        <div class="as-explanation">내부자의 지속적인 매도는 회사 내 중요 발표(해고 공식화 등)가 임박했다는 신호로 해석됐습니다. 이것이 다음 주 메타 공식 발표 예상의 근거 중 하나입니다.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// ── STATE ──────────────────────────────────────────────────────────
+const totalQ = 10;
+let score = 0;
+let answeredQ = new Set();
+let results = {}; // {qNum: 'correct'|'wrong'}
+let currentQ = 1;
+
+// ── MODE ───────────────────────────────────────────────────────────
+function setMode(mode) {
+  document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  document.getElementById('quizMode').style.display = mode === 'quiz' ? 'block' : 'none';
+  document.getElementById('sheetMode').style.display = mode === 'sheet' ? 'block' : 'none';
+}
+
+// ── PROGRESS ───────────────────────────────────────────────────────
+function updateProgress() {
+  const pct = (currentQ / totalQ) * 100;
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressLabel').textContent = `문제 ${currentQ} / ${totalQ}`;
+  document.getElementById('scoreLabel').textContent = `점수: ${score}점`;
+}
+
+// ── MULTIPLE CHOICE ────────────────────────────────────────────────
+function checkMC(btn, result, qId) {
+  if (answeredQ.has(qId)) return;
+  answeredQ.add(qId);
+  results[qId] = result;
+
+  const opts = btn.closest('.options').querySelectorAll('.option');
+  opts.forEach(o => { o.setAttribute('disabled',''); });
+
+  if (result === 'correct') {
+    btn.classList.add('correct');
+    score += 10;
+  } else {
+    btn.classList.add('wrong');
+    // reveal correct
+    opts.forEach(o => {
+      if (o.getAttribute('onclick').includes("'correct'")) o.classList.add('reveal-correct');
+    });
+  }
+  showReveal(qId, result);
+  updateProgress();
+}
+
+// ── OX ────────────────────────────────────────────────────────────
+function checkOX(btn, answer, qId) {
+  if (answeredQ.has(qId)) return;
+  answeredQ.add(qId);
+
+  const correctMap = { q2: 'X', q6: 'X' };
+  const correct = correctMap[qId];
+  const isCorrect = answer === correct;
+  results[qId] = isCorrect ? 'correct' : 'wrong';
+
+  const btns = btn.closest('.ox-row').querySelectorAll('.ox-btn');
+  btns.forEach(b => b.setAttribute('disabled',''));
+
+  if (isCorrect) {
+    btn.classList.add('correct');
+    score += 10;
+  } else {
+    btn.classList.add('wrong');
+    btns.forEach(b => {
+      if ((qId === 'q2' || qId === 'q6') && b.textContent === '❌') b.classList.add('reveal-correct');
+    });
+  }
+  showReveal(qId, results[qId]);
+  updateProgress();
+}
+
+// ── SHORT ANSWER ───────────────────────────────────────────────────
+function checkSA(qId) {
+  if (answeredQ.has(qId)) return;
+  const inp = document.getElementById('sa_' + qId);
+  const val = inp.value.trim();
+  if (!val) { inp.style.borderColor = '#e11d48'; setTimeout(() => inp.style.borderColor = '', 1000); return; }
+
+  answeredQ.add(qId);
+  inp.setAttribute('disabled','');
+  inp.closest('.sa-area').querySelector('.sa-submit').setAttribute('disabled','');
+
+  // All SA questions: just reveal answer, give partial credit prompt
+  results[qId] = 'reveal';
+  showReveal(qId, 'reveal');
+  score += 10; // give credit, user self-checks
+  updateProgress();
+}
+
+// ── REVEAL ────────────────────────────────────────────────────────
+function showReveal(qId, result) {
+  const rev = document.getElementById('rev_' + qId);
+  if (!rev) return;
+  rev.classList.add('show');
+  if (result === 'wrong') {
+    rev.classList.add('wrong-reveal');
+    rev.querySelector('.answer-label').textContent = '✗ 오답 — 정답은:';
+    rev.querySelector('.answer-label').classList.add('wrong-lbl');
+  }
+}
+
+// ── NAV ───────────────────────────────────────────────────────────
+function nextQ(n) {
+  document.querySelectorAll('.q-card').forEach(c => c.classList.remove('active'));
+  const target = document.getElementById('q' + n);
+  if (target) {
+    target.classList.add('active');
+    currentQ = n;
+    updateProgress();
+    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
+
+// ── SCORE ─────────────────────────────────────────────────────────
+function showScore() {
+  document.querySelectorAll('.q-card').forEach(c => c.classList.remove('active'));
+  const ss = document.getElementById('scoreScreen');
+  ss.classList.add('show');
+  ss.scrollIntoView({ behavior: 'smooth' });
+
+  const correct = Object.values(results).filter(v => v === 'correct' || v === 'reveal').length;
+  document.getElementById('finalScore').textContent = score + '점';
+  document.getElementById('correctCount').textContent = correct;
+
+  let grade, color;
+  if (score >= 90) { grade = '🏆 금메달 — 완벽한 이해!'; color = '#16a34a'; }
+  else if (score >= 70) { grade = '🥈 은메달 — 훌륭합니다!'; color = '#2563eb'; }
+  else if (score >= 50) { grade = '🥉 동메달 — 복습이 필요해요'; color = '#f59e0b'; }
+  else { grade = '📚 다시 도전하세요!'; color = '#e11d48'; }
+
+  document.getElementById('gradeText').textContent = grade;
+  document.getElementById('gradeText').style.color = color;
+  document.getElementById('finalScore').style.color = color;
+
+  // breakdown
+  const qLabels = {
+    q1:'Q1. S&P 지지선', q2:'Q2. 마이크론 실적', q3:'Q3. 메타 목표가',
+    q4:'Q4. 금 이동평균', q5:'Q5. YTD 낙폭 지수', q6:'Q6. FOMC 금리',
+    q7:'Q7. 유틸리티 종목', q8:'Q8. 장기투자 구별', q9:'Q9. 호르무즈 시나리오', q10:'Q10. 내부자 거래'
+  };
+  let html = '';
+  Object.keys(qLabels).forEach(k => {
+    const r = results[k];
+    const icon = r === 'correct' || r === 'reveal' ? '✅' : (r === 'wrong' ? '❌' : '—');
+    html += `<div class="sb-row"><span>${qLabels[k]}</span><span>${icon}</span></div>`;
+  });
+  document.getElementById('scoreBreakdown').innerHTML = html;
+}
+
+// ── RETRY ─────────────────────────────────────────────────────────
+function retryQuiz() {
+  score = 0; answeredQ.clear(); results = {}; currentQ = 1;
+  document.getElementById('scoreScreen').classList.remove('show');
+
+  document.querySelectorAll('.q-card').forEach(c => c.classList.remove('active'));
+  document.getElementById('q1').classList.add('active');
+
+  // Reset all options
+  document.querySelectorAll('.option').forEach(o => {
+    o.className = 'option';
+    o.removeAttribute('disabled');
+  });
+  document.querySelectorAll('.ox-btn').forEach(b => {
+    b.className = 'ox-btn';
+    b.removeAttribute('disabled');
+  });
+  document.querySelectorAll('.sa-input').forEach(i => {
+    i.value = ''; i.style.borderColor = '';
+    i.removeAttribute('disabled');
+  });
+  document.querySelectorAll('.sa-submit').forEach(b => b.removeAttribute('disabled'));
+  document.querySelectorAll('.answer-reveal').forEach(r => {
+    r.classList.remove('show','wrong-reveal');
+    const lbl = r.querySelector('.answer-label');
+    if (lbl) { lbl.textContent = '✓ 정답'; lbl.classList.remove('wrong-lbl'); }
+  });
+
+  updateProgress();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+updateProgress();
+</script>
+</body>
+</html>
