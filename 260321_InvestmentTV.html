@@ -1,0 +1,1040 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>미국 증시 분석 리포트 | 2026.03.21</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Noto+Serif+KR:wght@400;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg: #ffffff;
+    --bg2: #fafafa;
+    --text: #1a1a1a;
+    --text2: #777777;
+    --red: #e11d48;
+    --red2: #f43f5e;
+    --c1: #e11d48;
+    --c2: #1a1a1a;
+    --c3: #6b7280;
+    --c4: #2563eb;
+    --border: #e5e5e5;
+    --tbl-header: #e11d48;
+    --tbl-bg: #fafafa;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 15px;
+    line-height: 1.75;
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 0 16px;
+  }
+
+  /* ── Header ── */
+  .masthead {
+    border-top: 3px solid var(--red);
+    border-bottom: 1px solid var(--border);
+    text-align: center;
+    padding: 36px 0 24px;
+    margin-bottom: 32px;
+  }
+  .masthead .issue-label {
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--red);
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+  .masthead h1 {
+    font-family: 'Playfair Display', 'Noto Serif KR', serif;
+    font-size: clamp(24px, 6vw, 38px);
+    font-weight: 900;
+    line-height: 1.15;
+    color: var(--text);
+    margin-bottom: 14px;
+  }
+  .masthead h1 em { color: var(--red); font-style: normal; }
+  .masthead .sub {
+    color: var(--text2);
+    font-size: 13px;
+    letter-spacing: 0.04em;
+  }
+
+  /* ── Deck / Lead ── */
+  .deck {
+    background: var(--bg2);
+    border-left: 4px solid var(--red);
+    padding: 18px 20px;
+    margin-bottom: 36px;
+    font-size: 15px;
+    color: var(--text);
+  }
+  .deck strong { color: var(--red); }
+
+  /* ── Section headers ── */
+  .sec-label {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--red);
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  h2.sec-title {
+    font-family: 'Playfair Display', 'Noto Serif KR', serif;
+    font-size: clamp(20px, 5vw, 27px);
+    font-weight: 700;
+    margin-bottom: 14px;
+    color: var(--text);
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 10px;
+  }
+  h3.sub-title {
+    font-size: 15px;
+    font-weight: 700;
+    margin: 20px 0 8px;
+    color: var(--text);
+  }
+  section { margin-bottom: 48px; }
+
+  /* ── Pull quote ── */
+  .pull-quote {
+    border-top: 2px solid var(--red);
+    border-bottom: 2px solid var(--border);
+    padding: 18px 0;
+    margin: 28px 0;
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(17px, 4.5vw, 22px);
+    font-style: italic;
+    color: var(--text);
+    line-height: 1.5;
+  }
+  .pull-quote cite {
+    display: block;
+    font-size: 12px;
+    color: var(--red);
+    font-style: normal;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    margin-top: 8px;
+  }
+
+  /* ── Tag pills ── */
+  .tag { display: inline-block; background: var(--red); color: #fff; font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 2px; margin: 2px 2px 2px 0; letter-spacing: 0.06em; }
+  .tag.blue { background: var(--c4); }
+  .tag.gray { background: var(--c3); }
+
+  /* ── Key stat cards ── */
+  .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 20px 0; }
+  .stat-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    padding: 16px 14px;
+    border-top: 3px solid var(--red);
+  }
+  .stat-card .val { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 900; color: var(--red); line-height: 1.1; }
+  .stat-card .lbl { font-size: 12px; color: var(--text2); margin-top: 4px; line-height: 1.4; }
+
+  /* ── Table ── */
+  .tbl-wrap { overflow-x: auto; margin: 16px 0; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th { background: var(--tbl-header); color: #fff; padding: 9px 12px; text-align: left; font-weight: 700; }
+  td { background: var(--tbl-bg); padding: 8px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+
+  /* ── Chart containers ── */
+  .fade-in { opacity: 0; transform: translateY(18px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .fade-in.visible { opacity: 1; transform: translateY(0); }
+  .chart-container { position: relative; max-height: 340px; margin: 20px 0; }
+  .chart-container canvas { opacity: 0; transition: opacity 0.4s ease; max-height: 300px; }
+  .chart-container.chart-ready canvas { opacity: 1; }
+  .chart-title { font-size: 12px; font-weight: 700; color: var(--text2); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 6px; }
+
+  /* ── Simulator ── */
+  .simulator {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    padding: 20px;
+    margin: 24px 0;
+    border-radius: 2px;
+  }
+  .simulator h4 { font-size: 14px; font-weight: 700; margin-bottom: 16px; color: var(--text); display: flex; align-items: center; gap: 8px; }
+  .simulator h4::before { content: ''; display: inline-block; width: 14px; height: 14px; background: var(--red); }
+  .sim-row { margin-bottom: 16px; }
+  .sim-row label { font-size: 12px; color: var(--text2); display: flex; justify-content: space-between; margin-bottom: 5px; }
+  .sim-row label span { font-weight: 700; color: var(--red); font-size: 13px; }
+  input[type=range] {
+    width: 100%; -webkit-appearance: none; height: 4px; background: var(--border);
+    border-radius: 2px; outline: none; cursor: pointer;
+  }
+  input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none; width: 18px; height: 18px; background: var(--red);
+    border-radius: 50%; cursor: pointer; border: 2px solid #fff; box-shadow: 0 0 0 2px var(--red);
+  }
+  .sim-result {
+    background: var(--text);
+    color: #fff;
+    padding: 16px;
+    margin-top: 16px;
+    font-size: 13px;
+    line-height: 1.7;
+  }
+  .sim-result .r-val { font-family: 'Playfair Display', serif; font-size: 22px; color: var(--red2); font-weight: 900; }
+  .sim-result .r-label { font-size: 11px; color: #aaa; }
+  .sim-result-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .reset-btn {
+    background: transparent; border: 1px solid var(--border); color: var(--text2);
+    padding: 7px 14px; font-size: 12px; cursor: pointer; margin-top: 10px;
+    font-family: 'Noto Sans KR', sans-serif; letter-spacing: 0.05em;
+    transition: all 0.2s;
+  }
+  .reset-btn:hover { background: var(--red); color: #fff; border-color: var(--red); }
+
+  /* ── Risk matrix ── */
+  .risk-matrix { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 16px 0; }
+  .risk-card { border: 1px solid var(--border); padding: 14px; background: var(--bg2); cursor: pointer; transition: all 0.2s; }
+  .risk-card:hover { border-color: var(--red); }
+  .risk-card.active { border-color: var(--red); background: #fff5f7; }
+  .risk-card .rc-head { font-size: 12px; font-weight: 700; color: var(--red); margin-bottom: 6px; }
+  .risk-card .rc-body { font-size: 12px; color: var(--text); display: none; line-height: 1.6; }
+  .risk-card.active .rc-body { display: block; }
+  .risk-card .rc-hint { font-size: 11px; color: var(--text2); margin-top: 4px; }
+
+  /* ── Sector rotation ── */
+  .sector-grid { display: flex; flex-direction: column; gap: 8px; margin: 16px 0; }
+  .sector-row { display: flex; align-items: center; gap: 10px; }
+  .sector-row .s-name { font-size: 12px; width: 90px; flex-shrink: 0; color: var(--text); font-weight: 500; }
+  .sector-row .s-bar-wrap { flex: 1; background: var(--border); height: 22px; position: relative; overflow: hidden; }
+  .sector-row .s-bar { height: 100%; background: var(--c1); transition: width 0.8s ease; display: flex; align-items: center; padding: 0 8px; }
+  .sector-row .s-bar.blue { background: var(--c4); }
+  .sector-row .s-bar.gray { background: var(--c3); }
+  .sector-row .s-bar.dark { background: var(--c2); }
+  .sector-row .s-val { font-size: 11px; color: #fff; font-weight: 700; white-space: nowrap; }
+  .sector-row .s-note { font-size: 11px; color: var(--text2); width: 60px; text-align: right; flex-shrink: 0; }
+
+  /* ── Asset allocation toggle ── */
+  .alloc-tabs { display: flex; border-bottom: 2px solid var(--border); margin-bottom: 16px; }
+  .alloc-tab { padding: 8px 14px; font-size: 12px; font-weight: 700; cursor: pointer; color: var(--text2); border-bottom: 2px solid transparent; margin-bottom: -2px; }
+  .alloc-tab.active { color: var(--red); border-bottom-color: var(--red); }
+  .alloc-panel { display: none; }
+  .alloc-panel.active { display: block; }
+
+  /* ── War history ── */
+  .timeline { position: relative; padding-left: 22px; margin: 16px 0; }
+  .timeline::before { content: ''; position: absolute; left: 6px; top: 0; bottom: 0; width: 2px; background: var(--border); }
+  .tl-item { position: relative; margin-bottom: 20px; }
+  .tl-item::before { content: ''; position: absolute; left: -19px; top: 5px; width: 10px; height: 10px; background: var(--red); border-radius: 50%; }
+  .tl-item .tl-year { font-size: 11px; font-weight: 700; color: var(--red); letter-spacing: 0.08em; }
+  .tl-item .tl-event { font-size: 13px; font-weight: 700; margin: 2px 0; }
+  .tl-item .tl-result { font-size: 12px; color: var(--text2); }
+  .tl-item .tl-badge { display: inline-block; font-size: 10px; font-weight: 700; padding: 2px 7px; background: #d1fae5; color: #065f46; border-radius: 2px; margin-top: 4px; }
+  .tl-item .tl-badge.red { background: #fee2e2; color: #991b1b; }
+
+  /* ── Divider ── */
+  .divider { border: none; border-top: 1px solid var(--border); margin: 32px 0; }
+
+  /* ── Footer ── */
+  footer { border-top: 3px solid var(--red); padding: 24px 0; text-align: center; color: var(--text2); font-size: 12px; line-height: 1.8; margin-top: 32px; }
+  footer strong { color: var(--text); }
+
+  /* ── Quiz section (hidden) ── */
+  .quiz-gate { background: var(--text); color: #fff; padding: 24px; margin: 32px 0; text-align: center; }
+  .quiz-gate h3 { font-family: 'Playfair Display', serif; font-size: 22px; margin-bottom: 8px; }
+  .quiz-gate p { font-size: 13px; color: #bbb; margin-bottom: 16px; }
+  .quiz-btn { background: var(--red); color: #fff; border: none; padding: 12px 28px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: 'Noto Sans KR', sans-serif; letter-spacing: 0.06em; }
+  .quiz-btn:hover { background: var(--red2); }
+
+  #quiz-section { display: none; }
+  .q-item { border: 1px solid var(--border); padding: 18px; margin-bottom: 16px; background: var(--bg2); }
+  .q-num { font-size: 11px; font-weight: 700; color: var(--red); letter-spacing: 0.1em; margin-bottom: 6px; }
+  .q-text { font-size: 14px; font-weight: 700; margin-bottom: 12px; line-height: 1.6; }
+  .q-options { list-style: none; }
+  .q-options li { padding: 8px 12px; margin-bottom: 6px; background: #fff; border: 1px solid var(--border); cursor: pointer; font-size: 13px; transition: all 0.2s; border-radius: 1px; }
+  .q-options li:hover { border-color: var(--red); background: #fff5f7; }
+  .q-options li.correct { background: #d1fae5; border-color: #059669; color: #065f46; }
+  .q-options li.wrong { background: #fee2e2; border-color: #dc2626; color: #991b1b; }
+  .q-options li.disabled { cursor: default; pointer-events: none; }
+  .q-input { width: 100%; border: 1px solid var(--border); padding: 9px 12px; font-size: 13px; font-family: 'Noto Sans KR', sans-serif; outline: none; }
+  .q-input:focus { border-color: var(--red); }
+  .q-submit { background: var(--red); color: #fff; border: none; padding: 8px 18px; font-size: 12px; font-weight: 700; cursor: pointer; margin-top: 8px; font-family: 'Noto Sans KR', sans-serif; }
+  .q-explain { margin-top: 10px; padding: 10px 12px; background: #fff; border-left: 3px solid var(--red); font-size: 12px; color: var(--text); line-height: 1.6; display: none; }
+  .q-explain.show { display: block; }
+  .score-board { background: var(--text); color: #fff; padding: 24px; text-align: center; margin-top: 24px; display: none; }
+  .score-board .s-num { font-family: 'Playfair Display', serif; font-size: 52px; font-weight: 900; color: var(--red2); }
+  .score-board .s-label { font-size: 14px; color: #bbb; margin-bottom: 8px; }
+  .score-board .s-msg { font-size: 14px; margin-top: 8px; }
+
+  @media (max-width: 400px) {
+    .stat-grid { grid-template-columns: 1fr 1fr; }
+    .risk-matrix { grid-template-columns: 1fr; }
+    .sim-result-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- MASTHEAD -->
+<div class="masthead fade-in">
+  <div class="issue-label">US MARKET ANALYSIS · 2026.03.21</div>
+  <h1>이란 전쟁 확대와<br><em>연준 동결</em>의 충돌</h1>
+  <div class="sub">유가 급등 · 인플레이션 리스크 · 섹터 로테이션 전략 분석</div>
+</div>
+
+<!-- DECK -->
+<div class="deck fade-in">
+  <strong>핵심 요약:</strong> FOMC 금리 동결이 예상됐음에도 이란 전쟁 장기화로 유가가 배럴당 <strong>$100 이상</strong> 급등하며 인플레이션 리스크가 재확대됐다. 그러나 역사적으로 미국이 분쟁에 개입했을 때 US 증시는 <strong>75~85%</strong> 확률로 상승했다. 지금은 "팔 때"가 아니라 <strong>"무엇을 살 때"</strong>다.
+</div>
+
+<!-- SECTION 1: MACRO -->
+<section>
+  <div class="sec-label fade-in">거시경제 배경</div>
+  <h2 class="sec-title fade-in">지금 시장을 움직이는 두 가지 힘</h2>
+
+  <div class="stat-grid">
+    <div class="stat-card fade-in">
+      <div class="val">$100+</div>
+      <div class="lbl">이란 전쟁 장기화로<br>치솟은 유가(배럴당)</div>
+    </div>
+    <div class="stat-card fade-in">
+      <div class="val">동결</div>
+      <div class="lbl">최근 FOMC 결정<br>금리 인하 없음</div>
+    </div>
+    <div class="stat-card fade-in">
+      <div class="val">4%대</div>
+      <div class="lbl">미 10년 국채 금리<br>(지속 상승 중)</div>
+    </div>
+    <div class="stat-card fade-in">
+      <div class="val">10~50%</div>
+      <div class="lbl">선제적 현금 비중 확대<br>권고 범위</div>
+    </div>
+  </div>
+
+  <p class="fade-in">이번 하락은 두 악재의 복합 작용이다. ① FOMC 이후 연내 금리 인하 기대감 소멸, ② 이란 전쟁 장기화로 인한 유가 급등 → 인플레이션 재점화 우려. 유가 상승은 관세발 인플레이션에 에너지 인플레이션까지 더해져 연준의 정책 전환(피벗)을 더욱 어렵게 만든다.</p>
+
+  <div class="pull-quote fade-in">
+    "인플레이션이 올라가는데 현금을 쥐고 있어야 되는 게 맞느냐? 전혀 아니다."
+    <cite>— 강사, 자산 클래스 선택의 중요성 강조</cite>
+  </div>
+
+  <h3 class="sub-title fade-in">인플레이션 국면에서 자산별 매력도</h3>
+  <p class="fade-in">인플레이션이 높아질수록 각 자산의 실질 가치는 달라진다. 아래 표는 현재 국면에서의 자산별 투자 적합성을 정리한 것이다.</p>
+
+  <div class="tbl-wrap fade-in">
+    <table>
+      <thead><tr><th>자산 클래스</th><th>인플레이션 국면 적합도</th><th>주요 이유</th></tr></thead>
+      <tbody>
+        <tr><td>현금</td><td>🔴 부적합</td><td>인플레이션에 실질 가치 잠식</td></tr>
+        <tr><td>단기 국채(T-bill)</td><td>🟡 보통</td><td>금리 상승 시 재투자 이익 있으나 제한적</td></tr>
+        <tr><td>10년 국채</td><td>🟠 주의</td><td>금리 상승 = 가격 하락, 타이밍 필요</td></tr>
+        <tr><td>BBB급 이하 회사채</td><td>🔴 위험</td><td>수익률 상승에도 신용 리스크 증가</td></tr>
+        <tr><td>에너지주 (단기)</td><td>🟡 단기 유리</td><td>유가 상승 수혜, 장기 지속성 불확실</td></tr>
+        <tr><td>우량 주식·ETF</td><td>🟢 유리</td><td>기업 실적이 인플레이션 일부 전가 가능</td></tr>
+        <tr><td>금(Gold)</td><td>🟢 유리</td><td>실물 자산, 인플레이션 헤지 전통 자산</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- SECTION 2: FED POLICY -->
+<section>
+  <div class="sec-label fade-in">연준 정책 분석</div>
+  <h2 class="sec-title fade-in">금리 인하는 왜 어려워졌나</h2>
+
+  <p class="fade-in">연준이 금리를 인하하려면 인플레이션이 목표치(2%)에 충분히 수렴해야 한다. 그런데 현재 두 개의 인플레이션 가압 요인이 동시에 작동하고 있다.</p>
+
+  <div class="chart-container fade-in">
+    <div class="chart-title">인플레이션 가압 요인 — 기여도 개요 (모식도)</div>
+    <canvas id="inflationChart" height="230"></canvas>
+  </div>
+
+  <div class="tbl-wrap fade-in">
+    <table>
+      <thead><tr><th>요인</th><th>경로</th><th>영향</th></tr></thead>
+      <tbody>
+        <tr><td>관세 인상</td><td>수입물가 상승 → CPI 상방 압력</td><td>구조적, 장기 지속</td></tr>
+        <tr><td>유가 급등 ($100+)</td><td>에너지·운송비 상승 → 전반적 물가 반영</td><td>단기 급등, 변동성 큼</td></tr>
+        <tr><td>노동시장 견조</td><td>서비스 인플레이션 유지</td><td>점진적 하락 지연</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="fade-in">10년 국채 금리가 4%대를 유지하고 있고, 시장의 <strong>금리 인하 기대가 연내 소멸</strong>된 상황이다. 국채 가격이 오르면(금리 하락 시) 일부 펀드가 유입되지만, 현재는 인플레이션 헤지 펀드로 자금이 분산되는 흐름이다.</p>
+
+  <!-- Simulator: Rate cut probability -->
+  <div class="simulator fade-in">
+    <h4>금리 인하 타이밍 시뮬레이터</h4>
+    <div class="sim-row">
+      <label>유가 수준 (배럴당 $) <span id="oil-val">100</span></label>
+      <input type="range" id="oil-slider" min="60" max="150" value="100" step="5">
+    </div>
+    <div class="sim-row">
+      <label>관세 평균 세율 (%) <span id="tariff-val">20</span></label>
+      <input type="range" id="tariff-slider" min="5" max="50" value="20" step="5">
+    </div>
+    <div class="sim-row">
+      <label>실업률 (%) <span id="unemp-val">4.0</span></label>
+      <input type="range" id="unemp-slider" min="3.5" max="7.0" value="4.0" step="0.5">
+    </div>
+    <div class="sim-result" id="rate-result">
+      <div class="sim-result-grid">
+        <div>
+          <div class="r-label">연내 금리 인하 확률</div>
+          <div class="r-val" id="cut-prob">12%</div>
+        </div>
+        <div>
+          <div class="r-label">인플레이션 위험도</div>
+          <div class="r-val" id="inf-risk">🔴 높음</div>
+        </div>
+      </div>
+      <div id="rate-comment" style="font-size:12px;color:#ccc;"></div>
+    </div>
+    <button class="reset-btn" onclick="resetRateSim()">↺ 초기화</button>
+  </div>
+</section>
+
+<!-- SECTION 3: WAR & MARKET -->
+<section>
+  <div class="sec-label fade-in">지정학 리스크 분석</div>
+  <h2 class="sec-title fade-in">전쟁과 미국 증시 — 역사가 말하는 것</h2>
+
+  <p class="fade-in">과거 20여 년의 데이터를 보면, 미국이 군사적 분쟁에 개입한 이후 US 증시는 단기 충격 이후 회복·상승하는 패턴이 <strong>75~85%</strong> 확률로 반복됐다. 이란 전쟁이 1년, 2년을 끌더라도 미국 경제 펀더멘털에 미치는 직접적 영향은 제한적이다.</p>
+
+  <div class="chart-container fade-in">
+    <div class="chart-title">미국 주요 전쟁·분쟁 후 S&P 500 회복 패턴 (모식도)</div>
+    <canvas id="warChart" height="230"></canvas>
+  </div>
+
+  <h3 class="sub-title fade-in">미국이 에너지 독립국인 이유</h3>
+  <p class="fade-in">러시아-우크라이나 전쟁 당시 독일 등 유럽은 가스 공급 차단으로 심각한 경제적 타격을 입었다. 반면 미국은 셰일가스, 전략 비축유 등을 통해 에너지 자급자족이 가능해 중동 전쟁의 유가 충격을 상대적으로 완충할 수 있다.</p>
+
+  <div class="timeline fade-in">
+    <div class="tl-item">
+      <div class="tl-year">2003</div>
+      <div class="tl-event">이라크 전쟁 발발</div>
+      <div class="tl-result">단기 변동성 → 전쟁 기간 내내 미 증시 상승장</div>
+      <div class="tl-badge">증시 상승</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-year">2014</div>
+      <div class="tl-event">크림반도 전쟁</div>
+      <div class="tl-result">유가 변동 → 급반등, 미국 직접 영향 미미</div>
+      <div class="tl-badge">증시 회복</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-year">2022</div>
+      <div class="tl-event">러시아-우크라이나 전쟁</div>
+      <div class="tl-result">유럽 에너지 위기 / 미국은 에너지 독립으로 상대적 완충</div>
+      <div class="tl-badge red">유럽 타격</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-year">2026</div>
+      <div class="tl-event">이란 전쟁 장기화</div>
+      <div class="tl-result">유가 $100+ / 단기 하락 → 역사적 패턴 반복 가능성</div>
+      <div class="tl-badge">관찰 중</div>
+    </div>
+  </div>
+
+  <p class="fade-in">강사는 미국이 관여할 수 있는 분쟁 상대국이 130개국 중 약 10% 수준임을 지적한다. 러시아·중국과의 전면전은 현실적으로 불가능하므로, 중동·남미 등 <strong>국지전 수준의 분쟁은 미국 입장에서 "경제적 수익"</strong>이 동반되는 구조다.</p>
+</section>
+
+<!-- SECTION 4: SECTOR ROTATION -->
+<section>
+  <div class="sec-label fade-in">포트폴리오 전략</div>
+  <h2 class="sec-title fade-in">섹터 로테이션 & 리밸런싱 전략</h2>
+
+  <p class="fade-in"><strong>섹터 로테이션</strong>이란 경기 사이클과 거시 환경 변화에 따라 유망 섹터로 자금을 이동시키는 전략이다. 현재 국면에서 강사는 다음과 같은 방향성을 제시한다.</p>
+
+  <h3 class="sub-title fade-in">현 국면 섹터별 매력도 평가</h3>
+  <div class="sector-grid fade-in" id="sector-grid">
+    <div class="sector-row"><span class="s-name">에너지</span><div class="s-bar-wrap"><div class="s-bar" style="width:0%" data-w="65"><span class="s-val">단기 유리</span></div></div><span class="s-note">⚠️ 단기만</span></div>
+    <div class="sector-row"><span class="s-name">방산·산업재</span><div class="s-bar-wrap"><div class="s-bar blue" style="width:0%" data-w="80"><span class="s-val">전쟁 수혜</span></div></div><span class="s-note">✅ 긍정</span></div>
+    <div class="sector-row"><span class="s-name">헬스케어</span><div class="s-bar-wrap"><div class="s-bar blue" style="width:0%" data-w="75"><span class="s-val">경기방어</span></div></div><span class="s-note">✅ 긍정</span></div>
+    <div class="sector-row"><span class="s-name">필수소비재</span><div class="s-bar-wrap"><div class="s-bar dark" style="width:0%" data-w="70"><span class="s-val">방어적</span></div></div><span class="s-note">✅ 안정</span></div>
+    <div class="sector-row"><span class="s-name">기술주</span><div class="s-bar-wrap"><div class="s-bar gray" style="width:0%" data-w="60"><span class="s-val">변동성↑</span></div></div><span class="s-note">🟡 중립</span></div>
+    <div class="sector-row"><span class="s-name">부동산(REIT)</span><div class="s-bar-wrap"><div class="s-bar gray" style="width:0%" data-w="35"><span class="s-val">금리 부담</span></div></div><span class="s-note">🔴 부정</span></div>
+    <div class="sector-row"><span class="s-name">유틸리티</span><div class="s-bar-wrap"><div class="s-bar gray" style="width:0%" data-w="45"><span class="s-val">금리 부담</span></div></div><span class="s-note">🟡 혼조</span></div>
+  </div>
+
+  <div class="alloc-tabs fade-in">
+    <div class="alloc-tab active" onclick="switchTab(this,'tab-stable')">안정형</div>
+    <div class="alloc-tab" onclick="switchTab(this,'tab-growth')">성장형</div>
+    <div class="alloc-tab" onclick="switchTab(this,'tab-aggressive')">공격형</div>
+  </div>
+
+  <div class="alloc-panel active" id="tab-stable">
+    <div class="chart-container fade-in">
+      <div class="chart-title">안정형 포트폴리오 배분 예시</div>
+      <canvas id="allocStableChart" height="220"></canvas>
+    </div>
+    <p style="font-size:12px;color:var(--text2);margin-top:8px;">현금 30%, 우량 주식 35%, 방어 섹터 ETF 20%, 금/원자재 15%. 인플레이션 리스크 헤지에 초점.</p>
+  </div>
+  <div class="alloc-panel" id="tab-growth">
+    <div class="chart-container fade-in">
+      <div class="chart-title">성장형 포트폴리오 배분 예시</div>
+      <canvas id="allocGrowthChart" height="220"></canvas>
+    </div>
+    <p style="font-size:12px;color:var(--text2);margin-top:8px;">현금 15%, 성장주 45%, 방어 섹터 20%, 에너지 10%, 금 10%. 적극적 리밸런싱 필요.</p>
+  </div>
+  <div class="alloc-panel" id="tab-aggressive">
+    <div class="chart-container fade-in">
+      <div class="chart-title">공격형 포트폴리오 배분 예시</div>
+      <canvas id="allocAggressChart" height="220"></canvas>
+    </div>
+    <p style="font-size:12px;color:var(--text2);margin-top:8px;">현금 10%, 성장주·기술주 55%, 방어 섹터 15%, 에너지 12%, 금 8%. 고위험·고수익 지향.</p>
+  </div>
+
+  <h3 class="sub-title fade-in">리밸런싱의 목적</h3>
+  <p class="fade-in"><strong>리밸런싱(Rebalancing)</strong>이란 목표 자산 배분 비율을 유지하기 위해 오른 자산을 일부 매도하고 내린 자산을 매수하는 행위다. 강사는 현재 국면에서 리밸런싱의 핵심은 "투자 자산 전체를 빼는 것이 아니라, 변동성을 줄이기 위해 현금 비중을 10~50% 조정한 것"임을 강조한다.</p>
+</section>
+
+<!-- SECTION 5: RISK -->
+<section>
+  <div class="sec-label fade-in">위험 관리</div>
+  <h2 class="sec-title fade-in">시스테믹 리스크 vs 노이즈 — 어떻게 구분하나</h2>
+
+  <p class="fade-in"><strong>시스테믹 리스크(Systemic Risk)</strong>란 금융 시스템 전체가 붕괴할 수 있는 위험으로, 2008년 금융위기처럼 연쇄 도산과 지속적 하락장을 수반한다. 강사는 현재 이란 전쟁은 "노이즈"이며 시스테믹 리스크 신호는 보이지 않는다고 평가한다.</p>
+
+  <p class="fade-in" style="margin-bottom:12px;">아래 카드를 탭해서 각 리스크 유형의 특징을 확인하세요.</p>
+  <div class="risk-matrix fade-in" id="risk-matrix">
+    <div class="risk-card" onclick="toggleRisk(this)">
+      <div class="rc-head">🔊 노이즈 (현재)</div>
+      <div class="rc-body">뉴스에 의한 단기 변동성. 이란 전쟁, 유가 급등 등. 역사적으로 빠른 회복 패턴. 과도한 반응 시 손실 가능.</div>
+      <div class="rc-hint">탭하여 자세히 보기</div>
+    </div>
+    <div class="risk-card" onclick="toggleRisk(this)">
+      <div class="rc-head">⚠️ 시스테믹 리스크</div>
+      <div class="rc-body">금융 시스템 전반 붕괴 위험. 연쇄 은행 도산, 신용 경색 동반. 2008년 리먼 사태가 대표 사례.</div>
+      <div class="rc-hint">탭하여 자세히 보기</div>
+    </div>
+    <div class="risk-card" onclick="toggleRisk(this)">
+      <div class="rc-head">📉 인플레이션 리스크</div>
+      <div class="rc-body">관세+유가 상승으로 인플레이션 재점화. 연준 금리 인하 지연. 현금 보유 가치 잠식. 장기 보유 전략 수정 필요.</div>
+      <div class="rc-hint">탭하여 자세히 보기</div>
+    </div>
+    <div class="risk-card" onclick="toggleRisk(this)">
+      <div class="rc-head">💡 기회 리스크</div>
+      <div class="rc-body">변동성 큰 시장에서 저평가 자산 매수 기회. "민물과 썰물이 만나는 곳에 고기가 많다"는 강사의 비유처럼, 변동성=기회.</div>
+      <div class="rc-hint">탭하여 자세히 보기</div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 6: INVESTMENT CHECKLIST -->
+<section>
+  <div class="sec-label fade-in">투자 액션 플랜</div>
+  <h2 class="sec-title fade-in">지금 해야 할 것 — 선택과 집중</h2>
+
+  <p class="fade-in">강사가 강조하는 현 국면 투자 원칙을 정리했다.</p>
+
+  <div class="tbl-wrap fade-in">
+    <table>
+      <thead><tr><th>원칙</th><th>실행 방향</th><th>주의사항</th></tr></thead>
+      <tbody>
+        <tr><td>✅ 현금 비중 선제 조정</td><td>10~50% 현금화로 변동성 버퍼 확보</td><td>장기 현금 보유는 인플레이션에 노출</td></tr>
+        <tr><td>✅ 팔 때가 아니라 살 때</td><td>가격 하락 시 우량 자산 매수 기회 포착</td><td>에너지주 단기 급등에 대량 투자 자제</td></tr>
+        <tr><td>✅ 섹터 로테이션 실행</td><td>방어 섹터(헬스케어·방산·필수소비재) 비중 확대</td><td>REIT·유틸리티 금리 민감 섹터 축소</td></tr>
+        <tr><td>✅ 뉴스 노이즈 분리</td><td>단기 뉴스에 과도 반응 자제, 데이터 기반 판단</td><td>뉴스에 의한 충동 매매 금지</td></tr>
+        <tr><td>✅ 분산 투자 유지</td><td>주식+금+단기 채권 등 자산 분산</td><td>한 자산 집중 투자 위험</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Portfolio Return Simulator -->
+  <div class="simulator fade-in">
+    <h4>포트폴리오 수익률 시뮬레이터</h4>
+    <div class="sim-row">
+      <label>총 투자금액 (만원) <span id="invest-val">1,000</span></label>
+      <input type="range" id="invest-slider" min="100" max="10000" value="1000" step="100">
+    </div>
+    <div class="sim-row">
+      <label>현금 비중 (%) <span id="cash-val">20</span></label>
+      <input type="range" id="cash-slider" min="0" max="60" value="20" step="5">
+    </div>
+    <div class="sim-row">
+      <label>예상 연 수익률 (%) <span id="return-val">8</span></label>
+      <input type="range" id="return-slider" min="3" max="20" value="8" step="1">
+    </div>
+    <div class="sim-row">
+      <label>투자 기간 (년) <span id="period-val">5</span></label>
+      <input type="range" id="period-slider" min="1" max="20" value="5" step="1">
+    </div>
+    <div class="sim-result">
+      <div class="sim-result-grid">
+        <div>
+          <div class="r-label">5년 후 투자 자산 예상액</div>
+          <div class="r-val" id="port-result-val">1,176만원</div>
+        </div>
+        <div>
+          <div class="r-label">현금 유보액</div>
+          <div class="r-val" id="port-cash-val">200만원</div>
+        </div>
+      </div>
+      <div id="port-comment" style="font-size:12px;color:#ccc;"></div>
+    </div>
+    <button class="reset-btn" onclick="resetPortSim()">↺ 초기화</button>
+  </div>
+</section>
+
+<!-- SECTION 7: OUTLOOK -->
+<section>
+  <div class="sec-label fade-in">단기 전망</div>
+  <h2 class="sec-title fade-in">향후 1~2주 시나리오</h2>
+
+  <div class="chart-container fade-in">
+    <div class="chart-title">시나리오별 시장 반응 예상</div>
+    <canvas id="scenarioChart" height="230"></canvas>
+  </div>
+
+  <div class="tbl-wrap fade-in">
+    <table>
+      <thead><tr><th>시나리오</th><th>촉매</th><th>시장 반응</th><th>확률</th></tr></thead>
+      <tbody>
+        <tr><td>🟢 낙관: 협상 뉴스</td><td>이란 전쟁 휴전·협상 신호</td><td>유가 급락 + 증시 급반등</td><td>35%</td></tr>
+        <tr><td>🟡 중립: 현상 유지</td><td>전쟁 교착, 유가 $90~$105</td><td>박스권, 섹터별 차별화</td><td>45%</td></tr>
+        <tr><td>🔴 비관: 확전</td><td>인접국 개입, 호르무즈 봉쇄</td><td>유가 $120+ / 추가 하락</td><td>20%</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="fade-in">강사는 1~2주 내 "굿뉴스" 출현 가능성을 높게 보며, 현재 시장 하락이 리세션(경기침체)으로 이어질 시스테믹 위험 신호는 현재 데이터상 없다고 강조한다. 단, 다음 주 발표될 경제 지표에 따라 시각이 바뀔 수 있음을 전제한다.</p>
+
+  <div class="pull-quote fade-in">
+    "변동성이 없는 시장보다는 위든 아래든 변동성이 큰 시장이 우리가 먹을 게 많습니다."
+    <cite>— 강사, 변동성을 기회로 보는 관점</cite>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- QUIZ GATE -->
+<div class="quiz-gate fade-in">
+  <h3>📝 이해도 테스트</h3>
+  <p>분석 내용을 얼마나 이해했는지 확인해보세요 (10문제)</p>
+  <button class="quiz-btn" onclick="startQuiz()">시험 시작하기</button>
+</div>
+
+<!-- QUIZ SECTION -->
+<div id="quiz-section">
+  <div class="sec-label" style="margin-top:32px">시험문제</div>
+  <h2 class="sec-title">미국 증시 투자 이해도 테스트</h2>
+  <p style="font-size:13px;color:var(--text2);margin-bottom:20px;">객관식·단답형·OX 혼합 | 총 10문제 | 클릭 또는 입력 후 확인 버튼을 누르세요</p>
+
+  <!-- Q1 -->
+  <div class="q-item">
+    <div class="q-num">Q1 · 객관식 · 쉬움</div>
+    <div class="q-text">현재 이란 전쟁 장기화로 인해 유가가 급등하면서 우려되는 주요 거시경제 위험은?</div>
+    <ul class="q-options" id="q1-opts">
+      <li onclick="selectOpt(this,'q1',0)">① 디플레이션(물가 하락)</li>
+      <li onclick="selectOpt(this,'q1',1)">② 인플레이션 재점화</li>
+      <li onclick="selectOpt(this,'q1',2)">③ 달러 급락</li>
+      <li onclick="selectOpt(this,'q1',3)">④ 주택 가격 폭락</li>
+    </ul>
+    <div class="q-explain" id="q1-exp">✅ <strong>정답: ② 인플레이션 재점화.</strong> 유가 상승은 에너지 비용 전반을 높여 CPI 상방 압력을 가한다. 강사는 "관세 외에도 유가가 올라가면서 인플레이션 리스크가 더 커졌다"고 명시했다.</div>
+  </div>
+
+  <!-- Q2 -->
+  <div class="q-item">
+    <div class="q-num">Q2 · OX · 쉬움</div>
+    <div class="q-text">인플레이션이 높아질수록 현금을 장기 보유하는 것이 유리하다. (O / X)</div>
+    <ul class="q-options" id="q2-opts">
+      <li onclick="selectOpt(this,'q2',0)">O</li>
+      <li onclick="selectOpt(this,'q2',1)">X</li>
+    </ul>
+    <div class="q-explain" id="q2-exp">✅ <strong>정답: X.</strong> 인플레이션이 오르면 현금의 실질 구매력이 떨어진다. 강사는 "인플레이션 리스크에 노출된다"며 장기 현금 보유를 경계했다.</div>
+  </div>
+
+  <!-- Q3 -->
+  <div class="q-item">
+    <div class="q-num">Q3 · 객관식 · 쉬움</div>
+    <div class="q-text">10년 국채 금리가 상승할 때 국채 가격은 어떻게 변하는가?</div>
+    <ul class="q-options" id="q3-opts">
+      <li onclick="selectOpt(this,'q3',0)">① 상승한다</li>
+      <li onclick="selectOpt(this,'q3',1)">② 하락한다</li>
+      <li onclick="selectOpt(this,'q3',2)">③ 변하지 않는다</li>
+      <li onclick="selectOpt(this,'q3',3)">④ 두 배가 된다</li>
+    </ul>
+    <div class="q-explain" id="q3-exp">✅ <strong>정답: ② 하락한다.</strong> 금리와 채권 가격은 반비례 관계다. 금리 상승 → 신규 채권이 더 높은 수익률 제공 → 기존 채권 매력 감소 → 가격 하락.</div>
+  </div>
+
+  <!-- Q4 -->
+  <div class="q-item">
+    <div class="q-num">Q4 · 객관식 · 보통</div>
+    <div class="q-text">강사가 에너지주 대량 매수를 경계하는 가장 큰 이유는?</div>
+    <ul class="q-options" id="q4-opts">
+      <li onclick="selectOpt(this,'q4',0)">① 에너지 기업들이 적자이기 때문에</li>
+      <li onclick="selectOpt(this,'q4',1)">② 유가 상승이 단기적이며 장기 지속성이 불확실하기 때문에</li>
+      <li onclick="selectOpt(this,'q4',2)">③ 정부 규제로 에너지 주식 매수가 금지됐기 때문에</li>
+      <li onclick="selectOpt(this,'q4',3)">④ 에너지주는 인플레이션과 무관하기 때문에</li>
+    </ul>
+    <div class="q-explain" id="q4-exp">✅ <strong>정답: ②.</strong> 강사는 "단기적으로는 유리하나 장기적으로 유가가 계속 오른다는 판을 짜고 대량 투자하면 손해 가능성이 크다"고 명시했다.</div>
+  </div>
+
+  <!-- Q5 -->
+  <div class="q-item">
+    <div class="q-num">Q5 · 단답형 · 보통</div>
+    <div class="q-text">경기 사이클과 거시 환경 변화에 따라 유망 섹터로 자금을 이동하는 전략을 무엇이라 하는가?</div>
+    <input class="q-input" id="q5-input" type="text" placeholder="답을 입력하세요">
+    <br><button class="q-submit" onclick="checkTextQ('q5','섹터 로테이션','q5-exp')">확인</button>
+    <div class="q-explain" id="q5-exp">✅ <strong>정답: 섹터 로테이션.</strong> 인플레이션·금리·전쟁 등 거시 환경 변화에 따라 에너지, 방산, 헬스케어 등 유망 섹터로 자금을 이동시키는 전략이다.</div>
+  </div>
+
+  <!-- Q6 -->
+  <div class="q-item">
+    <div class="q-num">Q6 · 객관식 · 보통</div>
+    <div class="q-text">시스테믹 리스크(Systemic Risk)란 무엇인가?</div>
+    <ul class="q-options" id="q6-opts">
+      <li onclick="selectOpt(this,'q6',0)">① 한 기업의 주가가 급락하는 위험</li>
+      <li onclick="selectOpt(this,'q6',1)">② 금융 시스템 전체가 붕괴할 수 있는 구조적 위험</li>
+      <li onclick="selectOpt(this,'q6',2)">③ 유가가 급등하는 위험</li>
+      <li onclick="selectOpt(this,'q6',3)">④ 선거 결과가 시장에 미치는 위험</li>
+    </ul>
+    <div class="q-explain" id="q6-exp">✅ <strong>정답: ②.</strong> 시스테믹 리스크는 개별 기업이 아닌 금융 시스템 전체가 무너질 위험을 말한다. 강사는 현재 이런 수준의 위험은 없다고 판단한다.</div>
+  </div>
+
+  <!-- Q7 -->
+  <div class="q-item">
+    <div class="q-num">Q7 · OX · 보통</div>
+    <div class="q-text">미국이 이라크 전쟁(2003)을 수행하는 동안 미국 증시는 전반적으로 하락장이었다. (O / X)</div>
+    <ul class="q-options" id="q7-opts">
+      <li onclick="selectOpt(this,'q7',0)">O</li>
+      <li onclick="selectOpt(this,'q7',1)">X</li>
+    </ul>
+    <div class="q-explain" id="q7-exp">✅ <strong>정답: X.</strong> 강사에 따르면 2003년 이라크 전쟁 당시 단기 변동성 이후 미 증시는 전쟁 기간 내내 상승장이었다. 역사적으로 미국 관련 분쟁 후 75~85% 확률로 상승했다.</div>
+  </div>
+
+  <!-- Q8 -->
+  <div class="q-item">
+    <div class="q-num">Q8 · 객관식 · 보통</div>
+    <div class="q-text">리밸런싱(Rebalancing)의 핵심 목적은 무엇인가?</div>
+    <ul class="q-options" id="q8-opts">
+      <li onclick="selectOpt(this,'q8',0)">① 수익을 극대화하기 위해 모든 자산을 주식에 집중</li>
+      <li onclick="selectOpt(this,'q8',1)">② 목표 자산 배분 비율을 유지해 위험을 관리</li>
+      <li onclick="selectOpt(this,'q8',2)">③ 시장이 하락할 때 전량 매도하는 것</li>
+      <li onclick="selectOpt(this,'q8',3)">④ 부동산에 투자를 집중하는 전략</li>
+    </ul>
+    <div class="q-explain" id="q8-exp">✅ <strong>정답: ②.</strong> 리밸런싱은 오른 자산 일부 매도 + 내린 자산 매수로 목표 배분 비율을 유지하는 것이다. 강사는 "투자 자산 전체를 빼는 것이 아니다"라고 강조했다.</div>
+  </div>
+
+  <!-- Q9 -->
+  <div class="q-item">
+    <div class="q-num">Q9 · 단답형 · 어려움</div>
+    <div class="q-text">BBB급 이하 회사채를 인플레이션·금리 상승 국면에서 투자하기 어려운 이유를 한 문장으로 설명하시오.</div>
+    <input class="q-input" id="q9-input" type="text" placeholder="답을 입력하세요">
+    <br><button class="q-submit" onclick="checkTextQ('q9','신용','q9-exp')">확인</button>
+    <div class="q-explain" id="q9-exp">✅ <strong>모범 답안:</strong> 금리 상승으로 채권 가격은 하락하고, 경기 불확실성이 커질수록 BBB급 이하의 신용 리스크(부도 위험)도 증가하기 때문에 수익률(일드)이 높아지더라도 실질적 손실 위험이 크다.</div>
+  </div>
+
+  <!-- Q10 -->
+  <div class="q-item">
+    <div class="q-num">Q10 · 객관식 · 어려움</div>
+    <div class="q-text">미국이 에너지 관련 지정학적 충격에 상대적으로 강한 이유로 가장 적절한 것은?</div>
+    <ul class="q-options" id="q10-opts">
+      <li onclick="selectOpt(this,'q10',0)">① 미국은 원유를 전혀 사용하지 않기 때문에</li>
+      <li onclick="selectOpt(this,'q10',1)">② 셰일가스·전략 비축유 등을 통한 에너지 자급자족이 가능하기 때문에</li>
+      <li onclick="selectOpt(this,'q10',2)">③ 미국 연준이 유가를 직접 통제하기 때문에</li>
+      <li onclick="selectOpt(this,'q10',3)">④ OPEC 회원국이기 때문에</li>
+    </ul>
+    <div class="q-explain" id="q10-exp">✅ <strong>정답: ②.</strong> 강사는 미국이 셰일가스, 전략비축유, 정유 시설을 충분히 보유해 중동 분쟁의 유가 충격을 독립적으로 완충할 수 있다고 설명했다. 이는 유럽이 러시아 전쟁 시 가스 공급 차단으로 타격받은 것과 대조된다.</div>
+  </div>
+
+  <!-- Score Board -->
+  <div class="score-board" id="score-board">
+    <div class="s-label">최종 점수</div>
+    <div class="s-num" id="final-score">0</div>
+    <div style="font-size:14px;color:#bbb;">/ 10점</div>
+    <div class="s-msg" id="score-msg"></div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<footer>
+  <strong>미국 증시 분석 리포트</strong><br>
+  출처: YouTube 강의 자막 분석 (2026.03.21)<br>
+  본 자료는 투자 권유가 아닌 교육·분석 목적으로 제작됐습니다.<br>
+  투자 판단과 그에 따른 결과는 투자자 본인에게 귀속됩니다.
+</footer>
+
+<script>
+// ── Fade-in Observer ──
+const fadeObs = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), i * 80);
+      fadeObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.12 });
+document.querySelectorAll('.fade-in').forEach(el => fadeObs.observe(el));
+
+// ── Chart configs ──
+const chartConfigs = {};
+
+chartConfigs['inflationChart'] = () => {
+  new Chart(document.getElementById('inflationChart'), {
+    type: 'bar',
+    data: {
+      labels: ['관세 인플레이션', '유가 급등', '서비스 인플레이션', '연준 목표치'],
+      datasets: [{
+        label: '인플레이션 기여도 (모식)',
+        data: [1.8, 2.2, 1.5, 2.0],
+        backgroundColor: ['#e11d48','#f43f5e','#6b7280','#2563eb'],
+        borderRadius: 2
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${ctx.parsed.y}% 기여` } } },
+      scales: {
+        y: { beginAtZero: true, max: 3.0, ticks: { callback: v => v+'%', font:{size:11} }, grid: { color:'#f0f0f0' } },
+        x: { ticks: { font:{size:11} }, grid: { display:false } }
+      }
+    }
+  });
+};
+
+chartConfigs['warChart'] = () => {
+  new Chart(document.getElementById('warChart'), {
+    type: 'line',
+    data: {
+      labels: ['-3mo','분쟁 발발','+1mo','+3mo','+6mo','+12mo','+24mo'],
+      datasets: [
+        { label: '평균 패턴 (75~85% 케이스)', data: [100,92,96,103,108,118,132], borderColor:'#e11d48', backgroundColor:'rgba(225,29,72,0.08)', tension:0.4, pointRadius:4, fill:true },
+        { label: '이라크전(2003)', data: [100,88,94,101,107,115,128], borderColor:'#2563eb', backgroundColor:'transparent', tension:0.4, pointRadius:3, borderDash:[4,4] }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { position:'bottom', labels:{ font:{size:11}, boxWidth:14 } }, tooltip: { callbacks:{ label: ctx => ` 지수: ${ctx.parsed.y}` } } },
+      scales: {
+        y: { ticks:{ font:{size:11} }, grid:{ color:'#f0f0f0' } },
+        x: { ticks:{ font:{size:11} }, grid:{ display:false } }
+      }
+    }
+  });
+};
+
+const pieColors = ['#e11d48','#2563eb','#6b7280','#1a1a1a','#f43f5e'];
+
+chartConfigs['allocStableChart'] = () => {
+  new Chart(document.getElementById('allocStableChart'), {
+    type:'doughnut',
+    data:{ labels:['현금','우량 주식·ETF','방어 섹터 ETF','금·원자재'], datasets:[{ data:[30,35,20,15], backgroundColor:pieColors, borderWidth:2, borderColor:'#fff' }] },
+    options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:{ position:'bottom', labels:{ font:{size:11}, boxWidth:14 } } }, cutout:'55%' }
+  });
+};
+
+chartConfigs['allocGrowthChart'] = () => {
+  new Chart(document.getElementById('allocGrowthChart'), {
+    type:'doughnut',
+    data:{ labels:['현금','성장주','방어 섹터','에너지주','금'], datasets:[{ data:[15,45,20,10,10], backgroundColor:pieColors, borderWidth:2, borderColor:'#fff' }] },
+    options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:{ position:'bottom', labels:{ font:{size:11}, boxWidth:14 } } }, cutout:'55%' }
+  });
+};
+
+chartConfigs['allocAggressChart'] = () => {
+  new Chart(document.getElementById('allocAggressChart'), {
+    type:'doughnut',
+    data:{ labels:['현금','성장주·기술주','방어 섹터','에너지주','금'], datasets:[{ data:[10,55,15,12,8], backgroundColor:pieColors, borderWidth:2, borderColor:'#fff' }] },
+    options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:{ position:'bottom', labels:{ font:{size:11}, boxWidth:14 } } }, cutout:'55%' }
+  });
+};
+
+chartConfigs['scenarioChart'] = () => {
+  new Chart(document.getElementById('scenarioChart'), {
+    type:'bar',
+    data:{
+      labels:['낙관 (협상)', '중립 (현상유지)', '비관 (확전)'],
+      datasets:[{
+        label:'예상 주가 변동 (%)',
+        data:[8,-2,-12],
+        backgroundColor:['#2563eb','#6b7280','#e11d48'],
+        borderRadius:2
+      }]
+    },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{display:false}, tooltip:{ callbacks:{ label: ctx => ` ${ctx.parsed.y > 0 ? '+':''}${ctx.parsed.y}%` } } },
+      scales:{
+        y:{ ticks:{ callback: v => v+'%', font:{size:11} }, grid:{ color:'#f0f0f0' } },
+        x:{ ticks:{ font:{size:11} }, grid:{ display:false } }
+      }
+    }
+  });
+};
+
+// ── Chart Observer ──
+const chartObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const canvas = e.target.querySelector('canvas');
+      if (canvas && chartConfigs[canvas.id]) {
+        chartConfigs[canvas.id]();
+        e.target.classList.add('chart-ready');
+        chartObs.unobserve(e.target);
+      }
+    }
+  });
+}, { threshold: 0.15 });
+document.querySelectorAll('.chart-container').forEach(el => chartObs.observe(el));
+
+// ── Sector bar animation ──
+const sectorObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.querySelectorAll('.s-bar').forEach(bar => {
+        bar.style.width = bar.dataset.w + '%';
+      });
+      sectorObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.3 });
+const sg = document.getElementById('sector-grid');
+if (sg) sectorObs.observe(sg);
+
+// ── Alloc tab switch ──
+function switchTab(el, panelId) {
+  document.querySelectorAll('.alloc-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.alloc-panel').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById(panelId).classList.add('active');
+  // trigger chart if not yet rendered
+  const canvas = document.querySelector('#'+panelId+' canvas');
+  if (canvas && chartConfigs[canvas.id] && !document.querySelector('#'+panelId+' .chart-ready')) {
+    chartConfigs[canvas.id]();
+    document.querySelector('#'+panelId+' .chart-container').classList.add('chart-ready');
+  }
+}
+
+// ── Risk cards ──
+function toggleRisk(el) {
+  const wasActive = el.classList.contains('active');
+  document.querySelectorAll('.risk-card').forEach(c => c.classList.remove('active'));
+  if (!wasActive) el.classList.add('active');
+}
+
+// ── Rate sim ──
+function updateRateSim() {
+  const oil = +document.getElementById('oil-slider').value;
+  const tariff = +document.getElementById('tariff-slider').value;
+  const unemp = +document.getElementById('unemp-slider').value;
+  document.getElementById('oil-val').textContent = oil;
+  document.getElementById('tariff-val').textContent = tariff;
+  document.getElementById('unemp-val').textContent = unemp.toFixed(1);
+
+  // heuristic probability
+  const infPressure = (oil - 60) / 90 * 0.5 + (tariff - 5) / 45 * 0.35 + Math.max(0,(5 - unemp)/3.5) * 0.15;
+  const cutProb = Math.max(3, Math.round(60 - infPressure * 55));
+  let infRisk = infPressure > 0.65 ? '🔴 매우 높음' : infPressure > 0.4 ? '🟠 높음' : infPressure > 0.2 ? '🟡 보통' : '🟢 낮음';
+  document.getElementById('cut-prob').textContent = cutProb + '%';
+  document.getElementById('inf-risk').textContent = infRisk;
+  document.getElementById('rate-comment').textContent =
+    cutProb < 15 ? '인플레이션 압력이 커 연내 금리 인하는 사실상 불가능합니다.' :
+    cutProb < 35 ? '연내 1회 인하 가능성이 낮습니다. 데이터 추이를 지켜볼 필요가 있습니다.' :
+    '상대적으로 인플레이션이 완화될 경우 하반기 인하 가능성이 열려 있습니다.';
+}
+document.getElementById('oil-slider').addEventListener('input', updateRateSim);
+document.getElementById('tariff-slider').addEventListener('input', updateRateSim);
+document.getElementById('unemp-slider').addEventListener('input', updateRateSim);
+function resetRateSim() {
+  document.getElementById('oil-slider').value = 100;
+  document.getElementById('tariff-slider').value = 20;
+  document.getElementById('unemp-slider').value = 4.0;
+  updateRateSim();
+}
+updateRateSim();
+
+// ── Portfolio sim ──
+function updatePortSim() {
+  const invest = +document.getElementById('invest-slider').value;
+  const cash = +document.getElementById('cash-slider').value;
+  const ret = +document.getElementById('return-slider').value / 100;
+  const period = +document.getElementById('period-slider').value;
+  document.getElementById('invest-val').textContent = invest.toLocaleString();
+  document.getElementById('cash-val').textContent = cash;
+  document.getElementById('return-val').textContent = ret * 100;
+  document.getElementById('period-val').textContent = period;
+
+  const investedAmt = invest * (1 - cash / 100);
+  const cashAmt = invest * cash / 100;
+  const finalVal = Math.round(investedAmt * Math.pow(1 + ret, period));
+  document.getElementById('port-result-val').textContent = finalVal.toLocaleString() + '만원';
+  document.getElementById('port-cash-val').textContent = Math.round(cashAmt).toLocaleString() + '만원';
+  const totalFinal = finalVal + Math.round(cashAmt);
+  const totalReturn = ((totalFinal / invest - 1) * 100).toFixed(1);
+  document.getElementById('port-comment').textContent =
+    `전체 자산 합산 예상액: ${totalFinal.toLocaleString()}만원 (총 수익률 +${totalReturn}%, ${period}년 후)`;
+}
+['invest','cash','return','period'].forEach(id => {
+  document.getElementById(id+'-slider').addEventListener('input', updatePortSim);
+});
+function resetPortSim() {
+  document.getElementById('invest-slider').value = 1000;
+  document.getElementById('cash-slider').value = 20;
+  document.getElementById('return-slider').value = 8;
+  document.getElementById('period-slider').value = 5;
+  updatePortSim();
+}
+updatePortSim();
+
+// ── Quiz ──
+let quizScore = 0;
+let quizAnswered = {};
+const answers = { q1:1, q2:1, q3:1, q4:1, q6:1, q7:1, q8:1, q10:1 };
+
+function startQuiz() {
+  document.getElementById('quiz-section').style.display = 'block';
+  document.querySelector('.quiz-gate').style.display = 'none';
+  document.getElementById('quiz-section').scrollIntoView({ behavior:'smooth' });
+}
+
+function selectOpt(el, qid, idx) {
+  if (quizAnswered[qid]) return;
+  quizAnswered[qid] = true;
+  const correct = answers[qid];
+  const opts = document.getElementById(qid+'-opts').querySelectorAll('li');
+  opts.forEach((o,i) => {
+    o.classList.add('disabled');
+    if (i === correct) o.classList.add('correct');
+    else if (i === idx && idx !== correct) o.classList.add('wrong');
+  });
+  if (idx === correct) quizScore++;
+  document.getElementById(qid+'-exp').classList.add('show');
+  checkAllAnswered();
+}
+
+function checkTextQ(qid, keyword, expId) {
+  if (quizAnswered[qid]) return;
+  const val = document.getElementById(qid+'-input').value.trim();
+  if (!val) { alert('답을 입력해주세요.'); return; }
+  quizAnswered[qid] = true;
+  document.getElementById(qid+'-input').disabled = true;
+  if (val.includes(keyword)) { quizScore++; document.getElementById(qid+'-input').style.borderColor='#059669'; }
+  else { document.getElementById(qid+'-input').style.borderColor='#dc2626'; }
+  document.getElementById(expId).classList.add('show');
+  checkAllAnswered();
+}
+
+function checkAllAnswered() {
+  const totalQ = 10;
+  if (Object.keys(quizAnswered).length === totalQ) showScore();
+}
+
+function showScore() {
+  const sb = document.getElementById('score-board');
+  sb.style.display = 'block';
+  document.getElementById('final-score').textContent = quizScore;
+  const msgs = ['다시 한번 꼼꼼히 강의를 복습해보세요! 📖', '절반은 이해했네요! 오답을 중심으로 복습하세요. 💪', '잘 이해하고 계시네요! 조금만 더 보완하면 완벽합니다. 📈', '훌륭합니다! 미국 증시 투자 개념을 잘 이해하고 있습니다. 🏆', '완벽한 점수! 탁월한 이해력입니다! 🎉'];
+  const msgIdx = quizScore <= 3 ? 0 : quizScore <= 5 ? 1 : quizScore <= 7 ? 2 : quizScore <= 9 ? 3 : 4;
+  document.getElementById('score-msg').textContent = msgs[msgIdx];
+  sb.scrollIntoView({ behavior:'smooth' });
+}
+</script>
+</body>
+</html>
