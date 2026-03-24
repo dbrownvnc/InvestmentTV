@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SaaSpocalypse — 미국 증시 시장 포커스 분석</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Noto+Serif+KR:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg: #ffffff;
+    --bg2: #fafafa;
+    --text: #1a1a1a;
+    --text2: #777777;
+    --accent: #e11d48;
+    --accent2: #f43f5e;
+    --border: #e5e5e5;
+    --table-hd: #e11d48;
+    --c1: #e11d48;
+    --c2: #1a1a1a;
+    --c3: #6b7280;
+    --c4: #2563eb;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    line-height: 1.75;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  /* HERO */
+  .hero {
+    background: var(--text);
+    padding: 48px 24px 36px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 220px; height: 220px;
+    border-radius: 50%;
+    background: var(--accent);
+    opacity: 0.15;
+  }
+  .hero-tag {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 38px;
+    font-weight: 900;
+    color: #fff;
+    line-height: 1.1;
+    margin-bottom: 10px;
+  }
+  .hero-title span { color: var(--accent); }
+  .hero-sub {
+    font-size: 13px;
+    color: #aaa;
+    margin-bottom: 20px;
+  }
+  .hero-meta {
+    display: flex;
+    gap: 16px;
+    font-size: 11px;
+    color: #888;
+    border-top: 1px solid #333;
+    padding-top: 16px;
+  }
+  .hero-meta strong { color: #ccc; }
+
+  /* CONTENT */
+  section { padding: 32px 20px; border-bottom: 1px solid var(--border); }
+  section:last-child { border-bottom: none; }
+  .sec-label {
+    font-size: 9px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
+  h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1.25;
+    margin-bottom: 14px;
+  }
+  h3 {
+    font-size: 15px;
+    font-weight: 600;
+    margin: 18px 0 8px;
+    color: var(--text);
+  }
+  p { color: #333; margin-bottom: 12px; font-size: 14px; }
+  p:last-child { margin-bottom: 0; }
+
+  /* PULL QUOTE */
+  .pull-quote {
+    border-left: 3px solid var(--accent);
+    padding: 12px 18px;
+    margin: 20px 0;
+    background: var(--bg2);
+  }
+  .pull-quote p {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 15px;
+    color: var(--text);
+    font-style: italic;
+    margin: 0;
+    line-height: 1.6;
+  }
+
+  /* BADGE ROW */
+  .badge-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 14px 0;
+  }
+  .badge {
+    font-size: 11px;
+    font-weight: 500;
+    padding: 4px 12px;
+    border-radius: 20px;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    color: var(--text2);
+  }
+  .badge.red { background: #fff1f2; border-color: #fecdd3; color: var(--accent); }
+  .badge.blue { background: #eff6ff; border-color: #bfdbfe; color: var(--c4); }
+  .badge.dark { background: var(--text); color: #fff; border-color: var(--text); }
+
+  /* CHART */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .chart-container {
+    position: relative;
+    max-height: 340px;
+    margin: 20px 0;
+  }
+  .chart-container canvas {
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    max-height: 300px;
+  }
+  .chart-container.chart-ready canvas { opacity: 1; }
+  .chart-title {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text2);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+  }
+
+  /* TABLE */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    margin: 16px 0;
+  }
+  .data-table th {
+    background: var(--table-hd);
+    color: #fff;
+    padding: 8px 12px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 11px;
+    letter-spacing: 0.5px;
+  }
+  .data-table td {
+    padding: 9px 12px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+    background: var(--bg);
+  }
+  .data-table tr:nth-child(even) td { background: var(--bg2); }
+  .up { color: #16a34a; font-weight: 600; }
+  .down { color: var(--accent); font-weight: 600; }
+
+  /* CARD */
+  .card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 18px;
+    margin: 14px 0;
+  }
+  .card-title {
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .card-title .icon {
+    width: 24px; height: 24px;
+    background: var(--accent);
+    border-radius: 4px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; color: white;
+  }
+
+  /* SIMULATOR */
+  .sim-box {
+    background: #fff8f8;
+    border: 1px solid #fecdd3;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 20px 0;
+  }
+  .sim-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 4px;
+  }
+  .sim-desc { font-size: 12px; color: var(--text2); margin-bottom: 18px; }
+  .sim-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+    gap: 12px;
+  }
+  .sim-label { font-size: 12px; color: var(--text); width: 120px; flex-shrink: 0; }
+  .sim-row input[type=range] {
+    flex: 1;
+    -webkit-appearance: none;
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    outline: none;
+    cursor: pointer;
+  }
+  .sim-row input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    background: var(--accent);
+    cursor: pointer;
+  }
+  .sim-val {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--accent);
+    width: 48px;
+    text-align: right;
+  }
+  .sim-result {
+    background: var(--text);
+    color: #fff;
+    border-radius: 8px;
+    padding: 16px;
+    margin-top: 14px;
+  }
+  .sim-result-label { font-size: 10px; letter-spacing: 2px; color: #aaa; text-transform: uppercase; margin-bottom: 4px; }
+  .sim-result-num { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; color: #fff; }
+  .sim-result-sub { font-size: 12px; color: #888; margin-top: 2px; }
+  .sim-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
+  .sim-mini { background: #222; border-radius: 6px; padding: 10px 12px; }
+  .sim-mini-label { font-size: 10px; color: #888; }
+  .sim-mini-val { font-size: 16px; font-weight: 700; color: #fff; margin-top: 2px; }
+  .sim-mini-val.pos { color: #4ade80; }
+  .sim-mini-val.neg { color: var(--accent2); }
+  .reset-btn {
+    margin-top: 12px;
+    width: 100%;
+    padding: 10px;
+    background: transparent;
+    border: 1px solid #555;
+    color: #aaa;
+    border-radius: 6px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .reset-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* WAVE DIAGRAM */
+  .wave-box {
+    background: var(--bg2);
+    border-radius: 10px;
+    padding: 20px;
+    margin: 16px 0;
+  }
+  .wave-steps {
+    display: flex;
+    gap: 6px;
+    align-items: flex-end;
+    height: 100px;
+    margin-bottom: 10px;
+  }
+  .wave-bar {
+    flex: 1;
+    border-radius: 4px 4px 0 0;
+    position: relative;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+  .wave-bar:hover { opacity: 0.8; }
+  .wave-bar .wlabel {
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 11px;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+  .wave-desc {
+    font-size: 12px;
+    color: var(--text2);
+    min-height: 36px;
+    transition: all 0.3s;
+    padding: 8px;
+    background: #fff;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+  }
+
+  /* INFO BOX */
+  .info-box {
+    background: #eff6ff;
+    border-left: 3px solid var(--c4);
+    border-radius: 0 6px 6px 0;
+    padding: 12px 16px;
+    margin: 14px 0;
+    font-size: 13px;
+    color: #1e40af;
+  }
+  .warn-box {
+    background: #fff1f2;
+    border-left: 3px solid var(--accent);
+    border-radius: 0 6px 6px 0;
+    padding: 12px 16px;
+    margin: 14px 0;
+    font-size: 13px;
+    color: #9f1239;
+  }
+
+  /* ASSET CLASS TOGGLE */
+  .asset-tabs { display: flex; gap: 6px; margin-bottom: 14px; flex-wrap: wrap; }
+  .asset-tab {
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    border: 1px solid var(--border);
+    background: #fff;
+    color: var(--text2);
+    transition: all 0.2s;
+  }
+  .asset-tab.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .asset-content { display: none; }
+  .asset-content.active { display: block; }
+
+  /* DIVIDER */
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 8px 0;
+  }
+  .divider::before, .divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+  .divider span { font-size: 10px; color: var(--text2); letter-spacing: 2px; text-transform: uppercase; }
+
+  /* FOOTER */
+  footer {
+    padding: 32px 20px;
+    background: var(--text);
+    color: #666;
+    font-size: 11px;
+    text-align: center;
+  }
+  footer strong { color: #fff; }
+
+  /* KEY POINTS */
+  .kp-list { list-style: none; }
+  .kp-list li {
+    display: flex;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+    align-items: flex-start;
+  }
+  .kp-list li:last-child { border-bottom: none; }
+  .kp-num {
+    width: 22px; height: 22px;
+    background: var(--accent);
+    color: #fff;
+    border-radius: 50%;
+    font-size: 10px;
+    font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  /* INFLECTION DIAGRAM */
+  .inflect-box {
+    background: var(--text);
+    border-radius: 10px;
+    padding: 20px;
+    margin: 16px 0;
+    color: #fff;
+  }
+  .inflect-title { font-size: 13px; color: #888; margin-bottom: 14px; text-transform: uppercase; letter-spacing: 1px; }
+  .inflect-paths { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .inflect-card {
+    background: #222;
+    border-radius: 8px;
+    padding: 14px;
+  }
+  .inflect-card.up { border-top: 3px solid #4ade80; }
+  .inflect-card.dn { border-top: 3px solid var(--accent); }
+  .inflect-card .ic-tag { font-size: 10px; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 6px; }
+  .inflect-card.up .ic-tag { color: #4ade80; }
+  .inflect-card.dn .ic-tag { color: var(--accent2); }
+  .inflect-card .ic-body { font-size: 12px; color: #ccc; line-height: 1.5; }
+  .inflect-trigger { margin-top: 14px; }
+  .inflect-trigger-title { font-size: 11px; color: #888; margin-bottom: 8px; }
+  .trigger-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: #bbb;
+    margin-bottom: 6px;
+  }
+  .trigger-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-tag">📊 미증시 시장 포커스 분석</div>
+  <h1 class="hero-title"><span>SaaSpo</span>calypse</h1>
+  <p class="hero-sub">소프트웨어의 위기, AI의 역습, 그리고 변화한 시장의 법칙</p>
+  <div class="hero-meta">
+    <span><strong>방송일</strong> 2026.03.24</span>
+    <span><strong>채널</strong> 투자는인생tv</span>
+    <span><strong>방송시간</strong> 美서부 오후 6시</span>
+  </div>
+</header>
+
+<!-- SUMMARY -->
+<section class="fade-in">
+  <div class="sec-label">핵심 요약</div>
+  <h2>오늘 방송, 한 문장으로</h2>
+  <p>AI의 부상으로 기존 SaaS 기업들이 급락하는 'SaaSpocalypse' 국면에서, 시장 패턴 자체가 바뀌었으므로 <strong>섹터 로테이션과 리밸런싱</strong>을 통해 선택과 집중이 필수적이다.</p>
+
+  <div class="divider"><span>핵심 포인트</span></div>
+
+  <ul class="kp-list">
+    <li><span class="kp-num">1</span><span>SaaS(소프트웨어 서비스) 주가 <strong>30~50% 급락</strong> — AI 대체 공포 + 공매도 세력 집중</span></li>
+    <li><span class="kp-num">2</span><span>S&P 500 지수는 소폭 하락이지만 <strong>개별 종목 평균 ‑16%</strong>, 일부는 ‑30% 이상</span></li>
+    <li><span class="kp-num">3</span><span>이란 전쟁 4주째 — 호르무즈 해협 긴장으로 <strong>유가 변동성</strong> 확대</span></li>
+    <li><span class="kp-num">4</span><span>S&P 500 현재 <strong>인플렉션 포인트</strong>(6,550~6,600선), 5파동 상승 또는 추가 하락 기로</span></li>
+    <li><span class="kp-num">5</span><span>미국 금융시스템은 <strong>여전히 건전</strong> — 금융위기 수준 아님</span></li>
+    <li><span class="kp-num">6</span><span><strong>에너지주 장기투자 비추, ETF 비추</strong>, 개별 우량주 비중 조절 권고</span></li>
+  </ul>
+</section>
+
+<!-- SECTOR CHART -->
+<section class="fade-in">
+  <div class="sec-label">섹터별 성과</div>
+  <h2>한 달간 섹터 등락률</h2>
+  <p>에너지가 단기 매입 증가로 +8%, 커뮤니케이션·유틸리티는 선방. 반면 소재·산업재와 SaaS 애플리케이션 소프트웨어는 큰 낙폭을 기록했다.</p>
+
+  <div class="chart-title">섹터별 1개월 수익률 (추정)</div>
+  <div class="chart-container fade-in">
+    <canvas id="sectorChart" height="240"></canvas>
+  </div>
+
+  <div class="warn-box">⚠️ SaaS·소프트웨어 섹터는 AI 대체 공포 + 헤지펀드 공매도 집중으로 최대 <strong>‑50%</strong>까지 하락한 종목 다수 발생</div>
+</section>
+
+<!-- SAASPOCALYPSE -->
+<section class="fade-in">
+  <div class="sec-label">주요 테마</div>
+  <h2>SaaSpocalypse란 무엇인가?</h2>
+
+  <div class="card">
+    <div class="card-title"><span class="icon">S</span>SaaS (Software as a Service)</div>
+    <p style="font-size:13px;margin:0;">월 구독료를 받고 소프트웨어를 인터넷으로 제공하는 비즈니스 모델. Salesforce, Zoom, Adobe 등이 대표적이며 <strong>프로핏 마진이 60% 이상</strong>에 달하는 고마진 사업.</p>
+  </div>
+
+  <h3>왜 폭락했나?</h3>
+  <p>AI 대형 플레이어(하이퍼스케일러)들이 기존 SaaS 기능을 자체 AI로 대체할 것이라는 공포심이 확산됐다. 여기에 헤지펀드들이 SaaS 섹터를 집중 공매도(Short Sell) 타겟으로 삼으면서 낙폭이 증폭됐다.</p>
+
+  <div class="pull-quote">
+    <p>"AI가 이걸 다 대체하는 게 아니냐는 불안감… 그런데 뚜껑 열어보니 오히려 AI보다 더 잘 되고 있는 SaaS 회사도 있어요."</p>
+  </div>
+
+  <h3>결론: 선택과 집중</h3>
+  <p>SaaS 전체가 나쁜 게 아니라 <strong>AI에 실제로 잠식되는 회사</strong>와 <strong>AI를 활용해 오히려 성장하는 회사</strong>가 갈린다. 종목 선별이 핵심이다.</p>
+
+  <div class="badge-row">
+    <span class="badge red">AI 대체 위험 ↑</span>
+    <span class="badge blue">AI 활용 성장 가능</span>
+    <span class="badge">마진 60%+ 고유지</span>
+    <span class="badge dark">공매도 집중 타겟</span>
+  </div>
+</section>
+
+<!-- SHORT SELL -->
+<section class="fade-in">
+  <div class="sec-label">시장 메커니즘</div>
+  <h2>공매도(Short Sell) 세력의 공략</h2>
+  <p>헤지펀드들이 과거처럼 ETF 전체를 공략하는 것이 아니라, <strong>특정 섹터·종목만 정밀 타격</strong>하는 방식으로 변화했다. 이 때문에 S&P 500 지수는 소폭 하락인데 특정 주식만 10~20% 폭락하는 기현상이 발생했다.</p>
+
+  <div class="chart-container fade-in">
+    <canvas id="shortChart" height="200"></canvas>
+  </div>
+
+  <div class="info-box">💡 <strong>숏 스퀴즈(Short Squeeze)</strong>: 공매도 잔고가 극도로 높을 때, 주가가 반등하면 공매도 세력이 손실을 막기 위해 주식을 사들이면서 주가가 폭발적으로 오르는 현상. 지정학적 긴장 완화 시 강력한 반등 가능.</div>
+</section>
+
+<!-- INFLECTION POINT -->
+<section class="fade-in">
+  <div class="sec-label">S&P 500 전망</div>
+  <h2>지금 시장의 갈림길</h2>
+  <p>S&P 500이 현재 6,550~6,600선에서 방향성을 결정하는 <strong>인플렉션 포인트</strong>에 위치해 있다. 엘리엇 파동 이론 기준 4파동 조정 완료 → 5파동 상승 가능성을 진단한다.</p>
+
+  <div class="inflect-box">
+    <div class="inflect-title">📍 두 가지 시나리오</div>
+    <div class="inflect-paths">
+      <div class="inflect-card up">
+        <div class="ic-tag">🟢 상승 시나리오</div>
+        <div class="ic-body">이란 전쟁 조기 종식·협상 타결, 호르무즈 해협 정상화, 유가 안정 → 단기 5~7% 급등, 7,000 재도전 가능</div>
+      </div>
+      <div class="inflect-card dn">
+        <div class="ic-tag">🔴 하락 시나리오</div>
+        <div class="ic-body">200일 이동평균선 하향 돌파, 전쟁 장기화, 4/28 연준 발표에서 인플레이션 데이터 악화 → 추가 하락 후 장기 회복</div>
+      </div>
+    </div>
+    <div class="inflect-trigger">
+      <div class="inflect-trigger-title">핵심 체크 포인트</div>
+      <div class="trigger-item"><span class="trigger-dot"></span> 호르무즈 해협 개방 여부</div>
+      <div class="trigger-item"><span class="trigger-dot"></span> 이란과 외교 협상 진전</div>
+      <div class="trigger-item"><span class="trigger-dot"></span> 4월 28일 연준(FOMC) 발표</div>
+      <div class="trigger-item"><span class="trigger-dot"></span> 10년물 국채 금리 4.4% 돌파 여부</div>
+    </div>
+  </div>
+</section>
+
+<!-- ELLIOTT WAVE -->
+<section class="fade-in">
+  <div class="sec-label">기술적 분석</div>
+  <h2>엘리엇 파동 해석</h2>
+  <p>엘리엇 파동 이론은 주가가 5개의 상승 파동(1·3·5파 상승, 2·4파 조정)과 3개의 하락 파동으로 움직인다는 이론이다. 방송에서는 현재 4파동 조정이 완료 단계이며, 5파동 상승을 기대한다고 분석했다.</p>
+
+  <div class="warn-box">⚠️ 방송 진행자 스스로 경고: 엘리엇 파동은 참고 용도로만 활용하고, 단독으로 투자 판단에 사용하는 것은 위험하다.</div>
+
+  <div class="wave-box">
+    <p style="font-size:12px;color:var(--text2);margin-bottom:12px;">👆 파동을 탭하면 설명이 나타납니다</p>
+    <div class="wave-steps" id="waveSteps"></div>
+    <div class="wave-desc" id="waveDesc">파동을 선택하면 설명이 표시됩니다.</div>
+  </div>
+</section>
+
+<!-- GOLD & ASSET CLASS -->
+<section class="fade-in">
+  <div class="sec-label">자산군 분석</div>
+  <h2>금·채권·달러의 역학</h2>
+  <p>전통적으로 전쟁·위기 시 안전자산(국채·금)으로 자금이 몰렸지만, 현재는 그 법칙이 작동하지 않는다. 이는 새로운 시대의 도래를 뜻한다.</p>
+
+  <div class="asset-tabs">
+    <div class="asset-tab active" data-tab="gold">금(Gold)</div>
+    <div class="asset-tab" data-tab="bond">국채</div>
+    <div class="asset-tab" data-tab="dollar">달러</div>
+    <div class="asset-tab" data-tab="energy">에너지</div>
+  </div>
+
+  <div class="asset-content active" id="tab-gold">
+    <div class="card">
+      <p style="font-size:13px;">금은 이번 주 <strong>4% 하락</strong>. 온스당 5,000달러 근접 후 4,400달러대로 급락. 연준의 <strong>금리 인하 기대 소멸</strong>이 핵심 원인. 금은 이자를 지급하지 않기 때문에, 금리가 높거나 달러가 강세이면 보유 매력이 감소한다.</p>
+      <div class="badge-row">
+        <span class="badge red">달러 강세 = 금 약세</span>
+        <span class="badge red">금리 인하 기대 ↓</span>
+      </div>
+    </div>
+  </div>
+  <div class="asset-content" id="tab-bond">
+    <div class="card">
+      <p style="font-size:13px;">10년물 국채 수익률이 <strong>상승</strong>하고 있다(가격 하락). 전쟁 위기임에도 국채로 자금이 몰리지 않는 이상 현상. 4.4%를 돌파하면 시장에 큰 부담. 수익률 상승 = 채권 가격 하락 = 국채 인기 하락을 의미한다.</p>
+      <div class="badge-row">
+        <span class="badge red">4.4% 돌파 위험 신호</span>
+        <span class="badge">안전자산 기능 약화</span>
+      </div>
+    </div>
+  </div>
+  <div class="asset-content" id="tab-dollar">
+    <div class="card">
+      <p style="font-size:13px;">달러 강세가 유지되고 있다. 원화는 달러당 <strong>1,500원 이상</strong>으로 약 50% 언더밸류 상태. 강달러는 금 약세, 신흥국 자산 압박 요인. 한국에서 미국 자산에 투자할 경우 환율 효과로 수익 증폭.</p>
+      <div class="badge-row">
+        <span class="badge blue">환율 효과 = 미국투자 수익 증폭</span>
+      </div>
+    </div>
+  </div>
+  <div class="asset-content" id="tab-energy">
+    <div class="card">
+      <p style="font-size:13px;">에너지 섹터는 올해 <strong>+8%</strong>로 단기 강세였지만, 배럴당 120달러 → 80달러대로 이미 급락한 전례 있음. 장기 투자 부적합. 생산량 변화에 따른 변동성이 너무 크고, 전기차·재생에너지 전환 트렌드도 장기 리스크.</p>
+      <div class="badge-row">
+        <span class="badge red">장기 투자 비추</span>
+        <span class="badge">단기 트레이딩만 고려</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INVESTMENT SIMULATOR -->
+<section class="fade-in">
+  <div class="sec-label">🎮 인터랙티브 시뮬레이터</div>
+  <h2>섹터 로테이션 시뮬레이터</h2>
+  <p>방송에서 강조한 <strong>현금화 + 비중 조절</strong> 전략을 직접 시뮬레이션 해보세요. 방송 진행자는 리타이어먼트 펀드 기준 <strong>50% 이상 현금화</strong>를 3월 이전에 완료했다고 밝혔습니다.</p>
+
+  <div class="sim-box">
+    <div class="sim-title">💼 포트폴리오 리밸런싱 시뮬레이터</div>
+    <div class="sim-desc">투자 조건을 조정하여 예상 결과를 확인하세요</div>
+
+    <div class="sim-row">
+      <div class="sim-label">💰 총 투자금액</div>
+      <input type="range" id="total" min="1000" max="100000" step="1000" value="10000">
+      <div class="sim-val" id="total-val">$10,000</div>
+    </div>
+    <div class="sim-row">
+      <div class="sim-label">💵 현금화 비율</div>
+      <input type="range" id="cash" min="0" max="80" step="5" value="35">
+      <div class="sim-val" id="cash-val">35%</div>
+    </div>
+    <div class="sim-row">
+      <div class="sim-label">📈 투자 구간 수익률</div>
+      <input type="range" id="ret" min="-30" max="50" step="1" value="-10">
+      <div class="sim-val" id="ret-val">-10%</div>
+    </div>
+    <div class="sim-row">
+      <div class="sim-label">🌍 환율 (원/달러)</div>
+      <input type="range" id="fx" min="1100" max="1600" step="10" value="1500">
+      <div class="sim-val" id="fx-val">1500</div>
+    </div>
+
+    <div class="sim-result">
+      <div class="sim-result-label">최종 평가 금액 (달러)</div>
+      <div class="sim-result-num" id="res-usd">—</div>
+      <div class="sim-result-sub" id="res-sub">계산 중...</div>
+      <div class="sim-grid">
+        <div class="sim-mini">
+          <div class="sim-mini-label">투자 금액</div>
+          <div class="sim-mini-val" id="res-inv">—</div>
+        </div>
+        <div class="sim-mini">
+          <div class="sim-mini-label">현금 보유</div>
+          <div class="sim-mini-val" id="res-cash">—</div>
+        </div>
+        <div class="sim-mini">
+          <div class="sim-mini-label">투자 손익</div>
+          <div class="sim-mini-val" id="res-pl">—</div>
+        </div>
+        <div class="sim-mini">
+          <div class="sim-mini-label">원화 환산</div>
+          <div class="sim-mini-val" id="res-krw">—</div>
+        </div>
+      </div>
+    </div>
+    <button class="reset-btn" id="resetSim">↺ 초기값으로 리셋</button>
+  </div>
+</section>
+
+<!-- FINANCIAL SYSTEM -->
+<section class="fade-in">
+  <div class="sec-label">거시경제 점검</div>
+  <h2>미국 금융시스템 현황</h2>
+  <p>연방준비위원회 자료 기준, 현재 미국 금융시스템 스트레스 지수는 <strong>0 이하(안전 구간)</strong>에 위치. 2008년 금융위기, 2002년 닷컴 버블, 1970년대 오일쇼크 등과는 구별된다.</p>
+
+  <div class="chart-container fade-in">
+    <canvas id="stressChart" height="200"></canvas>
+  </div>
+
+  <div class="info-box">✅ 금융 스트레스 지수가 0 이하 = 정상·안정 / 0 이상 = 긴축·위기 징후. 현재 평균 이하(안전) 수준 유지 중.</div>
+
+  <div class="warn-box">⚠️ 그럼에도 <strong>10년물 국채 4.4% 돌파</strong>, <strong>전쟁 장기화</strong>, <strong>인플레이션 재가속</strong>이 동시에 일어나면 상황 급변 가능.</div>
+</section>
+
+<!-- INVESTMENT PHILOSOPHY -->
+<section class="fade-in">
+  <div class="sec-label">투자 철학</div>
+  <h2>새로운 투자 원칙</h2>
+
+  <h3>❌ 더 이상 통하지 않는 것들</h3>
+  <table class="data-table">
+    <tr><th>과거 상식</th><th>현재 상황</th></tr>
+    <tr><td>코카콜라·다우존스 = 안전</td><td class="down">다우존스가 오히려 더 하락</td></tr>
+    <tr><td>전쟁 = 국채·금으로 피신</td><td class="down">국채·금 둘 다 약세</td></tr>
+    <tr><td>Magnificent 7 보유 = 수익</td><td class="down">맥7 전체 고전 중</td></tr>
+    <tr><td>ETF 분산투자 = 안정</td><td class="down">개별 종목 격차 확대</td></tr>
+    <tr><td>리세션 = 컨슈머 스테이플 강세</td><td class="down">오히려 하락 중</td></tr>
+  </table>
+
+  <h3>✅ 새로운 투자 원칙</h3>
+  <ul class="kp-list">
+    <li><span class="kp-num">1</span><span><strong>섹터 로테이션</strong>: AI 파괴 우려 섹터는 과감히 매도, 수혜 섹터로 이동</span></li>
+    <li><span class="kp-num">2</span><span><strong>비중 조절 (리밸런싱)</strong>: 상승 시 일부 익절, 하락 시 분할 매수</span></li>
+    <li><span class="kp-num">3</span><span><strong>현금 확보</strong>: 불확실 시기에 30~50% 현금화로 안정성 확보</span></li>
+    <li><span class="kp-num">4</span><span><strong>개별 종목 선별</strong>: ETF 대신 우량 개별주 직접 관리</span></li>
+    <li><span class="kp-num">5</span><span><strong>장기투자 ≠ 한 종목 장기보유</strong>: 장기 시장 참여 + 섹터 교체</span></li>
+  </ul>
+
+  <div class="pull-quote">
+    <p>"기존 시장 패턴이 깨졌다. 내가 알고 있던 경험이 아무 짝에도 쓸데가 없는 거예요."</p>
+  </div>
+</section>
+
+<!-- WATCHLIST -->
+<section class="fade-in">
+  <div class="sec-label">종목 의견</div>
+  <h2>방송 내 주요 종목 코멘트</h2>
+
+  <table class="data-table">
+    <tr><th>종목/분야</th><th>의견</th></tr>
+    <tr><td>항공주 (Delta, AA 등)</td><td class="up">관심 ↑ (전쟁 종식 시 수혜)</td></tr>
+    <tr><td>크루즈 (Carnival CCL)</td><td class="up">단기 급등 (+3.5%)</td></tr>
+    <tr><td>Duolingo (DUOL)</td><td>3년 최저점, 소량 보유 가능</td></tr>
+    <tr><td>KKR</td><td>목표가 $130, 변동성 높음</td></tr>
+    <tr><td>에너지주 (Exxon 등)</td><td class="down">장기 투자 부적합</td></tr>
+    <tr><td>ETF 전반</td><td class="down">비추 — 개별주 직접 관리 권장</td></tr>
+    <tr><td>은행주 ETF</td><td class="down">ETF 말고 개별 우량 은행주 일부 검토</td></tr>
+    <tr><td>크레딧카드 (Visa 등)</td><td class="down">회피 권고</td></tr>
+    <tr><td>SMCI</td><td class="down">경영진 이슈 — 투자 비추</td></tr>
+    <tr><td>한국 증시</td><td class="down">인프라 미비, 장기 리스크 존재</td></tr>
+  </table>
+
+  <div class="info-box">💡 이란 전쟁 종식 시 주목 섹터: <strong>우주항공·항공사(Airlines)</strong> — 진행자가 "냄새가 난다"고 언급한 섹터</div>
+</section>
+
+<!-- KEY DATE -->
+<section class="fade-in">
+  <div class="sec-label">일정 & 리스크</div>
+  <h2>4월 28일을 주목하라</h2>
+  <p>방송에서 가장 강조한 날짜. FOMC 회의 결과와 함께 이란 전쟁 관련 인플레이션 데이터가 동시에 발표될 예정이다.</p>
+
+  <div class="card">
+    <div class="card-title"><span class="icon">📅</span>4월 28일 예정 이벤트</div>
+    <ul style="font-size:13px;padding-left:16px;color:#333;">
+      <li style="margin-bottom:6px;">FOMC 회의 결과 발표</li>
+      <li style="margin-bottom:6px;">전쟁 관련 인플레이션 영향 데이터</li>
+      <li style="margin-bottom:6px;">주요 빅테크 실적 발표 시기 겹침</li>
+      <li>금리 인하 여부 재확인 — 현재로선 동결 유력</li>
+    </ul>
+  </div>
+
+  <div class="warn-box">⚠️ 진행자 전망: 4/28 전까지 이란 전쟁이 종식되지 않으면 이 날 시장 변동성이 극도로 높아질 수 있음</div>
+</section>
+
+<!-- KOREA VS US -->
+<section class="fade-in">
+  <div class="sec-label">투자 지형도</div>
+  <h2>한국 vs 미국 투자 환경</h2>
+
+  <div class="chart-container fade-in">
+    <canvas id="compareChart" height="220"></canvas>
+  </div>
+
+  <p>원화 가치 약세(달러당 1,500원 이상)로 인해 미국 자산은 환율 효과까지 더해져 실질 수익률이 한국보다 유리하다. 진행자는 한국 증시 인프라 미비를 지적하면서도, 미국을 <strong>기본 투자 베이스</strong>로 삼되 한국도 병행할 것을 권고했다.</p>
+
+  <div class="warn-box">⚠️ 진행자 주요 경고: 한국 국민연금에 의존하지 말 것. 퇴직연금과 미국 주식 투자를 반드시 병행할 것.</div>
+</section>
+
+<!-- GLOSSARY -->
+<section class="fade-in">
+  <div class="sec-label">용어 사전</div>
+  <h2>오늘 방송 핵심 용어</h2>
+  <table class="data-table">
+    <tr><th>용어</th><th>설명</th></tr>
+    <tr><td><strong>SaaS</strong></td><td>Software as a Service. 구독형 소프트웨어 서비스</td></tr>
+    <tr><td><strong>Short Sell (공매도)</strong></td><td>주가 하락에 베팅해 수익을 내는 투자 방식</td></tr>
+    <tr><td><strong>Short Squeeze</strong></td><td>공매도 잔고 많을 때 주가 반등 시 폭발적 상승</td></tr>
+    <tr><td><strong>RSI</strong></td><td>Relative Strength Index. 과매수/과매도 판단 지표. 30 이하 = 과매도</td></tr>
+    <tr><td><strong>엘리엇 파동</strong></td><td>주가가 5파 상승·3파 하락 패턴을 반복한다는 기술적 이론</td></tr>
+    <tr><td><strong>섹터 로테이션</strong></td><td>유망 업종으로 투자 비중을 이동하는 전략</td></tr>
+    <tr><td><strong>인플렉션 포인트</strong></td><td>상승/하락 방향이 결정되는 분기점</td></tr>
+    <tr><td><strong>하이퍼스케일러</strong></td><td>AWS, Azure, Google Cloud 등 초대형 클라우드 사업자</td></tr>
+    <tr><td><strong>FOMC</strong></td><td>미국 연방공개시장위원회. 기준금리 결정 기구</td></tr>
+    <tr><td><strong>ESPP</strong></td><td>Employee Stock Purchase Plan. 직원 주식 매입 제도</td></tr>
+  </table>
+</section>
+
+<footer>
+  <strong>투자는인생tv — SaaSpocalypse 방송 분석</strong><br>
+  2026년 3월 24일 | 본 자료는 교육 목적 요약이며 투자 권유가 아닙니다.
+</footer>
+
+<script>
+// ─── WAVE DIAGRAM ────────────────────────────────────────
+const waves = [
+  { label: '1파', color: '#4ade80', height: 45, desc: '1파동 상승: 작년 S&P 500이 6,550 최초 돌파 (9월)', negative: false },
+  { label: '2파', color: '#f43f5e', height: 25, desc: '2파동 조정: 1파 상승 후 첫 번째 되돌림. 일반적인 조정 구간.', negative: true },
+  { label: '3파', color: '#4ade80', height: 85, desc: '3파동 상승 (가장 강한 파동): S&P 500이 7,000까지 상승 (10~11월)', negative: false },
+  { label: '4파', color: '#f43f5e', height: 55, desc: '4파동 조정 (현재 위치): 3월 현재 조정 중. 6,550~6,600선이 지지선. 5파동 전 조정 완료 기대.', negative: true },
+  { label: '5파', color: '#60a5fa', height: 95, desc: '5파동 상승 (예상): 지정학적 긴장 완화 + 금융시스템 안정 시, 7,000 재도전 가능. 아직 확인 중.', negative: false },
+];
+const stepsEl = document.getElementById('waveSteps');
+const descEl = document.getElementById('waveDesc');
+waves.forEach((w, i) => {
+  const bar = document.createElement('div');
+  bar.className = 'wave-bar';
+  bar.style.height = w.height + 'px';
+  bar.style.background = w.negative ? '#fee2e2' : (w.label === '5파' ? '#dbeafe' : '#dcfce7');
+  bar.style.border = `2px solid ${w.color}`;
+  bar.innerHTML = `<span class="wlabel" style="color:${w.color}">${w.label}</span>`;
+  bar.addEventListener('click', () => {
+    descEl.innerHTML = `<strong style="color:${w.color}">${w.label}</strong> — ${w.desc}`;
+    document.querySelectorAll('.wave-bar').forEach(b => b.style.outline = 'none');
+    bar.style.outline = `2px solid ${w.color}`;
+  });
+  stepsEl.appendChild(bar);
+});
+
+// ─── ASSET TABS ─────────────────────────────────────────
+document.querySelectorAll('.asset-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.asset-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.asset-content').forEach(c => c.classList.remove('active'));
+    tab.classList.add('active');
+    const target = document.getElementById('tab-' + tab.dataset.tab);
+    if (target) target.classList.add('active');
+  });
+});
+
+// ─── SIMULATOR ──────────────────────────────────────────
+const DEFAULTS = { total: 10000, cash: 35, ret: -10, fx: 1500 };
+function calcSim() {
+  const total = +document.getElementById('total').value;
+  const cashPct = +document.getElementById('cash').value / 100;
+  const ret = +document.getElementById('ret').value / 100;
+  const fx = +document.getElementById('fx').value;
+  const invested = total * (1 - cashPct);
+  const cashAmt = total * cashPct;
+  const pl = invested * ret;
+  const final = invested + pl + cashAmt;
+  const krw = final * fx;
+  document.getElementById('total-val').textContent = '$' + total.toLocaleString();
+  document.getElementById('cash-val').textContent = Math.round(cashPct * 100) + '%';
+  document.getElementById('ret-val').textContent = (ret >= 0 ? '+' : '') + Math.round(ret * 100) + '%';
+  document.getElementById('fx-val').textContent = fx.toLocaleString();
+  document.getElementById('res-usd').textContent = '$' + Math.round(final).toLocaleString();
+  const plSign = pl >= 0 ? '+' : '';
+  document.getElementById('res-sub').textContent = `순손익: ${plSign}$${Math.round(pl).toLocaleString()}`;
+  document.getElementById('res-inv').textContent = '$' + Math.round(invested).toLocaleString();
+  document.getElementById('res-cash').textContent = '$' + Math.round(cashAmt).toLocaleString();
+  const plEl = document.getElementById('res-pl');
+  plEl.textContent = plSign + '$' + Math.round(Math.abs(pl)).toLocaleString();
+  plEl.className = 'sim-mini-val ' + (pl >= 0 ? 'pos' : 'neg');
+  document.getElementById('res-krw').textContent = '₩' + Math.round(krw / 10000).toLocaleString() + '만';
+}
+['total', 'cash', 'ret', 'fx'].forEach(id => {
+  document.getElementById(id).addEventListener('input', calcSim);
+});
+document.getElementById('resetSim').addEventListener('click', () => {
+  Object.entries(DEFAULTS).forEach(([k, v]) => { document.getElementById(k).value = v; });
+  calcSim();
+});
+calcSim();
+
+// ─── CHART CONFIGS ──────────────────────────────────────
+const chartConfigs = {};
+
+chartConfigs['sectorChart'] = () => {
+  new Chart(document.getElementById('sectorChart'), {
+    type: 'bar',
+    data: {
+      labels: ['에너지', '커뮤니케이션', '유틸리티', '헬스케어', '금융', '소재·산업재', 'SaaS·소프트웨어'],
+      datasets: [{
+        label: '1개월 수익률 (%)',
+        data: [8, 3, 2, -2, -4, -8, -25],
+        backgroundColor: ctx => ctx.raw >= 0 ? '#4ade80' : '#f43f5e',
+        borderRadius: 4,
+      }]
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: ctx => (ctx.raw >= 0 ? '+' : '') + ctx.raw + '%'
+          }
+        }
+      },
+      scales: {
+        x: {
+          grid: { color: '#f0f0f0' },
+          ticks: { callback: v => v + '%', font: { size: 11 } }
+        },
+        y: { ticks: { font: { size: 11 } } }
+      }
+    }
+  });
+};
+
+chartConfigs['shortChart'] = () => {
+  new Chart(document.getElementById('shortChart'), {
+    type: 'doughnut',
+    data: {
+      labels: ['SaaS·소프트웨어 공매도 집중', '기타 기술주', '기타 섹터'],
+      datasets: [{
+        data: [55, 25, 20],
+        backgroundColor: ['#e11d48', '#6b7280', '#e5e5e5'],
+        borderWidth: 0,
+      }]
+    },
+    options: {
+      responsive: true,
+      cutout: '65%',
+      plugins: {
+        legend: { position: 'bottom', labels: { font: { size: 11 }, boxWidth: 12 } },
+        tooltip: { callbacks: { label: ctx => ctx.label + ': ' + ctx.raw + '%' } }
+      }
+    }
+  });
+};
+
+chartConfigs['stressChart'] = () => {
+  new Chart(document.getElementById('stressChart'), {
+    type: 'line',
+    data: {
+      labels: ['2008 금융위기', '2010', '2015 차이나쇼크', '2018', '2020 코로나', '2022 금리급등', '2024', '현재(2026)'],
+      datasets: [{
+        label: '금융 스트레스 지수',
+        data: [4.2, 0.5, 1.2, 0.8, 3.1, 1.8, 0.3, -0.2],
+        borderColor: '#e11d48',
+        backgroundColor: 'rgba(225,29,72,0.08)',
+        tension: 0.4,
+        fill: true,
+        pointBackgroundColor: ctx => ctx.raw < 0 ? '#4ade80' : (ctx.raw > 2 ? '#e11d48' : '#6b7280'),
+        pointRadius: 5,
+      }, {
+        label: '위험 기준선 (0)',
+        data: Array(8).fill(0),
+        borderColor: '#1a1a1a',
+        borderDash: [4, 4],
+        pointRadius: 0,
+        borderWidth: 1,
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { labels: { font: { size: 11 }, boxWidth: 14 } },
+        tooltip: { mode: 'index' }
+      },
+      scales: {
+        x: { ticks: { font: { size: 10 } }, grid: { display: false } },
+        y: {
+          ticks: { font: { size: 11 } },
+          grid: { color: '#f0f0f0' }
+        }
+      }
+    }
+  });
+};
+
+chartConfigs['compareChart'] = () => {
+  new Chart(document.getElementById('compareChart'), {
+    type: 'radar',
+    data: {
+      labels: ['시장 규모', '인프라', '투명성', '성장성', '유동성', '환율 혜택'],
+      datasets: [{
+        label: '미국 시장',
+        data: [95, 85, 80, 80, 90, 75],
+        borderColor: '#2563eb',
+        backgroundColor: 'rgba(37,99,235,0.1)',
+        pointBackgroundColor: '#2563eb',
+      }, {
+        label: '한국 시장',
+        data: [40, 45, 50, 55, 45, 30],
+        borderColor: '#e11d48',
+        backgroundColor: 'rgba(225,29,72,0.08)',
+        pointBackgroundColor: '#e11d48',
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { position: 'bottom', labels: { font: { size: 11 }, boxWidth: 12 } }
+      },
+      scales: {
+        r: {
+          min: 0, max: 100,
+          ticks: { display: false },
+          pointLabels: { font: { size: 11 } }
+        }
+      }
+    }
+  });
+};
+
+// ─── OBSERVERS ──────────────────────────────────────────
+const fadeObs = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), i * 80);
+      fadeObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.12 });
+document.querySelectorAll('.fade-in').forEach(el => fadeObs.observe(el));
+
+const chartObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const canvas = e.target.querySelector('canvas');
+      if (canvas && chartConfigs[canvas.id]) {
+        chartConfigs[canvas.id]();
+        e.target.classList.add('chart-ready');
+        chartObs.unobserve(e.target);
+      }
+    }
+  });
+}, { threshold: 0.15 });
+document.querySelectorAll('.chart-container').forEach(el => chartObs.observe(el));
+</script>
+</body>
+</html>

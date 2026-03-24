@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>시험 문제 — SaaSpocalypse 방송 분석</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #ffffff; --bg2: #fafafa; --text: #1a1a1a; --text2: #777777;
+    --accent: #e11d48; --accent2: #f43f5e; --border: #e5e5e5;
+    --correct: #16a34a; --wrong: #e11d48; --skip: #6b7280;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+  .hero {
+    background: var(--text);
+    padding: 40px 24px 30px;
+  }
+  .hero-tag { font-size: 10px; letter-spacing: 3px; color: var(--accent); text-transform: uppercase; margin-bottom: 10px; }
+  .hero-title { font-family: 'Playfair Display', serif; font-size: 28px; color: #fff; line-height: 1.2; margin-bottom: 8px; }
+  .hero-sub { font-size: 13px; color: #aaa; }
+  .score-bar {
+    background: #111;
+    padding: 16px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .score-label { font-size: 11px; color: #888; letter-spacing: 1px; text-transform: uppercase; }
+  .score-val { font-family: 'Playfair Display', serif; font-size: 24px; color: var(--accent); font-weight: 700; }
+  .progress-track {
+    height: 4px;
+    background: #222;
+    display: flex;
+    gap: 2px;
+    padding: 0 24px;
+    background: #111;
+    padding: 8px 24px;
+  }
+  .progress-seg {
+    flex: 1;
+    height: 4px;
+    background: #333;
+    border-radius: 2px;
+    transition: background 0.3s;
+  }
+  .progress-seg.correct { background: var(--correct); }
+  .progress-seg.wrong { background: var(--wrong); }
+  .progress-seg.skip { background: var(--skip); }
+
+  /* QUESTION */
+  .q-section { padding: 28px 20px 0; border-bottom: 1px solid var(--border); }
+  .q-section:last-of-type { border-bottom: none; }
+  .q-meta { display: flex; gap: 8px; align-items: center; margin-bottom: 12px; }
+  .q-num {
+    width: 28px; height: 28px;
+    background: var(--accent);
+    color: #fff;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700; flex-shrink: 0;
+  }
+  .q-type { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--text2); }
+  .q-diff {
+    margin-left: auto;
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 10px;
+  }
+  .q-diff.easy { background: #dcfce7; color: #166534; }
+  .q-diff.mid { background: #fef9c3; color: #854d0e; }
+  .q-diff.hard { background: #fee2e2; color: #9f1239; }
+  .q-text { font-size: 15px; font-weight: 500; margin-bottom: 14px; line-height: 1.5; }
+  .q-text strong { color: var(--accent); }
+
+  /* OPTIONS */
+  .options { list-style: none; margin-bottom: 14px; }
+  .options li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-size: 13px;
+    background: var(--bg);
+  }
+  .options li:hover:not(.selected):not(.locked) { border-color: var(--accent2); background: #fff8f8; }
+  .options li.selected { border-color: var(--accent); background: #fff1f2; }
+  .options li.correct-ans { border-color: var(--correct) !important; background: #f0fdf4 !important; }
+  .options li.wrong-ans { border-color: var(--wrong) !important; background: #fff1f2 !important; }
+  .options li.locked { cursor: default; }
+  .opt-label {
+    width: 20px; height: 20px;
+    border: 1.5px solid var(--border);
+    border-radius: 50%;
+    font-size: 10px;
+    font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .options li.correct-ans .opt-label { background: var(--correct); border-color: var(--correct); color: #fff; }
+  .options li.wrong-ans .opt-label { background: var(--wrong); border-color: var(--wrong); color: #fff; }
+
+  /* OX / SHORT */
+  .ox-btns { display: flex; gap: 10px; margin-bottom: 14px; }
+  .ox-btn {
+    flex: 1;
+    padding: 14px;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    background: var(--bg);
+    font-size: 22px;
+    cursor: pointer;
+    transition: all 0.15s;
+    text-align: center;
+  }
+  .ox-btn:hover:not(.locked) { border-color: var(--accent2); }
+  .ox-btn.selected { border-color: var(--accent); background: #fff1f2; }
+  .ox-btn.correct-ans { border-color: var(--correct) !important; background: #f0fdf4 !important; }
+  .ox-btn.wrong-ans { border-color: var(--wrong) !important; background: #fff1f2 !important; }
+  .short-input-row { display: flex; gap: 8px; margin-bottom: 14px; }
+  .short-input {
+    flex: 1;
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 13px;
+    outline: none;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .short-input:focus { border-color: var(--accent2); }
+  .short-input.correct { border-color: var(--correct) !important; background: #f0fdf4; }
+  .short-input.wrong { border-color: var(--wrong) !important; background: #fff1f2; }
+  .check-btn {
+    padding: 10px 16px;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 13px;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    white-space: nowrap;
+    transition: background 0.15s;
+  }
+  .check-btn:hover { background: var(--accent2); }
+  .check-btn:disabled { background: #ccc; cursor: default; }
+
+  /* ANSWER BOX */
+  .answer-box {
+    background: var(--bg2);
+    border-radius: 8px;
+    padding: 14px;
+    margin-bottom: 20px;
+    display: none;
+    font-size: 13px;
+  }
+  .answer-box.show { display: block; }
+  .answer-box .ans-tag {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+  .answer-box .ans-text { color: var(--text); line-height: 1.6; }
+  .answer-box .ans-explain { color: var(--text2); font-size: 12px; margin-top: 6px; }
+
+  /* FINAL RESULT */
+  .result-section {
+    padding: 40px 24px;
+    text-align: center;
+    display: none;
+  }
+  .result-section.show { display: block; }
+  .result-icon { font-size: 56px; margin-bottom: 12px; }
+  .result-title { font-family: 'Playfair Display', serif; font-size: 26px; margin-bottom: 8px; }
+  .result-score { font-size: 48px; font-weight: 700; color: var(--accent); font-family: 'Playfair Display', serif; }
+  .result-sub { font-size: 14px; color: var(--text2); margin-top: 6px; margin-bottom: 24px; }
+  .restart-btn {
+    padding: 14px 28px;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    cursor: pointer;
+  }
+
+  /* DIVIDER */
+  .section-pad { padding-bottom: 28px; }
+
+  footer {
+    padding: 24px;
+    background: #111;
+    color: #555;
+    font-size: 11px;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-tag">📝 시험문제</div>
+  <h1 class="hero-title">SaaSpocalypse<br>이해도 확인 테스트</h1>
+  <p class="hero-sub">투자는인생tv 방송 내용 기반 · 10문제</p>
+</header>
+
+<div class="score-bar">
+  <div>
+    <div class="score-label">현재 점수</div>
+    <div class="score-val" id="scoreval">0 / 10</div>
+  </div>
+  <div style="font-size:12px;color:#666;">정답 확인 후 점수 집계</div>
+</div>
+<div class="progress-track" id="progressTrack"></div>
+
+<!-- Q1 -->
+<div class="q-section section-pad">
+  <div class="q-meta">
+    <div class="q-num">1</div>
+    <div class="q-type">객관식</div>
+    <div class="q-diff easy">쉬움</div>
+  </div>
+  <div class="q-text">SaaS의 의미로 올바른 것은?</div>
+  <ul class="options" data-q="1" data-answer="B">
+    <li data-opt="A"><span class="opt-label">A</span> Security as a Service (보안 서비스)</li>
+    <li data-opt="B"><span class="opt-label">B</span> Software as a Service (구독형 소프트웨어 서비스)</li>
+    <li data-opt="C"><span class="opt-label">C</span> Sales as a Service (영업 대행 서비스)</li>
+    <li data-opt="D"><span class="opt-label">D</span> Storage as a Service (클라우드 저장 서비스)</li>
+  </ul>
+  <div class="answer-box" id="ans1">
+    <div class="ans-tag">✅ 정답 해설</div>
+    <div class="ans-text"><strong>B. Software as a Service</strong> — 인터넷을 통해 월 구독료를 받고 소프트웨어를 제공하는 비즈니스 모델이다.</div>
+    <div class="ans-explain">방송 진행자는 "소프트웨어 as a Service를 줄여서 SaaS"라고 직접 설명했으며, 프로핏 마진 60% 이상의 고마진 사업 모델임을 강조했다.</div>
+  </div>
+</div>
+
+<!-- Q2 -->
+<div class="q-section section-pad">
+  <div class="q-meta">
+    <div class="q-num">2</div>
+    <div class="q-type">OX 문제</div>
+    <div class="q-diff easy">쉬움</div>
+  </div>
+  <div class="q-text">방송에서 에너지주를 <strong>장기 투자 포트폴리오</strong>에 편입하는 것을 권장했다.</div>
+  <div class="ox-btns" data-q="2" data-answer="X">
+    <button class="ox-btn" data-opt="O">⭕</button>
+    <button class="ox-btn" data-opt="X">❌</button>
+  </div>
+  <div class="answer-box" id="ans2">
+    <div class="ans-tag">✅ 정답 해설</div>
+    <div class="ans-text"><strong>❌ (X) — 비권장</strong></div>
+    <div class="ans-explain">진행자는 "에너지는 장기적인 투자는 위험하다"며, 에너지 가격이 10% 폭등하면 반드시 10% 폭락이 따라오는 변동성 때문에 장기 보유가 합당하지 않다고 했다. 특히 전기차·재생에너지 트렌드가 장기 리스크라고 덧붙였다.</div>
+  </div>
+</div>
+
+<!-- Q3 -->
+<div class="q-section section-pad">
+  <div class="q-meta">
+    <div class="q-num">3</div>
+    <div class="q-type">객관식</div>
+    <div class="q-diff easy">쉬움</div>
+  </div>
+  <div class="q-text">방송 진행자가 전쟁·위기 상황에서도 <strong>금값이 하락하는 주요 이유</strong>로 꼽은 것은?</div>
+  <ul class="options" data-q="3" data-answer="C">
+    <li data-opt="A"><span class="opt-label">A</span> 금 채굴량이 급증했기 때문</li>
+    <li data-opt="B"><span class="opt-label">B</span> 이란이 금 매도를 대량으로 했기 때문</li>
+    <li data-opt="C"><span class="opt-label">C</span> 달러화 강세 + 금리 인하 기대 소멸 때문</li>
+    <li data-opt="D"><span class="opt-label">D</span> 트럼프 행정부가 금 보유를 규제했기 때문</li>
+  </ul>
+  <div class="answer-box" id="ans3">
+    <div class="ans-tag">✅ 정답 해설</div>
+    <div class="ans-text"><strong>C. 달러 강세 + 금리 인하 기대 소멸</strong></div>
+    <div class="ans-explain">금은 이자를 지급하지 않는 자산이다. 달러가 강세이거나 금리 인하가 없으면 금을 보유할 이유가 줄어들어 가격이 떨어진다. 진행자는 "달러화가 강세가 되기 때문에 금을 보유할 정당성이 적어진다"고 설명했다.</div>
+  </div>
+</div>
+
+<!-- Q4 -->
+<div class="q-section section-pad">
+  <div class="q-meta">
+    <div class="q-num">4</div>
+    <div class="q-type">단답형</div>
+    <div class="q-diff mid">보통</div>
+  </div>
+  <div class="q-text">방송에서 S&P 500 10년물 국채 금리가 <strong>몇 %를 돌파</strong>하면 시장에 큰 위험 신호라고 했나요?</div>
+  <div class="short-input-row" data-q="4" data-answer="4.4">
+    <input class="short-input" id="q4input" type="text" placeholder="숫자만 입력 (예: 3.5)">
+    <button class="check-btn" id="q4btn">확인</button>
+  </div>
+  <div class="answer-box" id="ans4">
+    <div class="ans-tag">✅ 정답 해설</div>
+    <div class="ans-text"><strong>4.4%</strong></div>
+    <div class="ans-explain">진행자는 "4.4 넘으면 굉장히 위험하다"고 강조했다. 10년물 국채 수익률 상승은 채권 가격 하락을 의미하며, 이는 시중 자금이 국채로 유입되지 않고 있음을 뜻한다. 높은 국채 금리는 기업 자금 조달 비용을 높여 주식시장에도 부담이 된다.</div>
+  </div>
+</div>
+
+<!-- Q5 -->
+<div class="q-section section-pad">
+  <div class="q-meta">
+    <div class="q-num">5</div>
+    <div class="q-type">객관식</div>
+    <div class="q-diff mid">보통</div>
+  </div>
+  <div class="q-text">방송에서 말하는 <strong>"숏 스퀴즈(Short Squeeze)"</strong>가 발생하기 좋은 조건은?</div>
+  <ul class="options" data-q="5" data-answer="D">
+    <li data-opt="A"><span class="opt-label">A</span> 공매도 잔고가 낮고 주가가 하락할 때</li>
+    <li data-opt="B"><span class="opt-label">B</span> 연준이 금리를 대폭 인상할 때</li>
+    <li data-opt="C"><span class="opt-label">C</span> 기업 실적이 예상을 크게 하회할 때</li>
+    <li data-opt="D"><span class="opt-label">D</span> 공매도 잔고가 극도로 높을 때 + 시장 안정 또는 지정학적 긴장 완화</li>
+  </ul>
+  <div class="answer-box" id="ans5">
+    <div class="ans-tag">✅ 정답 해설</div>
+    <div class="ans-text"><strong>D</strong></div>
+    <div class="ans-explain">공매도(주가 하락에 베팅)가 극단적으로 쌓인 상태에서 주가가 반등하면, 손실을 막기 위해 공매도 세력이 급하게 주식을 매수하면서 주가가 폭발적으로 오른다. 진행자는 "사상 최고 수준의 숏배팅이 있는 상태에서, 지정학적 긴장이 완화되면 폭발적으로 반응한다"고 했다.</div>
+  </div>
+</div>
+
+<!-- Q6 -->
+<div class="q-section section-pad">
+  <div class="q-meta">
+    <div class="q-num">6</div>
+    <div class="q-type">OX 문제</div>
+    <div class="q-diff mid">보통</div>
+  </div>
+  <div class="q-text">방송 진행자는 <strong>"장기 투자 = 한 종목을 오래 보유하는 것"</strong>이라고 정의했다.</div>
+  <div class="ox-btns" data-q="6" data-answer="X">
+    <button class="ox-btn" data-opt="O">⭕</button>
+    <button class="ox-btn" data-opt="X">❌</button>
+  </div>
+  <div class="answer-box" id="ans6">
+    <div class="ans-tag">✅ 정답 해설</div>
+    <div class="ans-text"><strong>❌ (X)</strong></div>
+    <div class="ans-explain">진행자는 이를 명확히 구분했다. "미국에 장기 투자한다고 해서 어떤 종목 하나를 계속 들고 있으라는 게 아니다. 여러분 착각하는 거예요." 장기 투자 = 미국 시장에 지속 참여 + 섹터 로테이션 + 리밸런싱을 통한 비중 조절이라고 정의했다.</div>
+  </div>
+</div>
+
+<!-- Q7 -->
+<div class="q-section section-pad">
+  <div class="q-meta">
+    <div class="q-num">7</div>
+    <div class="q-type">객관식</div>
+    <div class="q-diff mid">보통</div>
+  </div>
+  <div class="q-text">현재(2026년 3월 기준) 미국 금융시스템 스트레스 지수에 대한 방송 내용으로 올바른 것은?</div>
+  <ul class="options" data-q="7" data-answer="A">
+    <li data-opt="A"><span class="opt-label">A</span> 0 이하로, 역사적 평균보다 안전한 수준이다</li>
+    <li data-opt="B"><span class="opt-label">B</span> 0 이상으로, 긴축 조건에 진입했다</li>
+    <li data-opt="C"><span class="opt-label">C</span> 2008년 금융위기 수준에 근접해 있다</li>
+    <li data-opt="D"><span class="opt-label">D</span> 데이터 미공개로 판단 불가하다</li>
+  </ul>
+  <div class="answer-box" id="ans7">
+    <div class="ans-tag">✅ 정답 해설</div>
+    <div class="ans-text"><strong>A. 0 이하, 안전 수준</strong></div>
+    <div class="ans-explain">진행자는 연준 제공 금융 스트레스 지수를 인용하며 "해당 지표가 역사적으로 평균 이상, 정상적인 금융상황이고, 0보다 낮다"고 했다. 이는 금융 시스템이 건전하다는 긍정적 신호이며, 경기 침체가 금융 시스템 붕괴에서 비롯되던 과거와는 다른 상황이다.</div>
+  </div>
+</div>
+
+<!-- Q8 -->
+<div class="q-section section-pad">
+  <div class="q-meta">
+    <div class="q-num">8</div>
+    <div class="q-type">단답형</div>
+    <div class="q-diff mid">보통</div>
+  </div>
+  <div class="q-text">방송에서 진행자가 직접 운용하는 자산에서 <strong>현금화한 비율</strong>(리타이어먼트 펀드 기준)은 몇 % 이상이라고 했나요?</div>
+  <div class="short-input-row" data-q="8" data-answer="50">
+    <input class="short-input" id="q8input" type="text" placeholder="숫자만 입력 (예: 30)">
+    <button class="check-btn" id="q8btn">확인</button>
+  </div>
+  <div class="answer-box" id="ans8">
+    <div class="ans-tag">✅ 정답 해설</div>
+    <div class="ans-text"><strong>50% 이상</strong> (전체 자산 운용 기준으로는 약 35%)</div>
+    <div class="ans-explain">진행자는 "전체적으로 35% 정도를 현금화했고, 리타이어먼트 펀드 같은 건 50% 이상 했다"고 밝혔다. 이를 3월 이전에 미리 완료했기 때문에 시장 하락에도 안정적이었다고 설명했다.</div>
+  </div>
+</div>
+
+<!-- Q9 -->
+<div class="q-section section-pad">
+  <div class="q-meta">
+    <div class="q-num">9</div>
+    <div class="q-type">객관식 (어려움)</div>
+    <div class="q-diff hard">어려움</div>
+  </div>
+  <div class="q-text">방송에서 설명한 <strong>엘리엇 파동 이론</strong>에 따를 때, 현재 S&P 500의 위치와 전망으로 가장 적절한 것은?</div>
+  <ul class="options" data-q="9" data-answer="C">
+    <li data-opt="A"><span class="opt-label">A</span> 3파동 상승 중이며 추가 상승이 확정적이다</li>
+    <li data-opt="B"><span class="opt-label">B</span> 5파동 고점을 찍고 하락 전환이 완료됐다</li>
+    <li data-opt="C"><span class="opt-label">C</span> 4파동 조정 완료 단계이며, 5파동 상승이 가능하다 (단, 200일 이동평균선 유지가 조건)</li>
+    <li data-opt="D"><span class="opt-label">D</span> 2파동 조정 중이며 3파동 상승을 기다려야 한다</li>
+  </ul>
+  <div class="answer-box" id="ans9">
+    <div class="ans-tag">✅ 정답 해설</div>
+    <div class="ans-text"><strong>C</strong></div>
+    <div class="ans-explain">방송에서 진행자는 "세 차례 조정이 왔고, 이번 조정이 교과서적인 4파동이라면 5파동 새로운 고점을 향한 상승이 가능하다"고 분석했다. 다만 S&P 500의 200일 이동평균선을 하향 돌파하면 하락 기간이 길어진다고 경고했다. 또한 엘리엇 파동을 단독으로 투자 판단에 쓰는 것은 위험하다고 강조했다.</div>
+  </div>
+</div>
+
+<!-- Q10 -->
+<div class="q-section section-pad">
+  <div class="q-meta">
+    <div class="q-num">10</div>
+    <div class="q-type">객관식 (어려움)</div>
+    <div class="q-diff hard">어려움</div>
+  </div>
+  <div class="q-text">방송에서 <strong>"기존 시장 패턴이 깨진 새로운 현상"</strong>의 사례로 언급된 것들을 모두 고른 것은?</div>
+  <ul class="options" data-q="10" data-answer="D">
+    <li data-opt="A"><span class="opt-label">A</span> 전쟁 위기 → 국채 강세 / 리세션 위기 → 컨슈머 스테이플 강세</li>
+    <li data-opt="B"><span class="opt-label">B</span> AI 대형주 전체 동반 상승</li>
+    <li data-opt="C"><span class="opt-label">C</span> 금리 인상 → 달러 약세 / ETF 투자 → 안정적 수익</li>
+    <li data-opt="D"><span class="opt-label">D</span> 전쟁에도 국채·금 동반 약세 / 지수는 소폭 하락인데 개별 종목 평균 ‑16% / SaaS 고마진 사업인데 폭락</li>
+  </ul>
+  <div class="answer-box" id="ans10">
+    <div class="ans-tag">✅ 정답 해설</div>
+    <div class="ans-text"><strong>D</strong></div>
+    <div class="ans-explain">방송에서 나열된 새로운 이상 현상들: ① 전쟁 위기임에도 국채·금이 동반 하락 (전통적 안전자산 공식 붕괴) ② S&P 500 지수는 소폭 하락인데 구성 종목 평균은 ‑16%, 일부 ‑30% 이상 (지수 ≠ 개별 종목) ③ SaaS는 마진 60% 이상 고수익 모델인데 AI 공포로 30~50% 폭락 ④ 리세션 우려인데 컨슈머 스테이플이 오히려 하락. 이 모든 것이 진행자가 "평소에 알고 있던 것과 전혀 다른 형태"라고 강조한 사례들이다.</div>
+  </div>
+</div>
+
+<!-- FINAL RESULT -->
+<div class="result-section" id="resultSection">
+  <div class="result-icon" id="resultIcon">🎉</div>
+  <div class="result-title" id="resultTitle">결과 확인</div>
+  <div class="result-score" id="resultScore">0점</div>
+  <div class="result-sub" id="resultSub">계속 학습하세요!</div>
+  <button class="restart-btn" onclick="location.reload()">↺ 다시 풀기</button>
+</div>
+
+<footer>
+  투자는인생tv 방송 내용 기반 시험 · 2026년 3월 24일<br>
+  본 시험은 교육 목적이며 투자 권유가 아닙니다.
+</footer>
+
+<script>
+let score = 0;
+let answered = new Set();
+const answers = {};
+const totalQ = 10;
+
+// Progress bar init
+const track = document.getElementById('progressTrack');
+for (let i = 0; i < totalQ; i++) {
+  const seg = document.createElement('div');
+  seg.className = 'progress-seg';
+  seg.id = 'seg' + (i + 1);
+  track.appendChild(seg);
+}
+
+function updateScore() {
+  document.getElementById('scoreval').textContent = score + ' / ' + totalQ;
+  if (answered.size === totalQ) showResult();
+}
+
+function markSeg(q, correct) {
+  const seg = document.getElementById('seg' + q);
+  if (seg) seg.classList.add(correct ? 'correct' : 'wrong');
+}
+
+// MCQ
+document.querySelectorAll('.options').forEach(optList => {
+  const q = optList.dataset.q;
+  const correctAns = optList.dataset.answer;
+  optList.querySelectorAll('li').forEach(li => {
+    li.addEventListener('click', () => {
+      if (answered.has(q)) return;
+      answered.add(q);
+      const chosen = li.dataset.opt;
+      optList.querySelectorAll('li').forEach(item => {
+        item.classList.add('locked');
+        if (item.dataset.opt === correctAns) item.classList.add('correct-ans');
+      });
+      if (chosen !== correctAns) li.classList.add('wrong-ans');
+      const correct = chosen === correctAns;
+      if (correct) score++;
+      markSeg(q, correct);
+      document.getElementById('ans' + q).classList.add('show');
+      updateScore();
+    });
+  });
+});
+
+// OX
+document.querySelectorAll('.ox-btns').forEach(oxGroup => {
+  const q = oxGroup.dataset.q;
+  const correctAns = oxGroup.dataset.answer;
+  oxGroup.querySelectorAll('.ox-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      if (answered.has(q)) return;
+      answered.add(q);
+      const chosen = btn.dataset.opt;
+      oxGroup.querySelectorAll('.ox-btn').forEach(b => {
+        b.classList.add('locked');
+        if (b.dataset.opt === correctAns) b.classList.add('correct-ans');
+      });
+      if (chosen !== correctAns) btn.classList.add('wrong-ans');
+      const correct = chosen === correctAns;
+      if (correct) score++;
+      markSeg(q, correct);
+      document.getElementById('ans' + q).classList.add('show');
+      updateScore();
+    });
+  });
+});
+
+// Short answer
+function setupShort(q, inputId, btnId, correctAns) {
+  const btn = document.getElementById(btnId);
+  const input = document.getElementById(inputId);
+  btn.addEventListener('click', () => {
+    if (answered.has(q)) return;
+    const val = input.value.trim().replace(/[^0-9.]/g, '');
+    if (!val) return;
+    answered.add(q);
+    btn.disabled = true;
+    input.disabled = true;
+    const correct = val === correctAns;
+    input.classList.add(correct ? 'correct' : 'wrong');
+    if (correct) score++;
+    markSeg(q, correct);
+    document.getElementById('ans' + q).classList.add('show');
+    updateScore();
+  });
+  input.addEventListener('keydown', e => { if (e.key === 'Enter') btn.click(); });
+}
+setupShort('4', 'q4input', 'q4btn', '4.4');
+setupShort('8', 'q8input', 'q8btn', '50');
+
+function showResult() {
+  const rs = document.getElementById('resultSection');
+  rs.classList.add('show');
+  const pct = (score / totalQ) * 100;
+  let icon = '😅', title = '다시 한 번 도전해보세요!', sub = '방송 내용을 다시 복습하면 더 잘 이해할 수 있어요.';
+  if (pct >= 90) { icon = '🏆'; title = '완벽합니다!'; sub = '방송 내용을 완벽히 이해하셨네요. 훌륭합니다!'; }
+  else if (pct >= 70) { icon = '🎉'; title = '잘 하셨습니다!'; sub = '핵심 내용을 잘 파악하셨어요. 조금만 더 복습하면 완벽해요.'; }
+  else if (pct >= 50) { icon = '📚'; title = '기본기 OK!'; sub = '절반 이상 맞추셨어요. 틀린 문제를 다시 살펴보세요.'; }
+  document.getElementById('resultIcon').textContent = icon;
+  document.getElementById('resultTitle').textContent = title;
+  document.getElementById('resultScore').textContent = score + '점 / 10점';
+  document.getElementById('resultSub').textContent = sub;
+  rs.scrollIntoView({ behavior: 'smooth' });
+}
+</script>
+</body>
+</html>
