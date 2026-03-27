@@ -1,0 +1,1115 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>3월 26일 조정장 | 엘리엇 5차 웨이브 분석</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg: #ffffff;
+    --bg2: #fafafa;
+    --text: #1a1a1a;
+    --text2: #777777;
+    --accent: #e11d48;
+    --accent2: #f43f5e;
+    --border: #e5e5e5;
+    --table-bg: #fafafa;
+    --table-header: #e11d48;
+    --c1: #e11d48;
+    --c2: #1a1a1a;
+    --c3: #6b7280;
+    --c4: #2563eb;
+    --serif: 'Source Serif 4', Georgia, serif;
+    --display: 'Playfair Display', Georgia, serif;
+    --sans: 'DM Sans', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--serif);
+    font-size: 16px;
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── HEADER ── */
+  .mag-header {
+    border-top: 4px solid var(--accent);
+    border-bottom: 1px solid var(--border);
+    padding: 28px 20px 20px;
+    text-align: center;
+    background: var(--bg);
+  }
+  .mag-label {
+    font-family: var(--sans);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 10px;
+  }
+  .mag-title {
+    font-family: var(--display);
+    font-size: clamp(26px, 7vw, 42px);
+    font-weight: 900;
+    line-height: 1.15;
+    color: var(--text);
+    margin-bottom: 10px;
+  }
+  .mag-title span { color: var(--accent); }
+  .mag-sub {
+    font-family: var(--serif);
+    font-size: 14px;
+    font-style: italic;
+    color: var(--text2);
+    margin-bottom: 16px;
+  }
+  .mag-meta {
+    font-family: var(--sans);
+    font-size: 11px;
+    color: var(--text2);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+  .mag-meta span {
+    display: inline-block;
+    margin: 0 8px;
+    color: var(--accent);
+  }
+
+  /* ── LAYOUT ── */
+  .container { max-width: 680px; margin: 0 auto; padding: 0 20px; }
+
+  section { padding: 36px 0 20px; border-bottom: 1px solid var(--border); }
+  section:last-of-type { border-bottom: none; }
+
+  .section-label {
+    font-family: var(--sans);
+    font-size: 9px;
+    letter-spacing: 3.5px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+  h2 {
+    font-family: var(--display);
+    font-size: clamp(20px, 5vw, 28px);
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 16px;
+    color: var(--text);
+  }
+  h3 {
+    font-family: var(--display);
+    font-size: 18px;
+    font-weight: 700;
+    margin: 24px 0 10px;
+    color: var(--text);
+  }
+
+  p { margin-bottom: 14px; color: var(--text); font-size: 15px; }
+
+  .lead {
+    font-size: 17px;
+    font-style: italic;
+    color: var(--text);
+    border-left: 3px solid var(--accent);
+    padding-left: 16px;
+    margin-bottom: 20px;
+    line-height: 1.6;
+  }
+
+  blockquote {
+    background: var(--bg2);
+    border-left: 4px solid var(--accent);
+    padding: 14px 18px;
+    margin: 20px 0;
+    border-radius: 0 6px 6px 0;
+  }
+  blockquote p {
+    font-style: italic;
+    color: var(--text2);
+    margin: 0;
+    font-size: 14px;
+  }
+
+  .highlight-box {
+    background: #fff1f2;
+    border: 1px solid #fda4af;
+    border-radius: 8px;
+    padding: 16px 18px;
+    margin: 18px 0;
+  }
+  .highlight-box .hb-label {
+    font-family: var(--sans);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+  .highlight-box p { margin: 0; font-size: 14px; }
+
+  /* ── DIVIDER ── */
+  .rule {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 24px 0;
+  }
+  .rule::before, .rule::after {
+    content: ''; flex: 1;
+    height: 1px; background: var(--border);
+  }
+  .rule-dot {
+    width: 6px; height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+  }
+
+  /* ── FADE IN ── */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+  /* ── CHART ── */
+  .chart-container {
+    position: relative;
+    max-height: 340px;
+    margin: 20px 0;
+  }
+  .chart-container canvas {
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    max-height: 300px;
+  }
+  .chart-container.chart-ready canvas { opacity: 1; }
+  .chart-title {
+    font-family: var(--sans);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text2);
+    margin-bottom: 8px;
+  }
+
+  /* ── STAT CARDS ── */
+  .stat-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 20px 0;
+  }
+  .stat-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+    text-align: center;
+  }
+  .stat-card .val {
+    font-family: var(--display);
+    font-size: 28px;
+    font-weight: 900;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .stat-card .val.blue { color: var(--c4); }
+  .stat-card .lbl {
+    font-family: var(--sans);
+    font-size: 11px;
+    color: var(--text2);
+    letter-spacing: 0.5px;
+  }
+
+  /* ── TABLE ── */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-size: 13px;
+  }
+  .data-table th {
+    background: var(--table-header);
+    color: #fff;
+    font-family: var(--sans);
+    font-weight: 500;
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 10px 12px;
+    text-align: left;
+  }
+  .data-table td {
+    padding: 9px 12px;
+    border-bottom: 1px solid var(--border);
+    background: var(--table-bg);
+    font-family: var(--sans);
+    color: var(--text);
+  }
+  .data-table tr:nth-child(even) td { background: #f5f5f5; }
+  .tag-pos { color: #16a34a; font-weight: 600; }
+  .tag-neg { color: var(--accent); font-weight: 600; }
+  .tag-warn { color: #d97706; font-weight: 600; }
+
+  /* ── BADGE ── */
+  .badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 99px;
+    font-family: var(--sans);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    margin: 2px 3px;
+  }
+  .badge-red { background: #fff1f2; color: var(--accent); border: 1px solid #fda4af; }
+  .badge-blue { background: #eff6ff; color: var(--c4); border: 1px solid #93c5fd; }
+  .badge-green { background: #f0fdf4; color: #16a34a; border: 1px solid #86efac; }
+  .badge-gray { background: #f9fafb; color: var(--c3); border: 1px solid var(--border); }
+
+  /* ── INTERACTIVE ── */
+  .interactive-box {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+    margin: 20px 0;
+  }
+  .interactive-box .ib-title {
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .ib-title::before {
+    content: '';
+    display: inline-block;
+    width: 8px; height: 8px;
+    background: var(--accent);
+    border-radius: 50%;
+  }
+
+  input[type=range] {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 4px;
+    border-radius: 2px;
+    background: #e5e5e5;
+    outline: none;
+    margin: 10px 0;
+  }
+  input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    background: var(--accent);
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(225,29,72,0.3);
+  }
+
+  .sim-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+  }
+  .sim-label { font-family: var(--sans); font-size: 12px; color: var(--text2); }
+  .sim-val {
+    font-family: var(--display);
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--accent);
+    min-width: 70px;
+    text-align: right;
+  }
+
+  .result-row {
+    background: #fff;
+    border: 1px solid #fda4af;
+    border-radius: 8px;
+    padding: 14px;
+    margin-top: 14px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .result-item { text-align: center; }
+  .result-item .rv {
+    font-family: var(--display);
+    font-size: 20px;
+    font-weight: 900;
+    color: var(--accent);
+  }
+  .result-item .rl {
+    font-family: var(--sans);
+    font-size: 10px;
+    color: var(--text2);
+    letter-spacing: 0.5px;
+    margin-top: 2px;
+  }
+
+  .btn-reset {
+    display: block;
+    width: 100%;
+    margin-top: 14px;
+    padding: 10px;
+    background: transparent;
+    border: 1.5px solid var(--accent);
+    border-radius: 6px;
+    color: var(--accent);
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-reset:hover { background: var(--accent); color: #fff; }
+
+  /* ── ELLIOT WAVE SVG ── */
+  #wave-svg { width: 100%; overflow: visible; }
+
+  /* ── YIELD GAUGE ── */
+  #gauge-canvas { display: block; margin: 0 auto; }
+
+  /* ── FOOTER ── */
+  .mag-footer {
+    border-top: 1px solid var(--border);
+    padding: 28px 20px;
+    text-align: center;
+    background: var(--bg2);
+  }
+  .mag-footer p {
+    font-family: var(--sans);
+    font-size: 11px;
+    color: var(--text2);
+    letter-spacing: 1px;
+  }
+
+  /* ── TIMELINE ── */
+  .timeline { margin: 18px 0; }
+  .tl-item {
+    display: flex;
+    gap: 14px;
+    margin-bottom: 18px;
+    align-items: flex-start;
+  }
+  .tl-dot {
+    width: 10px; height: 10px;
+    min-width: 10px;
+    border-radius: 50%;
+    background: var(--accent);
+    margin-top: 6px;
+    position: relative;
+  }
+  .tl-dot::after {
+    content: '';
+    position: absolute;
+    left: 50%; top: 100%;
+    transform: translateX(-50%);
+    width: 1px;
+    height: 24px;
+    background: var(--border);
+  }
+  .tl-item:last-child .tl-dot::after { display: none; }
+  .tl-content {}
+  .tl-head {
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--accent);
+    margin-bottom: 2px;
+  }
+  .tl-body { font-size: 13px; color: var(--text); line-height: 1.55; }
+
+  /* Responsive */
+  @media (max-width: 400px) {
+    .stat-grid { grid-template-columns: 1fr; }
+    .result-row { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── HEADER ── -->
+<header class="mag-header">
+  <div class="mag-label">투자 분석 · 마켓 리포트</div>
+  <h1 class="mag-title">3월 26일 조정장<br><span>엘리엇 5차 웨이브</span></h1>
+  <p class="mag-sub">"시장이 미쳐도 펀더멘털은 흔들리지 않는다"</p>
+  <div class="mag-meta">
+    2026년 3월 27일 <span>·</span> 미국 주식 시장 분석 <span>·</span> 멤버십 방송
+  </div>
+</header>
+
+<div class="container">
+
+<!-- ── 1. 핵심 요약 ── -->
+<section>
+  <div class="section-label fade-in">Overview</div>
+  <h2 class="fade-in">핵심 요약</h2>
+  <p class="lead fade-in">
+    오늘 조정장은 엘리엇 5차 웨이브로 해석되며, 두 가지 공포 재료(구글 TurboQuant 논문·이란 리스크)가 시장을 비이성적으로 움직인 것으로 분석된다. 현금 30~40% 보유 전략을 미리 실행했다면 크게 흔들릴 이유가 없다.
+  </p>
+
+  <div class="stat-grid fade-in">
+    <div class="stat-card"><div class="val">5%</div><div class="lbl">오늘 시장 하락 수준<br>(풀백 범주)</div></div>
+    <div class="stat-card"><div class="val">30~40%</div><div class="lbl">권장 현금 보유 비중<br>(사전 대비)</div></div>
+    <div class="stat-card"><div class="val blue">1개월</div><div class="lbl">풀백 평균 회복 기간</div></div>
+    <div class="stat-card"><div class="val blue">4개월</div><div class="lbl">코렉션 평균 회복 기간</div></div>
+  </div>
+</section>
+
+<!-- ── 2. 엘리엇 웨이브 ── -->
+<section>
+  <div class="section-label fade-in">Elliott Wave Theory</div>
+  <h2 class="fade-in">엘리엇 웨이브란?</h2>
+
+  <p class="fade-in">주식시장은 <strong>5파 상승 + 3파 하락</strong>의 반복 패턴을 그린다는 이론이다. 1930년대 랄프 넬슨 엘리엇이 창시했으며, 실전에서 100% 신뢰할 수는 없지만 현 시장 흐름을 읽는 보조 도구로 활용된다.</p>
+
+  <div class="chart-container fade-in" style="max-height:280px;">
+    <div class="chart-title">엘리엇 파동 개념도 (5파 상승 · 3파 하락)</div>
+    <canvas id="waveDiagram" height="240"></canvas>
+  </div>
+
+  <div class="highlight-box fade-in">
+    <div class="hb-label">⚡ 현재 위치</div>
+    <p>현재 시장은 <strong>5차 상승 웨이브 진입 단계</strong>로 분석된다. 조정(4파)이 마무리되고 마지막 상승 구간이 시작될 수 있는 시점이다.</p>
+  </div>
+
+  <table class="data-table fade-in">
+    <thead><tr><th>파동</th><th>특징</th><th>투자 전략</th></tr></thead>
+    <tbody>
+      <tr><td>1파</td><td>첫 번째 상승, 인지 부족</td><td>소량 매수</td></tr>
+      <tr><td>2파</td><td>조정 하락</td><td>추가 매수 대기</td></tr>
+      <tr><td>3파</td><td>가장 강하고 긴 상승</td><td><span class="tag-pos">적극 매수</span></td></tr>
+      <tr><td>4파</td><td>2차 조정 (현재)</td><td>현금 보유·대기</td></tr>
+      <tr><td>5파</td><td>최후 상승, 과열 동반</td><td><span class="tag-warn">일부 차익 실현</span></td></tr>
+      <tr><td>A-B-C파</td><td>3파 하락 조정</td><td><span class="tag-neg">신중 또는 현금화</span></td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ── 3. 폭락 원인 두 가지 ── -->
+<section>
+  <div class="section-label fade-in">Market Catalyst Analysis</div>
+  <h2 class="fade-in">오늘 시장 폭락의 두 가지 공포</h2>
+
+  <h3 class="fade-in">① 구글 TurboQuant 논문</h3>
+  <p class="fade-in">구글이 LLM의 메모리 사용량을 1/4~1/6 수준으로 줄일 수 있는 기술을 논문으로 발표했다. 시장은 이를 "메모리 칩 수요 감소" 신호로 해석해 마이크론·AMD·삼성 등 메모리 관련주를 대량 매도했다.</p>
+
+  <blockquote>
+    <p>"메모리 사용량이 감소한다고 메모리 수요가 주는 것은 아닙니다. 효율이 높아지면 더 많은 작업을 수행해서 메모리는 오히려 더 필요하게 됩니다."</p>
+  </blockquote>
+
+  <div class="highlight-box fade-in">
+    <div class="hb-label">🔍 전문가 해석</div>
+    <p>메모리 압축 시 CPU 사용량·발열·전력 소비가 <strong>증가</strong>하는 트레이드오프 관계. 아직 논문 단계로 상용화 미확정. 오히려 AI 성능 향상으로 HBM 수요는 장기적으로 <strong>증가</strong>할 가능성이 높다.</p>
+  </div>
+
+  <h3 class="fade-in">② 이란 리스크 (지정학적 노이즈)</h3>
+  <p class="fade-in">트럼프 대통령이 이란으로부터 받은 "큰 선물"이 <em>호르무즈 해협 유조선 열대 통과권</em>으로 밝혀지면서 전쟁 종식 기대감이 실망으로 전환됐다. 유가 상승 → 소비자 심리 위축으로 이어졌다.</p>
+
+  <p class="fade-in">캘리포니아 유가 배럴당 약 $7 수준. 외곽 거주 직장인은 하루 약 $30 교통비가 발생하여 실질 구매력을 잠식한다.</p>
+
+  <div class="highlight-box fade-in">
+    <div class="hb-label">📌 핵심 판단</div>
+    <p>이란 리스크는 <strong>"노이즈"</strong>로 분류. 장기 폐쇄 시 트럼프에게 정치적 타격이 크므로 협상·타협 가능성이 높다. 유가 하락 시 금리 하락 추세로 전환될 수 있다.</p>
+  </div>
+
+  <!-- 차트: 두 공포의 시장 영향 -->
+  <div class="chart-container fade-in">
+    <div class="chart-title">두 공포 재료의 시장 영향 평가</div>
+    <canvas id="fearChart" height="220"></canvas>
+  </div>
+</section>
+
+<!-- ── 4. 10년 국채 수익률 ── -->
+<section>
+  <div class="section-label fade-in">Macro Indicator</div>
+  <h2 class="fade-in">10년 국채 수익률 & 연준 개입</h2>
+
+  <p class="fade-in">10년 국채 수익률이 <strong>4.41%</strong>까지 상승했다. 경고 기준은 <strong>4.5%</strong>로, 이를 초과하면 경제 전반에 타격을 줄 수 있다. 다만 연준이 채권 매입(밸런스 시트 확대)으로 시장에 개입 중이다.</p>
+
+  <!-- 금리 게이지 인터랙티브 -->
+  <div class="interactive-box fade-in">
+    <div class="ib-title">10년 국채 금리 게이지</div>
+    <canvas id="gaugeCanvas" width="300" height="170"></canvas>
+    <div style="text-align:center; margin-top:8px;">
+      <span class="sim-label">금리 조절:</span>
+      <input type="range" id="yieldSlider" min="3.0" max="5.5" step="0.05" value="4.41">
+      <div id="yieldInfo" style="text-align:center; font-family:var(--sans); font-size:13px; color:var(--text2); margin-top:6px;"></div>
+    </div>
+    <button class="btn-reset" onclick="resetYield()">↺ 초기화 (4.41%)</button>
+  </div>
+
+  <div class="timeline fade-in">
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-content">
+        <div class="tl-head">국채 수익률 상승 원인</div>
+        <div class="tl-body">인플레이션 상승 우려 + 재정적자 확대 + 국채 공급 폭증 → 이자율 인상으로 소화</div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-content">
+        <div class="tl-head">연준 개입 메커니즘</div>
+        <div class="tl-body">연준이 국채를 매입 → 시장에 현금 공급 증가 → 밸런스 시트 확대 = 사실상의 양적 완화</div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-content">
+        <div class="tl-head">전망</div>
+        <div class="tl-body">4.5% 초과 가능성 낮음. 연준 개입 지속, 이란 전쟁 해소 시 유가 하락 → 금리 하락 예상 (3~4분기)</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 5. 시장 조정 유형 & 회복 ── -->
+<section>
+  <div class="section-label fade-in">Historical Context</div>
+  <h2 class="fade-in">시장 조정 유형과 역사적 회복 패턴</h2>
+
+  <table class="data-table fade-in">
+    <thead><tr><th>유형</th><th>하락폭</th><th>발생 빈도</th><th>평균 회복</th><th>대응 전략</th></tr></thead>
+    <tbody>
+      <tr><td><span class="badge badge-gray">풀백</span></td><td>~5%</td><td>연 3회 이상</td><td class="tag-pos">1개월</td><td>유지·추가 매수</td></tr>
+      <tr><td><span class="badge badge-red">코렉션</span></td><td>~10%</td><td>연 1회</td><td class="tag-warn">4개월</td><td>현금 활용 분할 매수</td></tr>
+      <tr><td><span class="badge" style="background:#fef2f2;color:#dc2626;border:1px solid #fca5a5;">베어마켓</span></td><td>20%↑</td><td>수년에 1회</td><td class="tag-neg">12개월↑</td><td>현금 비중 대폭 확대</td></tr>
+    </tbody>
+  </table>
+
+  <div class="chart-container fade-in">
+    <div class="chart-title">풀백 주요 발생 월별 빈도 (역사적 통계)</div>
+    <canvas id="pullbackChart" height="220"></canvas>
+  </div>
+
+  <div class="highlight-box fade-in">
+    <div class="hb-label">📅 현재 상황 판단</div>
+    <p><strong>오늘은 "풀백" 범주</strong> (약 5% 하락). 1월 장이 좋았고 펀더멘털에 이슈가 없으므로 연말까지 전체 장은 긍정적으로 유지될 것으로 전망. <strong>4월 전후 회복 예상.</strong></p>
+  </div>
+</section>
+
+<!-- ── 6. 주요 종목 분석 ── -->
+<section>
+  <div class="section-label fade-in">Stock Analysis</div>
+  <h2 class="fade-in">주요 종목 분석</h2>
+
+  <h3 class="fade-in">마이크론 (MU) — 핵심 보유 종목</h3>
+
+  <div class="stat-grid fade-in">
+    <div class="stat-card"><div class="val">16.99</div><div class="lbl">현재 PE<br>(섹터 평균 22)</div></div>
+    <div class="stat-card"><div class="val">682%</div><div class="lbl">전년 대비 EPS<br>성장률</div></div>
+    <div class="stat-card"><div class="val">$55.78</div><div class="lbl">2026년 예상 EPS</div></div>
+    <div class="stat-card"><div class="val">2.6%</div><div class="lbl">Short Interest<br>(매도 세력 약함)</div></div>
+  </div>
+
+  <div class="chart-container fade-in">
+    <div class="chart-title">마이크론 주요 투자 지표</div>
+    <canvas id="micronChart" height="220"></canvas>
+  </div>
+
+  <blockquote>
+    <p>"S&P 500 500대 기업 중 40개 애널리스트 전원이 가이던스를 상향 조정한 회사는 마이크론이 유일하다."</p>
+  </blockquote>
+
+  <!-- 마이크론 수익률 시뮬레이터 -->
+  <div class="interactive-box fade-in">
+    <div class="ib-title">마이크론 투자 수익률 시뮬레이터</div>
+
+    <div class="sim-row"><span class="sim-label">투자 금액</span><span class="sim-val" id="invAmount">$10,000</span></div>
+    <input type="range" id="invSlider" min="1000" max="100000" step="1000" value="10000">
+
+    <div class="sim-row"><span class="sim-label">매수 단가 ($)</span><span class="sim-val" id="buyPrice">$80</span></div>
+    <input type="range" id="buySlider" min="40" max="200" step="5" value="80">
+
+    <div class="sim-row"><span class="sim-label">목표 단가 ($)</span><span class="sim-val" id="targetPrice">$200</span></div>
+    <input type="range" id="targetSlider" min="80" max="600" step="10" value="200">
+
+    <div class="result-row">
+      <div class="result-item"><div class="rv" id="sharesHeld">125주</div><div class="rl">보유 주수</div></div>
+      <div class="result-item"><div class="rv" id="profitAmt">+$15,000</div><div class="rl">예상 수익</div></div>
+      <div class="result-item"><div class="rv" id="profitPct">+150%</div><div class="rl">수익률</div></div>
+      <div class="result-item"><div class="rv" id="finalVal">$25,000</div><div class="rl">최종 평가금액</div></div>
+    </div>
+    <button class="btn-reset" onclick="resetSim()">↺ 초기화</button>
+  </div>
+
+  <h3 class="fade-in">기타 관심 종목</h3>
+  <table class="data-table fade-in">
+    <thead><tr><th>종목</th><th>투자 의견</th><th>비고</th></tr></thead>
+    <tbody>
+      <tr><td>마이크론 (MU)</td><td class="tag-pos">강력 매수</td><td>오늘 $200K 매수. 적정가 740% 상향</td></tr>
+      <tr><td>메타 (META)</td><td class="tag-pos">매수 (신규)</td><td>레이오프 발표 시 추가 상승 예상. 목표 $890</td></tr>
+      <tr><td>샌디스크</td><td class="tag-pos">매수</td><td>비중 확대</td></tr>
+      <tr><td>AMD</td><td class="tag-warn">관심 유지</td><td>가격이 착해진 시점에 추가 고려</td></tr>
+      <tr><td>테라다인</td><td class="tag-warn">관심 유지</td><td>여력 있을 때 검토</td></tr>
+      <tr><td>스페이스X (IPO)</td><td class="tag-pos">무조건 청약</td><td>6월 예상, BofA/E*Trade 배분</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ── 7. 스페이스X IPO ── -->
+<section>
+  <div class="section-label fade-in">Upcoming Event</div>
+  <h2 class="fade-in">스페이스X IPO 임박</h2>
+
+  <p class="fade-in">SEC 신청이 임박했으며, <strong>2026년 6월</strong>이 D-Day로 예상된다. 역대 미국 최대 IPO 중 하나가 될 전망이며, 개인 투자자에게 전체 물량의 <strong>30%</strong>가 배분된다.</p>
+
+  <div class="highlight-box fade-in">
+    <div class="hb-label">🚀 청약 방법 (미국 거주자)</div>
+    <p>
+      <span class="badge badge-blue">Bank of America / Merrill Lynch</span>
+      <span class="badge badge-blue">Morgan Stanley / E*Trade</span>
+      두 플랫폼을 통해 청약 가능. 국제 물량은 UBS 배정 예정. 예상 기업가치 약 <strong>$1.7 trillion</strong>.
+    </p>
+  </div>
+</section>
+
+<!-- ── 8. 펀더멘털 점검 ── -->
+<section>
+  <div class="section-label fade-in">Fundamental Check</div>
+  <h2 class="fade-in">미국 시장 펀더멘털 점검</h2>
+
+  <div class="chart-container fade-in">
+    <div class="chart-title">S&P 500 기업 실적 어닝 비트율 비교</div>
+    <canvas id="earningsChart" height="200"></canvas>
+  </div>
+
+  <table class="data-table fade-in">
+    <thead><tr><th>지표</th><th>현재</th><th>평가</th></tr></thead>
+    <tbody>
+      <tr><td>경제 성장률</td><td>약 2%대</td><td class="tag-pos">양호</td></tr>
+      <tr><td>S&P 500 어닝 비트율</td><td>72%</td><td class="tag-pos">양호</td></tr>
+      <tr><td>인플레이션</td><td>상승 중</td><td class="tag-warn">주의 (수입가 +1.3%)</td></tr>
+      <tr><td>10년 국채 수익률</td><td>4.41%</td><td class="tag-warn">경계 (4.5% 기준)</td></tr>
+      <tr><td>연준 스탠스</td><td>채권 매입 개입</td><td class="tag-pos">완화적</td></tr>
+      <tr><td>지정학적 리스크</td><td>이란 긴장</td><td class="tag-warn">노이즈 수준</td></tr>
+    </tbody>
+  </table>
+
+  <div class="highlight-box fade-in">
+    <div class="hb-label">📊 2026년 시장 전망</div>
+    <p>과거 15~20% 고수익 시대는 지남. 올해는 <strong>한 자릿수 수익률</strong>이 기본 시나리오(확률 80%↑). 그 이상은 보너스. 장기적으로 낙관적 관점 유지.</p>
+  </div>
+</section>
+
+<!-- ── 9. 투자 원칙 ── -->
+<section>
+  <div class="section-label fade-in">Investment Principles</div>
+  <h2 class="fade-in">핵심 투자 원칙 요약</h2>
+
+  <div class="timeline fade-in">
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-content">
+        <div class="tl-head">현금 비중 관리</div>
+        <div class="tl-body">항상 30~40% 현금 보유. 조정장이 올 때 매수 기회로 활용. 스페이스X IPO 대비 현금 일부 유보.</div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-content">
+        <div class="tl-head">공포 & 비이성적 시장 활용</div>
+        <div class="tl-body">"시장이 미쳐서 떨어질 때가 매수 기회다." 구글 TurboQuant 사태처럼 비이성적 매도가 나올 때 역발상으로 진입.</div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-content">
+        <div class="tl-head">가격 vs 가치 구분</div>
+        <div class="tl-body">현금화하지 않으면 오늘 떨어진 건 "가격"이 아니라 "밸류(가치)"다. 장기 투자자는 가치를 보고 판단한다.</div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-content">
+        <div class="tl-head">한국 주식 투자 자제</div>
+        <div class="tl-body">거버넌스 투명성, 공매도 대응, 의사결정 문화 차이로 미국 주식 위주 전략 유지.</div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-content">
+        <div class="tl-head">반복 학습의 중요성</div>
+        <div class="tl-body">"투자 아카데미를 통해 사전에 공부한 사람만 오늘 이 상황을 이해할 수 있다. 컨텍스트 없이 단편적으로 보면 멘붕이 온다."</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── QUIZ 안내 ── -->
+<section style="text-align:center; padding:30px 0;">
+  <div class="section-label fade-in" style="justify-content:center;">Study Guide</div>
+  <h2 class="fade-in" style="text-align:center;">📝 시험 문제지</h2>
+  <p class="fade-in" style="color:var(--text2);">이 분석 내용을 기반으로 한 10문제 퀴즈는<br><strong>별도 파일(quiz_questions.html)</strong>을 참고하세요.</p>
+</section>
+
+</div><!-- /container -->
+
+<footer class="mag-footer">
+  <p>본 내용은 투자 참고용 분석이며 투자 판단의 최종 책임은 본인에게 있습니다.</p>
+  <p style="margin-top:6px;">📅 2026.03.27 · 멤버십 방송 정리</p>
+</footer>
+
+<script>
+// ── FADE IN OBSERVER ──
+const fadeObs = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), i * 80);
+      fadeObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.12 });
+document.querySelectorAll('.fade-in').forEach(el => fadeObs.observe(el));
+
+// ── CHART CONFIGS ──
+const chartConfigs = {};
+
+// 1. 엘리엇 웨이브 차트
+chartConfigs['waveDiagram'] = () => {
+  const labels = ['', '1파 끝', '2파 저점', '3파 고점', '4파 저점(현재)', '5파 목표', 'A', 'B', 'C'];
+  const data = [100, 130, 115, 165, 140, 190, 165, 178, 145];
+  new Chart(document.getElementById('waveDiagram'), {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [{
+        label: '가격',
+        data,
+        borderColor: '#e11d48',
+        borderWidth: 2.5,
+        pointRadius: [0,6,6,6,8,7,5,5,5],
+        pointBackgroundColor: data.map((v,i) => i===3?'#2563eb': i===4?'#f43f5e':'#e11d48'),
+        tension: 0.3,
+        fill: false,
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: true,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: ctx => {
+              const notes = ['','1파 완성','2파 조정','3파 최고점','4파 조정 (현재 위치)','5파 목표','A파','B파','C파'];
+              return notes[ctx.dataIndex] || '';
+            }
+          }
+        },
+        annotation: {}
+      },
+      scales: {
+        x: { grid: { color: '#e5e5e5' }, ticks: { font: { family: 'DM Sans', size: 10 } } },
+        y: { display: false }
+      }
+    }
+  });
+};
+
+// 2. 공포 재료 평가 레이더
+chartConfigs['fearChart'] = () => {
+  new Chart(document.getElementById('fearChart'), {
+    type: 'radar',
+    data: {
+      labels: ['실제 펀더멘털 타격', '장기 지속 가능성', '시장 반응 크기', '전문가 동의도', '투자 기회'],
+      datasets: [
+        {
+          label: '구글 TurboQuant',
+          data: [15, 20, 80, 20, 90],
+          backgroundColor: 'rgba(225,29,72,0.15)',
+          borderColor: '#e11d48',
+          borderWidth: 2,
+          pointBackgroundColor: '#e11d48',
+        },
+        {
+          label: '이란 리스크',
+          data: [35, 30, 70, 50, 75],
+          backgroundColor: 'rgba(37,99,235,0.1)',
+          borderColor: '#2563eb',
+          borderWidth: 2,
+          pointBackgroundColor: '#2563eb',
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: true,
+      scales: {
+        r: {
+          beginAtZero: true, max: 100,
+          ticks: { stepSize: 25, font: { size: 9 } },
+          pointLabels: { font: { family: 'DM Sans', size: 10 } }
+        }
+      },
+      plugins: {
+        legend: { labels: { font: { family: 'DM Sans', size: 11 } } }
+      }
+    }
+  });
+};
+
+// 3. 풀백 월별 빈도
+chartConfigs['pullbackChart'] = () => {
+  new Chart(document.getElementById('pullbackChart'), {
+    type: 'bar',
+    data: {
+      labels: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
+      datasets: [{
+        label: '풀백 발생 빈도 (역사적)',
+        data: [3,5,2,2,3,2,2,3,6,4,5,2],
+        backgroundColor: data => {
+          const idx = data.dataIndex;
+          if([1,8,10].includes(idx)) return '#e11d48';
+          return '#6b7280';
+        },
+        borderRadius: 4,
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: true,
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: ctx => `${ctx.parsed.y}회` } }
+      },
+      scales: {
+        x: { grid: { display: false }, ticks: { font: { family: 'DM Sans', size: 10 } } },
+        y: { grid: { color: '#e5e5e5' }, ticks: { font: { family: 'DM Sans', size: 10 }, stepSize: 1 } }
+      }
+    }
+  });
+};
+
+// 4. 마이크론 지표
+chartConfigs['micronChart'] = () => {
+  new Chart(document.getElementById('micronChart'), {
+    type: 'bar',
+    data: {
+      labels: ['현재 PE', '섹터 평균 PE', 'Short Interest(%)'],
+      datasets: [
+        {
+          label: '마이크론',
+          data: [16.99, null, 2.6],
+          backgroundColor: '#e11d48',
+          borderRadius: 4,
+        },
+        {
+          label: '섹터 평균',
+          data: [null, 22, null],
+          backgroundColor: '#2563eb',
+          borderRadius: 4,
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: true,
+      plugins: {
+        legend: { labels: { font: { family: 'DM Sans', size: 11 } } }
+      },
+      scales: {
+        x: { grid: { display: false }, ticks: { font: { family: 'DM Sans', size: 10 } } },
+        y: { grid: { color: '#e5e5e5' }, ticks: { font: { family: 'DM Sans', size: 10 } } }
+      }
+    }
+  });
+};
+
+// 5. 어닝 비트율
+chartConfigs['earningsChart'] = () => {
+  new Chart(document.getElementById('earningsChart'), {
+    type: 'doughnut',
+    data: {
+      labels: ['어닝 비트', '어닝 미스'],
+      datasets: [{
+        data: [72, 28],
+        backgroundColor: ['#e11d48', '#e5e5e5'],
+        borderWidth: 0,
+        hoverOffset: 6,
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: true,
+      cutout: '68%',
+      plugins: {
+        legend: { labels: { font: { family: 'DM Sans', size: 12 } } },
+        tooltip: { callbacks: { label: ctx => `${ctx.label}: ${ctx.parsed}%` } }
+      }
+    }
+  });
+};
+
+// ── CHART INTERSECTION OBSERVER ──
+const chartObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const canvas = e.target.querySelector('canvas');
+      if (canvas && chartConfigs[canvas.id]) {
+        chartConfigs[canvas.id]();
+        e.target.classList.add('chart-ready');
+        chartObs.unobserve(e.target);
+      }
+    }
+  });
+}, { threshold: 0.15 });
+document.querySelectorAll('.chart-container').forEach(el => chartObs.observe(el));
+
+// ── YIELD GAUGE ──
+const gaugeCanvas = document.getElementById('gaugeCanvas');
+const gCtx = gaugeCanvas ? gaugeCanvas.getContext('2d') : null;
+
+function drawGauge(value) {
+  if (!gCtx) return;
+  const W = gaugeCanvas.width, H = gaugeCanvas.height;
+  gCtx.clearRect(0, 0, W, H);
+  const cx = W/2, cy = H - 20;
+  const r = 110;
+  const min = 3.0, max = 5.5;
+
+  // BG arc
+  gCtx.beginPath();
+  gCtx.arc(cx, cy, r, Math.PI, 2*Math.PI, false);
+  gCtx.lineWidth = 22;
+  gCtx.strokeStyle = '#e5e5e5';
+  gCtx.stroke();
+
+  // color arc (green -> yellow -> red)
+  const pct = (value - min) / (max - min);
+  const endAngle = Math.PI + pct * Math.PI;
+  let col = pct < 0.4 ? '#16a34a' : pct < 0.6 ? '#d97706' : '#e11d48';
+  gCtx.beginPath();
+  gCtx.arc(cx, cy, r, Math.PI, endAngle, false);
+  gCtx.lineWidth = 22;
+  gCtx.strokeStyle = col;
+  gCtx.stroke();
+
+  // Needle
+  const needleAngle = Math.PI + pct * Math.PI;
+  const nx = cx + (r - 11) * Math.cos(needleAngle);
+  const ny = cy + (r - 11) * Math.sin(needleAngle);
+  gCtx.beginPath();
+  gCtx.moveTo(cx, cy);
+  gCtx.lineTo(nx, ny);
+  gCtx.strokeStyle = '#1a1a1a';
+  gCtx.lineWidth = 2.5;
+  gCtx.stroke();
+
+  // Center circle
+  gCtx.beginPath();
+  gCtx.arc(cx, cy, 6, 0, 2*Math.PI);
+  gCtx.fillStyle = '#1a1a1a';
+  gCtx.fill();
+
+  // Value text
+  gCtx.fillStyle = col;
+  gCtx.font = 'bold 28px Playfair Display, serif';
+  gCtx.textAlign = 'center';
+  gCtx.fillText(value.toFixed(2) + '%', cx, cy - 28);
+
+  // Labels
+  gCtx.fillStyle = '#6b7280';
+  gCtx.font = '10px DM Sans, sans-serif';
+  gCtx.fillText('3.0%', cx - r - 5, cy + 14);
+  gCtx.fillText('5.5%', cx + r + 5, cy + 14);
+
+  // Danger zone marker
+  gCtx.fillStyle = '#e11d48';
+  gCtx.font = '10px DM Sans, sans-serif';
+  gCtx.fillText('⚠ 4.5% 경고', cx, cy - 50);
+}
+
+const yieldSlider = document.getElementById('yieldSlider');
+const yieldInfo = document.getElementById('yieldInfo');
+
+function updateYield() {
+  const v = parseFloat(yieldSlider.value);
+  drawGauge(v);
+  let msg = '';
+  if (v < 4.0) msg = '✅ 안정 구간 — 금리 인하 가능성';
+  else if (v < 4.5) msg = '⚠️ 주의 구간 — 시장 부담 시작';
+  else if (v < 5.0) msg = '🔴 경고 구간 — 연준 개입 필요';
+  else msg = '🚨 위험 구간 — 경제 전반 타격';
+  yieldInfo.textContent = msg;
+}
+
+if (yieldSlider) {
+  yieldSlider.addEventListener('input', updateYield);
+  // Draw initial
+  setTimeout(() => updateYield(), 300);
+}
+
+function resetYield() {
+  yieldSlider.value = 4.41;
+  updateYield();
+}
+
+// ── MICRON SIMULATOR ──
+function updateSim() {
+  const inv = parseInt(document.getElementById('invSlider').value);
+  const buy = parseInt(document.getElementById('buySlider').value);
+  const target = parseInt(document.getElementById('targetSlider').value);
+
+  document.getElementById('invAmount').textContent = '$' + inv.toLocaleString();
+  document.getElementById('buyPrice').textContent = '$' + buy;
+  document.getElementById('targetPrice').textContent = '$' + target;
+
+  if (target <= buy) {
+    document.getElementById('sharesHeld').textContent = '-';
+    document.getElementById('profitAmt').textContent = '-';
+    document.getElementById('profitPct').textContent = '목표가 > 매수가';
+    document.getElementById('finalVal').textContent = '-';
+    return;
+  }
+
+  const shares = Math.floor(inv / buy);
+  const finalVal = shares * target;
+  const profit = finalVal - inv;
+  const pct = ((target - buy) / buy * 100).toFixed(1);
+
+  document.getElementById('sharesHeld').textContent = shares + '주';
+  document.getElementById('profitAmt').textContent = '+$' + profit.toLocaleString();
+  document.getElementById('profitPct').textContent = '+' + pct + '%';
+  document.getElementById('finalVal').textContent = '$' + finalVal.toLocaleString();
+}
+
+['invSlider','buySlider','targetSlider'].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) el.addEventListener('input', updateSim);
+});
+updateSim();
+
+function resetSim() {
+  document.getElementById('invSlider').value = 10000;
+  document.getElementById('buySlider').value = 80;
+  document.getElementById('targetSlider').value = 200;
+  updateSim();
+}
+</script>
+</body>
+</html>

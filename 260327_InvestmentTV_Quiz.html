@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>시험 문제지 — 엘리엇 5차 웨이브 & 조정장 분석</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500&family=Source+Serif+4:ital,wght@0,400;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #ffffff;
+    --bg2: #fafafa;
+    --text: #1a1a1a;
+    --text2: #777777;
+    --accent: #e11d48;
+    --border: #e5e5e5;
+    --c4: #2563eb;
+    --green: #16a34a;
+    --display: 'Playfair Display', serif;
+    --sans: 'DM Sans', sans-serif;
+    --serif: 'Source Serif 4', serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .header {
+    border-top: 4px solid var(--accent);
+    border-bottom: 1px solid var(--border);
+    padding: 28px 20px 20px;
+    text-align: center;
+    background: var(--bg);
+  }
+  .header .label {
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+  .header h1 {
+    font-family: var(--display);
+    font-size: clamp(22px, 6vw, 34px);
+    font-weight: 900;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+  .header h1 span { color: var(--accent); }
+  .header p {
+    font-family: var(--serif);
+    font-size: 13px;
+    font-style: italic;
+    color: var(--text2);
+    margin-bottom: 14px;
+  }
+  .difficulty-legend {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+  }
+  .dl-item {
+    font-size: 11px;
+    padding: 3px 12px;
+    border-radius: 99px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+  }
+  .easy { background: #f0fdf4; color: var(--green); border: 1px solid #86efac; }
+  .normal { background: #eff6ff; color: var(--c4); border: 1px solid #93c5fd; }
+  .hard { background: #fff1f2; color: var(--accent); border: 1px solid #fda4af; }
+
+  .container { max-width: 660px; margin: 0 auto; padding: 0 20px 40px; }
+
+  /* MODE TOGGLE */
+  .mode-bar {
+    display: flex;
+    gap: 10px;
+    padding: 18px 0 8px;
+    justify-content: center;
+  }
+  .mode-btn {
+    padding: 8px 20px;
+    border-radius: 99px;
+    border: 1.5px solid var(--border);
+    background: var(--bg);
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.5px;
+  }
+  .mode-btn.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+  }
+
+  /* QUESTION CARD */
+  .q-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 22px;
+    margin: 18px 0;
+    transition: box-shadow 0.2s;
+  }
+  .q-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.06); }
+
+  .q-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+  .q-num {
+    font-family: var(--display);
+    font-size: 20px;
+    font-weight: 900;
+    color: var(--accent);
+    min-width: 32px;
+  }
+  .q-type {
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text2);
+    border: 1px solid var(--border);
+    padding: 2px 8px;
+    border-radius: 4px;
+  }
+  .q-diff { margin-left: auto; font-size: 11px; padding: 2px 10px; border-radius: 99px; font-weight: 500; }
+
+  .q-text {
+    font-family: var(--serif);
+    font-size: 15px;
+    color: var(--text);
+    margin-bottom: 14px;
+    line-height: 1.65;
+  }
+
+  /* Multiple choice */
+  .options { list-style: none; }
+  .options li {
+    padding: 10px 14px;
+    margin: 6px 0;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.18s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .options li:hover { border-color: var(--accent); background: #fff1f2; }
+  .option-letter {
+    width: 22px; height: 22px;
+    min-width: 22px;
+    border-radius: 50%;
+    background: var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text2);
+    transition: all 0.18s;
+  }
+  .options li.selected { border-color: var(--c4); background: #eff6ff; }
+  .options li.selected .option-letter { background: var(--c4); color: #fff; }
+  .options li.correct { border-color: var(--green); background: #f0fdf4; }
+  .options li.correct .option-letter { background: var(--green); color: #fff; }
+  .options li.wrong { border-color: var(--accent); background: #fff1f2; }
+  .options li.wrong .option-letter { background: var(--accent); color: #fff; }
+
+  /* OX / Short answer */
+  .ox-btns { display: flex; gap: 10px; margin: 4px 0 10px; }
+  .ox-btn {
+    flex: 1;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1.5px solid var(--border);
+    background: var(--bg);
+    font-size: 20px;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.18s;
+    font-weight: 700;
+  }
+  .ox-btn:hover { border-color: var(--accent); }
+  .ox-btn.selected { border-color: var(--c4); background: #eff6ff; }
+  .ox-btn.correct { border-color: var(--green); background: #f0fdf4; }
+  .ox-btn.wrong { border-color: var(--accent); background: #fff1f2; }
+
+  .short-input {
+    width: 100%;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-family: var(--sans);
+    font-size: 14px;
+    color: var(--text);
+    background: var(--bg);
+    outline: none;
+    transition: border-color 0.18s;
+    margin-bottom: 8px;
+  }
+  .short-input:focus { border-color: var(--accent); }
+
+  .check-btn {
+    padding: 8px 20px;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: opacity 0.18s;
+  }
+  .check-btn:hover { opacity: 0.85; }
+
+  /* Answer box */
+  .answer-box {
+    display: none;
+    margin-top: 14px;
+    background: #fff;
+    border: 1px solid #fda4af;
+    border-left: 4px solid var(--accent);
+    border-radius: 0 8px 8px 0;
+    padding: 14px 16px;
+  }
+  .answer-box.show { display: block; }
+  .answer-box .ans-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+  .answer-box .ans-correct {
+    font-weight: 700;
+    color: var(--green);
+    font-size: 14px;
+    margin-bottom: 6px;
+  }
+  .answer-box .ans-explain {
+    font-family: var(--serif);
+    font-size: 13px;
+    color: var(--text2);
+    line-height: 1.6;
+    font-style: italic;
+  }
+
+  /* Answer sheet (hidden by default) */
+  .answer-sheet { display: none; }
+  .answer-sheet.show { display: block; }
+  .answer-sheet-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    margin: 14px 0;
+  }
+  .answer-sheet-card .asq {
+    font-family: var(--serif);
+    font-size: 14px;
+    color: var(--text);
+    margin-bottom: 10px;
+  }
+  .answer-sheet-card .asa {
+    background: var(--accent);
+    color: #fff;
+    display: inline-block;
+    padding: 4px 14px;
+    border-radius: 99px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .answer-sheet-card .ase {
+    font-size: 13px;
+    color: var(--text2);
+    line-height: 1.6;
+    border-top: 1px solid var(--border);
+    padding-top: 8px;
+    margin-top: 6px;
+  }
+
+  /* Score bar */
+  .score-bar {
+    display: none;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    margin: 20px 0;
+  }
+  .score-bar.show { display: block; }
+  .score-val {
+    font-family: var(--display);
+    font-size: 48px;
+    font-weight: 900;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .score-msg {
+    font-family: var(--serif);
+    font-size: 15px;
+    color: var(--text2);
+    font-style: italic;
+  }
+
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 28px 0;
+  }
+  .section-title {
+    font-family: var(--display);
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text);
+    margin: 28px 0 6px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--accent);
+  }
+  .section-note {
+    font-size: 12px;
+    color: var(--text2);
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+  }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="label">Study Test · 10 Questions</div>
+  <h1>시험 문제지<br><span>엘리엇 웨이브 & 조정장 분석</span></h1>
+  <p>3월 26일 방송 내용을 바탕으로 한 이해도 확인 시험</p>
+  <div class="difficulty-legend">
+    <span class="dl-item easy">🟢 쉬움 30%</span>
+    <span class="dl-item normal">🔵 보통 50%</span>
+    <span class="dl-item hard">🔴 어려움 20%</span>
+  </div>
+</header>
+
+<div class="container">
+
+  <div class="mode-bar">
+    <button class="mode-btn active" onclick="setMode('quiz')">📝 퀴즈 모드</button>
+    <button class="mode-btn" onclick="setMode('answer')">✅ 정답지 보기</button>
+  </div>
+
+  <div id="scoreBar" class="score-bar"></div>
+
+  <!-- ── QUIZ SECTION ── -->
+  <div id="quizSection">
+
+  <div class="section-title">객관식 (4문제)</div>
+  <p class="section-note">하나를 선택하세요.</p>
+
+  <!-- Q1 쉬움 -->
+  <div class="q-card" data-qid="1" data-type="mc" data-answer="C">
+    <div class="q-head">
+      <span class="q-num">01</span>
+      <span class="q-type">객관식</span>
+      <span class="q-diff dl-item easy">🟢 쉬움</span>
+    </div>
+    <p class="q-text">엘리엇 웨이브 이론에서 5파 상승 이후 나타나는 조정 파동은 몇 파로 구성되는가?</p>
+    <ul class="options">
+      <li onclick="selectMC(this,'1')"><span class="option-letter">A</span> 2파</li>
+      <li onclick="selectMC(this,'1')"><span class="option-letter">B</span> 4파</li>
+      <li onclick="selectMC(this,'1')"><span class="option-letter">C</span> 3파 (A-B-C)</li>
+      <li onclick="selectMC(this,'1')"><span class="option-letter">D</span> 5파</li>
+    </ul>
+    <div class="answer-box" id="ans1">
+      <div class="ans-label">정답 & 해설</div>
+      <div class="ans-correct">✅ C — 3파 (A-B-C)</div>
+      <div class="ans-explain">엘리엇 웨이브는 5파 상승 후 A-B-C 3파의 하락 조정이 따라온다. 상승 5파 + 하락 3파 = 총 8파가 하나의 사이클을 이룬다.</div>
+    </div>
+  </div>
+
+  <!-- Q2 보통 -->
+  <div class="q-card" data-qid="2" data-type="mc" data-answer="B">
+    <div class="q-head">
+      <span class="q-num">02</span>
+      <span class="q-type">객관식</span>
+      <span class="q-diff dl-item normal">🔵 보통</span>
+    </div>
+    <p class="q-text">구글의 TurboQuant 논문에 대한 분석으로 가장 올바른 해석은?</p>
+    <ul class="options">
+      <li onclick="selectMC(this,'2')"><span class="option-letter">A</span> 메모리 사용량 감소 → HBM 수요 즉시 감소</li>
+      <li onclick="selectMC(this,'2')"><span class="option-letter">B</span> 메모리 압축 시 CPU 사용량이 증가하는 트레이드오프가 발생한다</li>
+      <li onclick="selectMC(this,'2')"><span class="option-letter">C</span> 엔비디아 GPU 칩이 더 이상 필요 없어진다</li>
+      <li onclick="selectMC(this,'2')"><span class="option-letter">D</span> 삼성·마이크론 메모리 수요가 즉각 반토막 난다</li>
+    </ul>
+    <div class="answer-box" id="ans2">
+      <div class="ans-label">정답 & 해설</div>
+      <div class="ans-correct">✅ B</div>
+      <div class="ans-explain">메모리 용량을 압축하면 인덱싱과 처리를 위한 CPU 연산이 증가한다. 효율이 높아지면 더 많은 AI 작업을 수행할 수 있어 오히려 메모리 수요가 장기적으로 늘어날 가능성이 크다. 아직 논문 수준이며 상용화 미확정.</div>
+    </div>
+  </div>
+
+  <!-- Q3 보통 -->
+  <div class="q-card" data-qid="3" data-type="mc" data-answer="D">
+    <div class="q-head">
+      <span class="q-num">03</span>
+      <span class="q-type">객관식</span>
+      <span class="q-diff dl-item normal">🔵 보통</span>
+    </div>
+    <p class="q-text">10년 국채 수익률과 관련해 제시된 "경고 기준선"으로 언급된 수치는?</p>
+    <ul class="options">
+      <li onclick="selectMC(this,'3')"><span class="option-letter">A</span> 4.0%</li>
+      <li onclick="selectMC(this,'3')"><span class="option-letter">B</span> 4.2%</li>
+      <li onclick="selectMC(this,'3')"><span class="option-letter">C</span> 4.41%</li>
+      <li onclick="selectMC(this,'3')"><span class="option-letter">D</span> 4.5%</li>
+    </ul>
+    <div class="answer-box" id="ans3">
+      <div class="ans-label">정답 & 해설</div>
+      <div class="ans-correct">✅ D — 4.5%</div>
+      <div class="ans-explain">10년 국채 수익률 4.5%가 경고등이 켜지는 기준으로 언급됐다. 방송 당시 4.41%로 경고선에 근접했지만 초과하지는 않았으며, 연준 개입으로 이 선을 넘지 않을 것으로 전망했다.</div>
+    </div>
+  </div>
+
+  <!-- Q4 어려움 -->
+  <div class="q-card" data-qid="4" data-type="mc" data-answer="A">
+    <div class="q-head">
+      <span class="q-num">04</span>
+      <span class="q-type">객관식</span>
+      <span class="q-diff dl-item hard">🔴 어려움</span>
+    </div>
+    <p class="q-text">마이크론(MU)의 2026년 예상 EPS와 현재 PE에 관한 설명으로 올바른 것은?</p>
+    <ul class="options">
+      <li onclick="selectMC(this,'4')"><span class="option-letter">A</span> 2026년 예상 EPS $55.78, 현재 PE 16.99로 섹터 평균(22)보다 저평가 상태다</li>
+      <li onclick="selectMC(this,'4')"><span class="option-letter">B</span> 2026년 예상 EPS $40, 현재 PE 22로 섹터 평균에 부합한다</li>
+      <li onclick="selectMC(this,'4')"><span class="option-letter">C</span> Short Interest가 15% 이상으로 공매도 세력이 강하다</li>
+      <li onclick="selectMC(this,'4')"><span class="option-letter">D</span> 전년 대비 EPS 성장률이 200%이다</li>
+    </ul>
+    <div class="answer-box" id="ans4">
+      <div class="ans-label">정답 & 해설</div>
+      <div class="ans-correct">✅ A</div>
+      <div class="ans-explain">방송에서 마이크론 2026년 예상 EPS=$55.78, 현재 PE=16.99, 섹터 평균 PE=22로 저평가 상태임이 강조됐다. Short Interest는 2.6%로 매우 낮아 기관의 공매도 우려도 적은 상황이다. 전년 대비 EPS 성장률은 682%.</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+  <div class="section-title">OX 문제 (3문제)</div>
+  <p class="section-note">O 또는 X를 선택하세요.</p>
+
+  <!-- Q5 쉬움 -->
+  <div class="q-card" data-qid="5" data-type="ox" data-answer="X">
+    <div class="q-head">
+      <span class="q-num">05</span>
+      <span class="q-type">OX</span>
+      <span class="q-diff dl-item easy">🟢 쉬움</span>
+    </div>
+    <p class="q-text">역사적으로 "풀백(Pullback)"은 하락폭이 약 10%이며, 평균 4개월 내에 회복된다.</p>
+    <div class="ox-btns">
+      <div class="ox-btn" onclick="selectOX(this,'5','O')">⭕ O</div>
+      <div class="ox-btn" onclick="selectOX(this,'5','X')">❌ X</div>
+    </div>
+    <div class="answer-box" id="ans5">
+      <div class="ans-label">정답 & 해설</div>
+      <div class="ans-correct">✅ X (오답)</div>
+      <div class="ans-explain">풀백은 약 5% 수준 하락이며 평균 1개월 내 회복된다. 10% 하락 + 4개월 회복은 "코렉션(Correction)"의 기준이다. 두 용어를 혼동하지 않도록 주의해야 한다.</div>
+    </div>
+  </div>
+
+  <!-- Q6 보통 -->
+  <div class="q-card" data-qid="6" data-type="ox" data-answer="O">
+    <div class="q-head">
+      <span class="q-num">06</span>
+      <span class="q-type">OX</span>
+      <span class="q-diff dl-item normal">🔵 보통</span>
+    </div>
+    <p class="q-text">연준이 국채를 매입하면 시장에 현금이 추가 공급되어 밸런스 시트가 증가한다.</p>
+    <div class="ox-btns">
+      <div class="ox-btn" onclick="selectOX(this,'6','O')">⭕ O</div>
+      <div class="ox-btn" onclick="selectOX(this,'6','X')">❌ X</div>
+    </div>
+    <div class="answer-box" id="ans6">
+      <div class="ans-label">정답 & 해설</div>
+      <div class="ans-correct">✅ O (정답)</div>
+      <div class="ans-explain">연준이 국채를 매입하면 그 대금으로 시중에 현금을 지급하게 되어 유동성이 증가한다. 이는 연준 밸런스 시트 확대(양적 완화)를 의미하며, 국채 수익률 안정화 효과가 있다.</div>
+    </div>
+  </div>
+
+  <!-- Q7 보통 -->
+  <div class="q-card" data-qid="7" data-type="ox" data-answer="X">
+    <div class="q-head">
+      <span class="q-num">07</span>
+      <span class="q-type">OX</span>
+      <span class="q-diff dl-item normal">🔵 보통</span>
+    </div>
+    <p class="q-text">스페이스X IPO의 개인 투자자 배분 물량은 전체의 10%로, 주관사는 모두 Morgan Stanley이다.</p>
+    <div class="ox-btns">
+      <div class="ox-btn" onclick="selectOX(this,'7','O')">⭕ O</div>
+      <div class="ox-btn" onclick="selectOX(this,'7','X')">❌ X</div>
+    </div>
+    <div class="answer-box" id="ans7">
+      <div class="ans-label">정답 & 해설</div>
+      <div class="ans-correct">✅ X (오답)</div>
+      <div class="ans-explain">개인 투자자 배분 비중은 30%이다. 주관사는 Bank of America(Merrill Lynch)와 Morgan Stanley(E*Trade) 두 곳이다. 국제 물량은 UBS 그룹에서 담당할 예정이다.</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+  <div class="section-title">단답형 (3문제)</div>
+  <p class="section-note">빈칸에 답을 입력하고 확인 버튼을 누르세요.</p>
+
+  <!-- Q8 쉬움 -->
+  <div class="q-card" data-qid="8" data-type="short" data-answer="이란">
+    <div class="q-head">
+      <span class="q-num">08</span>
+      <span class="q-type">단답형</span>
+      <span class="q-diff dl-item easy">🟢 쉬움</span>
+    </div>
+    <p class="q-text">방송에서 "장기 전쟁 리스크는 노이즈"라고 평가한 지정학적 분쟁의 당사국은 미국과 어느 나라인가?</p>
+    <input type="text" class="short-input" placeholder="답을 입력하세요..." id="short8">
+    <button class="check-btn" onclick="checkShort('8')">확인</button>
+    <div class="answer-box" id="ans8">
+      <div class="ans-label">정답 & 해설</div>
+      <div class="ans-correct">✅ 이란</div>
+      <div class="ans-explain">트럼프 대통령이 이란으로부터 받은 "큰 선물"이 호르무즈 해협 유조선 열대 통과권으로 밝혀지면서 전쟁 종식 기대감이 실망으로 바뀌었다. 그러나 장기적으로는 양측 모두 손해이므로 협상 타결 가능성이 높다고 분석됐다.</div>
+    </div>
+  </div>
+
+  <!-- Q9 보통 -->
+  <div class="q-card" data-qid="9" data-type="short" data-answer="풀백">
+    <div class="q-head">
+      <span class="q-num">09</span>
+      <span class="q-type">단답형</span>
+      <span class="q-diff dl-item normal">🔵 보통</span>
+    </div>
+    <p class="q-text">방송에서 오늘의 하락장을 "폭락"이 아닌 무엇으로 규정했는가? (영어 또는 한국어 모두 정답)</p>
+    <input type="text" class="short-input" placeholder="답을 입력하세요..." id="short9">
+    <button class="check-btn" onclick="checkShort('9')">확인</button>
+    <div class="answer-box" id="ans9">
+      <div class="ans-label">정답 & 해설</div>
+      <div class="ans-correct">✅ 풀백 (Pullback)</div>
+      <div class="ans-explain">방송에서는 오늘 5% 수준의 하락을 "폭락"이 아닌 "풀백(Pullback)"으로 규정했다. 풀백은 단기 가격 조정으로, 주가가 일시적으로 빠지는 현상이다. 코렉션(10%)이나 베어마켓(20%+)과는 구분된다.</div>
+    </div>
+  </div>
+
+  <!-- Q10 어려움 -->
+  <div class="q-card" data-qid="10" data-type="short" data-answer="682">
+    <div class="q-head">
+      <span class="q-num">10</span>
+      <span class="q-type">단답형</span>
+      <span class="q-diff dl-item hard">🔴 어려움</span>
+    </div>
+    <p class="q-text">방송에서 언급된 마이크론의 전년 대비 EPS 성장률은 몇 %인가? (숫자만 입력)</p>
+    <input type="text" class="short-input" placeholder="숫자만 입력..." id="short10">
+    <button class="check-btn" onclick="checkShort('10')">확인</button>
+    <div class="answer-box" id="ans10">
+      <div class="ans-label">정답 & 해설</div>
+      <div class="ans-correct">✅ 682%</div>
+      <div class="ans-explain">마이크론의 전년 대비 EPS 성장률은 682%로, 지난 분기 매출 성장률 196%와 함께 극단적으로 강한 실적을 보였다. 이 같은 성장에도 PE가 섹터 평균(22) 대비 낮은 16.99를 기록하고 있어 저평가 매력이 부각된다.</div>
+    </div>
+  </div>
+
+  <div style="text-align:center; margin-top:24px;">
+    <button class="check-btn" style="padding:12px 32px; font-size:14px;" onclick="showScore()">📊 최종 점수 보기</button>
+  </div>
+
+  </div><!-- /quizSection -->
+
+  <!-- ── ANSWER SHEET ── -->
+  <div id="answerSheet" class="answer-sheet">
+    <div class="section-title" style="margin-top:20px;">정답 & 해설 전체 보기</div>
+
+    <div class="answer-sheet-card">
+      <div class="asq">Q1. 엘리엇 5파 상승 후 조정 파동 수</div>
+      <div class="asa">C — 3파 (A-B-C)</div>
+      <div class="ase">엘리엇 웨이브는 5파 상승 + A-B-C 3파 하락 = 총 8파 사이클이다.</div>
+    </div>
+    <div class="answer-sheet-card">
+      <div class="asq">Q2. 구글 TurboQuant 논문의 올바른 해석</div>
+      <div class="asa">B — CPU 사용량 증가 트레이드오프</div>
+      <div class="ase">메모리 압축 → CPU 사용량 증가. 효율 향상 → AI 작업 확대 → 메모리 수요 장기 증가 가능성.</div>
+    </div>
+    <div class="answer-sheet-card">
+      <div class="asq">Q3. 10년 국채 수익률 경고 기준선</div>
+      <div class="asa">D — 4.5%</div>
+      <div class="ase">방송 당시 4.41%, 경고 기준 4.5%. 연준 개입으로 초과 가능성 낮다고 전망.</div>
+    </div>
+    <div class="answer-sheet-card">
+      <div class="asq">Q4. 마이크론 EPS·PE 정보</div>
+      <div class="asa">A — 예상 EPS $55.78, PE 16.99, 저평가 상태</div>
+      <div class="ase">섹터 평균 PE 22 대비 16.99로 저평가. Short Interest 2.6%. EPS 성장률 682%.</div>
+    </div>
+    <div class="answer-sheet-card">
+      <div class="asq">Q5. 풀백 정의</div>
+      <div class="asa">X — 틀림</div>
+      <div class="ase">풀백 = ~5% 하락, 1개월 회복. 코렉션 = ~10% 하락, 4개월 회복.</div>
+    </div>
+    <div class="answer-sheet-card">
+      <div class="asq">Q6. 연준 국채 매입 효과</div>
+      <div class="asa">O — 맞음</div>
+      <div class="ase">국채 매입 → 시중 현금 공급 증가 → 밸런스 시트 확대 = 양적 완화.</div>
+    </div>
+    <div class="answer-sheet-card">
+      <div class="asq">Q7. 스페이스X IPO 개인 배분 비중·주관사</div>
+      <div class="asa">X — 틀림</div>
+      <div class="ase">개인 배분 30%, 주관사 BofA(메릴린치) + Morgan Stanley(E*Trade). 국제 물량은 UBS.</div>
+    </div>
+    <div class="answer-sheet-card">
+      <div class="asq">Q8. 지정학적 분쟁 당사국</div>
+      <div class="asa">이란</div>
+      <div class="ase">미국-이란 갈등. 호르무즈 해협 리스크. 장기화 시 트럼프에게 불리하므로 협상 타결 가능성.</div>
+    </div>
+    <div class="answer-sheet-card">
+      <div class="asq">Q9. 오늘 하락장의 분류</div>
+      <div class="asa">풀백 (Pullback)</div>
+      <div class="ase">5% 하락 = 풀백. 코렉션(10%)이나 베어마켓(20%+)이 아님.</div>
+    </div>
+    <div class="answer-sheet-card">
+      <div class="asq">Q10. 마이크론 전년 대비 EPS 성장률</div>
+      <div class="asa">682%</div>
+      <div class="ase">전년 대비 EPS 성장률 682%, 매출 성장률 196%. 극단적 강한 실적임에도 저PE 상태.</div>
+    </div>
+  </div>
+
+</div><!-- /container -->
+
+<script>
+// 모드 전환
+function setMode(mode) {
+  document.querySelectorAll('.mode-btn').forEach((b,i) => {
+    b.classList.toggle('active', (i===0 && mode==='quiz') || (i===1 && mode==='answer'));
+  });
+  document.getElementById('quizSection').style.display = mode==='quiz' ? '' : 'none';
+  document.getElementById('answerSheet').classList.toggle('show', mode==='answer');
+  document.getElementById('scoreBar').classList.remove('show');
+}
+
+// 객관식
+function selectMC(el, qid) {
+  const card = el.closest('.q-card');
+  const correct = card.dataset.answer;
+  const letters = ['A','B','C','D'];
+  const idx = Array.from(card.querySelectorAll('.options li')).indexOf(el);
+  const chosen = letters[idx];
+
+  card.querySelectorAll('.options li').forEach(li => {
+    li.classList.remove('selected','correct','wrong');
+    li.style.pointerEvents = 'none';
+  });
+
+  if (chosen === correct) {
+    el.classList.add('correct');
+    card.dataset.result = 'correct';
+  } else {
+    el.classList.add('wrong');
+    // show correct
+    const correctEl = card.querySelectorAll('.options li')[letters.indexOf(correct)];
+    if(correctEl) correctEl.classList.add('correct');
+    card.dataset.result = 'wrong';
+  }
+  document.getElementById('ans' + qid).classList.add('show');
+}
+
+// OX
+function selectOX(el, qid, chosen) {
+  const card = el.closest('.q-card');
+  const correct = card.dataset.answer;
+  card.querySelectorAll('.ox-btn').forEach(b => {
+    b.classList.remove('selected','correct','wrong');
+    b.style.pointerEvents = 'none';
+  });
+  if (chosen === correct) {
+    el.classList.add('correct');
+    card.dataset.result = 'correct';
+  } else {
+    el.classList.add('wrong');
+    card.querySelectorAll('.ox-btn').forEach(b => {
+      if (b.textContent.includes(correct)) b.classList.add('correct');
+    });
+    card.dataset.result = 'wrong';
+  }
+  document.getElementById('ans' + qid).classList.add('show');
+}
+
+// 단답형
+const shortAnswers = { '8': '이란', '9': '풀백', '10': '682' };
+function checkShort(qid) {
+  const input = document.getElementById('short' + qid);
+  const val = input.value.trim();
+  const card = input.closest('.q-card');
+  const accepted = [shortAnswers[qid], shortAnswers[qid].toLowerCase()];
+  // flexible match
+  let ok = false;
+  if(qid==='8') ok = val.includes('이란') || val.toLowerCase().includes('iran');
+  else if(qid==='9') ok = val.includes('풀백') || val.toLowerCase().includes('pullback') || val.toLowerCase().includes('pull back');
+  else if(qid==='10') ok = val === '682' || val === '682%';
+
+  input.style.borderColor = ok ? '#16a34a' : '#e11d48';
+  card.dataset.result = ok ? 'correct' : 'wrong';
+  input.disabled = true;
+  input.closest('.q-card').querySelector('.check-btn').disabled = true;
+  document.getElementById('ans' + qid).classList.add('show');
+}
+
+// 점수 집계
+function showScore() {
+  let correct = 0, total = 10;
+  document.querySelectorAll('.q-card').forEach(card => {
+    if (card.dataset.result === 'correct') correct++;
+  });
+  const pct = Math.round(correct / total * 100);
+  let msg = pct >= 90 ? '🎯 완벽합니다! 투자 고수 레벨!' :
+            pct >= 70 ? '👍 좋습니다! 핵심 개념을 잘 이해했어요.' :
+            pct >= 50 ? '📖 보통이에요. 다시 한번 복습해 보세요.' :
+                        '💪 방송을 다시 보며 기초부터 다져봅시다.';
+  const bar = document.getElementById('scoreBar');
+  bar.innerHTML = `<div class="score-val">${correct}/${total}</div><div style="font-family:var(--display);font-size:22px;color:var(--text2);margin-bottom:6px;">${pct}점</div><div class="score-msg">${msg}</div>`;
+  bar.classList.add('show');
+  bar.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+</script>
+</body>
+</html>
