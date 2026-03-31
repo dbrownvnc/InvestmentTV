@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>시험문제 — 윈도 드레싱과 미증시 과매도</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Noto Sans KR', sans-serif;
+  background: #ffffff;
+  color: #1a1a1a;
+  line-height: 1.75;
+  font-size: 15px;
+}
+
+.hero {
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d1520 50%, #1a1a1a 100%);
+  color: #fff;
+  padding: 44px 20px 38px;
+  text-align: center;
+}
+.hero-label {
+  display: inline-block;
+  background: #e11d48;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  padding: 4px 14px;
+  border-radius: 2px;
+  margin-bottom: 14px;
+}
+.hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(20px, 5vw, 30px);
+  font-weight: 900;
+  line-height: 1.3;
+  margin-bottom: 10px;
+}
+.hero p { font-size: 13px; color: rgba(255,255,255,0.6); }
+
+.container { max-width: 680px; margin: 0 auto; padding: 0 18px; }
+
+/* ── Tabs ── */
+.tab-bar {
+  display: flex;
+  position: sticky;
+  top: 0;
+  background: #fff;
+  border-bottom: 2px solid #e5e5e5;
+  z-index: 10;
+  margin-top: 0;
+}
+.tab-btn {
+  flex: 1;
+  padding: 14px 0;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 700;
+  color: #777;
+  background: none;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  transition: color 0.2s;
+}
+.tab-btn.active { color: #e11d48; }
+.tab-btn.active::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0; right: 0;
+  height: 3px;
+  background: #e11d48;
+  border-radius: 2px 2px 0 0;
+}
+.tab-content { display: none; padding: 24px 0 40px; }
+.tab-content.active { display: block; }
+
+/* ── Questions ── */
+.q-card {
+  background: #fafafa;
+  border: 1px solid #e5e5e5;
+  border-radius: 12px;
+  padding: 20px 18px;
+  margin-bottom: 16px;
+}
+.q-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.q-num {
+  background: #e11d48;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.q-tag {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 10px;
+  border-radius: 20px;
+}
+.q-tag.easy { background: #f0fdf4; color: #16a34a; }
+.q-tag.normal { background: #eff6ff; color: #2563eb; }
+.q-tag.hard { background: #fff1f2; color: #e11d48; }
+.q-type {
+  font-size: 11px;
+  color: #999;
+  margin-left: auto;
+}
+.q-text {
+  font-size: 15px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-bottom: 12px;
+  line-height: 1.6;
+}
+.q-options { list-style: none; }
+.q-options li {
+  padding: 10px 14px;
+  background: #fff;
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+  margin-bottom: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.q-options li:hover { border-color: #e11d48; background: #fff5f7; }
+.q-options li.selected { border-color: #e11d48; background: #fff1f2; font-weight: 600; }
+.q-options li.correct { border-color: #16a34a; background: #f0fdf4; }
+.q-options li.wrong { border-color: #e11d48; background: #fff1f2; opacity: 0.6; }
+.q-input {
+  width: 100%;
+  padding: 10px 14px;
+  border: 2px solid #e5e5e5;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: 'Noto Sans KR';
+  outline: none;
+  transition: border-color 0.2s;
+}
+.q-input:focus { border-color: #e11d48; }
+
+/* ── Answers ── */
+.a-card {
+  background: #fafafa;
+  border: 1px solid #e5e5e5;
+  border-radius: 12px;
+  padding: 18px;
+  margin-bottom: 14px;
+}
+.a-card .a-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.a-answer {
+  font-size: 15px;
+  font-weight: 700;
+  color: #e11d48;
+  margin-bottom: 6px;
+}
+.a-explain {
+  font-size: 13px;
+  color: #555;
+  line-height: 1.7;
+  padding-left: 12px;
+  border-left: 2px solid #e5e5e5;
+}
+
+/* ── Score ── */
+.score-box {
+  text-align: center;
+  padding: 24px;
+  background: linear-gradient(135deg, #fff5f7, #fafafa);
+  border-radius: 12px;
+  border: 1px solid #e5e5e5;
+  margin: 20px 0;
+}
+.score-big {
+  font-family: 'Playfair Display', serif;
+  font-size: 48px;
+  font-weight: 900;
+  color: #e11d48;
+}
+.score-label { font-size: 13px; color: #777; margin-top: 4px; }
+button.check-btn {
+  display: block;
+  width: 100%;
+  background: #e11d48;
+  color: #fff;
+  border: none;
+  padding: 14px;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 16px;
+  transition: background 0.2s;
+  font-family: 'Noto Sans KR';
+}
+button.check-btn:hover { background: #be123c; }
+button.reset-btn2 {
+  display: block;
+  width: 100%;
+  background: #1a1a1a;
+  color: #fff;
+  border: none;
+  padding: 12px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 8px;
+  font-family: 'Noto Sans KR';
+}
+
+footer {
+  text-align: center;
+  padding: 28px 20px;
+  font-size: 11px;
+  color: #bbb;
+  border-top: 1px solid #e5e5e5;
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-label">QUIZ</div>
+  <h1>시험문제 10선</h1>
+  <p>윈도 드레싱과 미증시 과매도 분석 기반</p>
+</div>
+
+<div class="container">
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="switchTab('questions')">📝 문제</button>
+    <button class="tab-btn" onclick="switchTab('answers')">✅ 정답 & 해설</button>
+  </div>
+
+  <!-- ═══ 문제 탭 ═══ -->
+  <div class="tab-content active" id="tab-questions">
+
+    <!-- Q1 -->
+    <div class="q-card" data-q="1" data-answer="2">
+      <div class="q-header">
+        <div class="q-num">1</div>
+        <span class="q-tag easy">쉬움</span>
+        <span class="q-type">객관식</span>
+      </div>
+      <div class="q-text">윈도 드레싱(Window Dressing)이 가장 활발하게 일어나는 시기는?</div>
+      <ul class="q-options">
+        <li onclick="selectOpt(this)">① 매월 초</li>
+        <li onclick="selectOpt(this)">② 분기 말</li>
+        <li onclick="selectOpt(this)">③ 매년 7월</li>
+        <li onclick="selectOpt(this)">④ 대선 직후</li>
+      </ul>
+    </div>
+
+    <!-- Q2 -->
+    <div class="q-card" data-q="2" data-answer="3">
+      <div class="q-header">
+        <div class="q-num">2</div>
+        <span class="q-tag normal">보통</span>
+        <span class="q-type">객관식</span>
+      </div>
+      <div class="q-text">현재 NASDAQ의 시장 하락 상태는 다음 중 어디에 해당하는가?</div>
+      <ul class="q-options">
+        <li onclick="selectOpt(this)">① Pullback (5~10%)</li>
+        <li onclick="selectOpt(this)">② 정상 범위 내 조정</li>
+        <li onclick="selectOpt(this)">③ Correction (10~20%)</li>
+        <li onclick="selectOpt(this)">④ Bear Market (20% 이상)</li>
+      </ul>
+    </div>
+
+    <!-- Q3 -->
+    <div class="q-card" data-q="3" data-answer="ox-o">
+      <div class="q-header">
+        <div class="q-num">3</div>
+        <span class="q-tag easy">쉬움</span>
+        <span class="q-type">OX 퀴즈</span>
+      </div>
+      <div class="q-text">현재 S&P 500의 11개 섹터 중 에너지 섹터만 유일하게 상승했다.</div>
+      <ul class="q-options">
+        <li onclick="selectOpt(this)">⭕ O (맞다)</li>
+        <li onclick="selectOpt(this)">❌ X (틀리다)</li>
+      </ul>
+    </div>
+
+    <!-- Q4 -->
+    <div class="q-card" data-q="4" data-answer="1">
+      <div class="q-header">
+        <div class="q-num">4</div>
+        <span class="q-tag normal">보통</span>
+        <span class="q-type">객관식</span>
+      </div>
+      <div class="q-text">방송에서 장기적 시장 황폐화의 핵심 판별 기준으로 제시한 것은?</div>
+      <ul class="q-options">
+        <li onclick="selectOpt(this)">① 파이낸셜 섹터의 건전성</li>
+        <li onclick="selectOpt(this)">② IT 섹터의 시가총액</li>
+        <li onclick="selectOpt(this)">③ 유가 수준</li>
+        <li onclick="selectOpt(this)">④ 실업률 수치</li>
+      </ul>
+    </div>
+
+    <!-- Q5 -->
+    <div class="q-card" data-q="5" data-answer="short-7300">
+      <div class="q-header">
+        <div class="q-num">5</div>
+        <span class="q-tag easy">쉬움</span>
+        <span class="q-type">단답형</span>
+      </div>
+      <div class="q-text">JP Morgan이 제시한 S&P 500의 연말 목표 지수는?</div>
+      <input class="q-input" type="text" placeholder="숫자로 입력하세요" data-q="5">
+    </div>
+
+    <!-- Q6 -->
+    <div class="q-card" data-q="6" data-answer="2">
+      <div class="q-header">
+        <div class="q-num">6</div>
+        <span class="q-tag normal">보통</span>
+        <span class="q-type">객관식</span>
+      </div>
+      <div class="q-text">윈도 드레싱으로 매도한 펀드 매니저들이 재진입할 때 가장 먼저 매수하는 대상은?</div>
+      <ul class="q-options">
+        <li onclick="selectOpt(this)">① 최근 가장 많이 빠진 종목</li>
+        <li onclick="selectOpt(this)">② 펀더멘탈이 강한 종목</li>
+        <li onclick="selectOpt(this)">③ 시가총액이 큰 종목</li>
+        <li onclick="selectOpt(this)">④ 배당 수익률이 높은 종목</li>
+      </ul>
+    </div>
+
+    <!-- Q7 -->
+    <div class="q-card" data-q="7" data-answer="ox-x">
+      <div class="q-header">
+        <div class="q-num">7</div>
+        <span class="q-tag normal">보통</span>
+        <span class="q-type">OX 퀴즈</span>
+      </div>
+      <div class="q-text">에너지 섹터는 장기 투자에 적합하며, 유가가 배럴당 500달러 이상 오를 가능성이 높다.</div>
+      <ul class="q-options">
+        <li onclick="selectOpt(this)">⭕ O (맞다)</li>
+        <li onclick="selectOpt(this)">❌ X (틀리다)</li>
+      </ul>
+    </div>
+
+    <!-- Q8 -->
+    <div class="q-card" data-q="8" data-answer="4">
+      <div class="q-header">
+        <div class="q-num">8</div>
+        <span class="q-tag hard">어려움</span>
+        <span class="q-type">객관식</span>
+      </div>
+      <div class="q-text">"Weak RSI, Strong EPS"가 의미하는 시장 상황으로 가장 적절한 것은?</div>
+      <ul class="q-options">
+        <li onclick="selectOpt(this)">① 기업 실적이 악화되어 주가가 하락한 상황</li>
+        <li onclick="selectOpt(this)">② 기술적 지표와 기업 실적이 모두 약세인 상황</li>
+        <li onclick="selectOpt(this)">③ 기업 실적은 약하지만 주가만 오른 버블 상황</li>
+        <li onclick="selectOpt(this)">④ 기업 실적은 양호하지만 외부 노이즈로 주가가 하락한 상황</li>
+      </ul>
+    </div>
+
+    <!-- Q9 -->
+    <div class="q-card" data-q="9" data-answer="3">
+      <div class="q-header">
+        <div class="q-num">9</div>
+        <span class="q-tag hard">어려움</span>
+        <span class="q-type">객관식</span>
+      </div>
+      <div class="q-text">달러 강세가 지속될 때 가장 큰 타격을 받는 대상은?</div>
+      <ul class="q-options">
+        <li onclick="selectOpt(this)">① 미국 수출 기업</li>
+        <li onclick="selectOpt(this)">② 미국 국채 보유자</li>
+        <li onclick="selectOpt(this)">③ 한국 등 비달러 자산 보유자</li>
+        <li onclick="selectOpt(this)">④ 미국 내 에너지 기업</li>
+      </ul>
+    </div>
+
+    <!-- Q10 -->
+    <div class="q-card" data-q="10" data-answer="short-가격">
+      <div class="q-header">
+        <div class="q-num">10</div>
+        <span class="q-tag normal">보통</span>
+        <span class="q-type">단답형</span>
+      </div>
+      <div class="q-text">방송에서 강조한 "매도하지 않으면 하락은 실현되지 않는다"는 개념에서, 매도 시 의미를 갖는 것은 '가치'와 '______' 중 어느 쪽인가?</div>
+      <input class="q-input" type="text" placeholder="한 단어로 입력하세요" data-q="10">
+    </div>
+
+    <button class="check-btn" onclick="checkAnswers()">채점하기</button>
+    <div class="score-box" id="scoreBox" style="display:none;">
+      <div class="score-big" id="scoreNum">0</div>
+      <div class="score-label">/ 10 점</div>
+    </div>
+    <button class="reset-btn2" onclick="resetQuiz()">다시 풀기</button>
+  </div>
+
+  <!-- ═══ 정답 & 해설 탭 ═══ -->
+  <div class="tab-content" id="tab-answers">
+
+    <div class="a-card">
+      <div class="a-header"><div class="q-num">1</div><span class="q-tag easy">쉬움</span></div>
+      <div class="a-answer">정답: ② 분기 말</div>
+      <div class="a-explain">윈도 드레싱은 분기 말에 펀드 매니저들이 포트폴리오 실적을 보기 좋게 꾸미기 위해 대규모 매도·매수를 하는 행위다. 특히 1분기 마지막 날(3월 31일)에 집중적으로 발생한다.</div>
+    </div>
+
+    <div class="a-card">
+      <div class="a-header"><div class="q-num">2</div><span class="q-tag normal">보통</span></div>
+      <div class="a-answer">정답: ③ Correction (10~20%)</div>
+      <div class="a-explain">나스닥 종합지수는 최근 고점 대비 약 10% 하락하여 Correction 구간에 진입했다. S&P 500은 약 9% 하락으로 아직 Pullback 수준이다. Bear Market은 20% 이상 하락을 의미하며 현재 해당 없다.</div>
+    </div>
+
+    <div class="a-card">
+      <div class="a-header"><div class="q-num">3</div><span class="q-tag easy">쉬움</span></div>
+      <div class="a-answer">정답: ⭕ O (맞다)</div>
+      <div class="a-explain">이란 전쟁으로 유가가 급등하면서 에너지 섹터만 유일하게 상승했고, 나머지 10개 섹터는 모두 하락했다. 이는 시스테믹 리스크의 전형적인 양상이다.</div>
+    </div>
+
+    <div class="a-card">
+      <div class="a-header"><div class="q-num">4</div><span class="q-tag normal">보통</span></div>
+      <div class="a-answer">정답: ① 파이낸셜 섹터의 건전성</div>
+      <div class="a-explain">"주식시장의 장기적 황폐화는 파이낸셜 섹터에서 깨질 때 발생한다." 파이낸셜 섹터가 건전한 한 현재 하락은 단기 노이즈이며, 파이낸셜 섹터가 무너지면 70% 매도 후 퇴장해야 한다.</div>
+    </div>
+
+    <div class="a-card">
+      <div class="a-header"><div class="q-num">5</div><span class="q-tag easy">쉬움</span></div>
+      <div class="a-answer">정답: 7,300</div>
+      <div class="a-explain">JP Morgan은 S&P 500의 연말 목표 지수를 7,300으로 제시하고 있다. 현재 하락에도 불구하고 기관들이 연말까지 상당한 반등을 예상하고 있음을 보여준다.</div>
+    </div>
+
+    <div class="a-card">
+      <div class="a-header"><div class="q-num">6</div><span class="q-tag normal">보통</span></div>
+      <div class="a-answer">정답: ② 펀더멘탈이 강한 종목</div>
+      <div class="a-explain">윈도 드레싱으로 이익을 실현한 펀드 매니저들이 보수를 수령한 후 다시 시장에 진입할 때, 가장 먼저 매수하는 대상은 펀더멘탈이 강한 종목이다.</div>
+    </div>
+
+    <div class="a-card">
+      <div class="a-header"><div class="q-num">7</div><span class="q-tag normal">보통</span></div>
+      <div class="a-answer">정답: ❌ X (틀리다)</div>
+      <div class="a-explain">에너지 섹터는 장기 투자 위험도가 매우 높다. 유가는 30년간 60~100달러 사이를 왕복하며, 배럴당 500~600달러로 올라갈 가능성은 극히 희박하다. 따라서 장기 투자 대상으로 부적합하다는 평가다.</div>
+    </div>
+
+    <div class="a-card">
+      <div class="a-header"><div class="q-num">8</div><span class="q-tag hard">어려움</span></div>
+      <div class="a-answer">정답: ④ 기업 실적은 양호하지만 외부 노이즈로 주가가 하락한 상황</div>
+      <div class="a-explain">RSI(상대강도지수)는 기술적 약세를 나타내지만, EPS(주당순이익)는 두 자릿수 성장을 지속하고 있다. 이는 기업의 근본적 가치(펀더멘탈)가 아닌 외부 잡음(이란 전쟁, 윈도 드레싱 등)에 의한 하락이므로 투자 기회라는 뜻이다.</div>
+    </div>
+
+    <div class="a-card">
+      <div class="a-header"><div class="q-num">9</div><span class="q-tag hard">어려움</span></div>
+      <div class="a-answer">정답: ③ 한국 등 비달러 자산 보유자</div>
+      <div class="a-explain">달러 강세가 지속되면 원화 등 비달러 통화의 가치가 하락한다. 원/달러 환율이 1,526원으로 올라가면서 한국 원화 자산 보유자의 달러 환산 자산 가치가 크게 줄어든다. 미국 투자자보다 비달러권 투자자의 실질 구매력 감소가 더 크다.</div>
+    </div>
+
+    <div class="a-card">
+      <div class="a-header"><div class="q-num">10</div><span class="q-tag normal">보통</span></div>
+      <div class="a-answer">정답: 가격</div>
+      <div class="a-explain">매도하지 않으면 주가 하락은 종이 위의 숫자일 뿐이다. 매도할 때 비로소 '가격'이 확정되어 실현 손익이 결정된다. '가치'는 기업이 내재적으로 보유한 것이며 시장 가격과는 구별된다.</div>
+    </div>
+
+  </div>
+</div>
+
+<footer>&copy; 2026 Quiz — 윈도 드레싱과 미증시 과매도 분석</footer>
+
+<script>
+function switchTab(tab) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  if (tab === 'questions') {
+    document.querySelectorAll('.tab-btn')[0].classList.add('active');
+    document.getElementById('tab-questions').classList.add('active');
+  } else {
+    document.querySelectorAll('.tab-btn')[1].classList.add('active');
+    document.getElementById('tab-answers').classList.add('active');
+  }
+}
+
+function selectOpt(li) {
+  const card = li.closest('.q-card');
+  if (card.classList.contains('checked')) return;
+  card.querySelectorAll('.q-options li').forEach(l => l.classList.remove('selected'));
+  li.classList.add('selected');
+}
+
+function checkAnswers() {
+  let score = 0;
+  const answers = {1:'2', 2:'3', 3:'1', 4:'1', 5:'7300', 6:'2', 7:'2', 8:'4', 9:'3', 10:'가격'};
+
+  document.querySelectorAll('.q-card').forEach(card => {
+    const q = card.getAttribute('data-q');
+    card.classList.add('checked');
+    const opts = card.querySelectorAll('.q-options li');
+    const input = card.querySelector('.q-input');
+
+    if (opts.length > 0) {
+      const selected = card.querySelector('.q-options li.selected');
+      if (selected) {
+        const idx = Array.from(opts).indexOf(selected) + 1;
+        if (String(idx) === answers[q]) {
+          selected.classList.add('correct');
+          score++;
+        } else {
+          selected.classList.add('wrong');
+          opts[parseInt(answers[q]) - 1].classList.add('correct');
+        }
+      } else {
+        opts[parseInt(answers[q]) - 1].classList.add('correct');
+      }
+    } else if (input) {
+      const val = input.value.trim().replace(/,/g, '');
+      if (val === answers[q]) {
+        input.style.borderColor = '#16a34a';
+        input.style.background = '#f0fdf4';
+        score++;
+      } else {
+        input.style.borderColor = '#e11d48';
+        input.style.background = '#fff1f2';
+      }
+    }
+  });
+
+  document.getElementById('scoreBox').style.display = 'block';
+  document.getElementById('scoreNum').textContent = score;
+}
+
+function resetQuiz() {
+  document.querySelectorAll('.q-card').forEach(card => {
+    card.classList.remove('checked');
+    card.querySelectorAll('.q-options li').forEach(li => {
+      li.classList.remove('selected', 'correct', 'wrong');
+    });
+    const input = card.querySelector('.q-input');
+    if (input) { input.value = ''; input.style.borderColor = '#e5e5e5'; input.style.background = '#fff'; }
+  });
+  document.getElementById('scoreBox').style.display = 'none';
+}
+</script>
+
+</body>
+</html>

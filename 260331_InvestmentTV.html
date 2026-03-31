@@ -1,0 +1,1162 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>윈도 드레싱으로 인한 과매도 상태인 미증시</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Noto Sans KR', sans-serif;
+  background: #ffffff;
+  color: #1a1a1a;
+  line-height: 1.75;
+  font-size: 15px;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Hero ── */
+.hero {
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d1520 50%, #1a1a1a 100%);
+  color: #fff;
+  padding: 56px 20px 48px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: repeating-linear-gradient(45deg, transparent, transparent 40px, rgba(225,29,72,0.03) 40px, rgba(225,29,72,0.03) 80px);
+}
+.hero-label {
+  display: inline-block;
+  background: #e11d48;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  padding: 4px 14px;
+  border-radius: 2px;
+  text-transform: uppercase;
+  margin-bottom: 18px;
+  position: relative;
+}
+.hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(24px, 6vw, 36px);
+  font-weight: 900;
+  line-height: 1.25;
+  margin-bottom: 14px;
+  position: relative;
+}
+.hero .meta {
+  font-size: 13px;
+  color: rgba(255,255,255,0.6);
+  position: relative;
+}
+.hero .meta a {
+  color: #f43f5e;
+  text-decoration: none;
+}
+
+/* ── Layout ── */
+.container { max-width: 680px; margin: 0 auto; padding: 0 18px; }
+section { padding: 36px 0 24px; }
+section + section { border-top: 1px solid #e5e5e5; }
+
+/* ── Typography ── */
+h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(20px, 5vw, 26px);
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 6px;
+  line-height: 1.3;
+}
+h2 .accent { color: #e11d48; }
+.section-sub {
+  font-size: 13px;
+  color: #777777;
+  margin-bottom: 20px;
+  letter-spacing: 0.5px;
+}
+h3 {
+  font-size: 17px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 22px 0 10px;
+  padding-left: 12px;
+  border-left: 3px solid #e11d48;
+}
+p { margin-bottom: 14px; color: #1a1a1a; }
+.text-muted { color: #777777; }
+
+/* ── Highlight Box ── */
+.highlight-box {
+  background: linear-gradient(135deg, #fff5f7, #fafafa);
+  border-left: 4px solid #e11d48;
+  padding: 16px 18px;
+  margin: 18px 0;
+  border-radius: 0 8px 8px 0;
+  font-size: 14px;
+}
+.highlight-box strong { color: #e11d48; }
+
+/* ── Quote ── */
+.quote-block {
+  background: #fafafa;
+  border-left: 4px solid #1a1a1a;
+  padding: 16px 18px;
+  margin: 18px 0;
+  font-style: italic;
+  color: #555;
+  border-radius: 0 8px 8px 0;
+}
+
+/* ── Key Number ── */
+.key-numbers {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+  margin: 18px 0;
+}
+.key-num {
+  background: #fafafa;
+  border: 1px solid #e5e5e5;
+  border-radius: 10px;
+  padding: 16px 14px;
+  text-align: center;
+}
+.key-num .num {
+  font-family: 'Playfair Display', serif;
+  font-size: 26px;
+  font-weight: 700;
+  color: #e11d48;
+  line-height: 1.2;
+}
+.key-num .label {
+  font-size: 12px;
+  color: #777;
+  margin-top: 4px;
+}
+
+/* ── Table ── */
+.table-wrap { overflow-x: auto; margin: 18px 0; border-radius: 10px; border: 1px solid #e5e5e5; }
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+thead { background: #e11d48; color: #fff; }
+th { padding: 10px 12px; text-align: left; font-weight: 600; white-space: nowrap; }
+td { padding: 10px 12px; border-bottom: 1px solid #e5e5e5; background: #fafafa; }
+tbody tr:last-child td { border-bottom: none; }
+.neg { color: #e11d48; font-weight: 600; }
+.pos { color: #16a34a; font-weight: 600; }
+
+/* ── Tags ── */
+.tag {
+  display: inline-block;
+  background: #f1f5f9;
+  color: #475569;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 20px;
+  margin: 2px 4px 2px 0;
+}
+.tag.red { background: #fff1f2; color: #e11d48; }
+.tag.green { background: #f0fdf4; color: #16a34a; }
+.tag.blue { background: #eff6ff; color: #2563eb; }
+
+/* ── Chart ── */
+.chart-container {
+  position: relative;
+  max-height: 340px;
+  margin: 18px 0;
+  background: #fafafa;
+  border-radius: 10px;
+  padding: 14px;
+  border: 1px solid #e5e5e5;
+}
+.chart-container canvas {
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  max-height: 300px;
+}
+.chart-container.chart-ready canvas { opacity: 1; }
+.chart-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+/* ── Fade-in ── */
+.fade-in {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.fade-in.visible { opacity: 1; transform: translateY(0); }
+
+/* ── Interactive ── */
+.sim-box {
+  background: #fafafa;
+  border: 1px solid #e5e5e5;
+  border-radius: 12px;
+  padding: 20px 18px;
+  margin: 20px 0;
+}
+.sim-box h4 {
+  font-size: 15px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 14px;
+}
+.sim-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+.sim-row label {
+  font-size: 13px;
+  color: #777;
+  min-width: 100px;
+}
+.sim-row input[type="range"] {
+  flex: 1;
+  min-width: 120px;
+  accent-color: #e11d48;
+  cursor: pointer;
+}
+.sim-row .val {
+  font-size: 14px;
+  font-weight: 700;
+  color: #e11d48;
+  min-width: 60px;
+  text-align: right;
+}
+.sim-result {
+  background: #fff;
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+  padding: 14px;
+  margin-top: 12px;
+  text-align: center;
+}
+.sim-result .big {
+  font-family: 'Playfair Display', serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: #e11d48;
+}
+.sim-result .desc { font-size: 12px; color: #777; margin-top: 4px; }
+button.reset-btn {
+  background: #1a1a1a;
+  color: #fff;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background 0.2s;
+}
+button.reset-btn:hover { background: #e11d48; }
+
+/* ── Toggle Comparison ── */
+.toggle-group {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 14px 0;
+}
+.toggle-btn {
+  padding: 8px 16px;
+  border: 2px solid #e5e5e5;
+  border-radius: 8px;
+  background: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: #777;
+}
+.toggle-btn.active {
+  border-color: #e11d48;
+  background: #fff1f2;
+  color: #e11d48;
+}
+
+/* ── Flowchart ── */
+.flow-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  margin: 18px 0;
+}
+.flow-node {
+  background: #fff;
+  border: 2px solid #e5e5e5;
+  border-radius: 10px;
+  padding: 14px 20px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 600;
+  width: 90%;
+  max-width: 340px;
+  cursor: pointer;
+  transition: all 0.3s;
+  position: relative;
+}
+.flow-node:hover, .flow-node.active {
+  border-color: #e11d48;
+  background: #fff5f7;
+  transform: scale(1.02);
+}
+.flow-arrow {
+  width: 2px;
+  height: 24px;
+  background: #e5e5e5;
+  position: relative;
+}
+.flow-arrow::after {
+  content: '▼';
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 10px;
+  color: #e5e5e5;
+}
+.flow-detail {
+  display: none;
+  background: #fafafa;
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-size: 13px;
+  color: #555;
+  width: 90%;
+  max-width: 340px;
+  margin-top: -1px;
+  text-align: left;
+  line-height: 1.6;
+}
+.flow-detail.show { display: block; }
+
+/* ── Flip Card ── */
+.flip-cards { display: flex; flex-direction: column; gap: 12px; margin: 18px 0; }
+.flip-card {
+  perspective: 1000px;
+  cursor: pointer;
+}
+.flip-card-inner {
+  position: relative;
+  min-height: 80px;
+  transition: transform 0.5s;
+  transform-style: preserve-3d;
+}
+.flip-card.flipped .flip-card-inner { transform: rotateX(180deg); }
+.flip-front, .flip-back {
+  position: absolute;
+  width: 100%;
+  backface-visibility: hidden;
+  border-radius: 10px;
+  padding: 16px 18px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+}
+.flip-front {
+  background: #fff;
+  border: 2px solid #e5e5e5;
+  color: #1a1a1a;
+  font-weight: 600;
+}
+.flip-front::after {
+  content: '탭하여 확인';
+  position: absolute;
+  right: 14px;
+  font-size: 10px;
+  color: #bbb;
+  font-weight: 400;
+}
+.flip-back {
+  background: #e11d48;
+  color: #fff;
+  transform: rotateX(180deg);
+  line-height: 1.5;
+}
+
+/* ── Footer ── */
+footer {
+  text-align: center;
+  padding: 32px 20px;
+  font-size: 11px;
+  color: #bbb;
+  border-top: 1px solid #e5e5e5;
+}
+</style>
+</head>
+<body>
+
+<!-- ████ HERO ████ -->
+<div class="hero">
+  <div class="hero-label">MARKET ANALYSIS</div>
+  <h1>윈도 드레싱으로 인한<br>과매도 상태인 미증시</h1>
+  <p class="meta">2026.03.31 · 투자는인생TV · <a href="https://www.youtube.com/live/Ferxd2Ebqaw?si=mAHiDrEW7AI8kKaS" target="_blank">원본 보기 ↗</a></p>
+</div>
+
+<div class="container">
+
+<!-- ████ 핵심 요약 ████ -->
+<section class="fade-in">
+  <h2><span class="accent">01</span> 핵심 요약</h2>
+  <p class="section-sub">EXECUTIVE SUMMARY</p>
+
+  <div class="highlight-box">
+    <strong>결론:</strong> 현재 미국 증시는 1분기 말 윈도 드레싱(Window Dressing)과 지정학적 리스크(이란 전쟁, 호르무즈 해협)로 인한 <strong>과매도 상태</strong>이며, 상당한 큰 폭의 반등 가능성이 매우 높다.
+  </div>
+
+  <div class="key-numbers fade-in">
+    <div class="key-num">
+      <div class="num">~10%</div>
+      <div class="label">나스닥 고점 대비 하락<br>(Correction 진입)</div>
+    </div>
+    <div class="key-num">
+      <div class="num">~9%</div>
+      <div class="label">S&P 500 하락<br>(Pullback 수준)</div>
+    </div>
+    <div class="key-num">
+      <div class="num">7,300</div>
+      <div class="label">JP Morgan S&P 연말 목표</div>
+    </div>
+    <div class="key-num">
+      <div class="num">$95</div>
+      <div class="label">현재 유가<br>(배럴당)</div>
+    </div>
+  </div>
+
+  <p>에너지 섹터를 제외한 S&P 500의 11개 섹터 중 거의 전부가 하락 — 이는 <strong>시스테믹 리스크(Systemic Risk)</strong>의 전형적 양상이다. 그러나 <strong>파이낸셜 섹터가 건전한 상태</strong>를 유지하고 있어, 장기적 황폐화가 아닌 단기 노이즈로 판단된다.</p>
+</section>
+
+<!-- ████ 윈도 드레싱 ████ -->
+<section class="fade-in">
+  <h2><span class="accent">02</span> 윈도 드레싱이란?</h2>
+  <p class="section-sub">WINDOW DRESSING & QUARTER-END SELLING</p>
+
+  <p><strong>윈도 드레싱(Window Dressing)</strong>이란 분기 말에 펀드 매니저들이 자신의 포트폴리오 실적을 좋게 보이도록 하기 위해 보유 종목을 대규모로 매도·매수하는 행위다.</p>
+
+  <h3>왜 과매도가 발생하는가?</h3>
+  <p>액티브 펀드 매니저들은 실적 연동 보수 체계(80:20 등)로 운영된다. 이들이 100불에 매수해 500~600불까지 오른 종목을 300~400불 시점에 매도해 이익을 실현한다. 이는 <strong>손해를 보고 파는 것이 아니라, 이미 충분한 이익을 확정</strong>하는 행위다.</p>
+
+  <div class="highlight-box">
+    💡 이번 1분기는 평소보다 과하게 매도가 진행됨 — Pullback에서 Correction까지 진행된 것은 윈도 드레싱이 과도했다는 증거.
+    <br><br>
+    <strong>핵심:</strong> 매도 후 페이(보수)를 수령한 매니저들은 다시 매수에 나설 것이며, 가장 먼저 들어오는 대상은 <strong>펀더멘탈이 강한 종목</strong>이다.
+  </div>
+
+  <!-- 윈도드레싱 플로우차트 -->
+  <div class="flow-container fade-in">
+    <div class="flow-node" onclick="toggleFlow(this)" data-idx="0">
+      📅 1분기 마지막 날 도래
+    </div>
+    <div class="flow-detail" id="fd0">펀드 매니저들의 분기 실적 보고 마감. 성과에 따라 보수(페이)가 결정된다.</div>
+    <div class="flow-arrow"></div>
+    <div class="flow-node" onclick="toggleFlow(this)" data-idx="1">
+      💰 이익 실현 매도 집중
+    </div>
+    <div class="flow-detail" id="fd1">200~300% 오른 종목들을 대량 매도. 수백 % 수익을 확정하면서 매도세가 집중된다.</div>
+    <div class="flow-arrow"></div>
+    <div class="flow-node" onclick="toggleFlow(this)" data-idx="2">
+      📉 과매도(Oversold) 상태 발생
+    </div>
+    <div class="flow-detail" id="fd2">S&P 500 하위 125개 산업 중 25개 이상이 과매도 구간에 진입. 시장 전체가 과도하게 하락한 상태.</div>
+    <div class="flow-arrow"></div>
+    <div class="flow-node" onclick="toggleFlow(this)" data-idx="3">
+      🔄 보수 수령 후 재진입 (펀더멘탈 우선)
+    </div>
+    <div class="flow-detail" id="fd3">보수를 받은 매니저들이 다시 시장에 진입. 펀더멘탈이 강한 종목 중심으로 매수 시작 → 반등 트리거.</div>
+  </div>
+  <p style="font-size:12px; color:#999; text-align:center;">▲ 각 단계를 탭하면 상세 설명이 나타납니다</p>
+</section>
+
+<!-- ████ Pullback vs Correction ████ -->
+<section class="fade-in">
+  <h2><span class="accent">03</span> Pullback vs Correction vs Bear Market</h2>
+  <p class="section-sub">시장 하락의 3단계 구분</p>
+
+  <div class="table-wrap fade-in">
+    <table>
+      <thead>
+        <tr><th>구분</th><th>하락폭</th><th>연간 빈도</th><th>평균 회복기간</th><th>현재 상태</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Pullback</strong></td>
+          <td>5~10%</td>
+          <td>약 4회</td>
+          <td>수주 이내</td>
+          <td><span class="tag green">S&P 500</span></td>
+        </tr>
+        <tr>
+          <td><strong>Correction</strong></td>
+          <td>10~20%</td>
+          <td>1~2회</td>
+          <td>평균 4개월</td>
+          <td><span class="tag red">NASDAQ</span></td>
+        </tr>
+        <tr>
+          <td><strong>Bear Market</strong></td>
+          <td>20% 이상</td>
+          <td>드묾</td>
+          <td>수개월~수년</td>
+          <td><span class="tag">해당 없음</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>현재 <strong>S&P 500은 Pullback</strong>, <strong>NASDAQ은 Correction</strong> 구간에 진입한 상태다. Pullback에서 반등하면 회복 속도가 빠르고, Correction도 시스테믹 리스크의 원인(지정학적 이슈)이 해소되면 과거 평균(4개월)보다 훨씬 빠르게 회복될 것으로 전망한다.</p>
+
+  <div class="quote-block fade-in">
+    "작년 트럼프 관세 문제로 10% 이상 빠졌을 때, 3주 만에 회복 이상으로 상승장을 보였다. 그때보다 현재 파이낸셜 마켓이 훨씬 더 안정적이다."
+  </div>
+
+  <!-- 차트: 하락 유형별 비교 -->
+  <div class="chart-container fade-in">
+    <div class="chart-title">시장 하락 유형별 하락폭 & 회복 기간</div>
+    <canvas id="chart1" height="240"></canvas>
+  </div>
+</section>
+
+<!-- ████ 투자심리 분석 ████ -->
+<section class="fade-in">
+  <h2><span class="accent">04</span> 투자 심리 지표 분석</h2>
+  <p class="section-sub">MARKET SENTIMENT INDICATORS</p>
+
+  <p>시장의 방향성을 가늠하는 핵심 심리 지표 3가지를 종합 분석한 결과:</p>
+
+  <div class="table-wrap fade-in">
+    <table>
+      <thead>
+        <tr><th>지표</th><th>현재 상태</th><th>해석</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>5-Day Put/Call Option</strong></td>
+          <td><span class="pos">Positive (Bullish)</span></td>
+          <td>Call Option(상승 베팅) 압도적 우위. 투자자들이 가격 상승을 기대</td>
+        </tr>
+        <tr>
+          <td><strong>뮤추얼 펀드 캐시</strong></td>
+          <td><span class="tag blue">캐시 증가 → 쇼핑 중</span></td>
+          <td>현금 확보 후 매수 대상 물색 중. "뭘 살까" 탐색 단계</td>
+        </tr>
+        <tr>
+          <td><strong>Insiders Index<br>(C-Suite 매매)</strong></td>
+          <td><span class="tag">Neutral</span></td>
+          <td>CEO·CFO 등 경영진이 매도 우세가 아님. 오히려 매수 세력도 존재</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="highlight-box fade-in">
+    <strong>종합 판단:</strong> 단기 Bullish, 장기 Bullish. Call Option 증가세. 모멘텀이 Negative에서 <strong>Positive로 전환</strong>. 전반적으로 시장 참여자들은 반등을 기대하고 있다.
+  </div>
+
+  <!-- 차트: 투자심리 레이더 -->
+  <div class="chart-container fade-in">
+    <div class="chart-title">투자 심리 종합 지표 (점수화)</div>
+    <canvas id="chart2" height="250"></canvas>
+  </div>
+</section>
+
+<!-- ████ 시스테믹 리스크 ████ -->
+<section class="fade-in">
+  <h2><span class="accent">05</span> 시스테믹 리스크 진단</h2>
+  <p class="section-sub">SYSTEMIC RISK — 노이즈 vs 실질적 위협</p>
+
+  <h3>현재 리스크 요인</h3>
+  <p>에너지 섹터를 제외한 거의 모든 섹터가 동반 하락하는 <strong>시스테믹 리스크</strong> 양상이다. 그러나 이것은 주식시장 내부가 아닌 <strong>외부 요인(이란 전쟁, 호르무즈 해협)</strong>에 의한 것이다.</p>
+
+  <div class="key-numbers fade-in">
+    <div class="key-num">
+      <div class="num" style="color:#16a34a;">건전</div>
+      <div class="label">파이낸셜 섹터 상태</div>
+    </div>
+    <div class="key-num">
+      <div class="num">10/11</div>
+      <div class="label">하락 섹터 수<br>(에너지 제외)</div>
+    </div>
+    <div class="key-num">
+      <div class="num">25+</div>
+      <div class="label">과매도 산업 수<br>(125개 중)</div>
+    </div>
+  </div>
+
+  <h3>핵심 판단 기준</h3>
+  <div class="highlight-box fade-in">
+    <strong>⚠️ 파이낸셜 섹터가 무너지면 → 70% 매도 후 퇴장 필요</strong><br>
+    현재는 파이낸셜 섹터가 건전 → 이란 전쟁은 "노이즈"에 해당<br><br>
+    "주식시장의 장기적 황폐화는 주식시장 자체, 특히 파이낸셜 섹터에서 깨질 때 발생한다."
+  </div>
+
+  <h3>리세션(Recession) 가능성</h3>
+  <p>일부 소수가 미국 리세션을 주장하지만, <strong>현재까지 나온 데이터에서 리세션 시그널은 없다.</strong> 통계에 근거하지 않은 공포심에 의한 투자 판단은 지양해야 한다.</p>
+</section>
+
+<!-- ████ 달러 & 원화 ████ -->
+<section class="fade-in">
+  <h2><span class="accent">06</span> 달러 강세와 원화 약세</h2>
+  <p class="section-sub">DOLLAR DYNAMICS & KRW IMPLICATIONS</p>
+
+  <h3>달러 강세 요인</h3>
+  <p>달러인덱스가 다시 98 이상으로 반등했다. 미국 금리가 4.4% 수준을 유지하며 다른 국가와의 금리 차이가 확대되고, 이란 전쟁으로 유가가 상승하면서 석유 결제 통화인 달러 수요가 증가한 것이 주요 요인이다.</p>
+
+  <div class="key-numbers fade-in">
+    <div class="key-num">
+      <div class="num">1,526</div>
+      <div class="label">원/달러 환율</div>
+    </div>
+    <div class="key-num">
+      <div class="num">98+</div>
+      <div class="label">달러 인덱스 (DXY)</div>
+    </div>
+    <div class="key-num">
+      <div class="num">~4.4%</div>
+      <div class="label">미국 10년물 금리</div>
+    </div>
+  </div>
+
+  <div class="highlight-box fade-in">
+    <strong>한국 원화 관련 우려:</strong> 정상적인 경제력 기준으로 원/달러는 1,200~1,400원대가 적정 수준이며, 1,500원대는 IMF 당시를 연상시키는 이례적 수치. 한국 내 원화 자산 보유자의 실질 구매력이 크게 하락한 상황이다.
+  </div>
+
+  <!-- 환율 영향 시뮬레이터 -->
+  <div class="sim-box fade-in">
+    <h4>🔢 환율 변동에 따른 자산 가치 시뮬레이터</h4>
+    <p style="font-size:12px; color:#999; margin-bottom:14px;">한국 원화 자산의 달러 환산 가치 변화를 확인해보세요</p>
+    <div class="sim-row">
+      <label>원화 자산 (억원)</label>
+      <input type="range" id="simAsset" min="1" max="100" value="30" oninput="updateFxSim()">
+      <span class="val" id="simAssetVal">30억</span>
+    </div>
+    <div class="sim-row">
+      <label>환율 (원/달러)</label>
+      <input type="range" id="simFx" min="1000" max="1800" step="10" value="1526" oninput="updateFxSim()">
+      <span class="val" id="simFxVal">1,526</span>
+    </div>
+    <div class="sim-result">
+      <div class="big" id="simResultUsd">$1.97M</div>
+      <div class="desc">달러 환산 가치</div>
+    </div>
+    <div class="sim-result" style="margin-top:8px;">
+      <div style="font-size:14px; color:#777;">환율 1,100원(과거) 기준 대비</div>
+      <div class="big" id="simResultDiff" style="font-size:20px;">-$0.76M</div>
+      <div class="desc" id="simResultPct">약 -27.9% 감소</div>
+    </div>
+    <button class="reset-btn" onclick="document.getElementById('simAsset').value=30;document.getElementById('simFx').value=1526;updateFxSim();">초기화</button>
+  </div>
+</section>
+
+<!-- ████ M7 종목 현황 ████ -->
+<section class="fade-in">
+  <h2><span class="accent">07</span> 주요 종목 YTD 성과</h2>
+  <p class="section-sub">MAGNIFICENT 7 & KEY STOCKS — YEAR-TO-DATE</p>
+
+  <p>올해 1월부터 현재까지(YTD) 주요 종목들의 수익률. 사전에 포지션을 조정(매도·축소)한 종목과 그렇지 않은 경우의 차이가 극명하다.</p>
+
+  <!-- 차트: YTD 성과 -->
+  <div class="chart-container fade-in">
+    <div class="chart-title">주요 종목 YTD 수익률 (%)</div>
+    <canvas id="chart3" height="250"></canvas>
+  </div>
+
+  <div class="table-wrap fade-in">
+    <table>
+      <thead>
+        <tr><th>종목</th><th>YTD 수익률</th><th>포지션 상태</th><th>비고</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Microsoft</td><td class="neg">-25%</td><td>사전 매도 완료</td><td>연초에 매도 권고</td></tr>
+        <tr><td>Meta</td><td class="neg">-18.7%</td><td>최근 재진입</td><td>축소 후 저점 재매수</td></tr>
+        <tr><td>Tesla</td><td class="neg">-21%</td><td>비매수 권고</td><td>포트폴리오 비중 제한</td></tr>
+        <tr><td>NVIDIA</td><td class="neg">-11.4%</td><td>대폭 축소</td><td>비중 크게 줄인 상태</td></tr>
+        <tr><td>Micron</td><td class="pos">+12.8%</td><td>보유 중</td><td>최근 하락에도 YTD 양호</td></tr>
+        <tr><td>AMD</td><td class="neg">-7~8%</td><td>보유 중</td><td>3년 기준 100% 상승</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="highlight-box fade-in">
+    <strong>핵심 메시지:</strong> "Weak RSI, Strong EPS" — 기업 실적(EPS)은 계속 두 자릿수로 개선되는데, RSI(기술적 지표)만 약세인 상황. 이것은 노이즈에 의한 하락이며, <strong>펀더멘탈이 아닌 잡음 때문에 떨어지는 것</strong>이다.
+  </div>
+</section>
+
+<!-- ████ 지정학적 리스크 ████ -->
+<section class="fade-in">
+  <h2><span class="accent">08</span> 이란 전쟁 & 호르무즈 해협</h2>
+  <p class="section-sub">GEOPOLITICAL RISK ASSESSMENT</p>
+
+  <h3>현재 상황</h3>
+  <p>이란과의 군사적 긴장이 고조되면서 호르무즈 해협의 통행 문제가 시장에 불확실성을 더하고 있다. 유가는 배럴당 95달러까지 상승했으며, 일부 미군 병력이 이란 방면으로 이동 중이라는 보도가 있다.</p>
+
+  <h3>시장 영향 전망</h3>
+  <p>투자자 대다수는 호르무즈 해협이 개방되고 이란 전쟁이 장기화되지 않을 것이라는 시각을 갖고 있다. 미국은 자체 에너지 생산 능력이 충분하기 때문에 유가 상승의 직접적 타격은 제한적이며, 오히려 <strong>유럽과 아시아 경제에 더 큰 영향</strong>을 미친다.</p>
+
+  <div class="quote-block fade-in">
+    "지정학적 상황이 개선되면 상당한 속도로 회복될 것이라고 모두 생각하고 있다."
+  </div>
+
+  <h3>중국 관련 리스크</h3>
+  <p>중국이 이란 석유를 위안화로 결제해온 것은 페트로달러 체제에 대한 도전이며, 이는 트럼프뿐 아니라 누가 대통령이 되어도 문제시될 사안이라는 평가다. 중국 경제의 실업률 상승과 M2 증가율 문제도 지적되었다.</p>
+</section>
+
+<!-- ████ 4월 전망 ████ -->
+<section class="fade-in">
+  <h2><span class="accent">09</span> 4월 전망 & 연준 정책</h2>
+  <p class="section-sub">APRIL OUTLOOK & FED POLICY</p>
+
+  <h3>4월은 역사적 강세월</h3>
+  <p><strong>4월은 역사적으로 S&P 500의 수익률이 매우 높은 달</strong>이다. 부동산 거래도 가장 활발한 시기이며, 1분기 마지막 날의 과매도 이후 4월 초부터 자금 유입이 기대된다.</p>
+
+  <h3>연준(Fed) 정책 전망</h3>
+  <p>연준은 2026년 추가 금리 인하를 6월에 한 차례 실시할 가능성이 높다. 금리 인상 가능성도 일부 제기되지만 아직 희박하다. 비농업 고용지표 발표일이 금요일(선금율 휴장일)과 겹치면서 관련 변동성은 제한적일 전망이다.</p>
+
+  <!-- 차트: S&P 500 월별 역사적 수익률 -->
+  <div class="chart-container fade-in">
+    <div class="chart-title">S&P 500 월별 평균 수익률 (역사적)</div>
+    <canvas id="chart4" height="220"></canvas>
+  </div>
+
+  <h3>비농업 고용지표</h3>
+  <p>지난달 약 9만 명이 갑자기 감소한 고용이 이번에는 약 5만 명 정도 회복될 것으로 예상. 금요일 발표이지만 휴장일이라 즉각적 변동성은 제한적.</p>
+</section>
+
+<!-- ████ 투자 원칙 ████ -->
+<section class="fade-in">
+  <h2><span class="accent">10</span> 투자자를 위한 핵심 조언</h2>
+  <p class="section-sub">INVESTMENT PRINCIPLES & PSYCHOLOGY</p>
+
+  <h3>감정적 매매 금지</h3>
+  <p>펀더멘탈을 한번 신뢰했으면 감정적 매매는 오히려 독이 된다. "펀더멘탈은 배신한 적이 없다."</p>
+
+  <h3>가치와 가격의 구분</h3>
+  <p>현재 보유 자산의 가격 하락은 <strong>실현 손실이 아니다.</strong> 판매하지 않으면 가격은 변동하지만 가치는 내재되어 있다. 팔 때 비로소 가격이 의미를 갖는다.</p>
+
+  <h3>레버리지 & ETF 경고</h3>
+  <div class="highlight-box fade-in">
+    <strong>⚠️ 절대 하지 말아야 할 것들:</strong><br>
+    • 돈 빌려서 투자하지 마라 (빌려도 10% 이상 빌리지 마라)<br>
+    • 3배 레버리지 ETF(X3) — S&P가 10% 빠지면 30% 손실<br>
+    • 감정적·냄비식 투자 — 오늘·내일·1주일만 보고 판단
+  </div>
+
+  <!-- 레버리지 손실 시뮬레이터 -->
+  <div class="sim-box fade-in">
+    <h4>🎮 레버리지 ETF 손실 시뮬레이터</h4>
+    <p style="font-size:12px; color:#999; margin-bottom:14px;">시장 하락 시 레버리지 배율에 따른 손실 비교</p>
+    <div class="sim-row">
+      <label>시장 하락률 (%)</label>
+      <input type="range" id="levDrop" min="1" max="40" value="10" oninput="updateLevSim()">
+      <span class="val" id="levDropVal">10%</span>
+    </div>
+    <div class="sim-row">
+      <label>레버리지 배율</label>
+      <input type="range" id="levMult" min="1" max="3" step="1" value="1" oninput="updateLevSim()">
+      <span class="val" id="levMultVal">1x</span>
+    </div>
+    <div class="sim-row">
+      <label>투자금 (만원)</label>
+      <input type="range" id="levAmount" min="100" max="10000" step="100" value="1000" oninput="updateLevSim()">
+      <span class="val" id="levAmountVal">1,000</span>
+    </div>
+    <div class="sim-result">
+      <div class="big" id="levLoss">-100만원</div>
+      <div class="desc" id="levLossDesc">실제 손실률: -10% | 잔액: 900만원</div>
+    </div>
+    <button class="reset-btn" onclick="document.getElementById('levDrop').value=10;document.getElementById('levMult').value=1;document.getElementById('levAmount').value=1000;updateLevSim();">초기화</button>
+  </div>
+
+  <h3>포트폴리오 전략</h3>
+  <p>자기 리스크 성향에 맞게 포트폴리오를 구성해야 한다. 공격적(Aggressive) 포트폴리오는 변동성이 크고, 보수적(Conservative) 포트폴리오는 변동이 적다. <strong>전략 매각보다 전략 매입이 10배 어렵다</strong>는 점을 명심할 것.</p>
+
+  <!-- 플립카드: 핵심 투자 원칙 -->
+  <div class="flip-cards fade-in">
+    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="flip-card-inner" style="min-height:70px;">
+        <div class="flip-front">📌 333 법칙이란?</div>
+        <div class="flip-back">하락장에서 투자금을 3번에 나눠서, 각각 33%씩 분할 매수하는 전략. 바닥을 정확히 잡으려 하지 않고 평균 매수 단가를 낮추는 방법.</div>
+      </div>
+    </div>
+    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="flip-card-inner" style="min-height:70px;">
+        <div class="flip-front">📌 엘리엇 파동의 5번째 웨이브란?</div>
+        <div class="flip-back">엘리엇 파동 이론에서 5번째 파동은 마지막 상승 또는 하락 파동. 큰 하락폭이 예상되지만, 이후 새로운 상승 사이클(웨이브)이 시작된다.</div>
+      </div>
+    </div>
+    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="flip-card-inner" style="min-height:70px;">
+        <div class="flip-front">📌 가치 vs 가격의 차이?</div>
+        <div class="flip-back">가격은 시장에서 현재 거래되는 수치. 가치는 기업이 내재적으로 보유한 실질적 가치. 팔지 않으면 가격 하락은 실현 손실이 아니다.</div>
+      </div>
+    </div>
+    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="flip-card-inner" style="min-height:70px;">
+        <div class="flip-front">📌 시스테믹 리스크 판별 기준?</div>
+        <div class="flip-back">파이낸셜 섹터의 건전성이 핵심 기준. 파이낸셜 섹터가 무너지면 70% 매도 후 퇴장. 건전하면 외부 노이즈로 판단, 매수 기회.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ████ 섹터 토글 비교 ████ -->
+<section class="fade-in">
+  <h2><span class="accent">11</span> 섹터별 동향 & 전략</h2>
+  <p class="section-sub">SECTOR ANALYSIS & ROTATION</p>
+
+  <p>11개 S&P 500 섹터 중 에너지를 제외한 전 섹터가 하락했다. 아래 토글로 각 섹터 상황을 확인할 수 있다:</p>
+
+  <div class="toggle-group fade-in" id="sectorToggle">
+    <button class="toggle-btn active" onclick="showSector(this, 'tech')">🖥️ IT</button>
+    <button class="toggle-btn" onclick="showSector(this, 'energy')">⛽ 에너지</button>
+    <button class="toggle-btn" onclick="showSector(this, 'finance')">🏦 금융</button>
+    <button class="toggle-btn" onclick="showSector(this, 'health')">🏥 헬스케어</button>
+  </div>
+  <div id="sectorInfo" class="highlight-box" style="transition: all 0.3s;">
+    <strong>IT 섹터:</strong> 메모리 반도체 포함 최근 1주간 급락. 그러나 펀더멘탈은 여전히 강력. PE 16 이하 기술주는 "두 번 다시 안 올 기회"일 수 있다. AI 관련 기업의 실적 개선세는 유지 중.
+  </div>
+
+  <h3>섹터 로테이션 전략</h3>
+  <p>보수적인 섹터에서 최근 많이 하락한 섹터로 비중을 이동하는 것도 가능한 방법. 반드시 같은 섹터 내에서만 움직일 필요는 없으며, 모멘텀 상 저렴해 보이는 종목을 섹터 무관하게 매입해도 된다.</p>
+
+  <!-- 차트: 섹터별 YTD -->
+  <div class="chart-container fade-in">
+    <div class="chart-title">주요 섹터 최근 변동률 (개념도)</div>
+    <canvas id="chart5" height="220"></canvas>
+  </div>
+</section>
+
+<!-- ████ 엘리엇 파동 ████ -->
+<section class="fade-in">
+  <h2><span class="accent">12</span> 엘리엇 파동 — 현재 위치</h2>
+  <p class="section-sub">ELLIOTT WAVE — WHERE ARE WE NOW?</p>
+
+  <p><strong>엘리엇 파동 이론</strong>에 따르면, 현재 시장은 <strong>다섯 번째 웨이브</strong>를 통과하고 있는 구간이다. 다섯 번째 파동은 큰 하락폭을 수반하지만, 이후에는 새로운 상승 사이클이 시작된다.</p>
+
+  <div class="highlight-box fade-in">
+    "우리가 어디서 와서 어디를 가고 있는지를 알면, 크게 염려되는 부분은 하나도 없다."<br><br>
+    <strong>Correction</strong> = 자체 과열 양상을 줄여 성장성을 높이는 과정. 건강한 조정이다.
+  </div>
+</section>
+
+<!-- ████ 결론 ████ -->
+<section class="fade-in" style="padding-bottom:40px;">
+  <h2><span class="accent">13</span> 최종 결론</h2>
+  <p class="section-sub">CONCLUSION & ACTION ITEMS</p>
+
+  <div class="highlight-box" style="border-left-color: #16a34a;">
+    <strong style="color:#16a34a;">🟢 결론: 과매도 상태 — 반등 가능성 매우 높음</strong><br><br>
+    1. <strong>윈도 드레싱에 의한 과매도</strong> — 구조적 문제가 아닌 분기말 현상<br>
+    2. <strong>파이낸셜 섹터 건전</strong> — 장기 베어마켓 조건 미충족<br>
+    3. <strong>EPS 강세 지속</strong> — 기업 실적은 두 자릿수 성장 유지<br>
+    4. <strong>투자 심리 긍정적 전환</strong> — Call Option 증가, 모멘텀 Positive<br>
+    5. <strong>4월 역사적 강세</strong> — 자금 재유입 예상<br>
+    6. <strong>이란 리스크는 단기 노이즈</strong> — 장기화 가능성 낮음
+  </div>
+
+  <div class="quote-block fade-in">
+    "단기적 폭락은 증권 투자의 과정이다. 하락장 때 빠지면 자산이 모이지 않는다. 진정한 힘은 하락장에서 나온다."
+  </div>
+
+  <p><strong>다음 포인트:</strong> 4월 초(이번 주 목요일) 구체적 투자 방향 발표 예정. 이란 전쟁 이후를 대비한 투자 포트폴리오 재구성 준비 필요.</p>
+</section>
+
+</div><!-- container -->
+
+<footer>
+  본 문서는 '투자는인생TV' 방송 내용을 정리·분석한 자료이며, 투자 권유가 아닙니다.<br>
+  투자의 최종 판단과 책임은 본인에게 있습니다.<br>
+  &copy; 2026 Analysis Report
+</footer>
+
+<script>
+// ── Fade-in Observer ──
+const fadeObs = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), i * 80);
+      fadeObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.12 });
+document.querySelectorAll('.fade-in').forEach(el => fadeObs.observe(el));
+
+// ── Chart Configs ──
+const chartConfigs = {};
+
+// Chart 1: 하락 유형별 비교
+chartConfigs['chart1'] = () => {
+  new Chart(document.getElementById('chart1'), {
+    type: 'bar',
+    data: {
+      labels: ['Pullback', 'Correction', 'Bear Market'],
+      datasets: [
+        {
+          label: '하락폭 (%)',
+          data: [7.5, 15, 30],
+          backgroundColor: ['#6b7280', '#e11d48', '#1a1a1a'],
+          borderRadius: 6,
+          barPercentage: 0.5
+        },
+        {
+          label: '평균 회복 기간 (주)',
+          data: [3, 16, 52],
+          backgroundColor: ['rgba(107,114,128,0.3)', 'rgba(225,29,72,0.3)', 'rgba(26,26,26,0.3)'],
+          borderRadius: 6,
+          barPercentage: 0.5
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { position: 'bottom', labels: { font: { size: 11, family: "'Noto Sans KR'" }, padding: 12 } }
+      },
+      scales: {
+        y: { beginAtZero: true, grid: { color: '#f0f0f0' }, ticks: { font: { size: 11 } } },
+        x: { grid: { display: false }, ticks: { font: { size: 12, family: "'Noto Sans KR'" } } }
+      }
+    }
+  });
+};
+
+// Chart 2: 투자심리 지표
+chartConfigs['chart2'] = () => {
+  new Chart(document.getElementById('chart2'), {
+    type: 'radar',
+    data: {
+      labels: ['Put/Call\n(Bullish)', '뮤추얼펀드\n캐시', 'Insiders\nIndex', '모멘텀\n전환', '전체\nSentiment'],
+      datasets: [{
+        label: '현재 수준',
+        data: [85, 60, 50, 75, 72],
+        backgroundColor: 'rgba(225,29,72,0.15)',
+        borderColor: '#e11d48',
+        borderWidth: 2,
+        pointBackgroundColor: '#e11d48',
+        pointRadius: 4
+      }, {
+        label: '1개월 전',
+        data: [45, 40, 55, 30, 38],
+        backgroundColor: 'rgba(107,114,128,0.1)',
+        borderColor: '#6b7280',
+        borderWidth: 1.5,
+        borderDash: [4, 4],
+        pointBackgroundColor: '#6b7280',
+        pointRadius: 3
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        r: {
+          beginAtZero: true,
+          max: 100,
+          ticks: { stepSize: 25, font: { size: 10 }, backdropColor: 'transparent' },
+          pointLabels: { font: { size: 11, family: "'Noto Sans KR'" } },
+          grid: { color: '#e5e5e5' }
+        }
+      },
+      plugins: {
+        legend: { position: 'bottom', labels: { font: { size: 11, family: "'Noto Sans KR'" }, padding: 12 } }
+      }
+    }
+  });
+};
+
+// Chart 3: YTD 성과
+chartConfigs['chart3'] = () => {
+  new Chart(document.getElementById('chart3'), {
+    type: 'bar',
+    data: {
+      labels: ['Microsoft', 'Tesla', 'Meta', 'NVIDIA', 'AMD', 'Micron'],
+      datasets: [{
+        label: 'YTD 수익률 (%)',
+        data: [-25, -21, -18.7, -11.4, -8, 12.8],
+        backgroundColor: function(ctx) {
+          return ctx.raw >= 0 ? '#16a34a' : '#e11d48';
+        },
+        borderRadius: 6,
+        barPercentage: 0.6
+      }]
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: (ctx) => `YTD: ${ctx.raw > 0 ? '+' : ''}${ctx.raw}%`
+          }
+        }
+      },
+      scales: {
+        x: { grid: { color: '#f0f0f0' }, ticks: { callback: v => v + '%', font: { size: 11 } } },
+        y: { grid: { display: false }, ticks: { font: { size: 12, family: "'Noto Sans KR'", weight: '600' } } }
+      }
+    }
+  });
+};
+
+// Chart 4: S&P 월별 수익률
+chartConfigs['chart4'] = () => {
+  new Chart(document.getElementById('chart4'), {
+    type: 'bar',
+    data: {
+      labels: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
+      datasets: [{
+        label: '평균 수익률 (%)',
+        data: [1.2, 0.1, 0.5, 1.5, 0.3, 0.2, 0.9, -0.1, -0.8, 0.8, 1.4, 1.3],
+        backgroundColor: function(ctx) {
+          if (ctx.dataIndex === 3) return '#e11d48';
+          return ctx.raw >= 0 ? 'rgba(225,29,72,0.25)' : 'rgba(107,114,128,0.3)';
+        },
+        borderRadius: 4,
+        barPercentage: 0.65
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: ctx => `${ctx.raw > 0 ? '+' : ''}${ctx.raw}%` } }
+      },
+      scales: {
+        y: { grid: { color: '#f0f0f0' }, ticks: { callback: v => v + '%', font: { size: 11 } } },
+        x: { grid: { display: false }, ticks: { font: { size: 11 } } }
+      }
+    }
+  });
+};
+
+// Chart 5: 섹터별 변동
+chartConfigs['chart5'] = () => {
+  new Chart(document.getElementById('chart5'), {
+    type: 'bar',
+    data: {
+      labels: ['에너지', '금융', '헬스케어', '소재', '산업재', 'IT', '커뮤니케이션', '유틸리티', '필수소비', '임의소비', '부동산'],
+      datasets: [{
+        label: '최근 변동률 (%)',
+        data: [8, -5, -6, -7, -8, -12, -10, -4, -5, -9, -6],
+        backgroundColor: function(ctx) {
+          return ctx.raw >= 0 ? '#16a34a' : '#e11d48';
+        },
+        borderRadius: 4,
+        barPercentage: 0.6
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: ctx => `${ctx.raw > 0 ? '+' : ''}${ctx.raw}%` } }
+      },
+      scales: {
+        y: { grid: { color: '#f0f0f0' }, ticks: { callback: v => v + '%', font: { size: 11 } } },
+        x: { grid: { display: false }, ticks: { font: { size: 10 }, maxRotation: 45 } }
+      }
+    }
+  });
+};
+
+// ── Chart Observer ──
+const chartObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const canvas = e.target.querySelector('canvas');
+      if (canvas && chartConfigs[canvas.id]) {
+        chartConfigs[canvas.id]();
+        e.target.classList.add('chart-ready');
+        chartObs.unobserve(e.target);
+      }
+    }
+  });
+}, { threshold: 0.15 });
+document.querySelectorAll('.chart-container').forEach(el => chartObs.observe(el));
+
+// ── Flowchart Toggle ──
+function toggleFlow(node) {
+  const idx = node.getAttribute('data-idx');
+  const detail = document.getElementById('fd' + idx);
+  const isOpen = detail.classList.contains('show');
+  document.querySelectorAll('.flow-detail').forEach(d => d.classList.remove('show'));
+  document.querySelectorAll('.flow-node').forEach(n => n.classList.remove('active'));
+  if (!isOpen) {
+    detail.classList.add('show');
+    node.classList.add('active');
+  }
+}
+
+// ── FX Simulator ──
+function updateFxSim() {
+  const asset = parseInt(document.getElementById('simAsset').value);
+  const fx = parseInt(document.getElementById('simFx').value);
+  const usd = (asset * 100000000) / (fx * 10000);
+  const usdOld = (asset * 100000000) / (1100 * 10000);
+  const diff = usd - usdOld;
+  const pct = ((usd - usdOld) / usdOld * 100).toFixed(1);
+  document.getElementById('simAssetVal').textContent = asset + '억';
+  document.getElementById('simFxVal').textContent = fx.toLocaleString();
+  document.getElementById('simResultUsd').textContent = '$' + (usd / 100).toFixed(2) + 'M';
+  document.getElementById('simResultDiff').textContent = (diff >= 0 ? '+' : '') + '$' + (diff / 100).toFixed(2) + 'M';
+  document.getElementById('simResultDiff').style.color = diff >= 0 ? '#16a34a' : '#e11d48';
+  document.getElementById('simResultPct').textContent = '환율 1,100원 대비 약 ' + pct + '% ' + (diff >= 0 ? '증가' : '감소');
+}
+updateFxSim();
+
+// ── Leverage Simulator ──
+function updateLevSim() {
+  const drop = parseInt(document.getElementById('levDrop').value);
+  const mult = parseInt(document.getElementById('levMult').value);
+  const amount = parseInt(document.getElementById('levAmount').value);
+  const actualDrop = Math.min(drop * mult, 100);
+  const loss = Math.round(amount * actualDrop / 100);
+  const remain = amount - loss;
+  document.getElementById('levDropVal').textContent = drop + '%';
+  document.getElementById('levMultVal').textContent = mult + 'x';
+  document.getElementById('levAmountVal').textContent = amount.toLocaleString();
+  document.getElementById('levLoss').textContent = '-' + loss.toLocaleString() + '만원';
+  document.getElementById('levLossDesc').textContent = '실제 손실률: -' + actualDrop + '% | 잔액: ' + remain.toLocaleString() + '만원';
+}
+updateLevSim();
+
+// ── Sector Toggle ──
+const sectorData = {
+  tech: '<strong>IT 섹터:</strong> 메모리 반도체 포함 최근 1주간 급락. 그러나 펀더멘탈은 여전히 강력. PE 16 이하 기술주는 "두 번 다시 안 올 기회"일 수 있다. AI 관련 기업의 실적 개선세는 유지 중.',
+  energy: '<strong>에너지 섹터:</strong> 유일하게 상승한 섹터. 이란 전쟁으로 유가 급등(배럴당 $95). 그러나 장기 투자 위험도가 높으며, 유가가 500~600달러로 갈 가능성이 희박하므로 장기 투자 대상으로는 부적합하다는 평가.',
+  finance: '<strong>금융 섹터:</strong> 건전한 상태 유지 — 이것이 현재 하락장이 장기 베어마켓이 아닌 핵심 근거. 파이낸셜 섹터가 무너지지 않는 한 시장의 장기적 황폐화는 발생하지 않는다.',
+  health: '<strong>헬스케어 섹터:</strong> 방어주 성격으로 하락폭이 상대적으로 제한적. 보수적 포트폴리오에서 기술주로의 섹터 로테이션 고려 시 일부 비중 조정 가능.'
+};
+function showSector(btn, key) {
+  document.querySelectorAll('#sectorToggle .toggle-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('sectorInfo').innerHTML = sectorData[key];
+}
+</script>
+
+</body>
+</html>
