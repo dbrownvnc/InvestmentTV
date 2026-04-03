@@ -1,0 +1,1083 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>4월 2일 멤버온리 — 3월 26일 매입 종목 점검</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800;900&family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root {
+  --bg: #ffffff;
+  --bg-alt: #fafafa;
+  --text: #1a1a1a;
+  --text-sub: #777777;
+  --accent: #e11d48;
+  --accent2: #f43f5e;
+  --chart1: #e11d48;
+  --chart2: #1a1a1a;
+  --chart3: #6b7280;
+  --chart4: #2563eb;
+  --tbl-bg: #fafafa;
+  --tbl-hd: #e11d48;
+  --tbl-border: #e5e5e5;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; scroll-behavior: smooth; }
+body {
+  font-family: 'Noto Sans KR', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.75;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* === HERO === */
+.hero {
+  background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 40%, #2d1015 100%);
+  color: #fff;
+  padding: 60px 20px 50px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -40%;
+  right: -20%;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(225,29,72,0.15) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-label {
+  font-family: 'Playfair Display', serif;
+  font-size: 0.7rem;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 16px;
+}
+.hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.6rem, 5vw, 2.6rem);
+  font-weight: 800;
+  line-height: 1.25;
+  margin-bottom: 14px;
+}
+.hero h1 span { color: var(--accent); }
+.hero-meta {
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.55);
+  margin-bottom: 20px;
+}
+.hero-stats {
+  display: flex;
+  justify-content: center;
+  gap: 28px;
+  flex-wrap: wrap;
+  margin-top: 18px;
+}
+.hero-stat {
+  text-align: center;
+}
+.hero-stat .val {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+.hero-stat .lbl {
+  font-size: 0.68rem;
+  color: rgba(255,255,255,0.5);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* === LAYOUT === */
+.container {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 0 18px;
+}
+section {
+  padding: 40px 0 24px;
+}
+section + section {
+  border-top: 1px solid var(--tbl-border);
+}
+
+/* === TYPOGRAPHY === */
+h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 6px;
+  line-height: 1.3;
+}
+h2 .num {
+  color: var(--accent);
+  font-size: 0.85rem;
+  font-weight: 600;
+  display: block;
+  letter-spacing: 2px;
+  margin-bottom: 4px;
+}
+h3 {
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text);
+  margin: 24px 0 8px;
+  padding-left: 12px;
+  border-left: 3px solid var(--accent);
+}
+p {
+  margin-bottom: 14px;
+  font-size: 0.93rem;
+  color: var(--text);
+}
+.sub-text {
+  color: var(--text-sub);
+  font-size: 0.82rem;
+}
+
+/* === CALLOUT === */
+.callout {
+  background: linear-gradient(135deg, #fef2f2, #fff1f2);
+  border-left: 4px solid var(--accent);
+  padding: 16px 18px;
+  margin: 18px 0;
+  border-radius: 0 8px 8px 0;
+  font-size: 0.9rem;
+}
+.callout strong { color: var(--accent); }
+
+.callout-dark {
+  background: var(--text);
+  color: #fff;
+  border-left: 4px solid var(--accent);
+  padding: 16px 18px;
+  margin: 18px 0;
+  border-radius: 0 8px 8px 0;
+}
+.callout-dark strong { color: var(--accent2); }
+
+/* === TABLE === */
+.tbl-wrap {
+  overflow-x: auto;
+  margin: 16px 0;
+  border-radius: 10px;
+  border: 1px solid var(--tbl-border);
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.82rem;
+}
+thead th {
+  background: var(--tbl-hd);
+  color: #fff;
+  padding: 10px 12px;
+  text-align: left;
+  font-weight: 600;
+  white-space: nowrap;
+}
+tbody td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--tbl-border);
+  background: var(--tbl-bg);
+}
+tbody tr:last-child td { border-bottom: none; }
+.up { color: #16a34a; font-weight: 700; }
+.down { color: var(--accent); font-weight: 700; }
+
+/* === BADGE === */
+.badge {
+  display: inline-block;
+  background: var(--accent);
+  color: #fff;
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 4px;
+  letter-spacing: 0.5px;
+  vertical-align: middle;
+}
+.badge-outline {
+  background: transparent;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+}
+
+/* === CHART === */
+.fade-in {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.chart-container {
+  position: relative;
+  max-height: 340px;
+  margin: 18px 0;
+  background: var(--bg-alt);
+  border-radius: 10px;
+  padding: 14px;
+}
+.chart-container canvas {
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  max-height: 300px;
+}
+.chart-container.chart-ready canvas {
+  opacity: 1;
+}
+.chart-title {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+
+/* === INTERACTIVE === */
+.sim-box {
+  background: var(--bg-alt);
+  border: 1px solid var(--tbl-border);
+  border-radius: 12px;
+  padding: 20px 18px;
+  margin: 20px 0;
+}
+.sim-box h4 {
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: var(--text);
+}
+.sim-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+.sim-row label {
+  font-size: 0.82rem;
+  font-weight: 500;
+  min-width: 90px;
+  color: var(--text-sub);
+}
+.sim-row input[type="range"] {
+  flex: 1;
+  min-width: 120px;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+.sim-row .sim-val {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 0.95rem;
+  min-width: 70px;
+  text-align: right;
+  color: var(--accent);
+}
+.sim-result {
+  background: var(--text);
+  color: #fff;
+  border-radius: 8px;
+  padding: 14px;
+  text-align: center;
+  margin-top: 14px;
+  font-size: 0.9rem;
+}
+.sim-result .big {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--accent2);
+}
+button.reset-btn {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  padding: 7px 16px;
+  border-radius: 6px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 8px;
+  transition: background 0.2s;
+}
+button.reset-btn:hover { background: var(--accent2); }
+
+/* === TIMELINE === */
+.timeline {
+  position: relative;
+  padding-left: 24px;
+  margin: 16px 0;
+}
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 6px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--tbl-border);
+}
+.tl-item {
+  position: relative;
+  margin-bottom: 18px;
+}
+.tl-item::before {
+  content: '';
+  position: absolute;
+  left: -22px;
+  top: 6px;
+  width: 10px;
+  height: 10px;
+  background: var(--accent);
+  border-radius: 50%;
+}
+.tl-date {
+  font-size: 0.72rem;
+  color: var(--text-sub);
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+.tl-text {
+  font-size: 0.88rem;
+  margin-top: 2px;
+}
+
+/* === TOGGLE TABS === */
+.toggle-wrap {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+.toggle-btn {
+  background: var(--bg-alt);
+  border: 1px solid var(--tbl-border);
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: var(--text-sub);
+}
+.toggle-btn.active {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+.toggle-content { display: none; }
+.toggle-content.active { display: block; }
+
+/* === FLIP CARD === */
+.flip-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 10px;
+  margin: 16px 0;
+}
+.flip-card {
+  perspective: 800px;
+  height: 100px;
+  cursor: pointer;
+}
+.flip-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.5s;
+  transform-style: preserve-3d;
+}
+.flip-card.flipped .flip-inner { transform: rotateY(180deg); }
+.flip-front, .flip-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  font-size: 0.78rem;
+  text-align: center;
+  font-weight: 600;
+}
+.flip-front {
+  background: var(--text);
+  color: #fff;
+}
+.flip-back {
+  background: var(--accent);
+  color: #fff;
+  transform: rotateY(180deg);
+  font-weight: 400;
+  font-size: 0.72rem;
+  line-height: 1.4;
+}
+
+/* === FOOTER === */
+.footer {
+  text-align: center;
+  padding: 30px 20px;
+  background: var(--bg-alt);
+  border-top: 1px solid var(--tbl-border);
+  font-size: 0.72rem;
+  color: var(--text-sub);
+}
+
+/* === MOBILE === */
+@media (max-width: 480px) {
+  .hero { padding: 40px 16px 36px; }
+  h2 { font-size: 1.3rem; }
+  .hero-stats { gap: 16px; }
+  table { font-size: 0.75rem; }
+  thead th, tbody td { padding: 8px 8px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ===== HERO ===== -->
+<div class="hero fade-in">
+  <div class="hero-label">Member Only Briefing</div>
+  <h1>3월 26일 매입 종목<br><span>성과 점검 리포트</span></h1>
+  <div class="hero-meta">2026년 4월 2일 (성금요일) · 투자는인생TV</div>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="val">5종목</div><div class="lbl">추천 매입</div></div>
+    <div class="hero-stat"><div class="val">+26%</div><div class="lbl">AMD 최대 수익</div></div>
+    <div class="hero-stat"><div class="val">3일</div><div class="lbl">반등 소요</div></div>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- ===== 1. 핵심 요약 ===== -->
+<section>
+  <h2><span class="num">01</span>핵심 요약 — 안 사면 혼나는 날</h2>
+  <p>방송 진행자는 3월 26일(목) 방송에서 <strong>MU(마이크론), AMD, META, SanDisk(웨스턴디지털), Teradyne</strong> 5개 종목의 매입을 직접 권고했다. 4월 2일 기준으로 점검한 결과, 모든 종목이 단기간에 유의미한 반등을 기록했다.</p>
+
+  <div class="callout">
+    <strong>핵심 메시지:</strong> "1년 내내 열심히 포트폴리오 짜서 26% 될까 말까인 것을 3~4일 안에 만들어낼 수 있다. 이것이 액티브 매니지먼트와 리밸런싱 전략의 힘이다."
+  </div>
+
+  <div class="tbl-wrap fade-in">
+    <table>
+      <thead><tr><th>종목</th><th>매입가(3/26)</th><th>현재가(4/2)</th><th>수익률</th><th>비고</th></tr></thead>
+      <tbody>
+        <tr><td><strong>MU</strong></td><td>$355</td><td>$366</td><td class="up">+3.1%</td><td>단기 $500, 장기 $1,000 목표</td></tr>
+        <tr><td><strong>AMD</strong></td><td>$171</td><td>$217</td><td class="up">+26.9%</td><td>3일 만에 급반등</td></tr>
+        <tr><td><strong>META</strong></td><td>$547</td><td>$574</td><td class="up">+4.9%</td><td>장기 $800 목표</td></tr>
+        <tr><td><strong>SanDisk</strong></td><td>—</td><td>—</td><td class="up">+16%</td><td>신고가 근접 <span class="badge">3대 편입</span></td></tr>
+        <tr><td><strong>Teradyne</strong></td><td>—</td><td>—</td><td class="up">+4%</td><td>장기투자 부적합, Q4 전 매도 권고</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout-dark fade-in">
+    <strong>⚠️ Teradyne 주의:</strong> 장기투자용이 아님. 4분기(10월) 전에 매도하거나 비중을 줄일 것을 4월 2일자로 공식 언급.
+  </div>
+</section>
+
+<!-- ===== CHART 1: 종목별 수익률 ===== -->
+<section>
+  <h2><span class="num">02</span>종목별 단기 수익률 비교</h2>
+  <p>3월 26일 매입 후 불과 3~5 거래일 만에 달성한 수익률을 차트로 확인한다. AMD가 +26.9%로 압도적이며, SanDisk +16%, META +4.9% 순이다.</p>
+  <div class="chart-container fade-in">
+    <div class="chart-title">📊 3/26 매입 → 4/2 수익률 (%)</div>
+    <canvas id="chart1" height="240"></canvas>
+  </div>
+</section>
+
+<!-- ===== 2. 시장 현황 ===== -->
+<section>
+  <h2><span class="num">03</span>시장 현황 — 매입 세력 우세</h2>
+  <p>4월 2일 미국 시장은 성금요일 전일 마지막 거래일이었다. 전일 밤 트럼프의 돌발 발언으로 개장 초반 하락했으나, 오후 들어 매입 세력이 압도하며 <strong>약보합세</strong>로 마감했다.</p>
+
+  <h3>트럼프 발언 영향</h3>
+  <p>상승 모드에 "찬물을 끼얹는" 발언이 있었으나, 시장은 이를 <strong>노이즈</strong>로 소화했다. 진행자는 "시장을 받쳐주는 힘이 누르는 힘보다 훨씬 크다"고 판단했다.</p>
+
+  <h3>반등이 아직 끝나지 않은 이유</h3>
+  <p>엘리엇 파동 분석상 마지막 하락 파동이 지난주에 완료되었을 가능성이 높으며, 기술적으로도 상승 여력이 크다고 본다. <strong>연말 S&P 500 7,000~7,200 도달</strong> 전망을 유지한다.</p>
+
+  <div class="callout fade-in">
+    <strong>기술적 분석 요약:</strong> RSI 36→47 반등 중, 60까지 상승 여력. 엘리엇 파동 5파 하락 완료 추정. 9월경 미세 조정 가능성은 있으나 연말 7,000 돌파 전망.
+  </div>
+</section>
+
+<!-- ===== 3. 미국 경제지표 ===== -->
+<section>
+  <h2><span class="num">04</span>미국 경제 지표 — 대체로 양호</h2>
+
+  <div class="tbl-wrap fade-in">
+    <table>
+      <thead><tr><th>지표</th><th>수치</th><th>평가</th></tr></thead>
+      <tbody>
+        <tr><td>신규 실업수당 청구</td><td>202,000건</td><td class="up">긍정 (하락)</td></tr>
+        <tr><td>ADP 민간고용</td><td>+62,000명</td><td>보통</td></tr>
+        <tr><td>10년 국채 수익률</td><td>4.3% 하락 돌파</td><td class="up">낙관 심리 반영</td></tr>
+        <tr><td>Oracle 감원</td><td>2~3만 명</td><td class="down">AI CAPEX 축소 의미</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>신규 실업수당이 20만 2천 건으로 하락하여 노동시장이 여전히 건전함을 시사했다. 트럼프 발언이 없었다면 나스닥 1~1.23% 상승 가능한 장이었다. Oracle은 AI 데이터센터 투자 비용(CAPEX) 절감을 위해 2만~3만 명 규모 감원을 단행했으며, 연간 약 $4B 이상의 인건비 절감이 예상된다.</p>
+
+  <p>10년 국채 수익률은 4.3% 아래로 내려오면서 시장에 다소 낙관적인 심리가 반영되었다. 연준(Fed)이 자체적으로 시장이 안정되자 개입을 잠시 멈춘 것으로 보인다.</p>
+</section>
+
+<!-- ===== 4. 이란·호르무즈 해협 ===== -->
+<section>
+  <h2><span class="num">05</span>이란·호르무즈 해협 — 캐털리스트 대기</h2>
+
+  <p>진행자가 가장 강조한 <strong>캐털리스트(촉매제)</strong>는 이란 전쟁 종식 소식이다. 호르무즈 해협 개방, 전쟁 종식 사인이 나오는 날 보유 종목들이 <strong>10% 이상 급등할 잠재력</strong>이 충분하다고 판단한다.</p>
+
+  <div class="callout fade-in">
+    <strong>리스크 변수 — 이스라엘:</strong> 미국이 전쟁 종식을 원해도 이스라엘이 독자 행동(단독 공격)을 할 가능성이 존재한다. 네타냐후 비판 여론은 미국 내에서도 확산 중이며, 이것이 가장 큰 불확실성 요소다.
+  </div>
+
+  <h3>예상 캐털리스트 시나리오</h3>
+  <div class="timeline fade-in">
+    <div class="tl-item">
+      <div class="tl-date">시나리오 A</div>
+      <div class="tl-text">이란-미국 종전 합의 → 호르무즈 해협 개방 → 나스닥 2.5~3% 급등 → 보유종목 5~10%↑</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">시나리오 B</div>
+      <div class="tl-text">이스라엘 단독 공격 → 긴장 지속 → 유가 $100 근접 → 인플레 우려 재점화</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">시나리오 C</div>
+      <div class="tl-text">4월 중순 전 유가 $70대 하락 → FOMC 금리 인하 여건 조성</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 5. 원유 동향 ===== -->
+<section>
+  <h2><span class="num">06</span>원유 동향 — 미국은 문제없다</h2>
+  <p>진행자는 브렌트유가 <strong>연내 $80 이하</strong>로 내려올 것으로 예측한다. 브렌트유는 이틀 새 약 10% 급락했으며(오늘만 -2.1%), 미국의 에너지 자급력을 감안하면 호르무즈 해협 봉쇄가 미국 시장에 미치는 영향은 제한적이라고 판단한다.</p>
+
+  <div class="tbl-wrap fade-in">
+    <table>
+      <thead><tr><th>항목</th><th>수치</th><th>비고</th></tr></thead>
+      <tbody>
+        <tr><td>미국 원유 재고</td><td>+550만 배럴</td><td>5년 대비 +0.5%</td></tr>
+        <tr><td>휘발유 재고</td><td>소폭 감소</td><td>—</td></tr>
+        <tr><td>디젤 재고</td><td>약 -3%</td><td>데이터센터 발전 수요</td></tr>
+        <tr><td>정유소 가동률</td><td>92%</td><td>평시와 동일</td></tr>
+        <tr><td>브렌트 최근 변동</td><td>-10% (2일간)</td><td>긴장 완화 기대 반영</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>미국은 셰일가스 혁명으로 에너지 자급이 충분하며, "호르무즈를 막아도 평소와 달라진 게 하나 없다"는 것이 핵심 판단이다. 다만 한국·일본 등 수입 의존국에는 영향이 클 수 있으므로 <strong>미국 시장 투자가 세이프 헤이븐</strong>이라는 논리를 재확인했다.</p>
+
+  <div class="chart-container fade-in">
+    <div class="chart-title">📊 미국 에너지 재고 현황 (5년 대비)</div>
+    <canvas id="chart2" height="220"></canvas>
+  </div>
+</section>
+
+<!-- ===== 6. IPO & 암호화폐 ===== -->
+<section>
+  <h2><span class="num">07</span>IPO 동향 & 암호화폐</h2>
+
+  <h3>SpaceX IPO</h3>
+  <p>SpaceX가 S-1 서류를 제출했으며, 기업가치 <strong>$1.7조(약 2,350조 원)</strong>를 목표로 한다. 6~8주 내 상장 가능성. 사우디 국부펀드도 $20B 투자 계획이며, IPO 시장을 "싹쓸이"할 전망이다.</p>
+  <p>다만 진행자는 <strong>"검증 절차에서 주가 조정(correction)이 올 가능성"</strong>을 경고했다. 상장 후 $300~400에서 $100~200으로 하락할 수도 있으므로, 장기투자 시 너무 많이 들어가지 말고 사태를 주시하며 분할 진입할 것을 권고했다.</p>
+
+  <h3>OpenAI 상장</h3>
+  <p>일반주 소매 판매를 ARC Invest ETF를 통해 진행 중이며, 2분기 이후(SpaceX 상장 이후) 본격 상장 예상. 단기 변동성이 매우 클 것으로 전망하나, 매수·매도 의견은 아직 없다고 밝혔다.</p>
+
+  <h3>암호화폐 — 401(k) 허용</h3>
+  <p>미 노동부가 401(k) 개인연금에서 <strong>암호화폐 자산 편입을 허용</strong>하는 방안에 합의했다. Coinbase, Berkshire Hathaway Finance Holdings 등에서 암호화폐 담보 모기지 대출도 가능해졌다.</p>
+
+  <div class="callout fade-in">
+    <strong>암호화폐 담보대출 핵심:</strong> 담보 설정 시점의 가격 기준으로 대출 조건이 확정되며, 이후 가격이 하락하더라도 대출 조건은 변하지 않는다. 매도 없이 유동성 확보가 가능.
+  </div>
+</section>
+
+<!-- ===== 7. 실적 발표 일정 ===== -->
+<section>
+  <h2><span class="num">08</span>다가오는 캐털리스트 — 실적 시즌</h2>
+  <p>4월 말~5월 초 주요 보유 종목의 실적 발표가 집중된다. AI 관련 기업들의 강한 실적 발표가 <strong>10~20% 급등의 촉매</strong>가 될 수 있다.</p>
+
+  <div class="tbl-wrap fade-in">
+    <table>
+      <thead><tr><th>일정</th><th>이벤트</th><th>기대 영향</th></tr></thead>
+      <tbody>
+        <tr><td><strong>4/27</strong></td><td>Teradyne 실적</td><td>단기 반등 가능, Q4 전 매도 참고</td></tr>
+        <tr><td><strong>4/28</strong></td><td>FOMC 금리 결정</td><td>동결 70% / 인하 시 AI·하이테크 폭등</td></tr>
+        <tr><td><strong>4/29</strong></td><td>Google·META 실적</td><td>빵 뜰 가능성 (10~20%)</td></tr>
+        <tr><td><strong>4/30</strong></td><td>SanDisk 실적</td><td>Forward P/E 17 — 아직 저평가</td></tr>
+        <tr><td><strong>5/5</strong></td><td>AMD 실적</td><td>대형주 중 최고 반등 기대</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>FOMC 전망</h3>
+  <p>4월 28일 금리 결정에서 <strong>70% 이상 확률로 동결</strong> 예상. 만약 0.5% 인하를 결정한다면 IT·AI·데이터센터 관련주가 폭등할 가능성이 크다. 다만 유가가 $100 근처에 머물 경우 인하는 어려울 것으로 본다.</p>
+
+  <div class="chart-container fade-in">
+    <div class="chart-title">📊 실적 발표 전후 예상 변동폭 시나리오</div>
+    <canvas id="chart3" height="240"></canvas>
+  </div>
+</section>
+
+<!-- ===== 8. 리밸런싱 전략 ===== -->
+<section>
+  <h2><span class="num">09</span>리밸런싱 전략 — 액티브의 힘</h2>
+
+  <p>진행자가 강조하는 핵심 전략은 <strong>"하락 시 현금을 활용한 적극적 리밸런싱"</strong>이다. 패시브 투자로 1년 걸릴 수익을 3~4일 만에 달성한 것이 이번 사례의 핵심 교훈이다.</p>
+
+  <h3>SpaceX IPO 진입 전략 (예시)</h3>
+  <p>$100,000 투자 예정 시 → <strong>3-3-3 분할 매입 전략</strong> 권고:</p>
+  <div class="timeline fade-in">
+    <div class="tl-item">
+      <div class="tl-date">1차 진입 (30%)</div>
+      <div class="tl-text">$30,000 매입 → 추세 관찰</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">2차 진입 (30%)</div>
+      <div class="tl-text">며칠 후 $30,000 추가 → 하락 시 매입</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">3차 이후 (40%)</div>
+      <div class="tl-text">상황 관찰하며 분할 진입 → 반토막 시에도 추가 가능</div>
+    </div>
+  </div>
+
+  <h3>현금 보유 원칙</h3>
+  <p>현재 <strong>풀매수 단계</strong>이나, 항상 5~10%의 현금은 보유할 것. 기회가 올 때 투입할 실탄을 유지하는 것이 핵심이다.</p>
+
+  <h3>SanDisk — 3대 그룹 공식 편입</h3>
+  <p>SanDisk는 Forward P/E 17배로 여전히 저평가 상태이며, 4월 2일자로 <strong>3대 그룹 9번</strong>으로 공식 편입되었다.</p>
+</section>
+
+<!-- ===== 9. 투자 패러다임 변화 ===== -->
+<section>
+  <h2><span class="num">10</span>투자 환경의 구조적 변화</h2>
+
+  <div class="flip-grid fade-in">
+    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="flip-inner">
+        <div class="flip-front">Consumer Staples</div>
+        <div class="flip-back">경기 침체에도 방어주로 몰리지 않는 새로운 패턴</div>
+      </div>
+    </div>
+    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="flip-inner">
+        <div class="flip-front">가치주 투자량</div>
+        <div class="flip-back">전통적 가치기업으로 자금 이동 없이 현금 대기 선호</div>
+      </div>
+    </div>
+    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="flip-inner">
+        <div class="flip-front">IPO 집중화</div>
+        <div class="flip-back">SpaceX 등 신규 상장사가 30~40년 기업 시총 초과</div>
+      </div>
+    </div>
+    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="flip-inner">
+        <div class="flip-front">콜옵션 증가</div>
+        <div class="flip-back">주가 상승 베팅 세력 증가 = 낙관적 포지셔닝</div>
+      </div>
+    </div>
+  </div>
+  <p class="sub-text">카드를 탭하면 설명이 나타납니다.</p>
+
+  <p>과거에는 지정학적 리스크 확대 시 방어주(Consumer Staples)와 가치주로 자금이 이동했으나, 현재 시장에서는 그 패턴이 완전히 깨졌다. 현금 보유 → 하락 시 기술주 직접 매수 패턴이 지배적이다.</p>
+</section>
+
+<!-- ===== 10. 유럽 vs 미국 ===== -->
+<section>
+  <h2><span class="num">11</span>유럽 국방비 & 한국 방산 기회</h2>
+
+  <p>트럼프가 유럽에 대한 안보 공약을 축소하면서, 유럽 국가들은 <strong>자체 국방비 5% 이상 확대</strong>가 불가피해졌다. 그러나 유럽은 군수 인프라가 전무하여 자체 무장에 <strong>30년 이상</strong> 소요될 전망이다.</p>
+
+  <div class="callout fade-in">
+    <strong>한국 방산 기회:</strong> 한화·현대·삼성 등이 각종 무기 수출을 현재 대비 <strong>최소 2~3배, 최대 10배 이상</strong> 확대할 가능성. 155mm 자주포, 탄약 등에서 즉각 생산 능력 보유. 유럽의 탱크 1대 생산에 5~6년 걸리는 반면, 한국은 연간 수백 대 생산 가능.
+  </div>
+
+  <p>핵심 논지는 유럽이 지금까지 미국의 안보 우산 아래서 국방비를 절약하고 복지에 투입했으나, 그 시대가 끝나가고 있다는 것이다. 한국은 현명하게 자체 생산 라인을 구축해왔기 때문에 이 변화의 최대 수혜국이 될 수 있다.</p>
+</section>
+
+<!-- ===== 11. 리밸런싱 시뮬레이터 ===== -->
+<section>
+  <h2><span class="num">12</span>리밸런싱 수익 시뮬레이터</h2>
+  <p>하락 시 현금을 투입하는 리밸런싱 전략의 수익을 직접 시뮬레이션해보세요.</p>
+
+  <div class="sim-box fade-in">
+    <h4>🔢 리밸런싱 시뮬레이터</h4>
+    <div class="sim-row">
+      <label>투자금 ($)</label>
+      <input type="range" id="simInvest" min="10000" max="500000" step="5000" value="100000">
+      <span class="sim-val" id="simInvestVal">$100,000</span>
+    </div>
+    <div class="sim-row">
+      <label>반등폭 (%)</label>
+      <input type="range" id="simReturn" min="1" max="30" step="0.5" value="10">
+      <span class="sim-val" id="simReturnVal">10%</span>
+    </div>
+    <div class="sim-row">
+      <label>소요일수</label>
+      <input type="range" id="simDays" min="1" max="30" step="1" value="3">
+      <span class="sim-val" id="simDaysVal">3일</span>
+    </div>
+    <div class="sim-result">
+      <div>예상 수익</div>
+      <div class="big" id="simProfit">$10,000</div>
+      <div style="font-size:0.75rem;color:rgba(255,255,255,0.6);margin-top:4px;" id="simAnnual">연환산 수익률: ~1,217%</div>
+    </div>
+    <button class="reset-btn" onclick="resetSim()">초기화</button>
+  </div>
+</section>
+
+<!-- ===== 12. 투자 철학 ===== -->
+<section>
+  <h2><span class="num">13</span>형님의 생각 — 자산이 커질수록 사람은 줄여라</h2>
+
+  <p>방송 후반부에서 진행자는 개인적 철학을 공유했다. 자산이 성장할수록 인간관계는 자연스럽게 줄어든다는 것이다.</p>
+
+  <div class="callout fade-in">
+    <strong>"주위의 사람들이 적어서 외로운 것이 아니라, 쓸 돈이 적어서 외로운 것이다."</strong>
+  </div>
+
+  <p>20대에는 연약하기에 많은 친구가 필요하지만, 30~40대를 거치며 결혼·직장·자산 격차로 자연스럽게 갈린다. 친구 30명 중 50대까지 남는 사람은 3명 정도. 핵심은 친구의 수가 아니라 <strong>고통이 없고 평화로운 상태</strong>가 진정한 행복이라는 것이다.</p>
+
+  <p>또한 부부 관계에서도 서로 적절한 자유(프리메인지)를 유지하고, 지나친 간섭은 신뢰를 잃는 지름길이라고 조언했다.</p>
+</section>
+
+<!-- ===== 13. 핵심 체크리스트 ===== -->
+<section>
+  <h2><span class="num">14</span>오늘의 핵심 체크리스트</h2>
+
+  <div id="checklist" class="fade-in" style="margin:16px 0;">
+  </div>
+</section>
+
+<!-- ===== 14. 캐털리스트 토글 ===== -->
+<section>
+  <h2><span class="num">15</span>캐털리스트 상세 분석</h2>
+  <div class="toggle-wrap" id="toggleWrap">
+    <button class="toggle-btn active" data-tab="tab1">이란 종전</button>
+    <button class="toggle-btn" data-tab="tab2">FOMC 인하</button>
+    <button class="toggle-btn" data-tab="tab3">실적 시즌</button>
+  </div>
+  <div id="tab1" class="toggle-content active fade-in">
+    <p><strong>이란-미국 종전 합의 시:</strong> 호르무즈 해협 개방 → 유가 급락 → 인플레 우려 해소 → 금리 인하 기대 확대. 나스닥 2.5~3% 상승 시 보유 종목 5~10% 이상 급등 예상. 가장 강력한 단일 캐털리스트.</p>
+  </div>
+  <div id="tab2" class="toggle-content fade-in">
+    <p><strong>FOMC 0.5% 금리 인하 시:</strong> AI·하이테크·데이터센터 관련주 폭등 가능. 단, 유가 $80 이하 선행 조건 필요. 동결 확률 70% 이상으로 예상.</p>
+  </div>
+  <div id="tab3" class="toggle-content fade-in">
+    <p><strong>4월 말~5월 초 실적 발표:</strong> Google·META(4/29), SanDisk(4/30), AMD(5/5) 등. AI 관련 강한 실적이 시장을 견인할 핵심 동력. 개별 종목 10~20% 급등 가능성 존재.</p>
+  </div>
+</section>
+
+<!-- ===== CHART 4: 포트폴리오 분산 ===== -->
+<section>
+  <h2><span class="num">16</span>401(k) 자산배분 비교</h2>
+  <p>진행자가 언급한 401(k) 타겟데이트 펀드 vs 어그레시브(주식 100%) 전략의 10년 성과 차이를 시각화한다. 동일 조건(월급 5% 납입, 회사 매칭 포함)에서 결과가 크게 갈린다.</p>
+
+  <div class="chart-container fade-in">
+    <div class="chart-title">📊 10년 후 401(k) 자산 비교 (누적, $)</div>
+    <canvas id="chart4" height="240"></canvas>
+  </div>
+</section>
+
+</div><!-- /.container -->
+
+<div class="footer">
+  <p>투자는인생TV · 멤버온리 브리핑 · 2026년 4월 2일</p>
+  <p>※ 본 자료는 투자 조언이 아닌 방송 내용 정리입니다. 투자의 책임은 본인에게 있습니다.</p>
+  <p>Investment products are not FDIC insured, are not bank guaranteed, may lose value.</p>
+</div>
+
+<script>
+// === Fade-in Observer ===
+const fadeObs = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), i * 80);
+      fadeObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.12 });
+document.querySelectorAll('.fade-in').forEach(el => fadeObs.observe(el));
+
+// === Chart Configs ===
+const chartConfigs = {};
+
+// Chart 1: 종목별 수익률
+chartConfigs['chart1'] = () => {
+  new Chart(document.getElementById('chart1'), {
+    type: 'bar',
+    data: {
+      labels: ['AMD', 'SanDisk', 'META', 'Teradyne', 'MU'],
+      datasets: [{
+        label: '수익률 (%)',
+        data: [26.9, 16, 4.9, 4, 3.1],
+        backgroundColor: ['#e11d48', '#f43f5e', '#1a1a1a', '#6b7280', '#2563eb'],
+        borderRadius: 6,
+        borderSkipped: false,
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: { label: ctx => '+' + ctx.parsed.y + '%' }
+        }
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: { callback: v => v + '%', font: { size: 11 } },
+          grid: { color: '#f0f0f0' }
+        },
+        x: { grid: { display: false }, ticks: { font: { size: 11, weight: '600' } } }
+      },
+      animation: { duration: 1200, easing: 'easeOutQuart' }
+    }
+  });
+};
+
+// Chart 2: 에너지 재고
+chartConfigs['chart2'] = () => {
+  new Chart(document.getElementById('chart2'), {
+    type: 'bar',
+    data: {
+      labels: ['원유 재고', '휘발유 재고', '디젤 재고', '정유소 가동률'],
+      datasets: [{
+        label: '5년 대비 변동 (%)',
+        data: [0.5, -0.5, -3, 0],
+        backgroundColor: ['#2563eb', '#6b7280', '#e11d48', '#1a1a1a'],
+        borderRadius: 6,
+        borderSkipped: false,
+      }]
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: ctx => ctx.parsed.x + '% (5년 대비)' } }
+      },
+      scales: {
+        x: {
+          ticks: { callback: v => v + '%', font: { size: 11 } },
+          grid: { color: '#f0f0f0' }
+        },
+        y: { grid: { display: false }, ticks: { font: { size: 11, weight: '600' } } }
+      },
+      animation: { duration: 1000, easing: 'easeOutQuart' }
+    }
+  });
+};
+
+// Chart 3: 실적 발표 변동폭 시나리오
+chartConfigs['chart3'] = () => {
+  new Chart(document.getElementById('chart3'), {
+    type: 'bar',
+    data: {
+      labels: ['Teradyne', 'Google', 'META', 'SanDisk', 'AMD'],
+      datasets: [
+        {
+          label: '보수적',
+          data: [2, 3, 4, 5, 5],
+          backgroundColor: '#6b7280',
+          borderRadius: 4,
+        },
+        {
+          label: '기본',
+          data: [4, 7, 8, 10, 12],
+          backgroundColor: '#2563eb',
+          borderRadius: 4,
+        },
+        {
+          label: '낙관적',
+          data: [6, 12, 15, 16, 20],
+          backgroundColor: '#e11d48',
+          borderRadius: 4,
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { position: 'top', labels: { font: { size: 11 }, boxWidth: 12 } },
+        tooltip: { callbacks: { label: ctx => ctx.dataset.label + ': +' + ctx.parsed.y + '%' } }
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: { callback: v => '+' + v + '%', font: { size: 11 } },
+          grid: { color: '#f0f0f0' }
+        },
+        x: { grid: { display: false }, ticks: { font: { size: 11, weight: '600' } } }
+      },
+      animation: { duration: 1200, easing: 'easeOutQuart' }
+    }
+  });
+};
+
+// Chart 4: 401k 비교
+chartConfigs['chart4'] = () => {
+  const years = Array.from({length: 11}, (_, i) => i);
+  const salary = 150000;
+  const contribution = 0.05;
+  const matchRate = 0.05;
+  const annual = salary * (contribution + matchRate);
+  
+  const targetDate = [];
+  const aggressive = [];
+  let tdVal = 0, agVal = 0;
+  for (let y = 0; y <= 10; y++) {
+    targetDate.push(Math.round(tdVal));
+    aggressive.push(Math.round(agVal));
+    tdVal = (tdVal + annual) * 1.06;
+    agVal = (agVal + annual) * 1.12;
+  }
+
+  new Chart(document.getElementById('chart4'), {
+    type: 'line',
+    data: {
+      labels: years.map(y => y + '년'),
+      datasets: [
+        {
+          label: '타겟데이트 (6%)',
+          data: targetDate,
+          borderColor: '#6b7280',
+          backgroundColor: 'rgba(107,114,128,0.1)',
+          fill: true,
+          tension: 0.3,
+          pointRadius: 3,
+        },
+        {
+          label: '어그레시브 (12%)',
+          data: aggressive,
+          borderColor: '#e11d48',
+          backgroundColor: 'rgba(225,29,72,0.1)',
+          fill: true,
+          tension: 0.3,
+          pointRadius: 3,
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { position: 'top', labels: { font: { size: 11 }, boxWidth: 12 } },
+        tooltip: { callbacks: { label: ctx => ctx.dataset.label + ': $' + ctx.parsed.y.toLocaleString() } }
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: { callback: v => '$' + (v/1000) + 'k', font: { size: 11 } },
+          grid: { color: '#f0f0f0' }
+        },
+        x: { grid: { display: false }, ticks: { font: { size: 11 } } }
+      },
+      animation: { duration: 1500, easing: 'easeOutQuart' }
+    }
+  });
+};
+
+// === Chart Observer ===
+const chartObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const canvas = e.target.querySelector('canvas');
+      if (canvas && chartConfigs[canvas.id]) {
+        chartConfigs[canvas.id]();
+        e.target.classList.add('chart-ready');
+        chartObs.unobserve(e.target);
+      }
+    }
+  });
+}, { threshold: 0.15 });
+document.querySelectorAll('.chart-container').forEach(el => chartObs.observe(el));
+
+// === Simulator ===
+const simInvest = document.getElementById('simInvest');
+const simReturn = document.getElementById('simReturn');
+const simDays = document.getElementById('simDays');
+
+function updateSim() {
+  const inv = parseInt(simInvest.value);
+  const ret = parseFloat(simReturn.value);
+  const days = parseInt(simDays.value);
+  document.getElementById('simInvestVal').textContent = '$' + inv.toLocaleString();
+  document.getElementById('simReturnVal').textContent = ret + '%';
+  document.getElementById('simDaysVal').textContent = days + '일';
+  const profit = Math.round(inv * ret / 100);
+  document.getElementById('simProfit').textContent = '$' + profit.toLocaleString();
+  const annualized = ((Math.pow(1 + ret/100, 252/days) - 1) * 100).toFixed(0);
+  document.getElementById('simAnnual').textContent = '연환산 수익률: ~' + Number(annualized).toLocaleString() + '%';
+}
+function resetSim() {
+  simInvest.value = 100000;
+  simReturn.value = 10;
+  simDays.value = 3;
+  updateSim();
+}
+simInvest.addEventListener('input', updateSim);
+simReturn.addEventListener('input', updateSim);
+simDays.addEventListener('input', updateSim);
+updateSim();
+
+// === Toggle Tabs ===
+document.querySelectorAll('.toggle-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.toggle-content').forEach(c => c.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(btn.dataset.tab).classList.add('active');
+  });
+});
+
+// === Checklist ===
+const checkItems = [
+  '3/26 추천 5종목 매입 완료 여부 확인',
+  'Teradyne — Q4 전(10월) 매도/축소 계획 수립',
+  'SanDisk 3대 그룹 편입 확인 (Forward P/E 17)',
+  '현금 5~10% 보유 유지',
+  'FOMC(4/28) & 실적 시즌(4/27~5/5) 일정 확인',
+  '이란 종전 뉴스 모니터링 — 최대 캐털리스트',
+  '30대 그룹 포트폴리오 중심 비중 확인',
+  'SpaceX IPO — 분할 진입 전략(3-3-3) 준비'
+];
+const clEl = document.getElementById('checklist');
+checkItems.forEach((item, i) => {
+  const div = document.createElement('div');
+  div.style.cssText = 'display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid #e5e5e5;cursor:pointer;';
+  div.innerHTML = '<span style="width:22px;height:22px;border:2px solid #e11d48;border-radius:5px;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .2s;font-size:12px;" id="ck'+i+'"></span><span style="font-size:0.88rem;">'+item+'</span>';
+  div.addEventListener('click', () => {
+    const ck = document.getElementById('ck'+i);
+    if (ck.innerHTML) { ck.innerHTML = ''; ck.style.background = 'transparent'; }
+    else { ck.innerHTML = '✓'; ck.style.background = '#e11d48'; ck.style.color = '#fff'; }
+  });
+  clEl.appendChild(div);
+});
+</script>
+</body>
+</html>
