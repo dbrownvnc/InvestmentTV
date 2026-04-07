@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>시험문제 — 역풍 맞는 미증시</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #ffffff; --bg2: #fafafa;
+    --text: #1a1a1a; --text2: #777777;
+    --accent: #e11d48; --accent2: #f43f5e;
+    --border: #e5e5e5;
+    --easy: #16a34a; --medium: #2563eb; --hard: #e11d48;
+  }
+  * { box-sizing: border-box; margin:0; padding:0; }
+  body { background: var(--bg); color: var(--text); font-family: 'Noto Sans KR', sans-serif; font-size: 15px; line-height: 1.75; }
+
+  .header {
+    background: var(--text);
+    color: #fff;
+    padding: 30px 20px 24px;
+    border-bottom: 4px solid var(--accent);
+  }
+  .header h1 { font-family: 'Playfair Display', serif; font-size: clamp(20px,5vw,30px); font-weight: 900; }
+  .header p { color:#aaa; font-size:13px; margin-top:6px; }
+
+  .container { max-width: 680px; margin: 0 auto; padding: 0 16px 40px; }
+
+  /* 탭 */
+  .tab-bar {
+    display: flex;
+    border-bottom: 2px solid var(--border);
+    margin: 24px 0 0;
+    position: sticky;
+    top: 0;
+    background: #fff;
+    z-index: 10;
+  }
+  .tab-btn {
+    flex: 1;
+    padding: 12px 8px;
+    border: none;
+    background: none;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text2);
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px;
+    transition: all 0.2s;
+    font-family: 'Noto Sans KR', sans-serif;
+  }
+  .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+  .tab-content { display: none; padding-top: 20px; }
+  .tab-content.active { display: block; }
+
+  /* 문제 카드 */
+  .q-card {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px;
+    margin-bottom: 16px;
+    background: var(--bg2);
+    transition: box-shadow 0.2s;
+  }
+  .q-card:hover { box-shadow: 0 2px 12px rgba(0,0,0,0.07); }
+
+  .q-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .q-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 900;
+    color: var(--accent);
+    min-width: 32px;
+  }
+  .badge {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 20px;
+    letter-spacing: 1px;
+  }
+  .badge.easy { background: #f0fdf4; color: var(--easy); border: 1px solid #86efac; }
+  .badge.medium { background: #eff6ff; color: var(--medium); border: 1px solid #93c5fd; }
+  .badge.hard { background: #fff1f4; color: var(--hard); border: 1px solid #fda4af; }
+  .badge.type { background: #f5f5f5; color: #555; border: 1px solid #e5e5e5; }
+
+  .q-text { font-size: 15px; font-weight: 600; margin-bottom: 12px; }
+  .q-options { list-style: none; }
+  .q-options li {
+    padding: 8px 12px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    margin-bottom: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    background: #fff;
+    transition: all 0.15s;
+    user-select: none;
+  }
+  .q-options li:hover { background: #fff1f4; border-color: var(--accent2); }
+  .q-options li.selected { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .q-options li.correct { background: #f0fdf4; border-color: #16a34a; color: #166534; }
+  .q-options li.wrong { background: #fff1f4; border-color: var(--accent); color: #9f1239; }
+  .q-options li.reveal-correct { background: #f0fdf4; border-color: #16a34a; color: #166534; font-weight:700; }
+
+  .ox-btns { display:flex; gap:10px; margin-top:4px; }
+  .ox-btn {
+    flex:1; padding:12px; font-size:22px; border:2px solid var(--border);
+    border-radius:8px; background:#fff; cursor:pointer; text-align:center;
+    transition: all 0.15s; font-family:'Noto Sans KR',sans-serif;
+  }
+  .ox-btn:hover { border-color: var(--accent); }
+  .ox-btn.selected-o { background:#f0fdf4; border-color:#16a34a; }
+  .ox-btn.selected-x { background:#fff1f4; border-color:var(--accent); }
+  .ox-btn.correct-reveal { background:#f0fdf4; border-color:#16a34a; }
+  .ox-btn.wrong-reveal { background:#fff1f4; border-color:var(--accent); }
+
+  .short-input {
+    width:100%; border:1px solid var(--border); border-radius:6px;
+    padding:9px 12px; font-size:14px; margin-top:4px;
+    font-family:'Noto Sans KR',sans-serif;
+    outline:none; transition: border-color 0.2s;
+  }
+  .short-input:focus { border-color: var(--accent); }
+
+  .check-btn {
+    margin-top:10px; padding:8px 18px; background:var(--accent); color:#fff;
+    border:none; border-radius:6px; font-size:13px; cursor:pointer;
+    font-family:'Noto Sans KR',sans-serif; font-weight:600;
+    transition: background 0.2s;
+  }
+  .check-btn:hover { background:var(--accent2); }
+  .check-btn:disabled { background:#ccc; cursor:default; }
+
+  .feedback {
+    margin-top:10px; padding:10px 12px; border-radius:6px;
+    font-size:13px; display:none;
+    line-height:1.6;
+  }
+  .feedback.correct { background:#f0fdf4; color:#166534; border:1px solid #86efac; }
+  .feedback.wrong { background:#fff1f4; color:#9f1239; border:1px solid #fda4af; }
+
+  /* 점수판 */
+  .score-bar {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    margin: 16px 0;
+    text-align:center;
+  }
+  .score-big { font-family:'Playfair Display',serif; font-size:36px; font-weight:900; color:var(--accent); }
+  .score-label { font-size:13px; color:var(--text2); margin-top:4px; }
+
+  /* 정답 탭 카드 */
+  .ans-card {
+    border-left:4px solid var(--accent);
+    background: var(--bg2);
+    border-radius: 0 8px 8px 0;
+    padding:14px 16px;
+    margin-bottom:14px;
+  }
+  .ans-card .ans-q { font-weight:700; font-size:14px; margin-bottom:6px; }
+  .ans-card .ans-a { color:var(--accent); font-weight:700; font-size:14px; margin-bottom:6px; }
+  .ans-card .ans-exp { font-size:13px; color:var(--text2); line-height:1.65; }
+
+  .prog-bar-wrap { background:#eee; border-radius:10px; height:6px; margin-top:10px; }
+  .prog-bar { background:var(--accent); height:6px; border-radius:10px; transition:width 0.4s; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="container">
+    <h1>📝 미증시 역풍 — 이해도 테스트</h1>
+    <p>역풍 맞는 미증시 분석 방송 (2026.04.07) · 10문제</p>
+  </div>
+</div>
+
+<div class="container">
+
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="switchTab('quiz')">🧪 문제 풀기</button>
+    <button class="tab-btn" onclick="switchTab('answers')">✅ 정답 & 해설</button>
+  </div>
+
+  <!-- ═══ 문제 탭 ═══ -->
+  <div class="tab-content active" id="tab-quiz">
+
+    <div class="score-bar" id="scoreBar">
+      <div class="score-big" id="scoreNum">0 / 10</div>
+      <div class="score-label">정답 수</div>
+      <div class="prog-bar-wrap"><div class="prog-bar" id="progBar" style="width:0%"></div></div>
+    </div>
+
+    <!-- Q1 -->
+    <div class="q-card">
+      <div class="q-header">
+        <span class="q-num">1</span>
+        <span class="badge easy">쉬움</span>
+        <span class="badge type">객관식</span>
+      </div>
+      <div class="q-text">현재 WTI 유가는 배럴당 얼마인가?</div>
+      <ul class="q-options" id="q1">
+        <li onclick="selectMC(this,'q1','a')">① $80</li>
+        <li onclick="selectMC(this,'q1','b')">② $95</li>
+        <li onclick="selectMC(this,'q1','c')">③ $110</li>
+        <li onclick="selectMC(this,'q1','d')">④ $130</li>
+      </ul>
+      <button class="check-btn" onclick="checkMC('q1','c',this)">확인</button>
+      <div class="feedback" id="q1-fb"></div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="q-card">
+      <div class="q-header">
+        <span class="q-num">2</span>
+        <span class="badge easy">쉬움</span>
+        <span class="badge type">OX</span>
+      </div>
+      <div class="q-text">중간선거(미드텀 일렉션)가 있는 해에는 역사적으로 S&P500 성장률이 둔화되는 경향이 있다.</div>
+      <div class="ox-btns" id="q2">
+        <button class="ox-btn" onclick="selectOX(this,'q2','O')">⭕ O</button>
+        <button class="ox-btn" onclick="selectOX(this,'q2','X')">❌ X</button>
+      </div>
+      <button class="check-btn" onclick="checkOX('q2','O',this)">확인</button>
+      <div class="feedback" id="q2-fb"></div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="q-card">
+      <div class="q-header">
+        <span class="q-num">3</span>
+        <span class="badge easy">쉬움</span>
+        <span class="badge type">객관식</span>
+      </div>
+      <div class="q-text">3월 미국 시간당 평균 임금 상승률(전년 대비)은 얼마였나?</div>
+      <ul class="q-options" id="q3">
+        <li onclick="selectMC(this,'q3','a')">① 2.1%</li>
+        <li onclick="selectMC(this,'q3','b')">② 3.5%</li>
+        <li onclick="selectMC(this,'q3','c')">③ 5.0%</li>
+        <li onclick="selectMC(this,'q3','d')">④ 6.3%</li>
+      </ul>
+      <button class="check-btn" onclick="checkMC('q3','b',this)">확인</button>
+      <div class="feedback" id="q3-fb"></div>
+    </div>
+
+    <!-- Q4 -->
+    <div class="q-card">
+      <div class="q-header">
+        <span class="q-num">4</span>
+        <span class="badge medium">보통</span>
+        <span class="badge type">객관식</span>
+      </div>
+      <div class="q-text">임금 상승 둔화가 소비 관련 기업(컨슈머 스테이플)에 미치는 영향으로 가장 적절한 것은?</div>
+      <ul class="q-options" id="q4">
+        <li onclick="selectMC(this,'q4','a')">① 매출이 증가해 마진이 개선된다</li>
+        <li onclick="selectMC(this,'q4','b')">② 기름값 하락으로 생산비가 줄어든다</li>
+        <li onclick="selectMC(this,'q4','c')">③ 원가 상승에도 가격 인상이 제한돼 마진이 압박된다</li>
+        <li onclick="selectMC(this,'q4','d')">④ 소비자 지출이 늘어 매출이 급증한다</li>
+      </ul>
+      <button class="check-btn" onclick="checkMC('q4','c',this)">확인</button>
+      <div class="feedback" id="q4-fb"></div>
+    </div>
+
+    <!-- Q5 -->
+    <div class="q-card">
+      <div class="q-header">
+        <span class="q-num">5</span>
+        <span class="badge medium">보통</span>
+        <span class="badge type">OX</span>
+      </div>
+      <div class="q-text">스페이스X는 SEC에 S-1 서류를 제출했으며, 회사 목표 밸류에이션은 2조 달러이다.</div>
+      <div class="ox-btns" id="q5">
+        <button class="ox-btn" onclick="selectOX(this,'q5','O')">⭕ O</button>
+        <button class="ox-btn" onclick="selectOX(this,'q5','X')">❌ X</button>
+      </div>
+      <button class="check-btn" onclick="checkOX('q5','O',this)">확인</button>
+      <div class="feedback" id="q5-fb"></div>
+    </div>
+
+    <!-- Q6 -->
+    <div class="q-card">
+      <div class="q-header">
+        <span class="q-num">6</span>
+        <span class="badge medium">보통</span>
+        <span class="badge type">단답형</span>
+      </div>
+      <div class="q-text">복리(Compound Interest)를 한국어로 무엇이라 하나? (한 단어)</div>
+      <input type="text" class="short-input" id="q6-input" placeholder="답을 입력하세요">
+      <button class="check-btn" onclick="checkShort('q6',['복리'],this)">확인</button>
+      <div class="feedback" id="q6-fb"></div>
+    </div>
+
+    <!-- Q7 -->
+    <div class="q-card">
+      <div class="q-header">
+        <span class="q-num">7</span>
+        <span class="badge medium">보통</span>
+        <span class="badge type">객관식</span>
+      </div>
+      <div class="q-text">방송에서 10년 국채 금리가 몇 %를 넘으면 현금을 확보해야 한다고 언급했나?</div>
+      <ul class="q-options" id="q7">
+        <li onclick="selectMC(this,'q7','a')">① 3.5%</li>
+        <li onclick="selectMC(this,'q7','b')">② 4.0%</li>
+        <li onclick="selectMC(this,'q7','c')">③ 4.4%</li>
+        <li onclick="selectMC(this,'q7','d')">④ 5.0%</li>
+      </ul>
+      <button class="check-btn" onclick="checkMC('q7','c',this)">확인</button>
+      <div class="feedback" id="q7-fb"></div>
+    </div>
+
+    <!-- Q8 -->
+    <div class="q-card">
+      <div class="q-header">
+        <span class="q-num">8</span>
+        <span class="badge medium">보통</span>
+        <span class="badge type">객관식</span>
+      </div>
+      <div class="q-text">원/달러 환율이 1,500원을 넘는 근본 원인으로 방송에서 가장 강조한 것은?</div>
+      <ul class="q-options" id="q8">
+        <li onclick="selectMC(this,'q8','a')">① 미국의 금리 인하</li>
+        <li onclick="selectMC(this,'q8','b')">② 한국 정부의 과도한 통화 공급(QE) — M2 증가</li>
+        <li onclick="selectMC(this,'q8','c')">③ 한국 수출 감소</li>
+        <li onclick="selectMC(this,'q8','d')">④ 중국의 위안화 절하</li>
+      </ul>
+      <button class="check-btn" onclick="checkMC('q8','b',this)">확인</button>
+      <div class="feedback" id="q8-fb"></div>
+    </div>
+
+    <!-- Q9 -->
+    <div class="q-card">
+      <div class="q-header">
+        <span class="q-num">9</span>
+        <span class="badge hard">어려움</span>
+        <span class="badge type">객관식</span>
+      </div>
+      <div class="q-text">블루오울(Blue Owl) 사모펀드 환매 사태에서 투자자들이 인출 요청을 한 주요 원인이 아닌 것은?</div>
+      <ul class="q-options" id="q9">
+        <li onclick="selectMC(this,'q9','a')">① AI 거품 우려 및 IT 부실 대출</li>
+        <li onclick="selectMC(this,'q9','b')">② 이란 전쟁 장기화 불안 심리</li>
+        <li onclick="selectMC(this,'q9','c')">③ 연준의 금리 대폭 인하 기대</li>
+        <li onclick="selectMC(this,'q9','d')">④ 개인 투자자의 현금화 수요</li>
+      </ul>
+      <button class="check-btn" onclick="checkMC('q9','c',this)">확인</button>
+      <div class="feedback" id="q9-fb"></div>
+    </div>
+
+    <!-- Q10 -->
+    <div class="q-card">
+      <div class="q-header">
+        <span class="q-num">10</span>
+        <span class="badge hard">어려움</span>
+        <span class="badge type">단답형</span>
+      </div>
+      <div class="q-text">이란 전쟁이 조기 종결되고 유가가 80달러대로 하락할 경우 가장 큰 수혜가 예상되는 섹터 두 가지를 쓰시오.</div>
+      <input type="text" class="short-input" id="q10-input" placeholder="예: ○○주, △△주">
+      <button class="check-btn" onclick="checkShort('q10',['it','ai','항공','우주','ai인프라','항공우주'],this, true)">확인</button>
+      <div class="feedback" id="q10-fb"></div>
+    </div>
+
+  </div><!-- /tab-quiz -->
+
+  <!-- ═══ 정답 탭 ═══ -->
+  <div class="tab-content" id="tab-answers">
+    <h3 style="font-family:'Playfair Display',serif; font-size:20px; margin:16px 0 12px;">정답 및 해설</h3>
+
+    <div class="ans-card">
+      <div class="ans-q">Q1 [쉬움·객관식] 현재 WTI 유가는?</div>
+      <div class="ans-a">정답: ③ $110</div>
+      <div class="ans-exp">방송에서 배럴당 110달러를 초과했다고 명시했으며, 이란 전쟁으로 호르무즈 해협이 막히면서 전 세계 원유 공급의 약 20%가 차질을 빚은 결과다.</div>
+    </div>
+
+    <div class="ans-card">
+      <div class="ans-q">Q2 [쉬움·OX] 중간선거 연도 S&P500 성장 둔화</div>
+      <div class="ans-a">정답: O (맞다)</div>
+      <div class="ans-exp">역사적 통계에 따르면 미드텀 선거가 있는 해에는 S&P500 성장세가 둔화된 패턴이 반복됐다. 2026년도 같은 패턴이 나타날 가능성이 있다.</div>
+    </div>
+
+    <div class="ans-card">
+      <div class="ans-q">Q3 [쉬움·객관식] 3월 시간당 평균 임금 상승률</div>
+      <div class="ans-a">정답: ② 3.5%</div>
+      <div class="ans-exp">2021년 5월 이후 최저치로, 인플레이션(유가 기준 전년 대비 30%↑)보다 낮아 실질 임금이 감소하는 상황이다.</div>
+    </div>
+
+    <div class="ans-card">
+      <div class="ans-q">Q4 [보통·객관식] 임금 상승 둔화와 컨슈머 스테이플</div>
+      <div class="ans-a">정답: ③ 원가 상승에도 가격 인상이 제한돼 마진이 압박된다</div>
+      <div class="ans-exp">생활 필수품(치약·화장지 등)은 마진이 원래 낮은 데다, 에너지·원자재 비용이 올라도 소비자 가격을 크게 올릴 수 없어 수익성이 더 악화된다.</div>
+    </div>
+
+    <div class="ans-card">
+      <div class="ans-q">Q5 [보통·OX] 스페이스X S-1 제출 및 목표 밸류에이션</div>
+      <div class="ans-a">정답: O (맞다)</div>
+      <div class="ans-exp">방송에서 스페이스X가 SEC에 S-1을 제출했으며, 회사 목표 가치를 2조 달러로 설정했다고 언급했다. IPO 시점은 6월 말(일론 머스크 생일인 6월 28일)이 유력하게 거론됐다.</div>
+    </div>
+
+    <div class="ans-card">
+      <div class="ans-q">Q6 [보통·단답] Compound Interest 한국어</div>
+      <div class="ans-a">정답: 복리</div>
+      <div class="ans-exp">단리(Simple Interest)와 달리 복리(Compound Interest)는 원금에 이자가 붙은 금액에 다시 이자가 붙는 구조다. 장기 투자에서 복리 효과는 자산 격차를 기하급수적으로 벌린다.</div>
+    </div>
+
+    <div class="ans-card">
+      <div class="ans-q">Q7 [보통·객관식] 현금 확보 신호선 — 10년 국채 금리</div>
+      <div class="ans-a">정답: ③ 4.4%</div>
+      <div class="ans-exp">방송에서 10년 국채 금리가 4.3%를 넘고 4.4%에 도달하면 현금 비중을 높여야 한다는 원칙을 멤버 방송에서 제시한 바 있다.</div>
+    </div>
+
+    <div class="ans-card">
+      <div class="ans-q">Q8 [보통·객관식] 원/달러 1,500원 돌파 원인</div>
+      <div class="ans-a">정답: ② 한국 정부의 과도한 통화 공급(QE) — M2 증가</div>
+      <div class="ans-exp">한국 정부가 시중에 현금을 대량 살포(QE, 양적 완화)하면서 M2가 증가하고 원화 가치가 하락했다. 여기에 유가 급등으로 달러 수요까지 늘어 악순환이 이어졌다. 해법은 QT(금리 인상)이나 정치적 저항이 크다.</div>
+    </div>
+
+    <div class="ans-card">
+      <div class="ans-q">Q9 [어려움·객관식] 블루오울 환매 원인이 아닌 것</div>
+      <div class="ans-a">정답: ③ 연준의 금리 대폭 인하 기대</div>
+      <div class="ans-exp">방송 시점 기준 금리 인하 기대감은 거의 소멸됐고 오히려 인상 가능성까지 거론됐다. 환매 원인은 AI 버블 우려, IT 부실 대출, 이란 전쟁 불안, 개인 현금화 수요다.</div>
+    </div>
+
+    <div class="ans-card">
+      <div class="ans-q">Q10 [어려움·단답] 이란 종전·유가 하락 시 수혜 섹터</div>
+      <div class="ans-a">정답 예시: IT(AI 관련주) + 항공·우주 산업</div>
+      <div class="ans-exp">방송에서 이란 종전 합의 시 "AI 투자 확대로 IT 관련주 상승폭이 클 것"이라 했고, 유가 하락이 항공·우주 산업의 생산 단가 하락과 마진 개선으로 이어진다고 설명했다. 기관 투자사 투자량도 늘어날 것으로 예상했다.</div>
+    </div>
+
+  </div><!-- /tab-answers -->
+
+</div><!-- /container -->
+
+<script>
+let score = 0;
+let answered = new Set();
+
+function updateScore() {
+  document.getElementById('scoreNum').textContent = score + ' / 10';
+  document.getElementById('progBar').style.width = (score * 10) + '%';
+}
+
+// MC
+function selectMC(el, qid, val) {
+  if (answered.has(qid)) return;
+  document.querySelectorAll('#' + qid + ' li').forEach(li => li.classList.remove('selected'));
+  el.classList.add('selected');
+  el.dataset.selected = val;
+}
+
+function checkMC(qid, correct, btn) {
+  if (answered.has(qid)) return;
+  const selected = document.querySelector('#' + qid + ' .selected');
+  if (!selected) { alert('선택지를 고르세요!'); return; }
+  answered.add(qid);
+  btn.disabled = true;
+  const fb = document.getElementById(qid + '-fb');
+  fb.style.display = 'block';
+  if (selected.dataset.selected === correct) {
+    selected.classList.add('correct');
+    fb.className = 'feedback correct';
+    fb.textContent = '✅ 정답입니다!';
+    score++;
+  } else {
+    selected.classList.add('wrong');
+    fb.className = 'feedback wrong';
+    fb.textContent = '❌ 오답입니다. 정답 해설은 [정답 & 해설] 탭에서 확인하세요.';
+    // 정답 표시
+    const allLi = document.querySelectorAll('#' + qid + ' li');
+    const map = ['a','b','c','d'];
+    allLi.forEach((li, i) => { if (map[i] === correct) li.classList.add('reveal-correct'); });
+  }
+  updateScore();
+}
+
+// OX
+function selectOX(el, qid, val) {
+  if (answered.has(qid)) return;
+  const btns = document.querySelectorAll('#' + qid + ' .ox-btn');
+  btns.forEach(b => b.classList.remove('selected-o','selected-x'));
+  el.classList.add(val === 'O' ? 'selected-o' : 'selected-x');
+  el.dataset.selected = val;
+}
+
+function checkOX(qid, correct, btn) {
+  if (answered.has(qid)) return;
+  const sel = document.querySelector('#' + qid + ' [data-selected]');
+  if (!sel) { alert('O 또는 X를 선택하세요!'); return; }
+  answered.add(qid);
+  btn.disabled = true;
+  const fb = document.getElementById(qid + '-fb');
+  fb.style.display = 'block';
+  if (sel.dataset.selected === correct) {
+    fb.className = 'feedback correct';
+    fb.textContent = '✅ 정답입니다!';
+    score++;
+  } else {
+    fb.className = 'feedback wrong';
+    fb.textContent = `❌ 오답입니다. 정답은 ${correct}입니다.`;
+  }
+  updateScore();
+}
+
+// Short Answer
+function checkShort(qid, answers, btn, partial) {
+  if (answered.has(qid)) return;
+  const input = document.getElementById(qid + '-input').value.trim().toLowerCase();
+  if (!input) { alert('답을 입력하세요!'); return; }
+  answered.add(qid);
+  btn.disabled = true;
+  const fb = document.getElementById(qid + '-fb');
+  fb.style.display = 'block';
+  const isCorrect = partial
+    ? answers.some(a => input.includes(a))
+    : answers.some(a => input.replace(/\s/g,'') === a.replace(/\s/g,''));
+  if (isCorrect) {
+    fb.className = 'feedback correct';
+    fb.textContent = '✅ 정답입니다!';
+    score++;
+  } else {
+    fb.className = 'feedback wrong';
+    fb.textContent = '❌ 오답입니다. 정답 해설은 [정답 & 해설] 탭에서 확인하세요.';
+  }
+  updateScore();
+}
+
+// Tab switch
+function switchTab(tab) {
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+  document.getElementById('tab-' + tab).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>
+</body>
+</html>

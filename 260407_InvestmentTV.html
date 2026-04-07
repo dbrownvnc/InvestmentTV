@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>역풍 맞는 미증시 — 성장세 둔화 조짐</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg: #ffffff;
+    --bg2: #fafafa;
+    --text: #1a1a1a;
+    --text2: #777777;
+    --accent: #e11d48;
+    --accent2: #f43f5e;
+    --border: #e5e5e5;
+    --chart1: #e11d48;
+    --chart2: #1a1a1a;
+    --chart3: #6b7280;
+    --chart4: #2563eb;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 15px;
+    line-height: 1.75;
+  }
+
+  /* ── HEADER ── */
+  .masthead {
+    background: var(--text);
+    color: #fff;
+    padding: 36px 20px 28px;
+    position: relative;
+    overflow: hidden;
+  }
+  .masthead::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 4px;
+    background: var(--accent);
+  }
+  .channel-tag {
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent2);
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  .masthead h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(24px, 6vw, 36px);
+    font-weight: 900;
+    line-height: 1.2;
+    margin-bottom: 10px;
+  }
+  .masthead h1 em {
+    color: var(--accent2);
+    font-style: italic;
+  }
+  .meta-row {
+    display: flex;
+    gap: 16px;
+    font-size: 12px;
+    color: #aaa;
+    flex-wrap: wrap;
+    margin-top: 14px;
+  }
+  .meta-row span { display: flex; align-items: center; gap: 4px; }
+
+  /* ── LAYOUT ── */
+  .container { max-width: 680px; margin: 0 auto; padding: 0 16px; }
+
+  /* ── SECTION LABELS ── */
+  .section-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent);
+    border-left: 3px solid var(--accent);
+    padding-left: 10px;
+    margin: 36px 0 14px;
+  }
+
+  /* ── LEAD ── */
+  .lead {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text);
+    line-height: 1.7;
+    padding: 20px 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    margin: 24px 0;
+  }
+
+  /* ── BODY TEXT ── */
+  p { margin-bottom: 14px; color: var(--text); }
+
+  /* ── HIGHLIGHT BOX ── */
+  .highlight {
+    background: var(--bg2);
+    border-left: 4px solid var(--accent);
+    padding: 14px 16px;
+    margin: 18px 0;
+    border-radius: 0 6px 6px 0;
+  }
+  .highlight strong { color: var(--accent); }
+
+  /* ── KEY STAT CARDS ── */
+  .stat-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 18px 0;
+  }
+  .stat-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px;
+    text-align: center;
+  }
+  .stat-card .val {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--accent);
+    display: block;
+  }
+  .stat-card .lbl {
+    font-size: 11px;
+    color: var(--text2);
+    margin-top: 4px;
+    line-height: 1.4;
+  }
+
+  /* ── TABLE ── */
+  .tbl-wrap { overflow-x: auto; margin: 16px 0; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th {
+    background: var(--accent);
+    color: #fff;
+    padding: 9px 10px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 12px;
+  }
+  td {
+    background: var(--bg2);
+    padding: 8px 10px;
+    border-bottom: 1px solid var(--border);
+  }
+  tr:nth-child(even) td { background: #f3f3f3; }
+
+  /* ── SCENARIO BOX ── */
+  .scenario-grid { display: grid; gap: 10px; margin: 16px 0; }
+  .scenario {
+    border-radius: 8px;
+    padding: 14px 16px;
+    border: 1px solid var(--border);
+  }
+  .scenario.bull { border-left: 4px solid #16a34a; }
+  .scenario.bear { border-left: 4px solid var(--accent); }
+  .scenario.neutral { border-left: 4px solid #2563eb; }
+  .scenario h4 { font-size: 13px; font-weight: 700; margin-bottom: 6px; }
+  .scenario.bull h4 { color: #16a34a; }
+  .scenario.bear h4 { color: var(--accent); }
+  .scenario.neutral h4 { color: #2563eb; }
+  .scenario ul { padding-left: 16px; font-size: 13px; color: var(--text2); }
+  .scenario ul li { margin-bottom: 4px; }
+
+  /* ── RISK BADGE ── */
+  .badge-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0; }
+  .badge {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 20px;
+    border: 1px solid;
+  }
+  .badge.red { color: var(--accent); border-color: var(--accent); background: #fff1f4; }
+  .badge.blue { color: #2563eb; border-color: #2563eb; background: #eff6ff; }
+  .badge.gray { color: #555; border-color: #ccc; background: #f5f5f5; }
+
+  /* ── DIVIDER ── */
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 28px 0;
+  }
+  .divider.thick {
+    border-top: 3px solid var(--text);
+  }
+
+  /* ── FADE IN & CHART ── */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .chart-container {
+    position: relative;
+    max-height: 340px;
+    margin: 16px 0;
+  }
+  .chart-container canvas {
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    max-height: 300px;
+  }
+  .chart-container.chart-ready canvas {
+    opacity: 1;
+  }
+  .chart-title {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text2);
+    letter-spacing: 1px;
+    text-align: center;
+    margin-bottom: 6px;
+  }
+
+  /* ── SIMULATOR ── */
+  .sim-box {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px;
+    margin: 18px 0;
+  }
+  .sim-box h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 16px;
+    margin-bottom: 14px;
+    color: var(--text);
+  }
+  .sim-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+  }
+  .sim-row label { font-size: 12px; color: var(--text2); min-width: 100px; font-weight: 600; }
+  .sim-row input[type=range] {
+    flex: 1;
+    min-width: 120px;
+    accent-color: var(--accent);
+    cursor: pointer;
+  }
+  .sim-row .val-display {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--accent);
+    min-width: 50px;
+    text-align: right;
+  }
+  .sim-result {
+    background: var(--text);
+    color: #fff;
+    border-radius: 8px;
+    padding: 14px;
+    margin-top: 12px;
+    font-size: 13px;
+    line-height: 1.7;
+  }
+  .sim-result .res-val { color: var(--accent2); font-weight: 700; font-size: 15px; }
+  .sim-result .res-label { color: #ccc; font-size: 11px; }
+  .btn-reset {
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 6px 14px;
+    font-size: 12px;
+    cursor: pointer;
+    color: var(--text2);
+    margin-top: 10px;
+    transition: all 0.2s;
+  }
+  .btn-reset:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+  /* ── FOOTER ── */
+  .footer {
+    background: var(--text);
+    color: #aaa;
+    text-align: center;
+    padding: 24px 16px;
+    font-size: 11px;
+    margin-top: 40px;
+    line-height: 1.8;
+  }
+  .footer a { color: var(--accent2); text-decoration: none; }
+
+  /* ── PULLQUOTE ── */
+  .pullquote {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(17px, 4vw, 21px);
+    font-style: italic;
+    color: var(--text);
+    border-top: 2px solid var(--accent);
+    border-bottom: 2px solid var(--accent);
+    padding: 18px 0;
+    margin: 24px 0;
+    text-align: center;
+    line-height: 1.5;
+  }
+</style>
+</head>
+<body>
+
+<!-- MASTHEAD -->
+<div class="masthead">
+  <div class="container">
+    <div class="channel-tag">📡 투자는인생TV · 미국증시 분석</div>
+    <h1>역풍 맞는 미증시<br><em>성장세 둔화 조짐</em></h1>
+    <div class="meta-row">
+      <span>📅 2026년 4월 7일</span>
+      <span>🎬 YouTube 멤버십 방송</span>
+      <span>📊 S&P500 · 금리 · 유가 · 섹터분석</span>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- LEAD -->
+  <p class="lead fade-in">
+    2026년 들어 미국 증시는 두 차례의 큰 역풍을 맞았다.
+    AI 버블 우려로 Magnificent 7이 15~30% 급락했고,
+    이란 전쟁으로 유가가 배럴당 110달러를 돌파했다.
+    성장은 이어지되 <strong>속도는 둔화</strong>될 것이라는 전망이 지배적이다.
+  </p>
+
+  <!-- ═══ SECTION 1: 현재 상황 ═══ -->
+  <p class="section-label fade-in">01 · 현재 시장 상황</p>
+
+  <div class="stat-grid fade-in">
+    <div class="stat-card">
+      <span class="val">$110</span>
+      <span class="lbl">WTI 유가<br>(배럴당, 달러)</span>
+    </div>
+    <div class="stat-card">
+      <span class="val">–5%</span>
+      <span class="lbl">나스닥<br>연초 대비 등락률</span>
+    </div>
+    <div class="stat-card">
+      <span class="val">4.3%</span>
+      <span class="lbl">미국 10년 국채<br>금리 수준</span>
+    </div>
+    <div class="stat-card">
+      <span class="val">3.5%</span>
+      <span class="lbl">3월 시간당 평균임금<br>전년 대비 상승률</span>
+    </div>
+  </div>
+
+  <p class="fade-in">현재 증시를 짓누르는 가장 큰 변수는 <strong>이란-미국 갈등에서 비롯된 고유가</strong>다. 호르무즈 해협을 통과하는 원유 물량이 전 세계 공급의 약 20%를 차지하는데, 이 통로가 막히면서 유가가 급등했다. 캘리포니아 디젤 가격은 갤런당 7.50달러로 예전의 두 배 이상 올랐다.</p>
+
+  <div class="highlight fade-in">
+    <strong>⚠️ 핵심 헤드윈드(역풍) 3가지</strong><br>
+    ① 유가 배럴당 110달러 — 전방위 인플레이션 유발<br>
+    ② 중간선거(미드텀) 연도 — 역사적으로 S&P500 성장 둔화 패턴<br>
+    ③ 금리 인하 기대감 소멸 — 오히려 인상 가능성 대두
+  </div>
+
+  <!-- ═══ 차트 1: 주요 지수 등락 ═══ -->
+  <p class="section-label fade-in">02 · 주요 지수 현황</p>
+
+  <div class="chart-title fade-in">주요 지수 연초 대비 등락률 (%, 추정)</div>
+  <div class="chart-container fade-in">
+    <canvas id="indexChart" height="220"></canvas>
+  </div>
+
+  <!-- ═══ SECTION 3: 임금 vs S&P500 ═══ -->
+  <p class="section-label fade-in">03 · 임금 vs 주식 수익률 — 벌어지는 격차</p>
+
+  <p class="fade-in">지난 20년간 노동자 평균 임금 상승률은 S&P500 총수익률(배당 포함)에 크게 뒤처져 왔다. 인플레이션을 제외한 실질 기준으로 보면 격차는 더욱 벌어진다.</p>
+
+  <div class="tbl-wrap fade-in">
+    <table>
+      <thead>
+        <tr>
+          <th>기간</th>
+          <th>평균임금 상승률</th>
+          <th>S&P500 총수익률</th>
+          <th>격차</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>2006–2026 (20년)</td><td>3.6%</td><td>10.8%</td><td><strong>+7.2%p</strong></td></tr>
+        <tr><td>2016–2025 (10년)</td><td>4.2%</td><td>13.5%</td><td><strong>+9.3%p</strong></td></tr>
+        <tr><td>2021–2025 (팬데믹 후)</td><td>4.7%</td><td>15.5%</td><td><strong>+10.8%p</strong></td></tr>
+        <tr><td>실질(인플레 차감, 20년)</td><td>1.2%</td><td>7.5%</td><td><strong>+6.3%p</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="pullquote fade-in">
+    "월급만으로는 살 수 없는 시대.<br>돈이 돈을 버는 복리의 힘을 놓치지 마라."
+  </div>
+
+  <!-- 차트 2: 임금 vs S&P500 -->
+  <div class="chart-title fade-in">임금 vs S&P500 총수익률 비교 (연평균, %)</div>
+  <div class="chart-container fade-in">
+    <canvas id="wageChart" height="220"></canvas>
+  </div>
+
+  <!-- ═══ 복리 시뮬레이터 ═══ -->
+  <p class="section-label fade-in">04 · 복리 시뮬레이터 — 월급 vs 투자</p>
+
+  <div class="sim-box fade-in">
+    <h3>💹 내 자산 성장 시뮬레이터</h3>
+    <div class="sim-row">
+      <label>초기 투자금</label>
+      <input type="range" id="principal" min="1000" max="100000" step="1000" value="10000">
+      <span class="val-display" id="principalVal">$10,000</span>
+    </div>
+    <div class="sim-row">
+      <label>월 추가 적립</label>
+      <input type="range" id="monthly" min="0" max="3000" step="100" value="500">
+      <span class="val-display" id="monthlyVal">$500</span>
+    </div>
+    <div class="sim-row">
+      <label>투자 기간</label>
+      <input type="range" id="years" min="5" max="30" step="1" value="20">
+      <span class="val-display" id="yearsVal">20년</span>
+    </div>
+    <div class="sim-row">
+      <label>연 수익률</label>
+      <input type="range" id="rate" min="1" max="20" step="0.5" value="10">
+      <span class="val-display" id="rateVal">10%</span>
+    </div>
+    <div class="sim-result" id="simResult"></div>
+    <button class="btn-reset" id="resetBtn">↺ 초기화</button>
+  </div>
+
+  <!-- ═══ SECTION 5: 섹터 분석 ═══ -->
+  <p class="section-label fade-in">05 · 섹터별 투자 전략</p>
+
+  <p class="fade-in">지수 전체보다 <strong>어떤 섹터·종목을 갖고 있느냐</strong>가 수익을 결정한다. 현 환경에서 섹터별 기회와 위험을 정리했다.</p>
+
+  <!-- 차트 3: 섹터 온도계 -->
+  <div class="chart-title fade-in">섹터별 투자 매력도 (현재 환경 기준, 10점 만점)</div>
+  <div class="chart-container fade-in">
+    <canvas id="sectorChart" height="240"></canvas>
+  </div>
+
+  <div class="scenario-grid fade-in">
+    <div class="scenario bull">
+      <h4>📈 주목 섹터 (긍정)</h4>
+      <ul>
+        <li>AI 인프라 · 데이터센터 관련주</li>
+        <li>광네트워크 · 광섬유 (단기)</li>
+        <li>항공·우주 산업 (스페이스X IPO 기대)</li>
+        <li>금융 섹터 — 추세 반전 신호 포착 (맥다이버전스)</li>
+      </ul>
+    </div>
+    <div class="scenario bear">
+      <h4>📉 주의 섹터 (부정)</h4>
+      <ul>
+        <li>컨슈머 스테이플 — 마진 압박 심화</li>
+        <li>에너지 — 유가 하락 시 급락 위험</li>
+        <li>러셀 2000 소형주 — 금리 인하 기대감 소멸</li>
+        <li>암호화폐 — 장기 하락세 지속</li>
+      </ul>
+    </div>
+    <div class="scenario neutral">
+      <h4>⚖️ 관망 섹터</h4>
+      <ul>
+        <li>넷플릭스 — 골드만삭스 매수 상향 (1.8% ↑)</li>
+        <li>반도체 — 칩 부족 가격 상승 호재</li>
+        <li>CSTM(컨스텔리엄) — 알루미늄, 밸류트랩 주의</li>
+      </ul>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ═══ SECTION 6: 주요 뉴스 및 시장 신호 ═══ -->
+  <p class="section-label fade-in">06 · 이번 주 핵심 이벤트 & 시장 신호</p>
+
+  <div class="tbl-wrap fade-in">
+    <table>
+      <thead>
+        <tr><th>일정</th><th>이벤트</th><th>시장 영향</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>목요일</td><td>2월 PCE 코어 물가지수 발표</td><td>연준 정책 방향 결정 지표</td></tr>
+        <tr><td>금요일</td><td>3월 CPI — 전월比 1.0% 상승 예상</td><td>1.2% 초과 시 주가 하락 가능</td></tr>
+        <tr><td>4월~</td><td>1분기 기업실적 발표 시즌 시작</td><td>강한 증가 전망 — 단기 호재</td></tr>
+        <tr><td>6월 말</td><td>스페이스X IPO 예상 (목표 $2조)</td><td>관련 산업 전반에 대형 촉매</td></tr>
+        <tr><td>수시</td><td>이란-미국 휴전 합의 여부</td><td>합의 시 IT·에너지 급등 가능</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ═══ SECTION 7: 시나리오 분석 ═══ -->
+  <p class="section-label fade-in">07 · 시나리오별 시장 전망</p>
+
+  <div class="scenario-grid fade-in">
+    <div class="scenario bull">
+      <h4>🟢 낙관 시나리오</h4>
+      <ul>
+        <li>이란-미국 조기 휴전 합의</li>
+        <li>유가 80달러대 하락</li>
+        <li>CPI 예상치 이하 (1.0% 미만)</li>
+        <li>→ IT 중심 단기 급등, 스페이스X IPO 효과 극대화</li>
+      </ul>
+    </div>
+    <div class="scenario bear">
+      <h4>🔴 비관 시나리오</h4>
+      <ul>
+        <li>전쟁 2~3개월 장기화</li>
+        <li>유가 120달러 이상 유지</li>
+        <li>인플레이션 예상 초과 → 금리 인상</li>
+        <li>→ 8~9월 하락장 도래 위험, 한국·일본 특히 타격</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ═══ SECTION 8: 원/달러 환율 해설 ═══ -->
+  <p class="section-label fade-in">08 · 원/달러 1,500원의 원인 — 경제 상식</p>
+
+  <p class="fade-in">원화가 1,500원을 넘는 이유는 간단하다. 한국 정부가 시중에 현금을 대량 살포(QE·양적 완화)하면서 원화 공급이 늘어났고, 이는 원화 가치 하락(원화 절하)으로 이어졌다. 여기에 유가 급등까지 겹쳐 달러 수요가 급증했다.</p>
+
+  <div class="highlight fade-in">
+    <strong>원화 절상을 위한 처방</strong><br>
+    M2(통화량) 축소 → 금리 인상(QT) → 인플레이션 하락 → 원화 절상 → 환율 1,400원대 복귀 가능<br>
+    <span style="color:var(--text2);font-size:12px;">단, 정치적 이유로 금리 인상이 쉽지 않은 것이 현실</span>
+  </div>
+
+  <!-- 유가-환율 상관 인터랙티브 -->
+  <p class="section-label fade-in">09 · 유가 & 환율 영향 시뮬레이터</p>
+
+  <div class="sim-box fade-in">
+    <h3>🛢️ 유가 변화 → 한국 경제 영향</h3>
+    <div class="sim-row">
+      <label>유가 (배럴/$)</label>
+      <input type="range" id="oilPrice" min="60" max="140" step="5" value="110">
+      <span class="val-display" id="oilVal">$110</span>
+    </div>
+    <div class="sim-result" id="oilResult"></div>
+    <button class="btn-reset" id="oilResetBtn">↺ 초기화</button>
+  </div>
+
+  <!-- ═══ SECTION 9: 블루오울 사모펀드 ═══ -->
+  <p class="section-label fade-in">10 · 금융 섹터 리스크 — 블루오울 사모펀드 사태</p>
+
+  <p class="fade-in">대형 사모펀드(PE) 블루오울이 대규모 환매 요청에 직면해 전체의 23%만 현금화 허용하고 나머지를 동결했다. AI 거품 우려, IT 부실 대출, 이란 전쟁 장기화 불안이 복합 작용한 결과다.</p>
+
+  <div class="badge-row fade-in">
+    <span class="badge red">AI 버블 우려</span>
+    <span class="badge red">IT 부실 대출</span>
+    <span class="badge blue">사모시장 투명성 규제 논의</span>
+    <span class="badge gray">환매 제한 23% → 혼란</span>
+  </div>
+
+  <div class="highlight fade-in">
+    <strong>결론:</strong> 사모펀드 개인 투자자는 유동성(현금화) 리스크 반드시 인지. 일반 상장 주식(Bank of America 등)과 달리 언제든 매도 불가. 금융 섹터 전반에 단기 압박 가능.
+  </div>
+
+  <!-- ═══ SECTION 10: 투자 원칙 ═══ -->
+  <p class="section-label fade-in">11 · 방송의 핵심 투자 원칙</p>
+
+  <div class="tbl-wrap fade-in">
+    <table>
+      <thead><tr><th>원칙</th><th>내용</th></tr></thead>
+      <tbody>
+        <tr><td>액티브 매니지먼트</td><td>시장 환경 변화에 따라 섹터·종목 교체 (은퇴 자산 제외)</td></tr>
+        <tr><td>333 법칙</td><td>미국 주식에 올인 금지. 분산 투자 필수</td></tr>
+        <tr><td>국채 금리 신호</td><td>10년물 4.4% 초과 시 → 현금 비중 확대</td></tr>
+        <tr><td>섹터 로테이션</td><td>촉매(Catalyst) 변화 추적 후 강세 섹터로 이동</td></tr>
+        <tr><td>복리 장기투자</td><td>월급 상승률(3.6%)보다 S&P500 장기수익률(10%↑) 우위 활용</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <hr class="divider thick">
+  <p style="font-size:11px; color:var(--text2); margin-bottom:30px;" class="fade-in">
+    ※ 본 문서는 YouTube 방송 자막을 바탕으로 정보 정리 목적으로 작성되었으며, 투자 권유가 아닙니다. 모든 투자 결정은 본인 판단과 책임 하에 이루어져야 합니다.
+  </p>
+
+</div>
+
+<div class="footer">
+  역풍 맞는 미증시 — 투자는인생TV · 2026.04.07<br>
+  <a href="https://www.youtube.com/watch?v=oVMyVDYoZfI" target="_blank">📺 원본 영상 보기</a>
+</div>
+
+<script>
+// ══════════════════════════════════════════
+// FADE & CHART INTERSECTION OBSERVERS
+// ══════════════════════════════════════════
+const fadeObs = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), i * 80);
+      fadeObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.12 });
+document.querySelectorAll('.fade-in').forEach(el => fadeObs.observe(el));
+
+const chartConfigs = {};
+
+// Chart 1 — 지수 등락
+chartConfigs['indexChart'] = () => {
+  new Chart(document.getElementById('indexChart'), {
+    type: 'bar',
+    data: {
+      labels: ['S&P 500', '나스닥', '다우존스', '러셀 2000'],
+      datasets: [{
+        label: '연초 대비 등락률 (%)',
+        data: [-3.2, -5.0, -2.1, -6.8],
+        backgroundColor: ['#e11d48','#e11d48','#6b7280','#e11d48'],
+        borderRadius: 4,
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${ctx.parsed.y}%` } } },
+      scales: {
+        y: { ticks: { callback: v => v+'%', font:{size:11} }, grid: { color: '#eee' } },
+        x: { ticks: { font:{size:11} }, grid: { display:false } }
+      }
+    }
+  });
+};
+
+// Chart 2 — 임금 vs S&P500
+chartConfigs['wageChart'] = () => {
+  new Chart(document.getElementById('wageChart'), {
+    type: 'bar',
+    data: {
+      labels: ['2006–2026\n(20년)', '2016–2025\n(10년)', '2021–2025\n(팬데믹後)', '실질\n(인플레 차감)'],
+      datasets: [
+        { label: '평균임금 상승률', data: [3.6, 4.2, 4.7, 1.2], backgroundColor: '#6b7280', borderRadius: 4 },
+        { label: 'S&P500 총수익률', data: [10.8, 13.5, 15.5, 7.5], backgroundColor: '#e11d48', borderRadius: 4 },
+      ]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { position: 'bottom', labels:{ font:{size:11} } }, tooltip: { callbacks: { label: ctx => ` ${ctx.dataset.label}: ${ctx.parsed.y}%` } } },
+      scales: {
+        y: { ticks: { callback: v => v+'%', font:{size:11} }, grid:{ color:'#eee' } },
+        x: { ticks: { font:{size:10} }, grid:{display:false} }
+      }
+    }
+  });
+};
+
+// Chart 3 — 섹터 매력도
+chartConfigs['sectorChart'] = () => {
+  new Chart(document.getElementById('sectorChart'), {
+    type: 'radar',
+    data: {
+      labels: ['AI인프라', '금융', '항공우주', '반도체', '컨슈머스테이플', '에너지', '소형주(러셀)'],
+      datasets: [{
+        label: '투자 매력도',
+        data: [8.5, 7, 8, 7.5, 3, 4, 3.5],
+        backgroundColor: 'rgba(225,29,72,0.15)',
+        borderColor: '#e11d48',
+        pointBackgroundColor: '#e11d48',
+        pointRadius: 4,
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { display: false } },
+      scales: {
+        r: {
+          min: 0, max: 10,
+          ticks: { stepSize: 2, font:{size:10} },
+          pointLabels: { font:{size:11} },
+          grid: { color: '#eee' }
+        }
+      }
+    }
+  });
+};
+
+const chartObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const canvas = e.target.querySelector('canvas');
+      if (canvas && chartConfigs[canvas.id]) {
+        chartConfigs[canvas.id]();
+        e.target.classList.add('chart-ready');
+        chartObs.unobserve(e.target);
+      }
+    }
+  });
+}, { threshold: 0.15 });
+document.querySelectorAll('.chart-container').forEach(el => chartObs.observe(el));
+
+// ══════════════════════════════════════════
+// 복리 시뮬레이터
+// ══════════════════════════════════════════
+const fmtUSD = v => '$' + Math.round(v).toLocaleString();
+const fmtKRW = v => Math.round(v * 1350 / 10000).toLocaleString() + '만원';
+
+function calcCompound() {
+  const P = +document.getElementById('principal').value;
+  const m = +document.getElementById('monthly').value;
+  const y = +document.getElementById('years').value;
+  const r = +document.getElementById('rate').value / 100;
+  const months = y * 12;
+  const mr = r / 12;
+  const future = P * Math.pow(1 + mr, months) + m * (Math.pow(1 + mr, months) - 1) / mr;
+  const wageOnly = P + m * months;
+  const gain = future - wageOnly;
+  document.getElementById('principalVal').textContent = fmtUSD(P);
+  document.getElementById('monthlyVal').textContent = fmtUSD(m);
+  document.getElementById('yearsVal').textContent = y + '년';
+  document.getElementById('rateVal').textContent = (+document.getElementById('rate').value) + '%';
+  document.getElementById('simResult').innerHTML = `
+    <div style="margin-bottom:8px;"><span class="res-label">최종 자산 (${y}년 후)</span><br><span class="res-val">${fmtUSD(future)}</span> <span style="color:#aaa;font-size:11px;">(≈ ${fmtKRW(future)})</span></div>
+    <div style="margin-bottom:8px;"><span class="res-label">총 납입 원금</span><br><span style="font-weight:600;">${fmtUSD(wageOnly)}</span></div>
+    <div><span class="res-label">투자 수익 (복리 효과)</span><br><span class="res-val" style="color:#4ade80;">+${fmtUSD(gain)}</span> <span style="color:#aaa;font-size:11px;">(원금의 ${(gain/wageOnly*100).toFixed(0)}%)</span></div>
+  `;
+}
+['principal','monthly','years','rate'].forEach(id => {
+  document.getElementById(id).addEventListener('input', calcCompound);
+});
+document.getElementById('resetBtn').addEventListener('click', () => {
+  document.getElementById('principal').value = 10000;
+  document.getElementById('monthly').value = 500;
+  document.getElementById('years').value = 20;
+  document.getElementById('rate').value = 10;
+  calcCompound();
+});
+calcCompound();
+
+// ══════════════════════════════════════════
+// 유가 시뮬레이터
+// ══════════════════════════════════════════
+function calcOil() {
+  const oil = +document.getElementById('oilPrice').value;
+  document.getElementById('oilVal').textContent = '$' + oil;
+  let outlook = '';
+  let krEffect = '';
+  if (oil <= 80) {
+    outlook = '🟢 안정 구간 — 인플레이션 압박 완화, S&P500 반등 조건 충족';
+    krEffect = '원/달러 하락 압력 ↓ · 한국 수입 비용 감소 · 주식시장 호재';
+  } else if (oil <= 95) {
+    outlook = '🟡 경계 구간 — 인플레이션 관리 가능, 금리 동결 유지 가능성';
+    krEffect = '원화 소폭 절하 압력 · 경상수지 악화 시작';
+  } else if (oil <= 110) {
+    outlook = '🟠 고위험 구간 — 현재 수준. 인플레이션 가속, 금리 인하 불가';
+    krEffect = '원/달러 1,500원 이상 유지 · 에너지 수입 비용 급증';
+  } else {
+    outlook = '🔴 위기 구간 — 스태그플레이션 위험, 한국·일본 등 에너지 수입국 직격탄';
+    krEffect = '원/달러 1,600원 이상 가능 · 수출 마진 압박 · 경기 침체 위험';
+  }
+  document.getElementById('oilResult').innerHTML = `
+    <div style="margin-bottom:8px;"><span class="res-label">미국 증시 영향</span><br><span style="font-weight:600;">${outlook}</span></div>
+    <div><span class="res-label">한국 경제 영향</span><br><span style="color:#fbbf24;font-weight:600;">${krEffect}</span></div>
+  `;
+}
+document.getElementById('oilPrice').addEventListener('input', calcOil);
+document.getElementById('oilResetBtn').addEventListener('click', () => {
+  document.getElementById('oilPrice').value = 110;
+  calcOil();
+});
+calcOil();
+</script>
+</body>
+</html>
