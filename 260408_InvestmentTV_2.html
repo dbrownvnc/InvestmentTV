@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>4월7일 긴급속보 — 이란 2주 유예·시장 급반등 분석</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+  :root {
+    --bg: #ffffff;
+    --bg2: #fafafa;
+    --text: #1a1a1a;
+    --text2: #777777;
+    --accent: #e11d48;
+    --accent2: #f43f5e;
+    --chart1: #e11d48;
+    --chart2: #1a1a1a;
+    --chart3: #6b7280;
+    --chart4: #2563eb;
+    --table-bg: #fafafa;
+    --table-header: #e11d48;
+    --table-border: #e5e5e5;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 15px;
+    line-height: 1.75;
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 0 18px 60px;
+  }
+
+  /* ── HEADER ── */
+  .cover {
+    border-bottom: 3px solid var(--accent);
+    padding: 40px 0 28px;
+    margin-bottom: 36px;
+  }
+  .cover .label {
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: var(--accent);
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .cover h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(26px, 7vw, 38px);
+    font-weight: 900;
+    line-height: 1.2;
+    color: var(--text);
+    margin-bottom: 14px;
+  }
+  .cover h1 span { color: var(--accent); }
+  .cover .sub {
+    font-size: 13px;
+    color: var(--text2);
+    border-left: 3px solid var(--accent);
+    padding-left: 12px;
+    line-height: 1.6;
+  }
+  .cover .meta {
+    margin-top: 20px;
+    display: flex;
+    gap: 18px;
+    flex-wrap: wrap;
+    font-size: 12px;
+    color: var(--text2);
+  }
+  .cover .meta span { display: flex; align-items: center; gap: 5px; }
+
+  /* ── SECTION HEADERS ── */
+  .section-label {
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    color: var(--accent);
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    margin-top: 44px;
+  }
+  h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(20px, 5vw, 26px);
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 16px;
+    line-height: 1.3;
+  }
+  h3 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+    margin: 24px 0 10px;
+    padding-left: 10px;
+    border-left: 3px solid var(--accent);
+  }
+
+  /* ── BODY TEXT ── */
+  p { margin-bottom: 14px; color: var(--text); }
+  strong { color: var(--accent); font-weight: 700; }
+
+  /* ── BREAKING NEWS BANNER ── */
+  .breaking {
+    background: var(--accent);
+    color: #fff;
+    border-radius: 8px;
+    padding: 18px 20px;
+    margin: 28px 0;
+  }
+  .breaking .tag {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    font-weight: 700;
+    opacity: 0.85;
+    margin-bottom: 8px;
+  }
+  .breaking p {
+    color: #fff;
+    font-size: 14px;
+    line-height: 1.6;
+    margin: 0;
+  }
+  .breaking strong { color: #fff; font-weight: 700; }
+
+  /* ── KEY FACTS ── */
+  .key-facts {
+    background: var(--bg2);
+    border: 1px solid var(--table-border);
+    border-radius: 8px;
+    padding: 20px;
+    margin: 24px 0;
+  }
+  .key-facts .kf-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--table-border);
+  }
+  .key-facts .kf-item:last-child { border-bottom: none; }
+  .key-facts .kf-icon {
+    font-size: 18px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .key-facts .kf-text strong {
+    display: block;
+    font-size: 13px;
+    color: var(--text);
+    margin-bottom: 2px;
+  }
+  .key-facts .kf-text span {
+    font-size: 12px;
+    color: var(--text2);
+  }
+
+  /* ── STOCK TABLE ── */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 18px 0;
+    font-size: 13px;
+  }
+  thead tr {
+    background: var(--table-header);
+    color: #fff;
+  }
+  thead th {
+    padding: 10px 12px;
+    text-align: left;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 0.05em;
+  }
+  tbody tr {
+    background: var(--table-bg);
+    border-bottom: 1px solid var(--table-border);
+  }
+  tbody tr:nth-child(even) { background: #f4f4f4; }
+  tbody td {
+    padding: 10px 12px;
+    color: var(--text);
+    vertical-align: middle;
+  }
+  .up { color: #16a34a; font-weight: 700; }
+  .down { color: var(--accent); font-weight: 700; }
+
+  /* ── CHART ── */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .chart-container {
+    position: relative;
+    max-height: 340px;
+    background: var(--bg2);
+    border: 1px solid var(--table-border);
+    border-radius: 10px;
+    padding: 16px;
+    margin: 22px 0;
+  }
+  .chart-container canvas {
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    max-height: 300px;
+  }
+  .chart-container.chart-ready canvas { opacity: 1; }
+  .chart-title {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text2);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 10px;
+  }
+
+  /* ── QUOTE BOX ── */
+  .quote {
+    border-left: 4px solid var(--accent);
+    background: var(--bg2);
+    border-radius: 0 8px 8px 0;
+    padding: 16px 18px;
+    margin: 22px 0;
+    font-style: italic;
+    color: var(--text2);
+    font-size: 14px;
+    line-height: 1.7;
+  }
+  .quote cite {
+    display: block;
+    margin-top: 8px;
+    font-style: normal;
+    font-size: 12px;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  /* ── PILL TAGS ── */
+  .pills { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0; }
+  .pill {
+    background: var(--bg2);
+    border: 1px solid var(--table-border);
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 12px;
+    color: var(--text2);
+  }
+  .pill.hot {
+    background: #fff0f3;
+    border-color: var(--accent2);
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  /* ── SIMULATOR ── */
+  .simulator {
+    background: var(--bg2);
+    border: 1px solid var(--table-border);
+    border-radius: 10px;
+    padding: 22px;
+    margin: 24px 0;
+  }
+  .simulator h3 {
+    border: none;
+    padding: 0;
+    font-family: 'Playfair Display', serif;
+    font-size: 16px;
+    margin-bottom: 18px;
+  }
+  .sim-row {
+    margin-bottom: 18px;
+  }
+  .sim-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    color: var(--text2);
+    margin-bottom: 6px;
+  }
+  .sim-label strong { color: var(--text); }
+  input[type=range] {
+    width: 100%;
+    accent-color: var(--accent);
+    cursor: pointer;
+  }
+  .sim-result {
+    background: var(--accent);
+    color: #fff;
+    border-radius: 8px;
+    padding: 16px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 16px;
+  }
+  .sim-result .r-item { text-align: center; }
+  .sim-result .r-val {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+  }
+  .sim-result .r-lbl { font-size: 11px; opacity: 0.85; margin-top: 2px; }
+  .reset-btn {
+    background: none;
+    border: 1px solid var(--table-border);
+    border-radius: 6px;
+    padding: 7px 16px;
+    font-size: 12px;
+    cursor: pointer;
+    color: var(--text2);
+    margin-top: 14px;
+    transition: all 0.2s;
+  }
+  .reset-btn:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+  /* ── TIMELINE ── */
+  .timeline { margin: 20px 0; }
+  .tl-item {
+    display: flex;
+    gap: 14px;
+    padding-bottom: 20px;
+    position: relative;
+  }
+  .tl-item:not(:last-child)::before {
+    content: '';
+    position: absolute;
+    left: 16px;
+    top: 32px;
+    bottom: 0;
+    width: 2px;
+    background: var(--table-border);
+  }
+  .tl-dot {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .tl-content { flex: 1; padding-top: 5px; }
+  .tl-content .tl-title { font-weight: 700; font-size: 14px; margin-bottom: 4px; }
+  .tl-content .tl-desc { font-size: 13px; color: var(--text2); line-height: 1.6; }
+
+  /* ── DIVIDER ── */
+  .divider {
+    border: none;
+    border-top: 1px solid var(--table-border);
+    margin: 36px 0;
+  }
+
+  /* ── INVESTMENT PRINCIPLE CARDS ── */
+  .principle-grid { display: flex; flex-direction: column; gap: 12px; margin: 16px 0; }
+  .principle-card {
+    background: var(--bg2);
+    border: 1px solid var(--table-border);
+    border-radius: 8px;
+    padding: 14px 16px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .principle-card .pc-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 900;
+    color: var(--accent);
+    line-height: 1;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .principle-card .pc-text strong {
+    display: block;
+    font-size: 14px;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .principle-card .pc-text span { font-size: 13px; color: var(--text2); }
+
+  /* ── OIL/SECTOR BOX ── */
+  .sector-alert {
+    border: 2px solid var(--accent);
+    border-radius: 8px;
+    padding: 16px 18px;
+    margin: 20px 0;
+  }
+  .sector-alert .sa-tag {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .sector-alert p { margin: 0; font-size: 14px; }
+
+  footer {
+    margin-top: 50px;
+    padding-top: 20px;
+    border-top: 2px solid var(--table-border);
+    font-size: 11px;
+    color: var(--text2);
+    text-align: center;
+    line-height: 1.8;
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════ COVER -->
+<div class="cover fade-in">
+  <div class="label">📡 투자는인생TV · 긴급 멤버 방송</div>
+  <h1>이란 <span>2주 유예</span>,<br>시장은 내일 폭등한다</h1>
+  <div class="sub">
+    트럼프–이란 공격 중단 합의 / 호르무즈 개방 / 파키스탄 중재 / 주요 종목 즉시 전망
+  </div>
+  <div class="meta">
+    <span>📅 2026년 4월 7일 (방송일)</span>
+    <span>📝 멤버 전용 긴급 라이브</span>
+    <span>🔗 투자는인생TV</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ 핵심 속보 -->
+<div class="section-label fade-in">BREAKING NEWS</div>
+<h2 class="fade-in">30분 전 입수 — 핵심 3가지</h2>
+
+<div class="breaking fade-in">
+  <div class="tag">🚨 BREAKING · 방송 당일 30분 전 정보</div>
+  <p>
+    <strong>① 트럼프, 이란 폭격 2주간 유예 합의</strong><br>
+    <strong>② 이란, 호르무즈 해협 2주간 개방 선언</strong><br>
+    <strong>③ 파키스탄 총리가 미·이란 중재 성공</strong>
+  </p>
+</div>
+
+<div class="key-facts fade-in">
+  <div class="kf-item">
+    <div class="kf-icon">🇵🇰</div>
+    <div class="kf-text">
+      <strong>파키스탄이 중재자 역할</strong>
+      <span>파키스탄 총리가 이란·미국 사이에서 중재. 이란 종교 지도자 아들의 와병도 협상 배경으로 작용.</span>
+    </div>
+  </div>
+  <div class="kf-item">
+    <div class="kf-icon">🛢️</div>
+    <div class="kf-text">
+      <strong>호르무즈 해협 2주 개방</strong>
+      <span>이란 외무장관 아라치(영국 박사 출신)가 "공격 중단 시 해협 개방" 제안. 한국도 묶인 원유 즉시 수입 가능.</span>
+    </div>
+  </div>
+  <div class="kf-item">
+    <div class="kf-icon">📉</div>
+    <div class="kf-text">
+      <strong>유가 당일 약 10% 폭락</strong>
+      <span>WTI(서부 텍사스산 원유) 5월물 약 10% 급락. 배럴당 80달러대 진입 전망.</span>
+    </div>
+  </div>
+  <div class="kf-item">
+    <div class="kf-icon">📈</div>
+    <div class="kf-text">
+      <strong>미국 주식 선물 급등</strong>
+      <span>다우존스 선물 +700pt 이상, S&P 500 선물 +1.7%, 나스닥 100 선물 +1.7%.</span>
+    </div>
+  </div>
+  <div class="kf-item">
+    <div class="kf-icon">💱</div>
+    <div class="kf-text">
+      <strong>원·달러 환율 안정 기대</strong>
+      <span>호르무즈 개방 → 원유 공급 정상화 → 원화절하 완화. 1,400원대 하락 전망.</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ 왜 이란 전쟁은 장기화 안 된다 -->
+<hr class="divider">
+<div class="section-label fade-in">GEOPOLITICAL CONTEXT</div>
+<h2 class="fade-in">왜 전쟁은 장기화되지 않는가</h2>
+
+<p class="fade-in">발표자는 "이란 전쟁은 일시적 성격이 크다"는 기존 판단을 재확인했다. 근거는 세 가지다.</p>
+
+<div class="timeline fade-in">
+  <div class="tl-item">
+    <div class="tl-dot">1</div>
+    <div class="tl-content">
+      <div class="tl-title">War Crime 방지선</div>
+      <div class="tl-desc">미군 장군들은 대통령 명령에도 워 크라임(민간 인프라 폭격 등)을 거부할 권리가 있다. 실질적 전면전은 현실적으로 불가능.</div>
+    </div>
+  </div>
+  <div class="tl-item">
+    <div class="tl-dot">2</div>
+    <div class="tl-content">
+      <div class="tl-title">중간선거 리스크 (2026년)</div>
+      <div class="tl-desc">트럼프 진영은 중간선거 패배 시 정치적 타격이 크다. MAGA 내부에서도 장기전 반대 기류. "이기기 위해 해결책을 찾을 것."</div>
+    </div>
+  </div>
+  <div class="tl-item">
+    <div class="tl-dot">3</div>
+    <div class="tl-content">
+      <div class="tl-title">인플레이션 리스크</div>
+      <div class="tl-desc">연준 관계자 발언: "유가 배럴당 110달러대 지속 시 모든 물가 상승, 미국 경제에 치명타." 연준도 전쟁 장기화를 원하지 않는다.</div>
+    </div>
+  </div>
+  <div class="tl-item">
+    <div class="tl-dot">4</div>
+    <div class="tl-content">
+      <div class="tl-title">2주 데드라인</div>
+      <div class="tl-desc">2주 유예 → 협상 모멘텀 형성 → 2주 안에 새로운 솔루션 도출 가능성이 크다고 조심스럽게 판단.</div>
+    </div>
+  </div>
+</div>
+
+<div class="quote fade-in">
+  "이란이 6천 년 이상 된 문명국가다. 전쟁이 끝날 수밖에 없는 구조이고, 그게 미국이 원하는 것이다."
+  <cite>— 발표자</cite>
+</div>
+
+<!-- ═══════════════════════════════════════════ 종목별 전망 -->
+<hr class="divider">
+<div class="section-label fade-in">STOCK FORECAST</div>
+<h2 class="fade-in">주요 종목 가격 전망 (방송 당일 기준)</h2>
+
+<p class="fade-in">방송 시점 기준 선물·애프터장 데이터 및 발표자 예측치를 정리했다. 기준가는 3월 26일 방송 당시 제시가격, 당일 가격은 방송 시점 확인치다.</p>
+
+<table class="fade-in">
+  <thead>
+    <tr>
+      <th>종목</th>
+      <th>3/26 제시가</th>
+      <th>방송 당일가</th>
+      <th>익일 예측가</th>
+      <th>전망</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Micron (MU)</strong></td>
+      <td>355달러</td>
+      <td>377달러</td>
+      <td>~410달러</td>
+      <td class="up">+7~10%↑</td>
+    </tr>
+    <tr>
+      <td><strong>SanDisk (SNDK)</strong></td>
+      <td>603달러</td>
+      <td>710달러 (애프터 753달러)</td>
+      <td>~751달러</td>
+      <td class="up">+100달러↑</td>
+    </tr>
+    <tr>
+      <td><strong>Meta (META)</strong></td>
+      <td>547달러</td>
+      <td>+3.7%</td>
+      <td>~596달러</td>
+      <td class="up">+4~5%↑</td>
+    </tr>
+    <tr>
+      <td><strong>AMD</strong></td>
+      <td>172달러</td>
+      <td>+4%</td>
+      <td>+4%↑</td>
+      <td class="up">강세</td>
+    </tr>
+    <tr>
+      <td><strong>TerraDyne</strong></td>
+      <td>언급</td>
+      <td>+5.5%</td>
+      <td>~+6%</td>
+      <td class="up">+6%↑</td>
+    </tr>
+    <tr>
+      <td><strong>Delta Air (DAL)</strong></td>
+      <td>—</td>
+      <td>실적 상회</td>
+      <td>+5.5~6%</td>
+      <td class="up">+5.5%↑</td>
+    </tr>
+    <tr>
+      <td><strong>Appaloosa (APLE)</strong></td>
+      <td>—</td>
+      <td>—</td>
+      <td>~+5%</td>
+      <td class="up">+5%↑</td>
+    </tr>
+    <tr>
+      <td><strong>Humana (HUM)</strong></td>
+      <td>—</td>
+      <td>—</td>
+      <td>+8%</td>
+      <td class="up">+8%↑ (당일 확인)</td>
+    </tr>
+    <tr>
+      <td><strong>원유/에너지 섹터</strong></td>
+      <td>—</td>
+      <td>유가 -10%</td>
+      <td>에너지주 -10%↓</td>
+      <td class="down">폭락 경고</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- 차트 1: 종목 예측 등락률 -->
+<div class="chart-title fade-in">📊 종목별 익일 예상 등락률</div>
+<div class="chart-container fade-in">
+  <canvas id="stockChart" height="240"></canvas>
+</div>
+
+<!-- ═══════════════════════════════════════════ 유가·항공 섹터 -->
+<hr class="divider">
+<div class="section-label fade-in">SECTOR ANALYSIS</div>
+<h2 class="fade-in">유가 폭락 → 항공주 수혜 구조</h2>
+
+<div class="sector-alert fade-in">
+  <div class="sa-tag">⚠️ 주의</div>
+  <p>에너지·원유 섹터는 <strong>단기 보유 금지</strong>. 유가 배럴당 80달러대 진입 시 에너지주 10%↓ 예상.</p>
+</div>
+
+<p class="fade-in">유가 하락의 최대 수혜주는 <strong>항공사</strong>다. 연료비가 항공사 원가의 20~30%를 차지하기 때문에 유가가 내려갈수록 수익성이 급격히 개선된다.</p>
+
+<div class="pills fade-in">
+  <span class="pill hot">Delta Air Lines (DAL)</span>
+  <span class="pill hot">United Airlines (UAL)</span>
+  <span class="pill hot">American Airlines (AAL)</span>
+  <span class="pill">Southwest (LUV)</span>
+</div>
+
+<!-- 차트 2: 유가–항공주 관계 도식 -->
+<div class="chart-title fade-in">📊 유가 변동 vs 항공사 수익성 관계</div>
+<div class="chart-container fade-in">
+  <canvas id="oilAirChart" height="230"></canvas>
+</div>
+
+<p class="fade-in">델타항공은 방송 당일 예상 실적을 상회하며 <strong>5.58% 급등</strong>했다. 유가 배럴당 80달러대가 여름 성수기(5~8월)까지 이어질 경우 항공주의 추가 상승 여력이 크다.</p>
+
+<!-- ═══════════════════════════════════════════ 수익률 시뮬레이터 -->
+<hr class="divider">
+<div class="section-label fade-in">INTERACTIVE SIMULATOR</div>
+<h2 class="fade-in">📱 수익률 시뮬레이터</h2>
+<p class="fade-in">3월 26일 방송 후 매수했다면 지금 얼마일까? 투자 금액을 조정해 보세요.</p>
+
+<div class="simulator fade-in">
+  <h3>🧮 MU / SNDK / META 수익 계산기</h3>
+
+  <div class="sim-row">
+    <div class="sim-label">
+      <span>투자 금액</span>
+      <strong id="inv-val">5,000 달러</strong>
+    </div>
+    <input type="range" id="inv-slider" min="1000" max="50000" step="1000" value="5000">
+  </div>
+
+  <div class="sim-row">
+    <div class="sim-label">
+      <span>MU 비중</span>
+      <strong id="mu-val">40%</strong>
+    </div>
+    <input type="range" id="mu-slider" min="0" max="100" step="5" value="40">
+  </div>
+
+  <div class="sim-row">
+    <div class="sim-label">
+      <span>SNDK 비중</span>
+      <strong id="sndk-val">40%</strong>
+    </div>
+    <input type="range" id="sndk-slider" min="0" max="100" step="5" value="40">
+  </div>
+
+  <p style="font-size:12px;color:var(--text2);margin-bottom:8px;">* META 비중 = 나머지 자동 계산 (비중 합 100% 초과 시 META 0%)</p>
+
+  <div class="sim-result">
+    <div class="r-item">
+      <div class="r-val" id="res-total">-</div>
+      <div class="r-lbl">예상 평가액 (달러)</div>
+    </div>
+    <div class="r-item">
+      <div class="r-val" id="res-profit">-</div>
+      <div class="r-lbl">예상 수익 (달러)</div>
+    </div>
+    <div class="r-item">
+      <div class="r-val" id="res-pct">-</div>
+      <div class="r-lbl">수익률</div>
+    </div>
+    <div class="r-item">
+      <div class="r-val" id="res-meta">-</div>
+      <div class="r-lbl">META 비중</div>
+    </div>
+  </div>
+  <button class="reset-btn" id="sim-reset">↺ 초기화</button>
+</div>
+
+<!-- ═══════════════════════════════════════════ 투자 원칙 -->
+<hr class="divider">
+<div class="section-label fade-in">INVESTMENT PHILOSOPHY</div>
+<h2 class="fade-in">발표자의 핵심 투자 원칙</h2>
+
+<div class="principle-grid fade-in">
+  <div class="principle-card">
+    <div class="pc-num">01</div>
+    <div class="pc-text">
+      <strong>변동성 = 기회</strong>
+      <span>변동성이 클 때 돈을 벌 수 있다. 변동성이 없으면 기회도 없다. 하락장은 1년 치 수익을 한 번에 만드는 시기다.</span>
+    </div>
+  </div>
+  <div class="principle-card">
+    <div class="pc-num">02</div>
+    <div class="pc-text">
+      <strong>오버씽킹 금지 (Just Execute)</strong>
+      <span>플랜B·C를 세우다 타이밍을 놓치는 "오버씽커"는 항상 손해다. 판단이 섰으면 즉시 실행해야 한다. 미국 스타트업이 베타버전을 출시하는 것처럼.</span>
+    </div>
+  </div>
+  <div class="principle-card">
+    <div class="pc-num">03</div>
+    <div class="pc-text">
+      <strong>노이즈 차단</strong>
+      <span>언론(블룸버그 포함)은 심리적 불안만 조성한다. 실제 돈이 어디로 움직이는지를 추적하는 것이 중요하다.</span>
+    </div>
+  </div>
+  <div class="principle-card">
+    <div class="pc-num">04</div>
+    <div class="pc-text">
+      <strong>전쟁 = 일시적 노이즈</strong>
+      <span>시스테믹 리스크가 있을 때는 섹터 조정보다 "버티기"가 정답. 폭락 후 폭등 패턴을 경험으로 믿어야 한다.</span>
+    </div>
+  </div>
+  <div class="principle-card">
+    <div class="pc-num">05</div>
+    <div class="pc-text">
+      <strong>과매도 구간이 매수 구간</strong>
+      <span>RSI 기준 오버솔드 상태에서 매수. 풀백(5~10% 하락)·코렉션(10~20%)은 평균 회복 시간이 짧다. 겁먹으면 안 된다.</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ 향후 일정 -->
+<hr class="divider">
+<div class="section-label fade-in">UPCOMING SCHEDULE</div>
+<h2 class="fade-in">향후 2~4주 로드맵</h2>
+
+<div class="key-facts fade-in">
+  <div class="kf-item">
+    <div class="kf-icon">📋</div>
+    <div class="kf-text">
+      <strong>1대1 포트폴리오 리뷰 (4월 중순)</strong>
+      <span>시스테믹 리스크 진정 후 진행. 지금 바로 신청해도 4월 중순 이후 검토. 미리 보내지 말 것.</span>
+    </div>
+  </div>
+  <div class="kf-item">
+    <div class="kf-icon">✈️</div>
+    <div class="kf-text">
+      <strong>이란 전쟁 이후 섹터 재배치</strong>
+      <span>우주항공(Space X) + 항공주(델타 등) 비중 확대 검토. 유가 80달러대 지속 시 항공주 추가 매수 신호.</span>
+    </div>
+  </div>
+  <div class="kf-item">
+    <div class="kf-icon">🔄</div>
+    <div class="kf-text">
+      <strong>4월 리밸런싱 예정</strong>
+      <span>포트폴리오 일부 현금화 후 재편성. 스페이스X IPO 등 신규 이벤트 대비.</span>
+    </div>
+  </div>
+  <div class="kf-item">
+    <div class="kf-icon">🎓</div>
+    <div class="kf-text">
+      <strong>클래스101 강의 검토 중</strong>
+      <span>주식 개별 종목 아닌 투자 원칙·자본주의 개념·법적 윤리 관련 강의 가능성 검토. 확정 전.</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ 핵심 요약 -->
+<hr class="divider">
+<div class="section-label fade-in">SUMMARY</div>
+<h2 class="fade-in">오늘 방송 3줄 요약</h2>
+
+<div class="breaking fade-in" style="background:var(--text);">
+  <p>
+    <strong style="color:#f43f5e;">① 이란 전쟁 2주 유예</strong> — 호르무즈 개방, 파키스탄 중재. 시스테믹 리스크 일시 해소.<br><br>
+    <strong style="color:#f43f5e;">② 내일 장 폭등 예상</strong> — MU +10%, SNDK +5%, META +5%, 테라다인 +6%, 다우 선물 이미 +700pt.<br><br>
+    <strong style="color:#f43f5e;">③ 에너지 섹터 회피, 항공주 관심</strong> — 유가 80달러대, 여름 성수기 항공사 수혜. 오버씽킹 말고 실행.
+  </p>
+</div>
+
+<footer class="fade-in">
+  본 문서는 투자는인생TV 방송 내용을 정리한 교육 자료입니다.<br>
+  투자 결정의 최종 책임은 본인에게 있으며, 이 내용은 투자 권유가 아닙니다.<br>
+  © 2026 투자는인생TV 멤버 분석 시리즈
+</footer>
+
+<script>
+// ═══ FADE OBSERVER
+const fadeObs = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), i * 80);
+      fadeObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.12 });
+document.querySelectorAll('.fade-in').forEach(el => fadeObs.observe(el));
+
+// ═══ CHART CONFIGS
+const chartConfigs = {};
+
+chartConfigs['stockChart'] = () => {
+  new Chart(document.getElementById('stockChart'), {
+    type: 'bar',
+    data: {
+      labels: ['MU', 'SNDK', 'META', 'AMD', 'TerraDyne', 'Delta', 'Humana', '에너지'],
+      datasets: [{
+        label: '익일 예상 등락률 (%)',
+        data: [10, 5.5, 5, 4, 6, 5.5, 8, -10],
+        backgroundColor: [
+          '#e11d48','#e11d48','#e11d48','#e11d48','#e11d48','#2563eb','#2563eb','#6b7280'
+        ],
+        borderRadius: 5,
+        barThickness: 24,
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: ctx => ` ${ctx.raw > 0 ? '+' : ''}${ctx.raw}%`
+          }
+        }
+      },
+      scales: {
+        y: {
+          ticks: { callback: v => v + '%', font: { size: 11 } },
+          grid: { color: '#e5e5e5' }
+        },
+        x: { ticks: { font: { size: 11 } }, grid: { display: false } }
+      }
+    }
+  });
+};
+
+chartConfigs['oilAirChart'] = () => {
+  const labels = ['100달러', '90달러', '80달러', '70달러', '60달러'];
+  new Chart(document.getElementById('oilAirChart'), {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [
+        {
+          label: '항공사 영업이익률 (추정)',
+          data: [4, 7, 11, 15, 20],
+          borderColor: '#e11d48',
+          backgroundColor: 'rgba(225,29,72,0.08)',
+          tension: 0.4,
+          fill: true,
+          pointRadius: 5,
+          pointBackgroundColor: '#e11d48',
+        },
+        {
+          label: '에너지 섹터 수익',
+          data: [20, 16, 11, 7, 4],
+          borderColor: '#6b7280',
+          backgroundColor: 'rgba(107,114,128,0.06)',
+          tension: 0.4,
+          fill: true,
+          pointRadius: 5,
+          pointBackgroundColor: '#6b7280',
+          borderDash: [5, 4],
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { labels: { font: { size: 11 }, boxWidth: 12 } },
+        tooltip: { callbacks: { label: ctx => ` ${ctx.raw}%` } }
+      },
+      scales: {
+        y: {
+          ticks: { callback: v => v + '%', font: { size: 11 } },
+          grid: { color: '#e5e5e5' }
+        },
+        x: {
+          title: { display: true, text: '← 유가 하락 방향', font: { size: 11 }, color: '#777' },
+          grid: { display: false },
+          ticks: { font: { size: 11 } }
+        }
+      }
+    }
+  });
+};
+
+// ═══ CHART OBSERVER
+const chartObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const canvas = e.target.querySelector('canvas');
+      if (canvas && chartConfigs[canvas.id]) {
+        chartConfigs[canvas.id]();
+        e.target.classList.add('chart-ready');
+        chartObs.unobserve(e.target);
+      }
+    }
+  });
+}, { threshold: 0.15 });
+document.querySelectorAll('.chart-container').forEach(el => chartObs.observe(el));
+
+// ═══ SIMULATOR
+// 기준: 3/26 → 방송당일 수익률
+// MU: 355→377 = +6.2%, SNDK: 603→710 = +17.7%, META: 547→565 = +3.3% (추정)
+const BASE_RETURNS = { mu: 0.062, sndk: 0.177, meta: 0.033 };
+const DEFAULT = { inv: 5000, mu: 40, sndk: 40 };
+
+function calcSim() {
+  const inv = parseInt(document.getElementById('inv-slider').value);
+  const muPct = parseInt(document.getElementById('mu-slider').value);
+  const sndkPct = parseInt(document.getElementById('sndk-slider').value);
+  const metaPct = Math.max(0, 100 - muPct - sndkPct);
+
+  document.getElementById('inv-val').textContent = inv.toLocaleString() + ' 달러';
+  document.getElementById('mu-val').textContent = muPct + '%';
+  document.getElementById('sndk-val').textContent = sndkPct + '%';
+  document.getElementById('res-meta').textContent = metaPct + '%';
+
+  const muAmt = inv * (muPct / 100);
+  const sndkAmt = inv * (sndkPct / 100);
+  const metaAmt = inv * (metaPct / 100);
+
+  const profit = muAmt * BASE_RETURNS.mu + sndkAmt * BASE_RETURNS.sndk + metaAmt * BASE_RETURNS.meta;
+  const total = inv + profit;
+  const pct = ((profit / inv) * 100).toFixed(1);
+
+  document.getElementById('res-total').textContent = total.toLocaleString('en', {maximumFractionDigits: 0});
+  document.getElementById('res-profit').textContent = '+' + profit.toLocaleString('en', {maximumFractionDigits: 0});
+  document.getElementById('res-pct').textContent = '+' + pct + '%';
+}
+
+['inv-slider','mu-slider','sndk-slider'].forEach(id => {
+  document.getElementById(id).addEventListener('input', calcSim);
+});
+document.getElementById('sim-reset').addEventListener('click', () => {
+  document.getElementById('inv-slider').value = DEFAULT.inv;
+  document.getElementById('mu-slider').value = DEFAULT.mu;
+  document.getElementById('sndk-slider').value = DEFAULT.sndk;
+  calcSim();
+});
+calcSim();
+</script>
+</body>
+</html>

@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>시험문제 — 4월7일 긴급속보 방송</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #ffffff; --bg2: #fafafa;
+    --text: #1a1a1a; --text2: #777777;
+    --accent: #e11d48; --accent2: #f43f5e;
+    --border: #e5e5e5;
+    --correct: #16a34a; --wrong: #e11d48;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg); color: var(--text);
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 15px; line-height: 1.75;
+    max-width: 680px; margin: 0 auto;
+    padding: 0 18px 60px;
+  }
+
+  .cover {
+    border-bottom: 3px solid var(--accent);
+    padding: 36px 0 24px; margin-bottom: 32px;
+  }
+  .cover .label {
+    font-size: 11px; letter-spacing: 0.18em;
+    color: var(--accent); font-weight: 700;
+    text-transform: uppercase; margin-bottom: 10px;
+  }
+  .cover h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(24px, 6vw, 34px);
+    font-weight: 900; line-height: 1.2; margin-bottom: 10px;
+  }
+  .cover h1 span { color: var(--accent); }
+  .cover .sub { font-size: 13px; color: var(--text2); }
+
+  /* SCORE BOARD */
+  .scoreboard {
+    background: var(--bg2); border: 1px solid var(--border);
+    border-radius: 10px; padding: 18px 20px;
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 28px; flex-wrap: wrap; gap: 12px;
+  }
+  .score-main { font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 900; color: var(--accent); }
+  .score-label { font-size: 12px; color: var(--text2); margin-top: 2px; }
+  .score-badges { display: flex; gap: 10px; flex-wrap: wrap; }
+  .badge {
+    padding: 5px 12px; border-radius: 20px;
+    font-size: 12px; font-weight: 700;
+    background: var(--bg2); border: 1px solid var(--border);
+    color: var(--text2);
+  }
+  .badge.easy { border-color: #86efac; color: var(--correct); }
+  .badge.med  { border-color: #fbbf24; color: #b45309; }
+  .badge.hard { border-color: var(--accent2); color: var(--accent); }
+
+  /* QUESTION CARD */
+  .q-card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 22px;
+    margin-bottom: 22px;
+    transition: box-shadow 0.2s;
+  }
+  .q-card:hover { box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+  .q-header {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 14px;
+  }
+  .q-num {
+    background: var(--accent); color: #fff;
+    width: 28px; height: 28px; border-radius: 50%;
+    font-size: 12px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .q-meta { display: flex; gap: 6px; align-items: center; }
+  .q-type {
+    font-size: 11px; color: var(--text2);
+    border: 1px solid var(--border);
+    border-radius: 12px; padding: 2px 8px;
+  }
+  .q-diff {
+    font-size: 11px; font-weight: 700; padding: 2px 8px;
+    border-radius: 12px;
+  }
+  .diff-easy { background:#f0fdf4; color:var(--correct); }
+  .diff-med  { background:#fffbeb; color:#b45309; }
+  .diff-hard { background:#fff0f3; color:var(--accent); }
+
+  .q-text {
+    font-size: 15px; font-weight: 500;
+    margin-bottom: 16px; line-height: 1.65;
+  }
+
+  /* MCQ OPTIONS */
+  .options { display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px; }
+  .opt {
+    border: 1.5px solid var(--border);
+    border-radius: 8px; padding: 11px 14px;
+    cursor: pointer; font-size: 14px;
+    transition: all 0.18s; user-select: none;
+    display: flex; align-items: flex-start; gap: 10px;
+  }
+  .opt:hover:not(.disabled) { border-color: var(--accent2); background: #fff0f3; }
+  .opt .opt-key {
+    font-weight: 700; color: var(--text2);
+    flex-shrink: 0; min-width: 20px;
+  }
+  .opt.correct { background: #f0fdf4; border-color: var(--correct); }
+  .opt.correct .opt-key { color: var(--correct); }
+  .opt.wrong { background: #fff0f3; border-color: var(--wrong); }
+  .opt.wrong .opt-key { color: var(--wrong); }
+  .opt.disabled { cursor: default; }
+
+  /* OX */
+  .ox-btns { display: flex; gap: 12px; margin-bottom: 14px; }
+  .ox-btn {
+    flex: 1; padding: 14px; border-radius: 8px;
+    border: 1.5px solid var(--border);
+    font-size: 22px; font-weight: 900;
+    cursor: pointer; text-align: center;
+    transition: all 0.18s; background: var(--bg);
+  }
+  .ox-btn:hover:not(.disabled) { border-color: var(--accent); background: #fff0f3; }
+  .ox-btn.correct { background: #f0fdf4; border-color: var(--correct); color: var(--correct); }
+  .ox-btn.wrong   { background: #fff0f3; border-color: var(--wrong);   color: var(--wrong);   }
+  .ox-btn.disabled { cursor: default; }
+
+  /* SHORT ANSWER */
+  .sa-wrap { margin-bottom: 14px; }
+  .sa-input {
+    width: 100%; border: 1.5px solid var(--border);
+    border-radius: 8px; padding: 11px 14px;
+    font-size: 14px; font-family: inherit;
+    outline: none; transition: border 0.18s;
+  }
+  .sa-input:focus { border-color: var(--accent); }
+  .sa-submit {
+    margin-top: 8px;
+    background: var(--accent); color: #fff;
+    border: none; border-radius: 8px;
+    padding: 9px 18px; font-size: 13px; font-weight: 700;
+    cursor: pointer; transition: background 0.18s;
+  }
+  .sa-submit:hover { background: var(--accent2); }
+  .sa-submit:disabled { background: var(--text2); cursor: default; }
+
+  /* EXPLANATION */
+  .explanation {
+    display: none;
+    background: var(--bg2); border-left: 3px solid var(--accent);
+    border-radius: 0 8px 8px 0; padding: 14px 16px;
+    margin-top: 10px; font-size: 13px; line-height: 1.7;
+    color: var(--text2);
+  }
+  .explanation.show { display: block; }
+  .explanation strong { color: var(--accent); }
+  .explanation .ans-label {
+    font-size: 11px; text-transform: uppercase;
+    letter-spacing: 0.1em; font-weight: 700;
+    color: var(--accent); margin-bottom: 4px;
+  }
+
+  /* RESET */
+  .reset-all {
+    display: block; width: 100%; margin-top: 30px;
+    background: none; border: 2px solid var(--accent);
+    color: var(--accent); border-radius: 8px;
+    padding: 14px; font-size: 14px; font-weight: 700;
+    cursor: pointer; transition: all 0.2s;
+    font-family: inherit;
+  }
+  .reset-all:hover { background: var(--accent); color: #fff; }
+
+  footer {
+    margin-top: 40px; padding-top: 18px;
+    border-top: 1px solid var(--border);
+    font-size: 11px; color: var(--text2); text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<div class="cover">
+  <div class="label">📝 시험문제 · 투자는인생TV</div>
+  <h1>4월 7일 긴급속보<br><span>이해도 점검 10문제</span></h1>
+  <div class="sub">객관식 · 단답형 · OX — 문제를 풀면 즉시 정답과 해설이 공개됩니다.</div>
+</div>
+
+<!-- 점수판 -->
+<div class="scoreboard">
+  <div>
+    <div class="score-main"><span id="score">0</span> / 10</div>
+    <div class="score-label">정답 수 (10문제)</div>
+  </div>
+  <div class="score-badges">
+    <div class="badge easy">쉬움 3문제</div>
+    <div class="badge med">보통 5문제</div>
+    <div class="badge hard">어려움 2문제</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════ Q1 (쉬움 / OX) -->
+<div class="q-card" id="q1">
+  <div class="q-header">
+    <div class="q-num">1</div>
+    <div class="q-meta">
+      <span class="q-type">OX</span>
+      <span class="q-diff diff-easy">쉬움</span>
+    </div>
+  </div>
+  <div class="q-text">트럼프 대통령은 이란에 대한 폭격을 2주간 유예하기로 합의했다. (O/X)</div>
+  <div class="ox-btns">
+    <div class="ox-btn" data-q="1" data-ans="O">O</div>
+    <div class="ox-btn" data-q="1" data-ans="X">X</div>
+  </div>
+  <div class="explanation" id="exp1">
+    <div class="ans-label">✅ 정답 · 해설</div>
+    <strong>O (맞음)</strong><br>
+    방송에서 "트럼프 대통령이 이란에 대한 폭격을 2주간 유예하기로 합의했다"는 소식이 30분 전 입수됐다고 발표됨. 파키스탄이 중재 역할을 했다.
+  </div>
+</div>
+
+<!-- ══════════════════════════════ Q2 (쉬움 / 객관식) -->
+<div class="q-card" id="q2">
+  <div class="q-header">
+    <div class="q-num">2</div>
+    <div class="q-meta">
+      <span class="q-type">객관식</span>
+      <span class="q-diff diff-easy">쉬움</span>
+    </div>
+  </div>
+  <div class="q-text">이번 미·이란 협상에서 중재자 역할을 한 나라는?</div>
+  <div class="options">
+    <div class="opt" data-q="2" data-ans="A"><span class="opt-key">A</span>사우디아라비아</div>
+    <div class="opt" data-q="2" data-ans="B"><span class="opt-key">B</span>파키스탄</div>
+    <div class="opt" data-q="2" data-ans="C"><span class="opt-key">C</span>카타르</div>
+    <div class="opt" data-q="2" data-ans="D"><span class="opt-key">D</span>튀르키예</div>
+  </div>
+  <div class="explanation" id="exp2">
+    <div class="ans-label">✅ 정답 · 해설</div>
+    <strong>B — 파키스탄</strong><br>
+    발표자는 "파키스탄 총리가 이란과의 합의에 핵심 역할을 했다"고 밝혔다. 이란 외무장관 아라치(영국 박사 출신)가 협상 파트너로 언급됐다.
+  </div>
+</div>
+
+<!-- ══════════════════════════════ Q3 (쉬움 / OX) -->
+<div class="q-card" id="q3">
+  <div class="q-header">
+    <div class="q-num">3</div>
+    <div class="q-meta">
+      <span class="q-type">OX</span>
+      <span class="q-diff diff-easy">쉬움</span>
+    </div>
+  </div>
+  <div class="q-text">발표자는 이란 합의 발표 당일 유가(WTI)가 약 10% 폭락했다고 밝혔다. (O/X)</div>
+  <div class="ox-btns">
+    <div class="ox-btn" data-q="3" data-ans="O">O</div>
+    <div class="ox-btn" data-q="3" data-ans="X">X</div>
+  </div>
+  <div class="explanation" id="exp3">
+    <div class="ans-label">✅ 정답 · 해설</div>
+    <strong>O (맞음)</strong><br>
+    "5월 말 서부 텍사스 간 원유가 거의 10% 가까이 떨어졌다"고 방송에서 직접 언급. 호르무즈 해협 개방 기대 + 전쟁 리스크 감소가 원인.
+  </div>
+</div>
+
+<!-- ══════════════════════════════ Q4 (보통 / 객관식) -->
+<div class="q-card" id="q4">
+  <div class="q-header">
+    <div class="q-num">4</div>
+    <div class="q-meta">
+      <span class="q-type">객관식</span>
+      <span class="q-diff diff-med">보통</span>
+    </div>
+  </div>
+  <div class="q-text">발표자가 3월 26일 방송에서 매수 추천한 종목이 <em>아닌</em> 것은?</div>
+  <div class="options">
+    <div class="opt" data-q="4" data-ans="A"><span class="opt-key">A</span>Micron (MU)</div>
+    <div class="opt" data-q="4" data-ans="B"><span class="opt-key">B</span>Meta (META)</div>
+    <div class="opt" data-q="4" data-ans="C"><span class="opt-key">C</span>SanDisk (SNDK)</div>
+    <div class="opt" data-q="4" data-ans="D"><span class="opt-key">D</span>Exxon Mobil (XOM)</div>
+  </div>
+  <div class="explanation" id="exp4">
+    <div class="ans-label">✅ 정답 · 해설</div>
+    <strong>D — Exxon Mobil (에너지주)</strong><br>
+    발표자는 MU, META, SNDK, AMD, TerraDyne 등을 추천했으며, 에너지·원유 섹터는 "폭락하니 손대지 말라"고 명확히 반대 의견을 제시했다.
+  </div>
+</div>
+
+<!-- ══════════════════════════════ Q5 (보통 / 단답형) -->
+<div class="q-card" id="q5">
+  <div class="q-header">
+    <div class="q-num">5</div>
+    <div class="q-meta">
+      <span class="q-type">단답형</span>
+      <span class="q-diff diff-med">보통</span>
+    </div>
+  </div>
+  <div class="q-text">발표자가 방송에서 언급한 다우존스 선물 상승폭(방송 시점 기준, 포인트 이상)은 얼마인가?</div>
+  <div class="sa-wrap">
+    <input type="text" class="sa-input" id="sa5" placeholder="숫자만 입력 (예: 500)">
+    <button class="sa-submit" onclick="checkSA(5, '700')">확인</button>
+  </div>
+  <div class="explanation" id="exp5">
+    <div class="ans-label">✅ 정답 · 해설</div>
+    <strong>700포인트 이상</strong><br>
+    방송에서 "다우존스 지수가 700포인트 이상 갑자기 올라갔다"고 언급. S&P 선물 +1.7%, 나스닥 100도 +1.7% 동반 상승.
+  </div>
+</div>
+
+<!-- ══════════════════════════════ Q6 (보통 / 객관식) -->
+<div class="q-card" id="q6">
+  <div class="q-header">
+    <div class="q-num">6</div>
+    <div class="q-meta">
+      <span class="q-type">객관식</span>
+      <span class="q-diff diff-med">보통</span>
+    </div>
+  </div>
+  <div class="q-text">유가 하락 시 가장 수혜를 받는 섹터로 발표자가 지목한 것은?</div>
+  <div class="options">
+    <div class="opt" data-q="6" data-ans="A"><span class="opt-key">A</span>반도체 섹터</div>
+    <div class="opt" data-q="6" data-ans="B"><span class="opt-key">B</span>항공사 섹터</div>
+    <div class="opt" data-q="6" data-ans="C"><span class="opt-key">C</span>금융 섹터</div>
+    <div class="opt" data-q="6" data-ans="D"><span class="opt-key">D</span>헬스케어 섹터</div>
+  </div>
+  <div class="explanation" id="exp6">
+    <div class="ans-label">✅ 정답 · 해설</div>
+    <strong>B — 항공사 섹터</strong><br>
+    "유가 80달러대로 내려가면 무조건 항공주(델타·유나이티드·아메리칸)를 사야 한다"고 명시. 연료비가 항공사 원가의 큰 비중을 차지하기 때문.
+  </div>
+</div>
+
+<!-- ══════════════════════════════ Q7 (보통 / OX) -->
+<div class="q-card" id="q7">
+  <div class="q-header">
+    <div class="q-num">7</div>
+    <div class="q-meta">
+      <span class="q-type">OX</span>
+      <span class="q-diff diff-med">보통</span>
+    </div>
+  </div>
+  <div class="q-text">발표자는 "시스테믹 리스크가 있는 지금 당장 1대1 포트폴리오 리뷰를 바로 진행하겠다"고 밝혔다. (O/X)</div>
+  <div class="ox-btns">
+    <div class="ox-btn" data-q="7" data-ans="O">O</div>
+    <div class="ox-btn" data-q="7" data-ans="X">X</div>
+  </div>
+  <div class="explanation" id="exp7">
+    <div class="ans-label">✅ 정답 · 해설</div>
+    <strong>X (틀림)</strong><br>
+    "시스테믹 리스크가 있을 때는 포트폴리오 리뷰가 별 의미 없다"며 <strong>4월 중순</strong>으로 연기한다고 밝혔다. 상황이 진전된 후 섹터 이동 방향이 명확해진다는 이유.
+  </div>
+</div>
+
+<!-- ══════════════════════════════ Q8 (보통 / 객관식) -->
+<div class="q-card" id="q8">
+  <div class="q-header">
+    <div class="q-num">8</div>
+    <div class="q-meta">
+      <span class="q-type">객관식</span>
+      <span class="q-diff diff-med">보통</span>
+    </div>
+  </div>
+  <div class="q-text">발표자가 "오버씽커(Over-thinker)의 특징"으로 지적하지 <em>않은</em> 것은?</div>
+  <div class="options">
+    <div class="opt" data-q="8" data-ans="A"><span class="opt-key">A</span>플랜 B·C를 세우느라 실행이 늦다</div>
+    <div class="opt" data-q="8" data-ans="B"><span class="opt-key">B</span>완벽하지 않으면 내보내지 않는다</div>
+    <div class="opt" data-q="8" data-ans="C"><span class="opt-key">C</span>분석이 부족해 정보를 놓친다</div>
+    <div class="opt" data-q="8" data-ans="D"><span class="opt-key">D</span>머리는 좋지만 가슴(실행)이 약하다</div>
+  </div>
+  <div class="explanation" id="exp8">
+    <div class="ans-label">✅ 정답 · 해설</div>
+    <strong>C — "분석이 부족해 정보를 놓친다"</strong><br>
+    발표자는 오버씽커를 "지식은 많지만 실행력이 약한 사람"으로 정의했다. 정보 부족이 아니라 <em>실행 부재</em>가 문제라고 강조. A·B·D는 방송에서 직접 언급된 특징.
+  </div>
+</div>
+
+<!-- ══════════════════════════════ Q9 (어려움 / 단답형) -->
+<div class="q-card" id="q9">
+  <div class="q-header">
+    <div class="q-num">9</div>
+    <div class="q-meta">
+      <span class="q-type">단답형</span>
+      <span class="q-diff diff-hard">어려움</span>
+    </div>
+  </div>
+  <div class="q-text">발표자가 장기 전쟁을 막는 근거로 언급한 "미 장성의 권리"는 무엇인가? (핵심 단어 2글자 이상)</div>
+  <div class="sa-wrap">
+    <input type="text" class="sa-input" id="sa9" placeholder="예: 불복종">
+    <button class="sa-submit" onclick="checkSA(9, '불복')">확인</button>
+  </div>
+  <div class="explanation" id="exp9">
+    <div class="ans-label">✅ 정답 · 해설</div>
+    <strong>불복종 (Insubordination)</strong><br>
+    "미국 모든 장군들은 대통령의 명령을 따라야 하지만 <strong>불복종할 수 있는 권리</strong>가 있다"고 언급. 워 크라임(War Crime)으로 판단될 경우 명령을 거부할 수 있어 민간 시설 폭격 등 극단적 전면전은 현실적으로 불가능하다는 논거.
+  </div>
+</div>
+
+<!-- ══════════════════════════════ Q10 (어려움 / 객관식) -->
+<div class="q-card" id="q10">
+  <div class="q-header">
+    <div class="q-num">10</div>
+    <div class="q-meta">
+      <span class="q-type">객관식</span>
+      <span class="q-diff diff-hard">어려움</span>
+    </div>
+  </div>
+  <div class="q-text">발표자가 마이크론(MU)의 장기 목표가로 언급한 가격은? (방송 중 직접 수치 제시)</div>
+  <div class="options">
+    <div class="opt" data-q="10" data-ans="A"><span class="opt-key">A</span>500달러</div>
+    <div class="opt" data-q="10" data-ans="B"><span class="opt-key">B</span>600달러</div>
+    <div class="opt" data-q="10" data-ans="C"><span class="opt-key">C</span>740달러</div>
+    <div class="opt" data-q="10" data-ans="D"><span class="opt-key">D</span>1,000달러</div>
+  </div>
+  <div class="explanation" id="exp10">
+    <div class="ans-label">✅ 정답 · 해설</div>
+    <strong>C — 740달러</strong><br>
+    "아무리 싸더라도 740불은 간다"고 방송 중 명시. 방송 당시 가격(377달러 대비) 약 +96% 상승 여력을 제시한 것. 익일 단기 목표는 410달러, 전쟁 종결 후 중기 목표는 440~480달러로 언급.
+  </div>
+</div>
+
+<button class="reset-all" onclick="resetAll()">↺ 전체 초기화</button>
+
+<footer>
+  본 시험문제는 투자는인생TV 4월 7일 방송 내용을 기반으로 제작된 학습 자료입니다.<br>
+  투자 결정의 최종 책임은 본인에게 있습니다.
+</footer>
+
+<script>
+const CORRECT_ANSWERS = {
+  1: 'O', 2: 'B', 3: 'O', 4: 'D', 6: 'B', 7: 'X', 8: 'C', 10: 'C'
+};
+let answered = {};
+
+function updateScore() {
+  let s = 0;
+  Object.values(answered).forEach(v => { if (v) s++; });
+  document.getElementById('score').textContent = s;
+}
+
+// MCQ & OX
+document.querySelectorAll('.opt, .ox-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const q = this.dataset.q;
+    if (answered[q] !== undefined) return;
+    const chosen = this.dataset.ans;
+    const correct = CORRECT_ANSWERS[q];
+    const isRight = chosen === correct;
+    answered[q] = isRight;
+
+    // Mark all options in group
+    const group = document.querySelectorAll(`[data-q="${q}"]`);
+    group.forEach(el => {
+      el.classList.add('disabled');
+      if (el.dataset.ans === correct) el.classList.add('correct');
+      else if (el.dataset.ans === chosen && !isRight) el.classList.add('wrong');
+    });
+
+    document.getElementById('exp' + q).classList.add('show');
+    updateScore();
+  });
+});
+
+// Short answer
+function checkSA(qNum, keywords) {
+  if (answered[qNum] !== undefined) return;
+  const input = document.getElementById('sa' + qNum);
+  const val = input.value.trim();
+  if (!val) { input.style.borderColor = '#e11d48'; return; }
+
+  const isRight = val.includes(keywords);
+  answered[qNum] = isRight;
+
+  input.style.borderColor = isRight ? '#16a34a' : '#e11d48';
+  input.disabled = true;
+  const btn = input.nextElementSibling;
+  btn.disabled = true;
+  btn.textContent = isRight ? '✅ 정답!' : '❌ 오답';
+  btn.style.background = isRight ? '#16a34a' : '#6b7280';
+
+  document.getElementById('exp' + qNum).classList.add('show');
+  updateScore();
+}
+
+function resetAll() {
+  answered = {};
+  document.getElementById('score').textContent = '0';
+
+  document.querySelectorAll('.opt, .ox-btn').forEach(el => {
+    el.classList.remove('correct','wrong','disabled');
+  });
+  document.querySelectorAll('.explanation').forEach(el => {
+    el.classList.remove('show');
+  });
+  document.querySelectorAll('.sa-input').forEach(el => {
+    el.value = ''; el.disabled = false;
+    el.style.borderColor = '';
+  });
+  document.querySelectorAll('.sa-submit').forEach(btn => {
+    btn.disabled = false; btn.textContent = '확인';
+    btn.style.background = '';
+  });
+}
+</script>
+</body>
+</html>
