@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>증시 폭락 가능성 증가 — 4월9일 시장 분석</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg: #ffffff;
+    --bg2: #fafafa;
+    --text: #1a1a1a;
+    --sub: #777777;
+    --accent: #e11d48;
+    --accent2: #f43f5e;
+    --border: #e5e5e5;
+    --chart1: #e11d48;
+    --chart2: #1a1a1a;
+    --chart3: #6b7280;
+    --chart4: #2563eb;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: 400;
+    line-height: 1.7;
+    font-size: 15px;
+  }
+
+  /* FADE-IN */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .fade-in.visible { opacity: 1; transform: translateY(0); }
+  .chart-container {
+    position: relative;
+    max-height: 340px;
+  }
+  .chart-container canvas {
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    max-height: 300px;
+  }
+  .chart-container.chart-ready canvas { opacity: 1; }
+
+  /* HEADER */
+  header {
+    background: var(--text);
+    color: #fff;
+    padding: 48px 20px 36px;
+    text-align: center;
+  }
+  .header-label {
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent2);
+    font-weight: 700;
+    margin-bottom: 14px;
+  }
+  header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(26px, 7vw, 40px);
+    font-weight: 900;
+    line-height: 1.2;
+    color: #fff;
+    margin-bottom: 14px;
+  }
+  header h1 em {
+    color: var(--accent2);
+    font-style: italic;
+  }
+  .header-meta {
+    font-size: 12px;
+    color: #aaa;
+    letter-spacing: 1px;
+  }
+  .header-meta span { color: var(--accent2); font-weight: 700; }
+
+  /* ALERT BOX */
+  .alert-bar {
+    background: var(--accent);
+    color: #fff;
+    padding: 14px 20px;
+    font-size: 13px;
+    font-weight: 700;
+    text-align: center;
+    letter-spacing: 0.5px;
+  }
+
+  /* MAIN */
+  main { max-width: 680px; margin: 0 auto; padding: 0 18px 60px; }
+
+  /* SECTION */
+  section { padding: 36px 0; border-bottom: 1px solid var(--border); }
+  section:last-of-type { border-bottom: none; }
+
+  .section-tag {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 10px;
+  }
+  h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(20px, 5vw, 28px);
+    font-weight: 700;
+    line-height: 1.3;
+    color: var(--text);
+    margin-bottom: 16px;
+  }
+  h3 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+    margin: 22px 0 8px;
+    border-left: 3px solid var(--accent);
+    padding-left: 10px;
+  }
+  p { margin-bottom: 12px; color: var(--text); }
+  p:last-child { margin-bottom: 0; }
+
+  /* KICKER QUOTE */
+  .kicker {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    font-style: italic;
+    color: var(--accent);
+    border-left: 4px solid var(--accent);
+    padding: 12px 18px;
+    margin: 20px 0;
+    background: #fff5f7;
+    border-radius: 0 6px 6px 0;
+    line-height: 1.5;
+  }
+
+  /* STAT GRID */
+  .stat-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 20px 0;
+  }
+  .stat-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+    text-align: center;
+  }
+  .stat-card .num {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-weight: 900;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .stat-card .num.up { color: #16a34a; }
+  .stat-card .num.down { color: var(--accent); }
+  .stat-card .label { font-size: 12px; color: var(--sub); font-weight: 500; }
+
+  /* TABLE */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-size: 13px;
+  }
+  thead { background: var(--accent); color: #fff; }
+  thead th { padding: 10px 12px; text-align: left; font-weight: 700; }
+  tbody tr { background: var(--bg2); border-bottom: 1px solid var(--border); }
+  tbody tr:nth-child(even) { background: #fff; }
+  tbody td { padding: 10px 12px; }
+  .tag-bad { color: var(--accent); font-weight: 700; }
+  .tag-good { color: #16a34a; font-weight: 700; }
+  .tag-warn { color: #d97706; font-weight: 700; }
+
+  /* TIMELINE */
+  .timeline { margin: 18px 0; }
+  .tl-item {
+    display: flex;
+    gap: 14px;
+    margin-bottom: 18px;
+    align-items: flex-start;
+  }
+  .tl-dot {
+    min-width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2px;
+  }
+  .tl-dot.neutral { background: var(--chart3); }
+  .tl-dot.good { background: #16a34a; }
+  .tl-body {}
+  .tl-title { font-weight: 700; font-size: 14px; margin-bottom: 4px; }
+  .tl-desc { font-size: 13px; color: var(--sub); }
+
+  /* SIMULATOR */
+  .simulator {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+    margin: 20px 0;
+  }
+  .sim-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .sim-title::before {
+    content: '⚡';
+    font-size: 18px;
+  }
+  .sim-row {
+    margin-bottom: 14px;
+  }
+  .sim-label {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--sub);
+    margin-bottom: 6px;
+    display: flex;
+    justify-content: space-between;
+  }
+  .sim-label span { color: var(--accent); font-size: 14px; font-weight: 900; }
+  input[type=range] {
+    width: 100%;
+    -webkit-appearance: none;
+    height: 6px;
+    border-radius: 3px;
+    background: var(--border);
+    outline: none;
+    cursor: pointer;
+  }
+  input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    background: var(--accent);
+    border-radius: 50%;
+    cursor: pointer;
+  }
+  .sim-result {
+    background: #fff;
+    border: 2px solid var(--accent);
+    border-radius: 8px;
+    padding: 16px;
+    margin-top: 16px;
+    text-align: center;
+  }
+  .sim-result .res-main {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    font-weight: 900;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .sim-result .res-sub { font-size: 12px; color: var(--sub); }
+  .sim-result .res-status { font-size: 13px; font-weight: 700; margin-top: 8px; }
+  .btn-reset {
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 6px 14px;
+    font-size: 12px;
+    font-family: 'Noto Sans KR', sans-serif;
+    cursor: pointer;
+    color: var(--sub);
+    margin-top: 12px;
+    transition: all 0.2s;
+  }
+  .btn-reset:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* SCENARIO CARDS */
+  .scenario-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin: 18px 0;
+  }
+  .sc-card {
+    border-radius: 8px;
+    padding: 16px;
+    border: 1px solid var(--border);
+  }
+  .sc-card.bull { background: #f0fdf4; border-color: #86efac; }
+  .sc-card.bear { background: #fff1f2; border-color: #fda4af; }
+  .sc-card .sc-icon { font-size: 24px; margin-bottom: 8px; }
+  .sc-card .sc-title { font-size: 13px; font-weight: 700; margin-bottom: 6px; }
+  .sc-card .sc-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 900;
+    margin-bottom: 4px;
+  }
+  .bull .sc-num { color: #16a34a; }
+  .bear .sc-num { color: var(--accent); }
+  .sc-card .sc-cond { font-size: 11px; color: var(--sub); }
+
+  /* RISK METER */
+  .risk-meter {
+    margin: 20px 0;
+    background: var(--bg2);
+    border-radius: 8px;
+    padding: 18px;
+    border: 1px solid var(--border);
+  }
+  .risk-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .risk-track {
+    width: 100%;
+    height: 14px;
+    background: linear-gradient(to right, #16a34a, #d97706, #e11d48);
+    border-radius: 7px;
+    position: relative;
+  }
+  .risk-pointer {
+    position: absolute;
+    top: -6px;
+    width: 26px;
+    height: 26px;
+    background: #fff;
+    border: 3px solid var(--text);
+    border-radius: 50%;
+    transform: translateX(-50%);
+    transition: left 0.5s ease;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  }
+
+  /* TAG PILLS */
+  .pill {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 100px;
+    font-size: 11px;
+    font-weight: 700;
+    margin: 2px;
+  }
+  .pill-red { background: #ffe4e6; color: var(--accent); }
+  .pill-green { background: #dcfce7; color: #16a34a; }
+  .pill-gray { background: #f3f4f6; color: #374151; }
+  .pill-blue { background: #dbeafe; color: #2563eb; }
+
+  /* FOOTER */
+  footer {
+    background: var(--text);
+    color: #aaa;
+    text-align: center;
+    padding: 24px 18px;
+    font-size: 12px;
+  }
+  footer a { color: var(--accent2); text-decoration: none; }
+
+  /* TOGGLE BUTTON GROUP */
+  .toggle-group {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+  }
+  .toggle-btn {
+    padding: 6px 14px;
+    border-radius: 100px;
+    border: 1px solid var(--border);
+    background: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    font-family: 'Noto Sans KR', sans-serif;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: var(--sub);
+  }
+  .toggle-btn.active {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+  }
+
+  @media (max-width: 400px) {
+    .stat-grid { grid-template-columns: 1fr; }
+    .scenario-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-label">투자는인생TV · 2026.04.09 방송</div>
+  <h1>또 <em>증시 폭락</em><br>가능성 증가</h1>
+  <div class="header-meta">
+    시장 분석 리포트 &nbsp;|&nbsp; <span>4월 23일이 분수령</span>
+  </div>
+</header>
+
+<div class="alert-bar">
+  ⚠️ 현재 보유 유지 — 단, 2주 내 상황에 따라 테크 30% 이상 현금화 검토 필요
+</div>
+
+<main>
+
+<!-- 1. 현재 시장 상황 -->
+<section>
+  <div class="section-tag fade-in">Market Overview</div>
+  <h2 class="fade-in">3일 연속 폭등,<br>그러나 불안감 공존</h2>
+  <p class="fade-in">방송 시점 기준 미국 증시가 3일째 강하게 반등했습니다. 나스닥은 0.59% 상승에 그쳤지만 방송 호스트의 포트폴리오는 나스닥 대비 더 큰 회복률을 보였습니다. 메타(META)는 3.4%, 마이크론(MU)은 3.63%, 샌디스크(WD)는 당일 9% 상승했습니다.</p>
+
+  <div class="stat-grid">
+    <div class="stat-card fade-in">
+      <div class="num up">+13%</div>
+      <div class="label">YTD 포트폴리오 수익률</div>
+    </div>
+    <div class="stat-card fade-in">
+      <div class="num up">+9%</div>
+      <div class="label">샌디스크 당일 상승</div>
+    </div>
+    <div class="stat-card fade-in">
+      <div class="num down">-15%</div>
+      <div class="label">매그니피선트7 평균 YTD</div>
+    </div>
+    <div class="stat-card fade-in">
+      <div class="num up">+3.4%</div>
+      <div class="label">META 당일 상승</div>
+    </div>
+  </div>
+
+  <div class="kicker fade-in">"나스닥 대비 우리 포트폴리오 회복 속도가 훨씬 빠릅니다. 쌀 때 들어왔으니까."</div>
+
+  <p class="fade-in">단순 비교로 행복해지지 말 것. 1월 본전만 지켰어도 잘한 것이며, YTD 13%는 소프트웨어 중심 투자자들의 -15% 대비 약 28%p 차이의 아웃퍼폼입니다.</p>
+
+  <!-- 차트 1: 섹터별 회복 속도 -->
+  <div class="chart-container fade-in" style="margin-top:20px;">
+    <canvas id="sectorChart" height="220"></canvas>
+  </div>
+</section>
+
+<!-- 2. 소프트웨어·사이버보안 동반 하락 이유 -->
+<section>
+  <div class="section-tag fade-in">Sector Analysis</div>
+  <h2 class="fade-in">소프트웨어·사이버보안이<br>같이 떨어진 4가지 이유</h2>
+
+  <div class="kicker fade-in">"잘못은 한 회사인데 전체가 기합 받는 것. 펀더멘털이 아닌 공포가 만든 하락이다."</div>
+
+  <div class="timeline fade-in">
+    <div class="tl-item">
+      <div class="tl-dot">1</div>
+      <div class="tl-body">
+        <div class="tl-title">AI 기반 보안 기술 발전 → 레거시 솔루션 가치 감소 우려</div>
+        <div class="tl-desc">AI 붐이 오면서 기존 사이버보안 솔루션의 경쟁력이 약화될 수 있다는 시장 우려가 제기되었습니다. 실제 여부는 아직 불확실합니다.</div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot">2</div>
+      <div class="tl-body">
+        <div class="tl-title">민간 신용 시장(Private Credit)의 소프트웨어 리볼빙론 우려</div>
+        <div class="tl-desc">AI 투자를 위해 민간 신용 시장에서 대규모 차입한 소프트웨어 기업들의 비즈니스 모델 지속 가능성에 의구심이 생겼습니다. 뱅킹 업계에서 먼저 우려가 제기되었습니다.</div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot">3</div>
+      <div class="tl-body">
+        <div class="tl-title">2028년 채권 만기 도래 — 대규모 부채 리스크</div>
+        <div class="tl-desc">마진율 60%의 소프트웨어 기업들이 발행한 채권 중 다수의 만기가 2028년. 2년 후지만 시장은 선반영 중. 반토막 가능성도 일부 제기되었으나 현재는 아닌 상황.</div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot">4</div>
+      <div class="tl-body">
+        <div class="tl-title">매크로 환경 악화 — 스태그플레이션 우려</div>
+        <div class="tl-desc">중동(이란·호르무즈 해협) 불안 + PCE 인플레이션 지수 상회. 소프트웨어의 현재 PER이 과도하게 낮아진 상태이지만 매크로 공포가 이를 지배.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3 class="fade-in">CRM·NOW·APP 현재 판단</h3>
+  <table class="fade-in">
+    <thead>
+      <tr><th>종목</th><th>비중 권고</th><th>행동</th><th>이유</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>CRM (Salesforce)</td><td class="tag-warn">5% 미만</td><td>현재 유지·추가매수 금지</td><td>과대 비중이면 축소 필요</td></tr>
+      <tr><td>NOW (ServiceNow)</td><td class="tag-warn">5% 미만</td><td>현재 유지·추가매수 금지</td><td>PER 낮지만 타이밍 아님</td></tr>
+      <tr><td>APP (AppLovin)</td><td class="tag-warn">5% 미만</td><td>2주 내 상황 보고 결정</td><td>소프트웨어 동반 영향</td></tr>
+      <tr><td>소프트웨어 합산</td><td class="tag-bad">10% 이하</td><td>전체 비중 조정 필요</td><td>15%+ 보유 시 축소 필요</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- 3. 일본 금리 인상 리스크 — 핵심 위협 -->
+<section>
+  <div class="section-tag fade-in">Critical Risk</div>
+  <h2 class="fade-in">글로벌 최대 위협:<br>일본 금리 인상 &amp; 엔 캐리 청산</h2>
+
+  <p class="fade-in">우에다 가즈오 일본은행 총재의 <strong>0.25%p 금리 인상 검토</strong> 발언이 나왔습니다. 트럼프의 일본 홀대(진주만 발언 등)로 일본 여론이 미국에 등을 돌리면서, 5월 금리 인상 가능성이 높아졌습니다.</p>
+
+  <div class="kicker fade-in">"작년 7월엔 7~8% 떨어졌다. 이번엔 10% 깨진다. 이미 마음을 작정한 것 같다."</div>
+
+  <h3 class="fade-in">엔 캐리 트레이드 청산 메커니즘</h3>
+  <div class="timeline fade-in">
+    <div class="tl-item">
+      <div class="tl-dot neutral">①</div>
+      <div class="tl-body">
+        <div class="tl-title">일본 금리 매우 낮음 → 엔화 차입 활성화</div>
+        <div class="tl-desc">일본에서 거의 0% 금리로 돈을 빌려 미국 테크주·채권 등 고수익 자산에 투자. 금리 차이(미국 4%)만큼 이익.</div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot">②</div>
+      <div class="tl-body">
+        <div class="tl-title">금리 0.25%p 인상 → 엔화 강세, 차입 비용 증가</div>
+        <div class="tl-desc">엔 캐리 트레이드 수익성 급락. 환율 손실까지 발생하면 포지션 청산이 불가피해집니다.</div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot">③</div>
+      <div class="tl-body">
+        <div class="tl-title">Unwinding — 미국 주식·채권 대규모 매도</div>
+        <div class="tl-desc">청산을 위해 미국 AI 주식, 테크주, 채권, 비트코인까지 동시 매도. 미국 채권이 3%만 빠져도 위험.</div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot" style="background:#7c3aed">④</div>
+      <div class="tl-body">
+        <div class="tl-title">글로벌 주식 시장 변동성 폭발 + 하락</div>
+        <div class="tl-desc">특히 AI·하이테크 주식 직격탄. 현재 경제성장 둔화 + 인플레이션 상승 상황에서 작년보다 충격 훨씬 클 것.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 차트 2: 시나리오별 예상 하락폭 -->
+  <div class="chart-container fade-in" style="margin-top:18px;">
+    <canvas id="scenarioChart" height="220"></canvas>
+  </div>
+
+  <div class="scenario-grid fade-in" style="margin-top:16px;">
+    <div class="sc-card bull">
+      <div class="sc-icon">🟢</div>
+      <div class="sc-title">호르무즈 개방 시나리오</div>
+      <div class="sc-num">+10%</div>
+      <div class="sc-cond">호르무즈 협상 타결 → 기름값 하락 → 금리 인하 기대 상승</div>
+    </div>
+    <div class="sc-card bear">
+      <div class="sc-icon">🔴</div>
+      <div class="sc-title">일본 금리 인상 시나리오</div>
+      <div class="sc-num">-20%</div>
+      <div class="sc-cond">BOJ 0.25%p 인상 → 엔 캐리 청산 → 테크주 급락</div>
+    </div>
+  </div>
+</section>
+
+<!-- 4. 엔 캐리 시뮬레이터 -->
+<section>
+  <div class="section-tag fade-in">Interactive Simulator</div>
+  <h2 class="fade-in">엔 캐리 청산 충격<br>포트폴리오 시뮬레이터</h2>
+  <p class="fade-in">일본 금리 인상 시 내 포트폴리오에 미치는 예상 영향을 계산해 보세요.</p>
+
+  <div class="simulator fade-in">
+    <div class="sim-title">포트폴리오 충격 계산기</div>
+
+    <div class="sim-row">
+      <div class="sim-label">총 포트폴리오 (만원) <span id="totalVal">5,000</span></div>
+      <input type="range" id="totalSlider" min="500" max="50000" step="500" value="5000">
+    </div>
+    <div class="sim-row">
+      <div class="sim-label">테크주 비중 (%) <span id="techRatioVal">60</span>%</div>
+      <input type="range" id="techRatioSlider" min="10" max="100" step="5" value="60">
+    </div>
+    <div class="sim-row">
+      <div class="sim-label">일본 금리 인상폭 (bp) <span id="rateHikeVal">25</span>bp</div>
+      <input type="range" id="rateHikeSlider" min="10" max="50" step="5" value="25">
+    </div>
+
+    <div class="sim-result">
+      <div class="res-main" id="simLoss" style="color:var(--accent)">-0만원</div>
+      <div class="res-sub">테크주 예상 손실 (나스닥 -10% 기준)</div>
+      <div class="res-status" id="simStatus">—</div>
+    </div>
+    <div style="text-align:center">
+      <button class="btn-reset" onclick="resetSim()">↺ 초기화</button>
+    </div>
+  </div>
+</section>
+
+<!-- 5. 투자 타임라인 -->
+<section>
+  <div class="section-tag fade-in">Action Plan</div>
+  <h2 class="fade-in">4월 23일이 분수령:<br>2주 행동 계획</h2>
+
+  <div class="risk-meter fade-in">
+    <div class="risk-label">
+      <span style="color:#16a34a">안전</span>
+      <span style="color:#d97706">주의</span>
+      <span style="color:var(--accent)">위험</span>
+    </div>
+    <div class="risk-track">
+      <div class="risk-pointer" id="riskPointer" style="left:75%"></div>
+    </div>
+    <div style="text-align:center; margin-top:14px; font-size:13px; font-weight:700;">
+      현재 리스크 수준: <span style="color:var(--accent)">높음 (경계)</span>
+    </div>
+  </div>
+
+  <table class="fade-in" style="margin-top:16px;">
+    <thead>
+      <tr><th>시기</th><th>상황</th><th>권고 행동</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>지금</strong><br>(4/9)</td>
+        <td>3일 반등 중</td>
+        <td class="tag-good">현재 유지. 즐길 것</td>
+      </tr>
+      <tr>
+        <td><strong>1주 후</strong><br>(~4/16)</td>
+        <td>이란 협상 진행 관찰</td>
+        <td class="tag-warn">현금 30% 준비 검토 시작</td>
+      </tr>
+      <tr>
+        <td><strong>4/23</strong></td>
+        <td>호르무즈·BOJ 결정 시점</td>
+        <td class="tag-bad">개방 안 되면 테크 30%↑ 매도</td>
+      </tr>
+      <tr>
+        <td><strong>5월 초</strong></td>
+        <td>일본 금리 결정 가능성</td>
+        <td class="tag-bad">인상 시 테크주 40%+ 축소</td>
+      </tr>
+      <tr>
+        <td><strong>6~7월</strong></td>
+        <td>저가 매수 기회</td>
+        <td class="tag-good">바닥 확인 후 단계적 재진입</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="kicker fade-in">"호르무즈가 개방되면 지금보다 10% 오른다. 개방 안 되면 4월 말에 팔아야 한다. 지금은 아니다."</div>
+</section>
+
+<!-- 6. 금리 전망 -->
+<section>
+  <div class="section-tag fade-in">Rate Outlook</div>
+  <h2 class="fade-in">연준 금리 경로 전망<br>2026~2027</h2>
+
+  <p class="fade-in">이란 호르무즈 해협 문제 해결이 선결 조건. 해결 시 연말(12월) 0.25%p 인하 가능성 60~70%.</p>
+
+  <div class="chart-container fade-in">
+    <canvas id="rateChart" height="220"></canvas>
+  </div>
+
+  <table class="fade-in" style="margin-top:14px;">
+    <thead>
+      <tr><th>시기</th><th>예상 금리</th><th>전제 조건</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>현재 (2026 초)</td><td>4.25~4.50%</td><td>현상 유지</td></tr>
+      <tr><td>2026년 말</td><td>3.25~3.50%</td><td>이란 휴전 + 인플레 안정</td></tr>
+      <tr><td>2027년 말</td><td>약 2.75%</td><td>추가 인하 1~2회</td></tr>
+    </tbody>
+  </table>
+
+  <p class="fade-in" style="margin-top:12px;">소프트 랜딩 시나리오: 2027년 말까지 금리 약 2.75% 수준으로 안착. 그러나 이란 전쟁, 일본 금리 인상, 관세 충격이 동시에 오면 경착륙 불가피.</p>
+</section>
+
+<!-- 7. 금융주 실적 일정 -->
+<section>
+  <div class="section-tag fade-in">Earnings Watch</div>
+  <h2 class="fade-in">금융주 1분기 실적 발표:<br>테크주의 방향을 결정한다</h2>
+
+  <p class="fade-in">은행·파이낸셜 섹터의 실적이 좋아야 테크주에 자금을 공급할 수 있습니다. 직접적 연관 관계입니다.</p>
+
+  <div class="toggle-group fade-in" id="bankToggle">
+    <button class="toggle-btn active" onclick="filterBank('all')">전체</button>
+    <button class="toggle-btn" onclick="filterBank('eps')">EPS 성장</button>
+    <button class="toggle-btn" onclick="filterBank('cap')">시총 성장</button>
+  </div>
+
+  <table class="fade-in" id="bankTable">
+    <thead>
+      <tr><th>회사</th><th>실적일</th><th>EPS 전망</th><th>시총 매력도</th></tr>
+    </thead>
+    <tbody>
+      <tr data-type="eps cap"><td><strong>Citibank</strong></td><td>4/14</td><td class="tag-good">★★★ 최상위</td><td class="tag-warn">★★☆</td></tr>
+      <tr data-type="cap"><td><strong>JP Morgan</strong></td><td>4/13</td><td class="tag-warn">★★☆</td><td class="tag-good">★★★ 최상위</td></tr>
+      <tr data-type="eps cap"><td>Wells Fargo</td><td>4/14</td><td class="tag-warn">★★☆</td><td class="tag-warn">★★☆</td></tr>
+      <tr data-type="eps"><td>Goldman Sachs</td><td>4/14</td><td class="tag-warn">★★☆</td><td class="tag-warn">★☆☆</td></tr>
+      <tr data-type="cap"><td>BlackRock</td><td>4월 중</td><td class="tag-warn">★★☆</td><td class="tag-warn">★★☆</td></tr>
+      <tr data-type="cap"><td>Morgan Stanley</td><td>4월 중</td><td class="tag-warn">★☆☆</td><td class="tag-warn">★★☆</td></tr>
+    </tbody>
+  </table>
+
+  <p class="fade-in">호스트 최선호: EPS 성장성 → <strong>Citibank</strong>, 시총 확대 → <strong>JP Morgan</strong>.</p>
+</section>
+
+<!-- 8. 투자 인사이트 -->
+<section>
+  <div class="section-tag fade-in">Key Insights</div>
+  <h2 class="fade-in">핵심 투자 원칙 정리</h2>
+
+  <div class="stat-grid">
+    <div class="stat-card fade-in">
+      <div class="num" style="font-size:20px;color:var(--chart4)">섹터</div>
+      <div class="label">로테이션: 테크↓ 금융·방어주↑</div>
+    </div>
+    <div class="stat-card fade-in">
+      <div class="num" style="font-size:20px;color:#16a34a">현금</div>
+      <div class="label">4월 말 이전 30% 현금 확보 준비</div>
+    </div>
+    <div class="stat-card fade-in">
+      <div class="num" style="font-size:20px;color:var(--accent)">매도</div>
+      <div class="label">에너지주 정리 (WTI $80 이하 전망)</div>
+    </div>
+    <div class="stat-card fade-in">
+      <div class="num" style="font-size:20px;color:#7c3aed">광섬유</div>
+      <div class="label">SpaceX 상장 전 6월 이전 정리</div>
+    </div>
+  </div>
+
+  <h3 class="fade-in">포트폴리오 비중 조절 원칙</h3>
+  <p class="fade-in">
+    <span class="pill pill-red">소프트웨어 10% 이하</span>
+    <span class="pill pill-red">에너지주 정리</span>
+    <span class="pill pill-green">META 중간 비중 유지</span>
+    <span class="pill pill-green">금융주 편입</span>
+    <span class="pill pill-blue">VRT 필수 보유</span>
+    <span class="pill pill-gray">광섬유 6월 전 매도</span>
+  </p>
+
+  <h3 class="fade-in">트럼프 행정부 규제 리스크</h3>
+  <table class="fade-in">
+    <thead><tr><th>이슈</th><th>내용</th><th>영향</th></tr></thead>
+    <tbody>
+      <tr><td>분기실적 보고 의무 완화</td><td>연 1회 보고로 완화 가능성</td><td class="tag-bad">주가 변동성 폭발 위험</td></tr>
+      <tr><td>퇴직연금 암호화폐 투자</td><td>401K → 암호화폐 허용 추진</td><td class="tag-bad">자산 변동성 극대화 위험</td></tr>
+      <tr><td>트럼프 계좌(아동)</td><td>아동 투자계좌 신설 추진</td><td class="tag-warn">실효성 낮음 (기존 529·UTMA 존재)</td></tr>
+    </tbody>
+  </table>
+</section>
+
+</main>
+
+<footer>
+  <p>📺 투자는인생TV · 2026년 4월 9일 방송 기반 분석</p>
+  <p style="margin-top:8px">본 문서는 방송 내용 요약이며 투자 권유가 아닙니다. 모든 투자 결정은 본인 책임입니다.</p>
+</footer>
+
+<script>
+// ─── OBSERVERS ─────────────────────────────────────────────
+const fadeObs = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), i * 80);
+      fadeObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.12 });
+document.querySelectorAll('.fade-in').forEach(el => fadeObs.observe(el));
+
+const chartConfigs = {};
+
+chartConfigs['sectorChart'] = () => {
+  new Chart(document.getElementById('sectorChart'), {
+    type: 'bar',
+    data: {
+      labels: ['커뮤니케이션\n(META)', '파이낸셜\n(JPM)', '나스닥\n평균', '소프트웨어\n(CRM)', '에너지'],
+      datasets: [{
+        label: '최근 회복률(%)',
+        data: [8.2, 6.4, 4.1, -2.3, -3.8],
+        backgroundColor: ['#16a34a','#2563eb','#6b7280','#e11d48','#f87171'],
+        borderRadius: 6,
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display: false },
+        title: { display: true, text: '섹터별 최근 회복세 비교 (추정치)', font: { size: 13 }, color: '#1a1a1a' }
+      },
+      scales: {
+        y: { grid: { color: '#f3f4f6' }, ticks: { callback: v => v + '%' } },
+        x: { grid: { display: false } }
+      }
+    }
+  });
+};
+
+chartConfigs['scenarioChart'] = () => {
+  new Chart(document.getElementById('scenarioChart'), {
+    type: 'bar',
+    data: {
+      labels: ['호르무즈 개방', '현상 유지', '이스라엘 확전', '일본 금리 25bp', '일본 금리 50bp'],
+      datasets: [{
+        label: '테크주 예상 변동(%)',
+        data: [10, 0, -8, -20, -30],
+        backgroundColor: ctx => ctx.raw >= 0 ? '#16a34a' : '#e11d48',
+        borderRadius: 6,
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display: false },
+        title: { display: true, text: '시나리오별 테크주 예상 변동폭', font: { size: 13 }, color: '#1a1a1a' }
+      },
+      scales: {
+        y: { grid: { color: '#f3f4f6' }, ticks: { callback: v => v + '%' } },
+        x: { grid: { display: false }, ticks: { font: { size: 11 } } }
+      }
+    }
+  });
+};
+
+chartConfigs['rateChart'] = () => {
+  new Chart(document.getElementById('rateChart'), {
+    type: 'line',
+    data: {
+      labels: ['현재\n(2026 초)', '2026\n상반기', '2026\n하반기', '2027\n상반기', '2027\n하반기'],
+      datasets: [
+        {
+          label: '이란 해결 시나리오',
+          data: [4.375, 4.375, 3.875, 3.375, 2.75],
+          borderColor: '#16a34a', backgroundColor: 'rgba(22,163,74,0.08)',
+          pointBackgroundColor: '#16a34a', tension: 0.3, fill: true
+        },
+        {
+          label: '이란 미해결 시나리오',
+          data: [4.375, 4.375, 4.375, 4.125, 3.875],
+          borderColor: '#e11d48', backgroundColor: 'rgba(225,29,72,0.06)',
+          pointBackgroundColor: '#e11d48', borderDash: [5,4], tension: 0.3, fill: false
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        title: { display: true, text: '연준 기준금리 전망 경로 (시나리오별)', font: { size: 13 }, color: '#1a1a1a' },
+        legend: { labels: { font: { size: 11 } } }
+      },
+      scales: {
+        y: {
+          min: 2.5, max: 4.75,
+          ticks: { callback: v => v.toFixed(2) + '%' },
+          grid: { color: '#f3f4f6' }
+        },
+        x: { grid: { display: false } }
+      }
+    }
+  });
+};
+
+const chartObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const canvas = e.target.querySelector('canvas');
+      if (canvas && chartConfigs[canvas.id]) {
+        chartConfigs[canvas.id]();
+        e.target.classList.add('chart-ready');
+        chartObs.unobserve(e.target);
+      }
+    }
+  });
+}, { threshold: 0.15 });
+document.querySelectorAll('.chart-container').forEach(el => chartObs.observe(el));
+
+// ─── SIMULATOR ───────────────────────────────────────────
+function calcSim() {
+  const total = parseInt(document.getElementById('totalSlider').value);
+  const techRatio = parseInt(document.getElementById('techRatioSlider').value) / 100;
+  const hikeBp = parseInt(document.getElementById('rateHikeSlider').value);
+  document.getElementById('totalVal').textContent = total.toLocaleString();
+  document.getElementById('techRatioVal').textContent = (techRatio * 100).toFixed(0);
+  document.getElementById('rateHikeVal').textContent = hikeBp;
+  // 25bp → -10%, 50bp → -20% 선형 보간
+  const dropRate = (hikeBp / 25) * 0.10;
+  const techAmt = total * techRatio;
+  const loss = Math.round(techAmt * dropRate);
+  document.getElementById('simLoss').textContent = '-' + loss.toLocaleString() + '만원';
+  const remaining = total - loss;
+  let status = '';
+  if (loss / total > 0.15) status = '⚠️ 포트폴리오 15%+ 손실 — 지금 비중 축소 강력 권고';
+  else if (loss / total > 0.08) status = '🟡 8~15% 손실 범위 — 테크 비중 조정 고려';
+  else status = '🟢 감내 가능 수준 — 현재 비중 유지 가능';
+  document.getElementById('simStatus').textContent = status;
+}
+['totalSlider','techRatioSlider','rateHikeSlider'].forEach(id => {
+  document.getElementById(id).addEventListener('input', calcSim);
+});
+calcSim();
+function resetSim() {
+  document.getElementById('totalSlider').value = 5000;
+  document.getElementById('techRatioSlider').value = 60;
+  document.getElementById('rateHikeSlider').value = 25;
+  calcSim();
+}
+
+// ─── BANK TABLE FILTER ───────────────────────────────────
+function filterBank(type) {
+  document.querySelectorAll('#bankToggle .toggle-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  document.querySelectorAll('#bankTable tbody tr').forEach(row => {
+    if (type === 'all') { row.style.display = ''; return; }
+    const dt = row.getAttribute('data-type') || '';
+    row.style.display = dt.includes(type) ? '' : 'none';
+  });
+}
+</script>
+</body>
+</html>

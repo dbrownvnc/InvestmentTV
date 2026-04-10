@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>퀴즈 — 증시 폭락 가능성 분석 (4월9일)</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #ffffff;
+    --bg2: #fafafa;
+    --text: #1a1a1a;
+    --sub: #777777;
+    --accent: #e11d48;
+    --accent2: #f43f5e;
+    --border: #e5e5e5;
+    --correct: #16a34a;
+    --wrong: #dc2626;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+  }
+  header {
+    background: var(--text);
+    color: #fff;
+    padding: 40px 20px 30px;
+    text-align: center;
+  }
+  .header-label {
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent2);
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+  header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(22px, 6vw, 34px);
+    font-weight: 900;
+    color: #fff;
+    margin-bottom: 10px;
+  }
+  header p { font-size: 13px; color: #aaa; }
+
+  /* PROGRESS */
+  .progress-bar-wrap {
+    background: #e5e5e5;
+    height: 5px;
+  }
+  .progress-bar {
+    height: 5px;
+    background: var(--accent);
+    width: 0%;
+    transition: width 0.4s ease;
+  }
+
+  /* SCOREBOARD */
+  .scoreboard {
+    background: var(--bg2);
+    padding: 14px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  .score-item { text-align: center; }
+  .score-item .num {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 900;
+    line-height: 1;
+  }
+  .score-item .lbl { font-size: 11px; color: var(--sub); font-weight: 500; }
+  .score-item .num.c { color: var(--correct); }
+  .score-item .num.w { color: var(--wrong); }
+  .score-item .num.q { color: var(--accent); }
+
+  /* QUIZ AREA */
+  main { max-width: 660px; margin: 0 auto; padding: 0 18px 80px; }
+
+  .quiz-card {
+    margin: 28px 0;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: box-shadow 0.3s;
+  }
+  .quiz-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.07); }
+  .quiz-header {
+    background: var(--text);
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .quiz-num {
+    background: var(--accent);
+    color: #fff;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .quiz-meta { display: flex; flex-direction: column; gap: 3px; }
+  .quiz-type {
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent2);
+    font-weight: 700;
+  }
+  .quiz-diff {
+    font-size: 11px;
+    color: #aaa;
+  }
+  .quiz-body { padding: 18px; }
+  .quiz-q {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 16px;
+    line-height: 1.6;
+  }
+
+  /* OPTIONS */
+  .options { display: flex; flex-direction: column; gap: 8px; }
+  .opt-btn {
+    width: 100%;
+    text-align: left;
+    padding: 12px 16px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: #fff;
+    font-size: 14px;
+    font-family: 'Noto Sans KR', sans-serif;
+    cursor: pointer;
+    transition: all 0.2s;
+    line-height: 1.5;
+    color: var(--text);
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .opt-btn:hover:not(:disabled) {
+    border-color: var(--accent2);
+    background: #fff5f7;
+  }
+  .opt-btn .opt-key {
+    min-width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--sub);
+    margin-top: 1px;
+  }
+  .opt-btn.correct { background: #f0fdf4; border-color: var(--correct); }
+  .opt-btn.correct .opt-key { background: var(--correct); color: #fff; border-color: var(--correct); }
+  .opt-btn.wrong { background: #fff1f2; border-color: var(--wrong); }
+  .opt-btn.wrong .opt-key { background: var(--wrong); color: #fff; border-color: var(--wrong); }
+  .opt-btn:disabled { cursor: default; }
+
+  /* SHORT ANSWER */
+  .sa-wrap { display: flex; gap: 8px; flex-wrap: wrap; }
+  .sa-input {
+    flex: 1;
+    min-width: 180px;
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: 'Noto Sans KR', sans-serif;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .sa-input:focus { border-color: var(--accent); }
+  .sa-input.correct { border-color: var(--correct); background: #f0fdf4; }
+  .sa-input.wrong { border-color: var(--wrong); background: #fff1f2; }
+  .sa-btn {
+    padding: 10px 18px;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 700;
+    font-family: 'Noto Sans KR', sans-serif;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .sa-btn:hover { background: var(--accent2); }
+  .sa-btn:disabled { background: #ccc; cursor: default; }
+
+  /* OX */
+  .ox-wrap { display: flex; gap: 10px; }
+  .ox-btn {
+    flex: 1;
+    padding: 16px;
+    border-radius: 10px;
+    border: 2px solid var(--border);
+    background: #fff;
+    font-size: 28px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: serif;
+    font-weight: 900;
+  }
+  .ox-btn:hover:not(:disabled) { transform: scale(1.04); border-color: var(--accent); }
+  .ox-btn:disabled { cursor: default; }
+  .ox-btn.correct { background: #f0fdf4; border-color: var(--correct); }
+  .ox-btn.wrong { background: #fff1f2; border-color: var(--wrong); }
+
+  /* FEEDBACK */
+  .feedback {
+    margin-top: 14px;
+    padding: 14px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    line-height: 1.6;
+    display: none;
+  }
+  .feedback.correct-fb { background: #f0fdf4; border-left: 3px solid var(--correct); color: #15803d; }
+  .feedback.wrong-fb { background: #fff1f2; border-left: 3px solid var(--wrong); color: var(--wrong); }
+  .feedback .fb-answer { font-weight: 700; margin-bottom: 4px; }
+  .feedback .fb-explain { color: var(--text); font-size: 13px; margin-top: 6px; }
+
+  /* RESULT */
+  #resultSection {
+    display: none;
+    text-align: center;
+    padding: 40px 18px;
+    max-width: 660px;
+    margin: 0 auto;
+  }
+  #resultSection h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    font-weight: 900;
+    color: var(--text);
+    margin-bottom: 10px;
+  }
+  #resultSection .big-score {
+    font-family: 'Playfair Display', serif;
+    font-size: 72px;
+    font-weight: 900;
+    color: var(--accent);
+    line-height: 1;
+    margin: 20px 0 8px;
+  }
+  #resultSection .grade { font-size: 18px; font-weight: 700; margin-bottom: 20px; }
+  .restart-btn {
+    padding: 14px 32px;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 100px;
+    font-size: 15px;
+    font-weight: 700;
+    font-family: 'Noto Sans KR', sans-serif;
+    cursor: pointer;
+    transition: background 0.2s;
+    margin-top: 20px;
+  }
+  .restart-btn:hover { background: var(--accent2); }
+
+  footer {
+    background: var(--text);
+    color: #aaa;
+    text-align: center;
+    padding: 20px;
+    font-size: 12px;
+    margin-top: 40px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-label">투자는인생TV · 2026.04.09 방송</div>
+  <h1>시장 분석 퀴즈</h1>
+  <p>증시 폭락 가능성 분석 — 10문항으로 핵심 점검</p>
+</header>
+
+<div class="progress-bar-wrap"><div class="progress-bar" id="progressBar"></div></div>
+
+<div class="scoreboard">
+  <div class="score-item">
+    <div class="num q" id="scoreQ">10</div>
+    <div class="lbl">남은 문제</div>
+  </div>
+  <div class="score-item">
+    <div class="num c" id="scoreC">0</div>
+    <div class="lbl">정답</div>
+  </div>
+  <div class="score-item">
+    <div class="num w" id="scoreW">0</div>
+    <div class="lbl">오답</div>
+  </div>
+</div>
+
+<main id="quizMain">
+
+<!-- Q1 -->
+<div class="quiz-card" id="qc1">
+  <div class="quiz-header">
+    <div class="quiz-num">1</div>
+    <div class="quiz-meta">
+      <div class="quiz-type">객관식</div>
+      <div class="quiz-diff">난이도: ⭐ 쉬움</div>
+    </div>
+  </div>
+  <div class="quiz-body">
+    <div class="quiz-q">방송 기준 포트폴리오의 YTD(연초 대비) 수익률은 얼마였나요?</div>
+    <div class="options">
+      <button class="opt-btn" onclick="checkMC(this,1,false)"><span class="opt-key">A</span> 5%</button>
+      <button class="opt-btn" onclick="checkMC(this,1,false)"><span class="opt-key">B</span> 8%</button>
+      <button class="opt-btn" onclick="checkMC(this,1,true)"><span class="opt-key">C</span> 13%</button>
+      <button class="opt-btn" onclick="checkMC(this,1,false)"><span class="opt-key">D</span> 20%</button>
+    </div>
+    <div class="feedback" id="fb1"></div>
+  </div>
+</div>
+
+<!-- Q2 -->
+<div class="quiz-card" id="qc2">
+  <div class="quiz-header">
+    <div class="quiz-num">2</div>
+    <div class="quiz-meta">
+      <div class="quiz-type">OX 문제</div>
+      <div class="quiz-diff">난이도: ⭐ 쉬움</div>
+    </div>
+  </div>
+  <div class="quiz-body">
+    <div class="quiz-q">소프트웨어 섹터의 하락은 기업들의 펀더멘털(실적, 이익) 악화가 주된 원인이다.</div>
+    <div class="ox-wrap">
+      <button class="ox-btn" onclick="checkOX(this,2,false)">O</button>
+      <button class="ox-btn" onclick="checkOX(this,2,true)">X</button>
+    </div>
+    <div class="feedback" id="fb2"></div>
+  </div>
+</div>
+
+<!-- Q3 -->
+<div class="quiz-card" id="qc3">
+  <div class="quiz-header">
+    <div class="quiz-num">3</div>
+    <div class="quiz-meta">
+      <div class="quiz-type">객관식</div>
+      <div class="quiz-diff">난이도: ⭐⭐ 보통</div>
+    </div>
+  </div>
+  <div class="quiz-body">
+    <div class="quiz-q">엔 캐리 트레이드(Yen Carry Trade)란 무엇인가요?</div>
+    <div class="options">
+      <button class="opt-btn" onclick="checkMC(this,3,false)"><span class="opt-key">A</span> 일본 엔화로 일본 주식만 매수하는 전략</button>
+      <button class="opt-btn" onclick="checkMC(this,3,true)"><span class="opt-key">B</span> 금리가 낮은 엔화를 빌려 고수익 해외 자산(미국 테크주 등)에 투자하는 전략</button>
+      <button class="opt-btn" onclick="checkMC(this,3,false)"><span class="opt-key">C</span> 달러를 엔화로 환전하여 일본 국채에 투자하는 전략</button>
+      <button class="opt-btn" onclick="checkMC(this,3,false)"><span class="opt-key">D</span> 일본 중앙은행이 직접 미국 주식을 매수하는 정책</button>
+    </div>
+    <div class="feedback" id="fb3"></div>
+  </div>
+</div>
+
+<!-- Q4 -->
+<div class="quiz-card" id="qc4">
+  <div class="quiz-header">
+    <div class="quiz-num">4</div>
+    <div class="quiz-meta">
+      <div class="quiz-type">단답형</div>
+      <div class="quiz-diff">난이도: ⭐⭐ 보통</div>
+    </div>
+  </div>
+  <div class="quiz-body">
+    <div class="quiz-q">호스트는 일본이 금리를 몇 bp(베이시스 포인트) 인상할 경우 글로벌 주식시장에 큰 충격이 올 것이라고 했나요?</div>
+    <div class="sa-wrap">
+      <input type="text" class="sa-input" id="sa4" placeholder="숫자만 입력 (예: 25)">
+      <button class="sa-btn" onclick="checkSA(4,'25')">제출</button>
+    </div>
+    <div class="feedback" id="fb4"></div>
+  </div>
+</div>
+
+<!-- Q5 -->
+<div class="quiz-card" id="qc5">
+  <div class="quiz-header">
+    <div class="quiz-num">5</div>
+    <div class="quiz-meta">
+      <div class="quiz-type">객관식</div>
+      <div class="quiz-diff">난이도: ⭐⭐ 보통</div>
+    </div>
+  </div>
+  <div class="quiz-body">
+    <div class="quiz-q">은행주(파이낸셜 섹터) 실적이 테크주와 직접적으로 연관된 이유는?</div>
+    <div class="options">
+      <button class="opt-btn" onclick="checkMC(this,5,false)"><span class="opt-key">A</span> 은행과 테크기업이 같은 고객층을 공유하기 때문</button>
+      <button class="opt-btn" onclick="checkMC(this,5,true)"><span class="opt-key">B</span> 은행 실적이 좋아야 테크기업에 자금을 대출·리파이낸싱해 줄 수 있기 때문</button>
+      <button class="opt-btn" onclick="checkMC(this,5,false)"><span class="opt-key">C</span> 테크주와 은행주는 같은 ETF에 묶여 있기 때문</button>
+      <button class="opt-btn" onclick="checkMC(this,5,false)"><span class="opt-key">D</span> 연준이 두 섹터의 주가를 동시에 관리하기 때문</button>
+    </div>
+    <div class="feedback" id="fb5"></div>
+  </div>
+</div>
+
+<!-- Q6 -->
+<div class="quiz-card" id="qc6">
+  <div class="quiz-header">
+    <div class="quiz-num">6</div>
+    <div class="quiz-meta">
+      <div class="quiz-type">OX 문제</div>
+      <div class="quiz-diff">난이도: ⭐⭐ 보통</div>
+    </div>
+  </div>
+  <div class="quiz-body">
+    <div class="quiz-q">호스트는 호르무즈 해협 협상이 타결되면 현재 대비 테크주가 약 10% 추가 상승할 수 있다고 했다.</div>
+    <div class="ox-wrap">
+      <button class="ox-btn" onclick="checkOX(this,6,true)">O</button>
+      <button class="ox-btn" onclick="checkOX(this,6,false)">X</button>
+    </div>
+    <div class="feedback" id="fb6"></div>
+  </div>
+</div>
+
+<!-- Q7 -->
+<div class="quiz-card" id="qc7">
+  <div class="quiz-header">
+    <div class="quiz-num">7</div>
+    <div class="quiz-meta">
+      <div class="quiz-type">객관식</div>
+      <div class="quiz-diff">난이도: ⭐⭐ 보통</div>
+    </div>
+  </div>
+  <div class="quiz-body">
+    <div class="quiz-q">호스트가 파이낸셜 섹터에서 "EPS 성장성 최상위"로 꼽은 종목은?</div>
+    <div class="options">
+      <button class="opt-btn" onclick="checkMC(this,7,false)"><span class="opt-key">A</span> JP Morgan</button>
+      <button class="opt-btn" onclick="checkMC(this,7,false)"><span class="opt-key">B</span> BlackRock</button>
+      <button class="opt-btn" onclick="checkMC(this,7,true)"><span class="opt-key">C</span> Citibank</button>
+      <button class="opt-btn" onclick="checkMC(this,7,false)"><span class="opt-key">D</span> Wells Fargo</button>
+    </div>
+    <div class="feedback" id="fb7"></div>
+  </div>
+</div>
+
+<!-- Q8 -->
+<div class="quiz-card" id="qc8">
+  <div class="quiz-header">
+    <div class="quiz-num">8</div>
+    <div class="quiz-meta">
+      <div class="quiz-type">객관식</div>
+      <div class="quiz-diff">난이도: ⭐⭐⭐ 어려움</div>
+    </div>
+  </div>
+  <div class="quiz-body">
+    <div class="quiz-q">트럼프 행정부의 '분기 실적 보고 의무 완화(연 1회 보고)' 방침이 주식 시장에 미치는 주요 부정적 영향은?</div>
+    <div class="options">
+      <button class="opt-btn" onclick="checkMC(this,8,false)"><span class="opt-key">A</span> 투자자들이 분기마다 바쁘게 결정하지 않아도 되어 시장이 안정된다</button>
+      <button class="opt-btn" onclick="checkMC(this,8,true)"><span class="opt-key">B</span> 문제가 연 1회 발표될 경우 한 번에 20~30% 폭락이 일어날 수 있어 변동성이 극대화된다</button>
+      <button class="opt-btn" onclick="checkMC(this,8,false)"><span class="opt-key">C</span> 기업들이 실적 보고를 줄이면 비용이 절감되어 주가가 오른다</button>
+      <button class="opt-btn" onclick="checkMC(this,8,false)"><span class="opt-key">D</span> 외국인 투자자들이 미국 시장에 더 쉽게 접근할 수 있게 된다</button>
+    </div>
+    <div class="feedback" id="fb8"></div>
+  </div>
+</div>
+
+<!-- Q9 -->
+<div class="quiz-card" id="qc9">
+  <div class="quiz-header">
+    <div class="quiz-num">9</div>
+    <div class="quiz-meta">
+      <div class="quiz-type">단답형</div>
+      <div class="quiz-diff">난이도: ⭐⭐ 보통</div>
+    </div>
+  </div>
+  <div class="quiz-body">
+    <div class="quiz-q">호스트가 "이 날짜까지 상황을 보고 테크주를 30% 이상 현금화할지 결정한다"고 밝힌 날짜는 몇 월 며칠인가요? (4월 ○○일 형식)</div>
+    <div class="sa-wrap">
+      <input type="text" class="sa-input" id="sa9" placeholder="예: 4월 23일">
+      <button class="sa-btn" onclick="checkSA(9,'4월 23일', ['23일','23','4/23'])">제출</button>
+    </div>
+    <div class="feedback" id="fb9"></div>
+  </div>
+</div>
+
+<!-- Q10 -->
+<div class="quiz-card" id="qc10">
+  <div class="quiz-header">
+    <div class="quiz-num">10</div>
+    <div class="quiz-meta">
+      <div class="quiz-type">객관식</div>
+      <div class="quiz-diff">난이도: ⭐⭐⭐ 어려움</div>
+    </div>
+  </div>
+  <div class="quiz-body">
+    <div class="quiz-q">호스트가 "SpaceX 상장 전에 정리하라"고 조언한 섹터/종목 유형은?</div>
+    <div class="options">
+      <button class="opt-btn" onclick="checkMC(this,10,false)"><span class="opt-key">A</span> 반도체 (MU, 샌디스크)</button>
+      <button class="opt-btn" onclick="checkMC(this,10,false)"><span class="opt-key">B</span> 에너지주 (OXY 등)</button>
+      <button class="opt-btn" onclick="checkMC(this,10,true)"><span class="opt-key">C</span> 광섬유 (인터넷 인프라) 관련주</button>
+      <button class="opt-btn" onclick="checkMC(this,10,false)"><span class="opt-key">D</span> 금융주 (JPM, Citi)</button>
+    </div>
+    <div class="feedback" id="fb10"></div>
+  </div>
+</div>
+
+</main>
+
+<!-- RESULT -->
+<div id="resultSection">
+  <div style="font-size:48px; margin-bottom:10px;">🎯</div>
+  <h2>퀴즈 완료!</h2>
+  <div class="big-score" id="finalScore">0</div>
+  <div class="grade" id="finalGrade"></div>
+  <p id="finalMsg" style="color:var(--sub); font-size:14px; max-width:400px; margin:0 auto;"></p>
+  <button class="restart-btn" onclick="restartQuiz()">↺ 다시 풀기</button>
+</div>
+
+<footer>
+  <p>📺 투자는인생TV · 2026년 4월 9일 방송 기반 퀴즈</p>
+  <p style="margin-top:6px">본 퀴즈는 방송 내용 학습을 위한 것이며 투자 권유가 아닙니다.</p>
+</footer>
+
+<script>
+const TOTAL = 10;
+let correct = 0;
+let wrong = 0;
+let answered = new Set();
+
+const feedbacks = {
+  1: { ans: 'C (13%)', exp: '방송 기준 YTD 포트폴리오 수익률은 +13%였습니다. 같은 기간 매그니피선트7 중심 투자자들은 -15% 수준으로 약 28%p 아웃퍼폼.' },
+  2: { ans: 'X (거짓)', exp: '소프트웨어 하락의 주원인은 펀더멘털 악화가 아닌 ①AI 보안 우려 ②민간신용 리스크 ③채권 만기 ④매크로 공포입니다. 즉 외부 환경 공포가 주인입니다.' },
+  3: { ans: 'B', exp: '엔 캐리 트레이드는 낮은 금리(일본 0%대)의 엔화를 빌려 미국 테크주 등 고수익 자산에 투자하는 전략입니다. 금리 인상 시 엔화 강세 → 수익성 급락 → 대규모 청산이 일어납니다.' },
+  4: { ans: '25bp', exp: '0.25%p(= 25 베이시스 포인트) 인상이 핵심 트리거입니다. 작년 7월 같은 인상 시 테크주 7~8% 하락, 이번엔 10%+ 예상.' },
+  5: { ans: 'B', exp: '은행 실적이 좋아야 테크기업에 대출·리파이낸싱을 지원할 수 있기 때문에 금융주와 테크주는 직접 연동됩니다.' },
+  6: { ans: 'O (참)', exp: '호르무즈 해협 개방 → 기름값 하락 → 인플레이션 완화 → 금리 인하 기대 → 테크주 +10% 상승 경로를 제시했습니다.' },
+  7: { ans: 'C (Citibank)', exp: '시총 확대 최우선은 JP Morgan, EPS(주당순이익) 성장률 최우선은 Citibank라고 명시했습니다.' },
+  8: { ans: 'B', exp: '분기 보고 시에는 3~4% 하락 후 회복이 가능하지만, 연 1회 보고(10-K) 시 한꺼번에 20~30% 폭락 가능. 변동성이 극대화되고 숨기고 싶은 것을 숨길 수 있어 투자자 신뢰 훼손.' },
+  9: { ans: '4월 23일', exp: '방송일 기준(4/9)으로부터 2주 뒤인 4월 23일을 결정 시점으로 명시. 그때까지 호르무즈·일본 금리 상황을 보고 테크 30%+ 매도 여부를 결정한다고 했습니다.' },
+  10: { ans: 'C (광섬유 관련주)', exp: 'SpaceX 스타링크(위성 인터넷)가 상장되면 광섬유 기반 인터넷 서비스의 경쟁력이 크게 약화될 것이기 때문에 6월 이전에 광섬유 관련주를 정리하라고 했습니다.' }
+};
+
+function updateUI() {
+  const remaining = TOTAL - answered.size;
+  document.getElementById('scoreQ').textContent = remaining;
+  document.getElementById('scoreC').textContent = correct;
+  document.getElementById('scoreW').textContent = wrong;
+  const pct = (answered.size / TOTAL) * 100;
+  document.getElementById('progressBar').style.width = pct + '%';
+  if (answered.size === TOTAL) setTimeout(showResult, 1200);
+}
+
+function showFeedback(num, isCorrect) {
+  const fb = document.getElementById('fb' + num);
+  const data = feedbacks[num];
+  fb.style.display = 'block';
+  fb.className = 'feedback ' + (isCorrect ? 'correct-fb' : 'wrong-fb');
+  fb.innerHTML = `<div class="fb-answer">${isCorrect ? '✅ 정답!' : '❌ 오답'} — 정답: ${data.ans}</div><div class="fb-explain">${data.exp}</div>`;
+}
+
+function checkMC(btn, num, isCorrect) {
+  if (answered.has(num)) return;
+  answered.add(num);
+  const btns = btn.closest('.options').querySelectorAll('.opt-btn');
+  btns.forEach(b => { b.disabled = true; });
+  if (isCorrect) { btn.classList.add('correct'); correct++; }
+  else { btn.classList.add('wrong'); correct; wrong++; }
+  showFeedback(num, isCorrect);
+  updateUI();
+}
+
+function checkOX(btn, num, isCorrect) {
+  if (answered.has(num)) return;
+  answered.add(num);
+  const btns = btn.closest('.ox-wrap').querySelectorAll('.ox-btn');
+  btns.forEach(b => { b.disabled = true; });
+  if (isCorrect) { btn.classList.add('correct'); correct++; }
+  else { btn.classList.add('wrong'); wrong++; }
+  showFeedback(num, isCorrect);
+  updateUI();
+}
+
+function checkSA(num, answer, aliases) {
+  if (answered.has(num)) return;
+  const inp = document.getElementById('sa' + num);
+  const val = inp.value.trim();
+  if (!val) { inp.focus(); return; }
+  const all = [answer, ...(aliases || [])].map(s => s.toLowerCase().replace(/\s/g,''));
+  const userNorm = val.toLowerCase().replace(/\s/g,'');
+  const isCorrect = all.includes(userNorm);
+  answered.add(num);
+  inp.disabled = true;
+  document.querySelector('#qc' + num + ' .sa-btn').disabled = true;
+  if (isCorrect) { inp.classList.add('correct'); correct++; }
+  else { inp.classList.add('wrong'); wrong++; }
+  showFeedback(num, isCorrect);
+  updateUI();
+}
+
+function showResult() {
+  document.getElementById('quizMain').style.display = 'none';
+  const rs = document.getElementById('resultSection');
+  rs.style.display = 'block';
+  const pct = Math.round((correct / TOTAL) * 100);
+  document.getElementById('finalScore').textContent = correct + ' / ' + TOTAL;
+  let grade, msg;
+  if (correct >= 9) { grade = '🏆 투자 고수!'; msg = '방송 내용을 완벽하게 이해했습니다. 실전 포트폴리오 운용에 바로 적용할 수 있는 수준입니다.'; }
+  else if (correct >= 7) { grade = '📈 우수한 이해력'; msg = '핵심 개념을 잘 파악했습니다. 틀린 문항을 한 번 더 복습하면 완벽해집니다.'; }
+  else if (correct >= 5) { grade = '📚 기초 탄탄'; msg = '기본기는 갖추었습니다. 엔 캐리 트레이드와 시나리오 분석 부분을 추가 학습하세요.'; }
+  else { grade = '🔄 재도전 권장'; msg = '분석 리포트를 다시 한번 읽고 퀴즈를 재도전해 보세요. 반복 학습이 투자 실력을 키웁니다.'; }
+  document.getElementById('finalGrade').textContent = grade;
+  document.getElementById('finalMsg').textContent = msg;
+  rs.scrollIntoView({ behavior: 'smooth' });
+}
+
+function restartQuiz() {
+  correct = 0; wrong = 0; answered.clear();
+  document.getElementById('quizMain').style.display = 'block';
+  document.getElementById('resultSection').style.display = 'none';
+  document.getElementById('progressBar').style.width = '0%';
+  document.getElementById('scoreQ').textContent = TOTAL;
+  document.getElementById('scoreC').textContent = 0;
+  document.getElementById('scoreW').textContent = 0;
+  document.querySelectorAll('.opt-btn').forEach(b => { b.disabled = false; b.className = 'opt-btn'; });
+  document.querySelectorAll('.ox-btn').forEach(b => { b.disabled = false; b.className = 'ox-btn'; });
+  document.querySelectorAll('.sa-input').forEach(i => { i.disabled = false; i.value = ''; i.className = 'sa-input'; });
+  document.querySelectorAll('.sa-btn').forEach(b => { b.disabled = false; });
+  document.querySelectorAll('.feedback').forEach(f => { f.style.display = 'none'; });
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>
