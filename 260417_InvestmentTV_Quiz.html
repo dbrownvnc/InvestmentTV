@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>시험문제 — 4월 16일 미국 증시 분석</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900&family=Source+Serif+4:opsz,wght@8..60,300;8..60,400;8..60,600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #ffffff;
+    --bg2: #fafafa;
+    --text: #1a1a1a;
+    --text2: #777777;
+    --accent: #e11d48;
+    --border: #e5e5e5;
+    --correct: #16a34a;
+    --wrong: #dc2626;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 15px;
+    line-height: 1.75;
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 0 20px 60px;
+  }
+
+  /* Header */
+  .header {
+    border-top: 4px solid var(--accent);
+    padding: 24px 0 18px;
+    margin-bottom: 4px;
+  }
+  .header-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px;
+    font-weight: 900;
+    line-height: 1.1;
+    margin-bottom: 8px;
+  }
+  .header-meta {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--text2);
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 14px;
+    margin-bottom: 6px;
+    display: flex;
+    gap: 16px;
+  }
+
+  /* Score board */
+  .score-board {
+    background: var(--text);
+    color: #fff;
+    padding: 14px 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 16px 0 24px;
+    border-radius: 2px;
+    font-family: 'DM Mono', monospace;
+  }
+  .score-board .sc-label { font-size: 10px; color: #aaa; letter-spacing: 0.12em; text-transform: uppercase; }
+  .score-board .sc-value { font-size: 26px; color: #f43f5e; font-weight: 500; }
+  .score-board .sc-right { text-align: right; }
+
+  /* Question card */
+  .q-card {
+    border: 1px solid var(--border);
+    margin-bottom: 20px;
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .q-head {
+    background: var(--bg2);
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .q-num {
+    background: var(--accent);
+    color: #fff;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    padding: 3px 9px;
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+  .q-meta {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .badge-easy { color: var(--correct); }
+  .badge-med { color: #d97706; }
+  .badge-hard { color: var(--wrong); }
+  .badge-type { color: var(--text2); margin-left: 8px; }
+
+  .q-body { padding: 16px; }
+  .q-text {
+    font-size: 15px;
+    line-height: 1.65;
+    margin-bottom: 14px;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  /* Options */
+  .options { list-style: none; padding: 0; }
+  .options li {
+    margin-bottom: 8px;
+  }
+  .opt-btn {
+    width: 100%;
+    text-align: left;
+    padding: 10px 14px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    cursor: pointer;
+    font-family: 'Source Serif 4', serif;
+    font-size: 14px;
+    color: var(--text);
+    transition: all 0.15s;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    line-height: 1.5;
+  }
+  .opt-btn:hover { border-color: var(--accent); background: #fff5f7; }
+  .opt-btn.correct { background: #f0fdf4; border-color: var(--correct); color: var(--correct); }
+  .opt-btn.wrong { background: #fef2f2; border-color: var(--wrong); color: var(--wrong); }
+  .opt-btn.reveal-correct { background: #f0fdf4; border-color: var(--correct); }
+  .opt-btn:disabled { cursor: default; }
+  .opt-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    background: var(--border);
+    padding: 1px 6px;
+    border-radius: 2px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  /* Short answer / OX */
+  .sa-wrap { margin-top: 4px; }
+  .sa-input {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    font-family: 'Source Serif 4', serif;
+    font-size: 14px;
+    color: var(--text);
+    background: var(--bg);
+    outline: none;
+    transition: border 0.15s;
+  }
+  .sa-input:focus { border-color: var(--accent); }
+  .sa-input.correct { border-color: var(--correct); background: #f0fdf4; }
+  .sa-input.wrong { border-color: var(--wrong); background: #fef2f2; }
+
+  .ox-wrap { display: flex; gap: 10px; margin-top: 4px; }
+  .ox-btn {
+    flex: 1;
+    padding: 10px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s;
+    color: var(--text2);
+  }
+  .ox-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .ox-btn.correct { background: #f0fdf4; border-color: var(--correct); color: var(--correct); }
+  .ox-btn.wrong { background: #fef2f2; border-color: var(--wrong); color: var(--wrong); }
+  .ox-btn.reveal-correct { background: #f0fdf4; border-color: var(--correct); }
+
+  /* Check button */
+  .btn-check {
+    margin-top: 10px;
+    padding: 8px 18px;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 2px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    transition: opacity 0.15s;
+  }
+  .btn-check:hover { opacity: 0.85; }
+
+  /* Answer reveal */
+  .answer-box {
+    margin-top: 12px;
+    padding: 12px 14px;
+    background: #fff5f7;
+    border: 1px solid #fecdd3;
+    border-radius: 2px;
+    display: none;
+  }
+  .answer-box.show { display: block; }
+  .answer-box .ans-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 5px;
+  }
+  .answer-box .ans-text {
+    font-size: 14px;
+    color: var(--text);
+    line-height: 1.6;
+  }
+  .answer-box .ans-text strong { color: var(--accent); }
+
+  /* Status icon */
+  .status-icon { display: none; font-size: 16px; margin-left: auto; }
+  .q-card.answered .status-icon { display: block; }
+
+  /* Progress */
+  .progress-bar {
+    height: 4px;
+    background: var(--border);
+    margin-bottom: 24px;
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 2px;
+    transition: width 0.5s ease;
+    width: 0%;
+  }
+
+  /* Reset */
+  .btn-reset-all {
+    display: block;
+    width: 100%;
+    margin-top: 24px;
+    padding: 12px;
+    background: var(--text);
+    color: #fff;
+    border: none;
+    border-radius: 2px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    cursor: pointer;
+    transition: opacity 0.15s;
+  }
+  .btn-reset-all:hover { opacity: 0.8; }
+
+  .divider { height: 1px; background: var(--border); margin: 28px 0; }
+  .footnote { font-size: 12px; color: var(--text2); font-style: italic; text-align: center; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-label">📝 확인 시험</div>
+  <h1>4월 16일 미국 증시<br>분석 테스트</h1>
+  <div class="header-meta">
+    <span>총 10문제</span>
+    <span>쉬움 3 · 보통 5 · 어려움 2</span>
+    <span>즉시 채점</span>
+  </div>
+</div>
+
+<div class="progress-bar">
+  <div class="progress-fill" id="progressFill"></div>
+</div>
+
+<div class="score-board">
+  <div>
+    <div class="sc-label">현재 점수</div>
+    <div class="sc-value" id="scoreVal">0</div>
+  </div>
+  <div class="sc-right">
+    <div class="sc-label">정답 / 전체</div>
+    <div style="font-size:16px;margin-top:2px;"><span id="correctCount">0</span> / 10</div>
+  </div>
+</div>
+
+<!-- ───────────────── Q1 (쉬움 / 객관식) ───────────────── -->
+<div class="q-card" id="q1">
+  <div class="q-head">
+    <div class="q-num">Q1</div>
+    <div class="q-meta">
+      <span class="badge-easy">● 쉬움</span>
+      <span class="badge-type">객관식</span>
+    </div>
+    <span class="status-icon" id="icon1"></span>
+  </div>
+  <div class="q-body">
+    <div class="q-text">4월 16일 S&P 500이 기록한 장중 최고점은?</div>
+    <ul class="options">
+      <li><button class="opt-btn" onclick="checkMC(1, this, false)"><span class="opt-num">①</span>6,800</button></li>
+      <li><button class="opt-btn" onclick="checkMC(1, this, false)"><span class="opt-num">②</span>6,950</button></li>
+      <li><button class="opt-btn" onclick="checkMC(1, this, true)"><span class="opt-num">③</span>7,048</button></li>
+      <li><button class="opt-btn" onclick="checkMC(1, this, false)"><span class="opt-num">④</span>7,200</button></li>
+    </ul>
+    <div class="answer-box" id="ans1">
+      <div class="ans-label">해설</div>
+      <div class="ans-text">방송에서 "S&P 500 장중 최고점 <strong>7,048</strong>"을 명시했으며, 이는 역대 처음으로 7,000을 돌파한 기록입니다.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ───────────────── Q2 (쉬움 / OX) ───────────────── -->
+<div class="q-card" id="q2">
+  <div class="q-head">
+    <div class="q-num">Q2</div>
+    <div class="q-meta">
+      <span class="badge-easy">● 쉬움</span>
+      <span class="badge-type">OX</span>
+    </div>
+    <span class="status-icon" id="icon2"></span>
+  </div>
+  <div class="q-body">
+    <div class="q-text">4월 16일 기준, S&P 500의 50일 이동평균선(MA)을 상향 돌파한 상태였다.</div>
+    <div class="ox-wrap">
+      <button class="ox-btn" onclick="checkOX(2, this, true)">O</button>
+      <button class="ox-btn" onclick="checkOX(2, this, false)">X</button>
+    </div>
+    <div class="answer-box" id="ans2">
+      <div class="ans-label">해설</div>
+      <div class="ans-text"><strong>O (정답)</strong>. 방송에서 "50일 이동평균선 이틀 전 상향 돌파, 9일 MA도 50일선 상향 돌파"라고 명시했습니다. 이는 중기 상승 추세 진입 신호입니다.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ───────────────── Q3 (쉬움 / 단답형) ───────────────── -->
+<div class="q-card" id="q3">
+  <div class="q-head">
+    <div class="q-num">Q3</div>
+    <div class="q-meta">
+      <span class="badge-easy">● 쉬움</span>
+      <span class="badge-type">단답형</span>
+    </div>
+    <span class="status-icon" id="icon3"></span>
+  </div>
+  <div class="q-body">
+    <div class="q-text">방송에서 언급한 3주 수익률이 가장 높은 종목은?</div>
+    <div class="sa-wrap">
+      <input class="sa-input" id="inp3" type="text" placeholder="종목명 입력...">
+    </div>
+    <button class="btn-check" onclick="checkSA(3, '샌디스크', ['sandisk','SanDisk','샌디스크'])">확인</button>
+    <div class="answer-box" id="ans3">
+      <div class="ans-label">해설</div>
+      <div class="ans-text">정답: <strong>샌디스크 (SanDisk)</strong>. 3주 수익률 <strong>+47%</strong>로 메타(+23%), AMD(+36%), 마이크론(+28%), 테라다인(+22%) 중 최고였습니다.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ───────────────── Q4 (보통 / 객관식) ───────────────── -->
+<div class="q-card" id="q4">
+  <div class="q-head">
+    <div class="q-num">Q4</div>
+    <div class="q-meta">
+      <span class="badge-med">● 보통</span>
+      <span class="badge-type">객관식</span>
+    </div>
+    <span class="status-icon" id="icon4"></span>
+  </div>
+  <div class="q-body">
+    <div class="q-text">방송에서 언급한 "4.1 법칙"에 따르면, 투자 심리가 완전히 풀렸다고 보기 위해 최소 몇 개의 섹터가 상승해야 하는가?</div>
+    <ul class="options">
+      <li><button class="opt-btn" onclick="checkMC(4, this, false)"><span class="opt-num">①</span>4개</button></li>
+      <li><button class="opt-btn" onclick="checkMC(4, this, false)"><span class="opt-num">②</span>5개</button></li>
+      <li><button class="opt-btn" onclick="checkMC(4, this, true)"><span class="opt-num">③</span>7개</button></li>
+      <li><button class="opt-btn" onclick="checkMC(4, this, false)"><span class="opt-num">④</span>11개</button></li>
+    </ul>
+    <div class="answer-box" id="ans4">
+      <div class="ans-label">해설</div>
+      <div class="ans-text">방송에서 "11개 섹터 중 최소 <strong>7개</strong> 이상이 상승해야 투자 심리가 풀렸다고 말할 수 있다"고 했습니다. 4월 16일 기준은 4개만 상승해 아직 일부 집중 상황이었습니다.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ───────────────── Q5 (보통 / OX) ───────────────── -->
+<div class="q-card" id="q5">
+  <div class="q-head">
+    <div class="q-num">Q5</div>
+    <div class="q-meta">
+      <span class="badge-med">● 보통</span>
+      <span class="badge-type">OX</span>
+    </div>
+    <span class="status-icon" id="icon5"></span>
+  </div>
+  <div class="q-body">
+    <div class="q-text">방송 분석에 따르면, 유가 상승과 S&P 500 하락의 상관관계는 앞으로도 강하게 유지될 것이다.</div>
+    <div class="ox-wrap">
+      <button class="ox-btn" onclick="checkOX(5, this, false)">O</button>
+      <button class="ox-btn" onclick="checkOX(5, this, true)">X</button>
+    </div>
+    <div class="answer-box" id="ans5">
+      <div class="ans-label">해설</div>
+      <div class="ans-text"><strong>X (정답)</strong>. 방송에서 "유가와 증시의 역상관관계가 점점 약화되고 있다"고 분석했습니다. 미국 증시의 주요 동력이 AI·기술·금융으로 이동했기 때문입니다.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ───────────────── Q6 (보통 / 객관식) ───────────────── -->
+<div class="q-card" id="q6">
+  <div class="q-head">
+    <div class="q-num">Q6</div>
+    <div class="q-meta">
+      <span class="badge-med">● 보통</span>
+      <span class="badge-type">객관식</span>
+    </div>
+    <span class="status-icon" id="icon6"></span>
+  </div>
+  <div class="q-body">
+    <div class="q-text">방송에서 언급한 "오여 법칙"에서 단기 수익률이 얼마를 초과하면 일부 매도를 고려해야 한다고 했는가?</div>
+    <ul class="options">
+      <li><button class="opt-btn" onclick="checkMC(6, this, false)"><span class="opt-num">①</span>10%</button></li>
+      <li><button class="opt-btn" onclick="checkMC(6, this, false)"><span class="opt-num">②</span>20%</button></li>
+      <li><button class="opt-btn" onclick="checkMC(6, this, true)"><span class="opt-num">③</span>25%</button></li>
+      <li><button class="opt-btn" onclick="checkMC(6, this, false)"><span class="opt-num">④</span>50%</button></li>
+    </ul>
+    <div class="answer-box" id="ans6">
+      <div class="ans-label">해설</div>
+      <div class="ans-text">방송에서 MU(마이크론)가 50% 수익률을 기록한 시청자에게 "<strong>25%를 초과하면 일부 매도</strong>, 25%는 유지"를 권고했습니다. 이를 '오여 법칙'이라 언급했습니다.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ───────────────── Q7 (보통 / 단답형) ───────────────── -->
+<div class="q-card" id="q7">
+  <div class="q-head">
+    <div class="q-num">Q7</div>
+    <div class="q-meta">
+      <span class="badge-med">● 보통</span>
+      <span class="badge-type">단답형</span>
+    </div>
+    <span class="status-icon" id="icon7"></span>
+  </div>
+  <div class="q-body">
+    <div class="q-text">방송에서 4월 29일에 예정된 중요한 이벤트는 무엇인가? (영문 약자 또는 한글 가능)</div>
+    <div class="sa-wrap">
+      <input class="sa-input" id="inp7" type="text" placeholder="입력...">
+    </div>
+    <button class="btn-check" onclick="checkSA(7, 'FOMC', ['fomc','FOMC','연방공개시장위원회','금리회의','연준회의'])">확인</button>
+    <div class="answer-box" id="ans7">
+      <div class="ans-label">해설</div>
+      <div class="ans-text">정답: <strong>FOMC (연방공개시장위원회) 회의</strong>. 방송에서 "4월 29일 FOMC 미팅, 금리 동결 99% 확률"이라고 했으며, 이 회의에서 나오는 발언 내용에 따라 하락장이 올 수도 있다고 경고했습니다.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ───────────────── Q8 (보통 / 객관식) ───────────────── -->
+<div class="q-card" id="q8">
+  <div class="q-head">
+    <div class="q-num">Q8</div>
+    <div class="q-meta">
+      <span class="badge-med">● 보통</span>
+      <span class="badge-type">객관식</span>
+    </div>
+    <span class="status-icon" id="icon8"></span>
+  </div>
+  <div class="q-body">
+    <div class="q-text">방송에서 이번 미국 증시 상승의 핵심 촉매로 가장 먼저 꼽은 것은?</div>
+    <ul class="options">
+      <li><button class="opt-btn" onclick="checkMC(8, this, false)"><span class="opt-num">①</span>테슬라 신칩 발표</button></li>
+      <li><button class="opt-btn" onclick="checkMC(8, this, false)"><span class="opt-num">②</span>AI 관련 스타트업 투자 급증</button></li>
+      <li><button class="opt-btn" onclick="checkMC(8, this, true)"><span class="opt-num">③</span>주요 은행들의 예상치 상회 실적</button></li>
+      <li><button class="opt-btn" onclick="checkMC(8, this, false)"><span class="opt-num">④</span>미국 달러 약세</button></li>
+    </ul>
+    <div class="answer-box" id="ans8">
+      <div class="ans-label">해설</div>
+      <div class="ans-text">방송 핵심 분석: "통계적으로 미국 증시 문제는 은행에서 시작된다. 은행 실적(JP모건·BofA·모건스탠리)이 예상치를 상회하자 <strong>투자 심리가 회복</strong>되며 7,000을 돌파했다."</div>
+    </div>
+  </div>
+</div>
+
+<!-- ───────────────── Q9 (어려움 / 객관식) ───────────────── -->
+<div class="q-card" id="q9">
+  <div class="q-head">
+    <div class="q-num">Q9</div>
+    <div class="q-meta">
+      <span class="badge-hard">● 어려움</span>
+      <span class="badge-type">객관식</span>
+    </div>
+    <span class="status-icon" id="icon9"></span>
+  </div>
+  <div class="q-body">
+    <div class="q-text">방송에서 앤 캐리 트레이드 청산 위험과 관련해 최악의 경우 몇 %까지 하락 가능성이 있다고 언급했는가?</div>
+    <ul class="options">
+      <li><button class="opt-btn" onclick="checkMC(9, this, false)"><span class="opt-num">①</span>2~3%</button></li>
+      <li><button class="opt-btn" onclick="checkMC(9, this, false)"><span class="opt-num">②</span>5%</button></li>
+      <li><button class="opt-btn" onclick="checkMC(9, this, true)"><span class="opt-num">③</span>7% (일부 종목)</span></button></li>
+      <li><button class="opt-btn" onclick="checkMC(9, this, false)"><span class="opt-num">④</span>15%</button></li>
+    </ul>
+    <div class="answer-box" id="ans9">
+      <div class="ans-label">해설</div>
+      <div class="ans-text">방송: "앤 캐리 청산 단행 시 어떤 종목에서는 <strong>7% 정도 하락 가능성</strong>이 있다." 단, 이것이 전체 매도 이유가 아니며 투자 위험 인지 차원이라고 강조했습니다. 조건은 호르무즈 해협이 계속 봉쇄되는 경우입니다.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ───────────────── Q10 (어려움 / 단답형) ───────────────── -->
+<div class="q-card" id="q10">
+  <div class="q-head">
+    <div class="q-num">Q10</div>
+    <div class="q-meta">
+      <span class="badge-hard">● 어려움</span>
+      <span class="badge-type">단답형</span>
+    </div>
+    <span class="status-icon" id="icon10"></span>
+  </div>
+  <div class="q-body">
+    <div class="q-text">방송에서 마이크론(MU)을 저점에서 투자했다고 직접 언급한 금액은 얼마인가? (달러로 답하시오)</div>
+    <div class="sa-wrap">
+      <input class="sa-input" id="inp10" type="text" placeholder="$xxx,xxx">
+    </div>
+    <button class="btn-check" onclick="checkSA(10, '200000', ['200000','$200,000','200,000','20만불','20만달러','이십만달러','이십만불'])">확인</button>
+    <div class="answer-box" id="ans10">
+      <div class="ans-label">해설</div>
+      <div class="ans-text">정답: <strong>$200,000 (20만 달러)</strong>. 방송에서 "마이크론을 $200,000어치 샀다"고 직접 공개했으며, 이후 3주 만에 +28%로 약 $56,000의 수익이 발생했습니다. "20만 주"가 아닌 "20만 불(달러)"임을 방송 중 직접 정정했습니다.</div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<button class="btn-reset-all" onclick="resetAll()">↺ 전체 초기화 후 다시 풀기</button>
+
+<p class="footnote" style="margin-top:16px;">본 문제는 방송 내용을 기반으로 출제되었습니다.</p>
+
+<script>
+let score = 0;
+let answered = 0;
+const total = 10;
+
+function updateScore(correct) {
+  answered++;
+  if (correct) score += 10;
+  document.getElementById('scoreVal').textContent = score;
+  document.getElementById('correctCount').textContent = score / 10;
+  document.getElementById('progressFill').style.width = (answered / total * 100) + '%';
+}
+
+function checkMC(qnum, btn, isCorrect) {
+  const card = document.getElementById('q' + qnum);
+  if (card.classList.contains('answered')) return;
+  card.classList.add('answered');
+
+  const allBtns = card.querySelectorAll('.opt-btn');
+  allBtns.forEach(b => { b.disabled = true; });
+
+  if (isCorrect) {
+    btn.classList.add('correct');
+    document.getElementById('icon' + qnum).textContent = '✅';
+    updateScore(true);
+  } else {
+    btn.classList.add('wrong');
+    document.getElementById('icon' + qnum).textContent = '❌';
+    // Reveal correct answer
+    allBtns.forEach(b => {
+      if (b.onclick.toString().includes('true')) b.classList.add('reveal-correct');
+    });
+    updateScore(false);
+  }
+  document.getElementById('ans' + qnum).classList.add('show');
+}
+
+function checkOX(qnum, btn, isCorrect) {
+  const card = document.getElementById('q' + qnum);
+  if (card.classList.contains('answered')) return;
+  card.classList.add('answered');
+
+  const allBtns = card.querySelectorAll('.ox-btn');
+  allBtns.forEach(b => b.disabled = true);
+
+  if (isCorrect) {
+    btn.classList.add('correct');
+    document.getElementById('icon' + qnum).textContent = '✅';
+    updateScore(true);
+  } else {
+    btn.classList.add('wrong');
+    allBtns.forEach(b => {
+      if (b.onclick.toString().includes('true')) b.classList.add('reveal-correct');
+    });
+    document.getElementById('icon' + qnum).textContent = '❌';
+    updateScore(false);
+  }
+  document.getElementById('ans' + qnum).classList.add('show');
+}
+
+function checkSA(qnum, answer, acceptList) {
+  const card = document.getElementById('q' + qnum);
+  if (card.classList.contains('answered')) return;
+
+  const input = document.getElementById('inp' + qnum);
+  const val = input.value.trim();
+  if (!val) return;
+
+  card.classList.add('answered');
+  input.disabled = true;
+
+  const isCorrect = acceptList.some(a => val.toLowerCase() === a.toLowerCase()) || val === answer;
+
+  if (isCorrect) {
+    input.classList.add('correct');
+    document.getElementById('icon' + qnum).textContent = '✅';
+    updateScore(true);
+  } else {
+    input.classList.add('wrong');
+    document.getElementById('icon' + qnum).textContent = '❌';
+    updateScore(false);
+  }
+  document.getElementById('ans' + qnum).classList.add('show');
+}
+
+function resetAll() {
+  score = 0;
+  answered = 0;
+  document.getElementById('scoreVal').textContent = '0';
+  document.getElementById('correctCount').textContent = '0';
+  document.getElementById('progressFill').style.width = '0%';
+
+  for (let i = 1; i <= 10; i++) {
+    const card = document.getElementById('q' + i);
+    card.classList.remove('answered');
+    card.querySelectorAll('.opt-btn').forEach(b => {
+      b.disabled = false;
+      b.classList.remove('correct','wrong','reveal-correct');
+    });
+    card.querySelectorAll('.ox-btn').forEach(b => {
+      b.disabled = false;
+      b.classList.remove('correct','wrong','reveal-correct');
+    });
+    const inp = document.getElementById('inp' + i);
+    if (inp) { inp.value = ''; inp.disabled = false; inp.classList.remove('correct','wrong'); }
+    document.getElementById('ans' + i).classList.remove('show');
+    document.getElementById('icon' + i).textContent = '';
+  }
+}
+</script>
+</body>
+</html>
