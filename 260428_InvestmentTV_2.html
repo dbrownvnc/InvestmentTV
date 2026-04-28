@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>미증시 포커스 — 5월 4대 투자 리스크 분석</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg: #ffffff;
+    --bg2: #fafafa;
+    --text: #1a1a1a;
+    --text2: #777777;
+    --red: #e11d48;
+    --red2: #f43f5e;
+    --border: #e5e5e5;
+    --blue: #2563eb;
+    --gray: #6b7280;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    font-size: 15px;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    background: var(--text);
+    color: #fff;
+    padding: 48px 20px 36px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 260px; height: 260px;
+    border-radius: 50%;
+    border: 40px solid rgba(225,29,72,.18);
+  }
+  .hero-tag {
+    display: inline-block;
+    background: var(--red);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 2px;
+    margin-bottom: 14px;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(22px, 6vw, 32px);
+    line-height: 1.28;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  .hero h1 em { color: var(--red2); font-style: normal; }
+  .hero-meta {
+    font-size: 12px;
+    color: rgba(255,255,255,.55);
+    letter-spacing: .04em;
+  }
+
+  /* ── LAYOUT ── */
+  .container { max-width: 680px; margin: 0 auto; padding: 0 18px; }
+
+  /* ── SECTION ── */
+  section { padding: 36px 0 28px; border-bottom: 1px solid var(--border); }
+  section:last-child { border-bottom: none; }
+
+  .section-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 14px;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(18px, 5vw, 24px);
+    font-weight: 700;
+    line-height: 1.3;
+    margin-bottom: 14px;
+    color: var(--text);
+  }
+
+  p { color: var(--text); margin-bottom: 12px; font-size: 14.5px; }
+  p:last-child { margin-bottom: 0; }
+
+  /* ── RISK CARDS ── */
+  .risk-grid { display: flex; flex-direction: column; gap: 14px; }
+  .risk-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--red);
+    border-radius: 6px;
+    padding: 16px 18px;
+    position: relative;
+  }
+  .risk-card .risk-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 36px;
+    font-weight: 700;
+    color: rgba(225,29,72,.10);
+    position: absolute;
+    top: 8px; right: 14px;
+    line-height: 1;
+  }
+  .risk-card h3 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--red);
+    margin-bottom: 6px;
+  }
+  .risk-card p { font-size: 13.5px; color: var(--text); margin: 0; }
+
+  /* ── STAT BOXES ── */
+  .stat-row { display: flex; gap: 12px; flex-wrap: wrap; margin: 20px 0; }
+  .stat-box {
+    flex: 1; min-width: 120px;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 14px 12px;
+    text-align: center;
+  }
+  .stat-box .val {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--red);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .stat-box .lbl { font-size: 11.5px; color: var(--text2); }
+
+  /* ── CHART CONTAINER (필수 패턴) ── */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .chart-container {
+    position: relative;
+    max-height: 340px;
+    margin: 20px 0;
+  }
+  .chart-container canvas {
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    max-height: 300px;
+  }
+  .chart-container.chart-ready canvas {
+    opacity: 1;
+  }
+  .chart-title {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text2);
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  /* ── TABLE ── */
+  .tbl-wrap { overflow-x: auto; margin: 16px 0; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    background: var(--bg2);
+  }
+  th {
+    background: var(--red);
+    color: #fff;
+    padding: 9px 10px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: .04em;
+  }
+  td {
+    padding: 8px 10px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+    vertical-align: top;
+  }
+  tr:last-child td { border-bottom: none; }
+  tr:nth-child(even) td { background: #fff; }
+  .up { color: var(--red); font-weight: 700; }
+  .dn { color: var(--blue); font-weight: 700; }
+
+  /* ── HIGHLIGHT BOX ── */
+  .highlight {
+    background: linear-gradient(135deg, #fff1f2, #fafafa);
+    border: 1px solid #fecdd3;
+    border-left: 4px solid var(--red);
+    border-radius: 6px;
+    padding: 14px 16px;
+    margin: 16px 0;
+    font-size: 13.5px;
+  }
+  .highlight strong { color: var(--red); }
+
+  /* ── SIMULATOR ── */
+  .sim-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px 18px;
+    margin-top: 16px;
+  }
+  .sim-card h4 {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    color: var(--text);
+  }
+  .sim-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+  .sim-row label {
+    font-size: 13px;
+    color: var(--text2);
+    width: 120px;
+    flex-shrink: 0;
+  }
+  .sim-row input[type=range] {
+    flex: 1;
+    accent-color: var(--red);
+    cursor: pointer;
+  }
+  .sim-row .val-badge {
+    background: var(--red);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 12px;
+    min-width: 52px;
+    text-align: center;
+  }
+  .sim-result {
+    margin-top: 16px;
+    padding: 14px;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 13.5px;
+  }
+  .sim-result .result-line {
+    display: flex;
+    justify-content: space-between;
+    padding: 4px 0;
+    border-bottom: 1px dashed var(--border);
+  }
+  .sim-result .result-line:last-child { border-bottom: none; }
+  .sim-result .result-line .rv { font-weight: 700; color: var(--red); }
+  .reset-btn {
+    margin-top: 10px;
+    font-size: 12px;
+    color: var(--text2);
+    background: none;
+    border: 1px solid var(--border);
+    padding: 4px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  .reset-btn:hover { border-color: var(--red); color: var(--red); }
+
+  /* ── PHARMA STRATEGY ── */
+  .strategy-list { margin: 12px 0; }
+  .strategy-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px dashed var(--border);
+  }
+  .strategy-item:last-child { border-bottom: none; }
+  .strategy-icon {
+    width: 28px; height: 28px;
+    background: var(--red);
+    color: #fff;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700;
+    flex-shrink: 0;
+  }
+  .strategy-item p { margin: 0; font-size: 13.5px; }
+  .strategy-item strong { color: var(--text); }
+
+  /* ── STOCK TICKER ── */
+  .ticker-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0; }
+  .ticker {
+    display: flex; align-items: center; gap: 6px;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 7px 12px;
+    font-size: 13px;
+  }
+  .ticker .sym { font-weight: 700; font-family: monospace; }
+  .ticker .chg { font-size: 12px; font-weight: 700; }
+  .ticker .chg.pos { color: var(--red); }
+  .ticker .chg.neg { color: var(--blue); }
+
+  /* ── PORTFOLIO PRINCIPLE ── */
+  .principle-box {
+    background: var(--text);
+    color: #fff;
+    border-radius: 8px;
+    padding: 20px 18px;
+    margin: 20px 0;
+  }
+  .principle-box h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 16px;
+    color: var(--red2);
+    margin-bottom: 10px;
+  }
+  .principle-box p { color: rgba(255,255,255,.8); font-size: 13.5px; margin-bottom: 8px; }
+  .principle-box p:last-child { margin-bottom: 0; }
+
+  /* ── QUOTE ── */
+  .quote {
+    border-left: 3px solid var(--red);
+    padding: 12px 16px;
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 15px;
+    color: var(--text);
+    margin: 20px 0;
+    background: var(--bg2);
+  }
+  .quote cite { display: block; font-style: normal; font-size: 12px; color: var(--text2); margin-top: 6px; font-family: 'Noto Sans KR', sans-serif; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--bg2);
+    border-top: 1px solid var(--border);
+    padding: 24px 20px;
+    text-align: center;
+    font-size: 12px;
+    color: var(--text2);
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="container">
+    <div class="hero-tag">📺 투자는인생TV · 미증시 포커스</div>
+    <h1>미리 보는 5월<br><em>4대 투자 리스크</em></h1>
+    <div class="hero-meta">2026년 4월 27일(현지) · 실리콘밸리 현지 촬영 · 분석 리포트</div>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- ── 섹션 1: 5월 4대 리스크 ── -->
+<section>
+  <div class="section-label">COVER STORY</div>
+  <h2>5월 주가 변동성을 키우는<br>4대 핵심 리스크</h2>
+  <p>변동성이 커진다는 의미는 <strong>급등도, 급락도 가능</strong>하다는 뜻입니다. 투자 리스크가 높아질 때는 "다 팔고 나오라"가 아니라 <strong>비중·포트폴리오 조정</strong>이 핵심입니다.</p>
+
+  <div class="risk-grid fade-in">
+    <div class="risk-card">
+      <div class="risk-num">01</div>
+      <h3>🔴 랠리 폭(Breadth) 축소</h3>
+      <p>S&P 500 종목 중 50일 이동평균선 위에 있는 비율이 <strong>60% → 53%</strong>로 하락하며 시장폭이 좁아졌습니다. 메가캡 기술주 중심의 상승은 지속가능성에 대한 우려를 낳습니다. 이동평균 대비 상승폭이 클수록 하락 시 낙폭도 커집니다.</p>
+    </div>
+    <div class="risk-card">
+      <div class="risk-num">02</div>
+      <h3>⚖️ 파월 의장 거취 문제</h3>
+      <p>파월 의장 임기 종료 후 <strong>케빈 월시</strong>가 후임이 될 경우, 친(親)트럼프 성향의 통화정책으로 시장의 신뢰를 잃으면 <strong>폭락장</strong>이 올 수 있다고 경고합니다. 설령 케빈 월시가 취임해도 트럼프 정부와 거리를 유지하지 않으면 큰 리스크입니다.</p>
+    </div>
+    <div class="risk-card">
+      <div class="risk-num">03</div>
+      <h3>💴 엔캐리 트레이드 (Yen Carry)</h3>
+      <p>일본이 인플레이션 대응을 위해 <strong>금리 인상</strong>에 나설 경우 엔캐리 청산 → 미국 주식시장 급락 연쇄 반응이 우려됩니다. 작년 사례: 닛케이 <strong>7% 급락</strong>, 미국 증시 <strong>5% 이상 폭락</strong>. 5월 중 가장 큰 거시 변수로 지목됩니다.</p>
+    </div>
+    <div class="risk-card">
+      <div class="risk-num">04</div>
+      <h3>🛢️ 이란 장기화 + 인플레이션</h3>
+      <p>이란-미국 핵협상 결렬(협상단 방문 취소)로 지정학적 리스크가 장기화될 경우 <strong>유가 상승 → 인플레이션 재점화</strong> 가능성. 미국 원유 재고는 예상 대비 <strong>1,900만 배럴 증가</strong>하여 단기 안전판 역할을 하나, 장기화 시 문제.</p>
+    </div>
+  </div>
+
+  <!-- 차트 1: 리스크 레벨 레이더 -->
+  <div class="chart-title" style="margin-top:24px;">5월 리스크 강도 비교</div>
+  <div class="chart-container fade-in">
+    <canvas id="riskChart" height="240"></canvas>
+  </div>
+</section>
+
+<!-- ── 섹션 2: M7 실적 주간 ── -->
+<section>
+  <div class="section-label">EARNINGS WATCH</div>
+  <h2>이번 주 M7 실적 발표<br>— 시장 최대 변수</h2>
+
+  <div class="stat-row fade-in">
+    <div class="stat-box">
+      <div class="val">84%</div>
+      <div class="lbl">EPS 기대치 상회율<br>(현재까지)</div>
+    </div>
+    <div class="stat-box">
+      <div class="val">81%</div>
+      <div class="lbl">매출 기대치 상회율<br>(현재까지)</div>
+    </div>
+    <div class="stat-box">
+      <div class="val">33%</div>
+      <div class="lbl">이번 주 발표 후<br>누적 완료 비율</div>
+    </div>
+  </div>
+
+  <p>S&P 500 기업 중 현재 <strong>28%</strong>가 실적 발표를 완료했으며, 이번 주 M7 발표 후 <strong>33%</strong>까지 올라갑니다. EPS·매출 모두 역대급 상회율은 미국 경제의 펀더멘털 강세를 반증합니다.</p>
+
+  <div class="highlight">
+    <strong>핵심 경고</strong>: M7(마이크로소프트·메타·구글·아마존 등)의 <strong>자본지출(CapEx) 가이던스</strong>가 기대치에 못 미치면 <strong>단순 1~2% 조정이 아닌 큰 폭의 하락</strong>이 올 수 있습니다. 특히 AI 투자 규모 관련 전망이 핵심입니다.
+  </div>
+
+  <div class="tbl-wrap fade-in">
+    <table>
+      <thead>
+        <tr>
+          <th>요일</th>
+          <th>주요 종목</th>
+          <th>주목 포인트</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>월요일</td>
+          <td>티머스(TMUS)</td>
+          <td class="dn">성장 둔화 조짐 주목</td>
+        </tr>
+        <tr>
+          <td>수요일</td>
+          <td>구글(GOOGL), 마이크로소프트, 아마존, 메타</td>
+          <td>AI CapEx 가이던스 핵심 변수</td>
+        </tr>
+        <tr>
+          <td>목요일</td>
+          <td>애플, 엘리 릴리, 마스터카드, 머크</td>
+          <td>엘리 릴리 비만치료제 매출 주목</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- M7 CapEx 시뮬레이터 -->
+  <div class="sim-card fade-in">
+    <h4>📊 M7 자본지출(CapEx) 충격 시뮬레이터</h4>
+    <p style="font-size:12.5px;color:var(--text2);margin-bottom:14px;">CapEx 가이던스가 기대치 대비 얼마나 빗나갔을 때 주가에 어떤 영향을 줄지 시뮬레이션합니다.</p>
+
+    <div class="sim-row">
+      <label>기대치 대비 편차</label>
+      <input type="range" id="capexSlider" min="-30" max="10" value="-10" step="1">
+      <span class="val-badge" id="capexVal">-10%</span>
+    </div>
+    <div class="sim-row">
+      <label>보유 비중</label>
+      <input type="range" id="weightSlider" min="5" max="60" value="20" step="5">
+      <span class="val-badge" id="weightVal">20%</span>
+    </div>
+    <div class="sim-row">
+      <label>총 포트폴리오(만원)</label>
+      <input type="range" id="portfolioSlider" min="1000" max="50000" value="5000" step="1000">
+      <span class="val-badge" id="portfolioVal">5,000</span>
+    </div>
+
+    <div class="sim-result" id="capexResult"></div>
+    <button class="reset-btn" onclick="resetCapex()">↺ 초기화</button>
+  </div>
+
+  <!-- 차트 2: 실적 상회율 추이 -->
+  <div class="chart-title" style="margin-top:20px;">S&P 500 실적 상회율 (EPS vs 매출)</div>
+  <div class="chart-container fade-in">
+    <canvas id="earningsChart" height="220"></canvas>
+  </div>
+</section>
+
+<!-- ── 섹션 3: 주목 종목 ── -->
+<section>
+  <div class="section-label">STOCK SPOTLIGHT</div>
+  <h2>이번 주 급등·급락 종목</h2>
+
+  <div class="ticker-row fade-in">
+    <div class="ticker"><span class="sym">INTC</span><span class="chg pos">+23%</span></div>
+    <div class="ticker"><span class="sym">ORGN</span><span class="chg pos">+17%</span></div>
+    <div class="ticker"><span class="sym">QCOM-관련</span><span class="chg pos">+9%</span></div>
+    <div class="ticker"><span class="sym">AAPL</span><span class="chg neg">↓우려</span></div>
+    <div class="ticker"><span class="sym">ADBE</span><span class="chg neg">↓경쟁심화</span></div>
+  </div>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead>
+        <tr><th>종목</th><th>등락</th><th>원인</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>인텔(INTC)</td><td class="up">+23%</td><td>AI PC용 CPU 수요 증가 기대</td></tr>
+        <tr><td>오르그인(ORGN)</td><td class="up">+17%</td><td>선파마(SunPharma) 인수합병 소식</td></tr>
+        <tr><td>펄컴(관련주)</td><td class="up">+9%</td><td>OpenAI·메리어탭 스마트 AI칩 개발</td></tr>
+        <tr><td>애플(AAPL)</td><td class="dn">하락 우려</td><td>콜콜 AI 경쟁 심화</td></tr>
+        <tr><td>아도비(ADBE)</td><td class="dn">하락 우려</td><td>AI 경쟁 심화</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="highlight fade-in">
+    <strong>SpaceX IPO 전망</strong>: 시가총액 <strong>$1.5조~$1.73조</strong> 수준으로 상장 시 S&P 500 탑 6~7위권 직행 예상. 나스닥 100 진입까지는 매출 요건 충족이 필요하여 <strong>내후년(2027~) 이후</strong>가 될 전망. 진입 확정 시 단기 급등 후 조정 가능성 동반.
+  </div>
+</section>
+
+<!-- ── 섹션 4: 제약업계 지각변동 ── -->
+<section>
+  <div class="section-label">SECTOR DEEP DIVE</div>
+  <h2>제약업계 대규모 지각변동<br>— 2025~2030 특허 만료 파도</h2>
+
+  <p>IT 섹터의 AI 혁명처럼, 제약업계도 <strong>혁명이 진행 중</strong>입니다. 2025년부터 2030년까지 블록버스터급 약품의 대규모 특허 만료가 예정되어 있습니다.</p>
+
+  <div class="stat-row fade-in">
+    <div class="stat-box">
+      <div class="val">$3,000억</div>
+      <div class="lbl">특허 만료 예상 시장 규모</div>
+    </div>
+    <div class="stat-box">
+      <div class="val">60~70%</div>
+      <div class="lbl">제네릭 전환 시<br>매출 급감폭</div>
+    </div>
+  </div>
+
+  <p><strong>가장 큰 타격 예상 기업</strong>: 브리스톨 마이어(BMS), 파이저(PFE), 머크(MRK)</p>
+
+  <!-- 특허 만료 차트 -->
+  <div class="chart-title" style="margin-top:16px;">제약 업계 특허 만료 → 시장 구도 변화</div>
+  <div class="chart-container fade-in">
+    <canvas id="pharmaChart" height="220"></canvas>
+  </div>
+
+  <p style="margin-top:16px;">대형 제약사들의 <strong>생존 전략 6가지</strong>는 다음과 같습니다:</p>
+
+  <div class="strategy-list fade-in">
+    <div class="strategy-item">
+      <div class="strategy-icon">1</div>
+      <div><p><strong>에버그리닝(Evergreening)</strong> — 특허 연장 전략. 화학구조를 개선하거나 용법을 바꿔 특허 기간을 연장합니다. 대표 사례: Humira(아달리무맙) 등.</p></div>
+    </div>
+    <div class="strategy-item">
+      <div class="strategy-icon">2</div>
+      <div><p><strong>신약 파이프라인 확충</strong> — 머크, 브리스톨 마이어 등이 새로운 블록버스터 신약 개발에 지속 투자.</p></div>
+    </div>
+    <div class="strategy-item">
+      <div class="strategy-icon">3</div>
+      <div><p><strong>바이오시밀러 직접 출시</strong> — 제네릭(화학구조 복제)과 달리, 단백질 기반의 유사 의약품을 자체 출시. 산도즈(Sandoz)가 바이오시밀러 1위.</p></div>
+    </div>
+    <div class="strategy-item">
+      <div class="strategy-icon">4</div>
+      <div><p><strong>제네릭 자체 전환</strong> — 특허 만료 전 자사 제네릭을 먼저 출시. 대표 기업: 비아트리스(Viatris), 테바(Teva).</p></div>
+    </div>
+    <div class="strategy-item">
+      <div class="strategy-icon">5</div>
+      <div><p><strong>M&A·라이선싱</strong> — 유망 파이프라인 기업 인수합병. 최근 '라켓' 인수 사례에서 주가 +60% 급등. 파이저 등 활발히 진행.</p></div>
+    </div>
+    <div class="strategy-item">
+      <div class="strategy-icon">6</div>
+      <div><p><strong>AI 신약 개발·사업 다각화</strong> — AI를 활용한 신약 개발 가속, 비용 구조 개선, 판매 전략 전환.</p></div>
+    </div>
+  </div>
+
+  <div class="highlight" style="margin-top:16px;">
+    <strong>투자 포인트</strong>: 향후 5년 내 제약업계 1~3위 순위 재편 가능성 높음. 1위 기업 주가는 <strong>2~3배</strong> 상승 전망. 지켜볼 기업: 산도즈(Sandoz) 바이오시밀러, 인수합병 타깃 기업들.
+  </div>
+</section>
+
+<!-- ── 섹션 5: 포트폴리오 원칙 ── -->
+<section>
+  <div class="section-label">INVESTMENT STRATEGY</div>
+  <h2>포트폴리오 운용 핵심 원칙</h2>
+
+  <div class="principle-box fade-in">
+    <h4>📌 투자 리스크 대응 원칙</h4>
+    <p>▸ 투자 리스크 상승 = <strong>비중 줄이기</strong> (전량 매도 ✗)</p>
+    <p>▸ 비중 조절 ≠ 전부 매도. 50주 → 40주로 줄이는 것이 비중 조절.</p>
+    <p>▸ 포트폴리오는 살아있는 생명체처럼 — 유동적으로 관리.</p>
+    <p>▸ 자기가 감당할 수 있는 리스크 수준 먼저 선정.</p>
+  </div>
+
+  <!-- 비중 조절 인터랙티브 -->
+  <div class="sim-card fade-in">
+    <h4>💰 포트폴리오 비중 조절 시뮬레이터</h4>
+    <p style="font-size:12.5px;color:var(--text2);margin-bottom:14px;">현재 보유 종목 수와 비중을 조정하면 수익/손실 영향을 확인할 수 있습니다.</p>
+
+    <div class="sim-row">
+      <label>총 투자금 (만원)</label>
+      <input type="range" id="totalSlider" min="1000" max="100000" value="10000" step="1000">
+      <span class="val-badge" id="totalVal">10,000</span>
+    </div>
+    <div class="sim-row">
+      <label>IT 섹터 비중</label>
+      <input type="range" id="itSlider" min="0" max="100" value="40" step="5">
+      <span class="val-badge" id="itVal">40%</span>
+    </div>
+    <div class="sim-row">
+      <label>IT 섹터 등락률</label>
+      <input type="range" id="itReturnSlider" min="-50" max="50" value="-20" step="5">
+      <span class="val-badge" id="itReturnVal">-20%</span>
+    </div>
+
+    <div class="sim-result" id="portfolioResult"></div>
+    <button class="reset-btn" onclick="resetPortfolio()">↺ 초기화</button>
+  </div>
+
+  <div class="tbl-wrap fade-in" style="margin-top:20px;">
+    <table>
+      <thead>
+        <tr><th>법칙 / 원칙</th><th>개념</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>4.1.1 법칙</td><td>매수 비중 분할 원칙 (언급)</td></tr>
+        <tr><td>5.2.5 법칙</td><td>비중 배분 기준 원칙 (언급)</td></tr>
+        <tr><td>종용 포트폴리오</td><td>핵심 종목 집중 비중 운용</td></tr>
+        <tr><td>섹터 로테이션</td><td>유망 섹터로 비중 이동, 과도 비중 축소</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="quote fade-in">
+    "시간을 살 수 없는 돈은 가치가 없고, 자유가 없는 — 자유를 줄 수 없는 돈은 의미가 없다."
+    <cite>— 방송 진행자 (책에서 인용)</cite>
+  </div>
+</section>
+
+<!-- ── 섹션 6: 거시 환경 요약 ── -->
+<section>
+  <div class="section-label">MACRO SUMMARY</div>
+  <h2>현재 거시경제 환경 요약</h2>
+
+  <div class="tbl-wrap fade-in">
+    <table>
+      <thead>
+        <tr><th>지표</th><th>현황</th><th>전망</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>FOMC 금리</td><td>동결 95~96% 예상</td><td>연내 최대 1회 인하 가능</td></tr>
+        <tr><td>인플레이션</td><td>유가 상승으로 재점화 우려</td><td>QT(양적 긴축) 가능성 일부 제기</td></tr>
+        <tr><td>원유 재고</td><td>예상 대비 1,900만 배럴 증가</td><td>단기 안전, 장기 불투명</td></tr>
+        <tr><td>SMB 평균 RSI</td><td>70 → <strong>과매수</strong> 상태</td><td>단기 조정 가능성 경고</td></tr>
+        <tr><td>일본 금리</td><td>동결 시 굿뉴스</td><td>인상 시 엔캐리 청산 위험</td></tr>
+        <tr><td>S&P500·나스닥</td><td>4주 연속 연중 최고치</td><td>이동평균 대비 과도 상승 부담</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+</div><!-- /container -->
+
+<footer>
+  <div>투자는인생TV · 미증시 포커스 분석 리포트 · 2026.04.28</div>
+  <div style="margin-top:6px;">※ 본 문서는 교육 목적 요약이며 투자 권유가 아닙니다. 모든 투자 결정은 본인 책임입니다.</div>
+</footer>
+
+<script>
+/* ─── INTERSECTION OBSERVER (필수 패턴) ─── */
+const fadeObs = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), i * 80);
+      fadeObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.12 });
+document.querySelectorAll('.fade-in').forEach(el => fadeObs.observe(el));
+
+const chartConfigs = {};
+
+chartConfigs['riskChart'] = () => {
+  new Chart(document.getElementById('riskChart'), {
+    type: 'radar',
+    data: {
+      labels: ['랠리 폭 축소', '파월 거취 리스크', '엔캐리 위험', '이란·유가 리스크'],
+      datasets: [{
+        label: '5월 투자 리스크 강도',
+        data: [72, 85, 80, 60],
+        borderColor: '#e11d48',
+        backgroundColor: 'rgba(225,29,72,0.15)',
+        pointBackgroundColor: '#e11d48',
+        pointRadius: 5,
+        borderWidth: 2,
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: true,
+      plugins: { legend: { display: false } },
+      scales: {
+        r: {
+          min: 0, max: 100,
+          ticks: { display: false },
+          pointLabels: {
+            font: { family: 'Noto Sans KR', size: 11 },
+            color: '#1a1a1a'
+          },
+          grid: { color: '#e5e5e5' },
+          angleLines: { color: '#e5e5e5' }
+        }
+      }
+    }
+  });
+};
+
+chartConfigs['earningsChart'] = () => {
+  new Chart(document.getElementById('earningsChart'), {
+    type: 'bar',
+    data: {
+      labels: ['EPS 상회율', '매출 상회율'],
+      datasets: [
+        {
+          label: '2024년 동기',
+          data: [82, 79],
+          backgroundColor: '#6b7280',
+          borderRadius: 4,
+        },
+        {
+          label: '2025년 현재 (28% 발표)',
+          data: [84, 81],
+          backgroundColor: '#e11d48',
+          borderRadius: 4,
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: true,
+      plugins: {
+        legend: { position: 'bottom', labels: { font: { family: 'Noto Sans KR', size: 11 }, boxWidth: 12 } },
+        tooltip: { callbacks: { label: ctx => ` ${ctx.dataset.label}: ${ctx.raw}%` } }
+      },
+      scales: {
+        y: { min: 70, max: 90, ticks: { callback: v => v + '%' }, grid: { color: '#e5e5e5' } },
+        x: { grid: { display: false } }
+      }
+    }
+  });
+};
+
+chartConfigs['pharmaChart'] = () => {
+  new Chart(document.getElementById('pharmaChart'), {
+    type: 'bar',
+    data: {
+      labels: ['브리스톨\n마이어', '파이저', '머크', '엘리 릴리', '산도즈'],
+      datasets: [
+        {
+          label: '특허 만료 타격 예상 (높을수록 위험)',
+          data: [85, 80, 75, 20, 10],
+          backgroundColor: ['#e11d48','#f43f5e','#6b7280','#2563eb','#2563eb'],
+          borderRadius: 4,
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: true,
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: ctx => ` 타격 지수: ${ctx.raw}/100` } }
+      },
+      scales: {
+        y: { min: 0, max: 100, ticks: { callback: v => v }, grid: { color: '#e5e5e5' } },
+        x: { grid: { display: false } }
+      }
+    }
+  });
+};
+
+const chartObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const canvas = e.target.querySelector('canvas');
+      if (canvas && chartConfigs[canvas.id]) {
+        chartConfigs[canvas.id]();
+        e.target.classList.add('chart-ready');
+        chartObs.unobserve(e.target);
+      }
+    }
+  });
+}, { threshold: 0.15 });
+document.querySelectorAll('.chart-container').forEach(el => chartObs.observe(el));
+
+/* ─── CapEx 시뮬레이터 ─── */
+function updateCapex() {
+  const capex = parseInt(document.getElementById('capexSlider').value);
+  const weight = parseInt(document.getElementById('weightSlider').value);
+  const portfolio = parseInt(document.getElementById('portfolioSlider').value);
+
+  document.getElementById('capexVal').textContent = (capex >= 0 ? '+' : '') + capex + '%';
+  document.getElementById('weightVal').textContent = weight + '%';
+  document.getElementById('portfolioVal').textContent = portfolio.toLocaleString();
+
+  const exposure = portfolio * weight / 100;
+  let priceImpact;
+  if (capex >= 0) priceImpact = capex * 0.3;
+  else if (capex >= -10) priceImpact = capex * 1.2;
+  else if (capex >= -20) priceImpact = capex * 1.8;
+  else priceImpact = capex * 2.2;
+
+  const loss = exposure * priceImpact / 100;
+  const totalChange = portfolio * (weight / 100) * priceImpact / 100;
+  const newPortfolio = portfolio + totalChange;
+
+  let sentiment = priceImpact >= 5 ? '🟢 긍정적 반응 예상' :
+                  priceImpact >= -5 ? '🟡 중립 / 혼조' :
+                  priceImpact >= -15 ? '🔴 하락 압력' : '🚨 강한 매도세 경고';
+
+  document.getElementById('capexResult').innerHTML = `
+    <div class="result-line"><span>CapEx 가이던스 편차</span><span class="rv">${capex >= 0 ? '+' : ''}${capex}%</span></div>
+    <div class="result-line"><span>예상 주가 충격</span><span class="rv" style="color:${priceImpact<0?'#2563eb':'var(--red)'}">${priceImpact.toFixed(1)}%</span></div>
+    <div class="result-line"><span>노출 금액</span><span class="rv">${exposure.toLocaleString()}만원</span></div>
+    <div class="result-line"><span>예상 평가손익</span><span class="rv" style="color:${loss<0?'#2563eb':'var(--red)'}">${loss>=0?'+':''}${loss.toFixed(0)}만원</span></div>
+    <div class="result-line"><span>포트폴리오 잔액</span><span class="rv">${newPortfolio.toFixed(0)}만원</span></div>
+    <div class="result-line"><span>시장 반응 전망</span><span>${sentiment}</span></div>
+  `;
+}
+function resetCapex() {
+  document.getElementById('capexSlider').value = -10;
+  document.getElementById('weightSlider').value = 20;
+  document.getElementById('portfolioSlider').value = 5000;
+  updateCapex();
+}
+document.getElementById('capexSlider').addEventListener('input', updateCapex);
+document.getElementById('weightSlider').addEventListener('input', updateCapex);
+document.getElementById('portfolioSlider').addEventListener('input', updateCapex);
+updateCapex();
+
+/* ─── 포트폴리오 비중 시뮬레이터 ─── */
+function updatePortfolio() {
+  const total = parseInt(document.getElementById('totalSlider').value);
+  const it = parseInt(document.getElementById('itSlider').value);
+  const ret = parseInt(document.getElementById('itReturnSlider').value);
+
+  document.getElementById('totalVal').textContent = total.toLocaleString();
+  document.getElementById('itVal').textContent = it + '%';
+  document.getElementById('itReturnVal').textContent = (ret >= 0 ? '+' : '') + ret + '%';
+
+  const itAmount = total * it / 100;
+  const otherAmount = total - itAmount;
+  const itPnl = itAmount * ret / 100;
+  const totalNew = total + itPnl;
+  const pnlRate = (itPnl / total * 100).toFixed(2);
+
+  const recommend = it > 60 ? '⚠️ 과도한 집중 — 비중 축소 권장' :
+                    it > 40 ? '🟡 다소 높음 — 모니터링 필요' :
+                    '✅ 적절한 분산 수준';
+
+  document.getElementById('portfolioResult').innerHTML = `
+    <div class="result-line"><span>IT 섹터 투자금</span><span class="rv">${itAmount.toLocaleString()}만원</span></div>
+    <div class="result-line"><span>기타 자산</span><span class="rv">${otherAmount.toLocaleString()}만원</span></div>
+    <div class="result-line"><span>IT 섹터 손익</span><span class="rv" style="color:${itPnl<0?'#2563eb':'var(--red)'}">${itPnl>=0?'+':''}${itPnl.toFixed(0)}만원</span></div>
+    <div class="result-line"><span>전체 포트폴리오 영향</span><span class="rv" style="color:${pnlRate<0?'#2563eb':'var(--red)'}">${pnlRate}%</span></div>
+    <div class="result-line"><span>포트폴리오 평가액</span><span class="rv">${totalNew.toFixed(0)}만원</span></div>
+    <div class="result-line"><span>비중 진단</span><span>${recommend}</span></div>
+  `;
+}
+function resetPortfolio() {
+  document.getElementById('totalSlider').value = 10000;
+  document.getElementById('itSlider').value = 40;
+  document.getElementById('itReturnSlider').value = -20;
+  updatePortfolio();
+}
+document.getElementById('totalSlider').addEventListener('input', updatePortfolio);
+document.getElementById('itSlider').addEventListener('input', updatePortfolio);
+document.getElementById('itReturnSlider').addEventListener('input', updatePortfolio);
+updatePortfolio();
+</script>
+</body>
+</html>
