@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>4월 30일 멤버 온리 — 30대 기업 추가 분석 리포트</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg: #ffffff;
+    --bg2: #fafafa;
+    --text: #1a1a1a;
+    --text2: #777777;
+    --accent: #e11d48;
+    --accent2: #f43f5e;
+    --blue: #2563eb;
+    --gray: #6b7280;
+    --border: #e5e5e5;
+    --table-head: #e11d48;
+    --table-bg: #fafafa;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 15px;
+    line-height: 1.75;
+  }
+
+  /* HEADER */
+  .masthead {
+    background: var(--text);
+    color: #fff;
+    padding: 36px 20px 28px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .masthead::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 10px,
+      rgba(225,29,72,0.07) 10px,
+      rgba(225,29,72,0.07) 20px
+    );
+  }
+  .masthead-label {
+    font-size: 10px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 700;
+    margin-bottom: 10px;
+    position: relative;
+  }
+  .masthead h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(24px, 7vw, 38px);
+    font-weight: 900;
+    line-height: 1.15;
+    position: relative;
+    margin-bottom: 10px;
+  }
+  .masthead-sub {
+    font-size: 13px;
+    color: rgba(255,255,255,0.55);
+    position: relative;
+  }
+  .masthead-date {
+    display: inline-block;
+    margin-top: 14px;
+    background: var(--accent);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    padding: 4px 14px;
+    position: relative;
+  }
+
+  /* LAYOUT */
+  .container { max-width: 720px; margin: 0 auto; padding: 0 18px; }
+
+  /* SECTION DIVIDER */
+  .section-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 36px 0 16px;
+  }
+  .section-label span {
+    font-size: 9px;
+    letter-spacing: 3.5px;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--accent);
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(20px, 5vw, 26px);
+    font-weight: 700;
+    line-height: 1.25;
+    margin-bottom: 14px;
+    color: var(--text);
+  }
+
+  /* CALLOUT */
+  .callout {
+    border-left: 3px solid var(--accent);
+    background: #fff5f7;
+    padding: 14px 18px;
+    margin: 18px 0;
+    border-radius: 0 6px 6px 0;
+  }
+  .callout strong { color: var(--accent); }
+
+  /* PULL QUOTE */
+  .pull-quote {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: clamp(17px, 4.5vw, 21px);
+    color: var(--text);
+    border-top: 2px solid var(--accent);
+    border-bottom: 2px solid var(--accent);
+    padding: 18px 0;
+    margin: 28px 0;
+    line-height: 1.5;
+  }
+
+  /* CARD */
+  .card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px;
+    margin: 16px 0;
+  }
+  .card-title {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text2);
+    margin-bottom: 12px;
+  }
+
+  /* TABLE */
+  .tbl-wrap { overflow-x: auto; margin: 16px 0; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.5px;
+  }
+  th {
+    background: var(--table-head);
+    color: #fff;
+    padding: 9px 12px;
+    text-align: left;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+  }
+  td {
+    background: var(--table-bg);
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+  }
+  tr:last-child td { border-bottom: none; }
+  .badge-up { color: #16a34a; font-weight: 700; }
+  .badge-down { color: var(--accent); font-weight: 700; }
+  .badge-hold { color: var(--blue); font-weight: 700; }
+
+  /* FADE-IN & CHART */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .fade-in.visible { opacity: 1; transform: translateY(0); }
+  .chart-container {
+    position: relative;
+    max-height: 340px;
+  }
+  .chart-container canvas {
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    max-height: 300px;
+  }
+  .chart-container.chart-ready canvas { opacity: 1; }
+
+  /* STAT GRID */
+  .stat-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 16px 0;
+  }
+  .stat-box {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 14px 16px;
+    text-align: center;
+  }
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(22px, 6vw, 30px);
+    font-weight: 900;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .stat-label { font-size: 11px; color: var(--text2); font-weight: 500; }
+
+  /* SIMULATOR */
+  .sim-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+    margin: 20px 0;
+  }
+  .sim-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 17px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    color: var(--text);
+  }
+  .sim-row { margin-bottom: 14px; }
+  .sim-row label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    color: var(--text2);
+    margin-bottom: 5px;
+  }
+  .sim-row label span { color: var(--accent); font-weight: 700; }
+  input[type=range] {
+    width: 100%;
+    accent-color: var(--accent);
+    cursor: pointer;
+  }
+  .sim-result {
+    background: var(--text);
+    color: #fff;
+    border-radius: 8px;
+    padding: 16px;
+    margin-top: 16px;
+    font-size: 13px;
+    line-height: 1.8;
+  }
+  .sim-result strong { color: var(--accent2); font-size: 18px; }
+  .sim-btn {
+    display: inline-block;
+    margin-top: 12px;
+    padding: 8px 18px;
+    background: transparent;
+    border: 1.5px solid var(--accent);
+    color: var(--accent);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 4px;
+    font-family: 'Noto Sans KR', sans-serif;
+    transition: all 0.2s;
+  }
+  .sim-btn:hover { background: var(--accent); color: #fff; }
+
+  /* TIMELINE */
+  .timeline { margin: 16px 0; }
+  .tl-item {
+    display: flex;
+    gap: 14px;
+    padding-bottom: 18px;
+    position: relative;
+  }
+  .tl-item:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: 14px;
+    top: 30px;
+    bottom: 0;
+    width: 1px;
+    background: var(--border);
+  }
+  .tl-dot {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    margin-top: 1px;
+  }
+  .tl-body { flex: 1; }
+  .tl-body strong { display: block; font-size: 14px; margin-bottom: 3px; color: var(--text); }
+  .tl-body p { font-size: 13px; color: var(--text2); line-height: 1.6; }
+
+  /* TAG */
+  .tag {
+    display: inline-block;
+    padding: 2px 9px;
+    border-radius: 100px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    margin-right: 5px;
+  }
+  .tag-red { background: #ffe4e8; color: var(--accent); }
+  .tag-blue { background: #dbeafe; color: var(--blue); }
+  .tag-gray { background: #f3f4f6; color: var(--gray); }
+  .tag-green { background: #dcfce7; color: #16a34a; }
+
+  /* FOOTER */
+  footer {
+    background: var(--text);
+    color: rgba(255,255,255,0.45);
+    text-align: center;
+    padding: 28px 20px;
+    font-size: 11px;
+    letter-spacing: 1px;
+    margin-top: 60px;
+  }
+  footer strong { color: var(--accent); }
+
+  p { margin-bottom: 10px; color: var(--text); }
+  hr { border: none; border-top: 1px solid var(--border); margin: 28px 0; }
+
+  @media (max-width: 480px) {
+    .stat-grid { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- MASTHEAD -->
+<div class="masthead">
+  <div class="masthead-label">멤버 온리 방송 분석</div>
+  <h1>30대 기업 추가 &<br>미국 증시 전략 리포트</h1>
+  <p class="masthead-sub">변동성 시장에서의 포트폴리오 전략과 신규 종목 분석</p>
+  <div class="masthead-date">2026. 05. 01 기준 · 4월 30일 방송</div>
+</div>
+
+<div class="container">
+
+  <!-- 1. 시장 현황 -->
+  <div class="section-label"><span>Section 01</span></div>
+  <h2 class="section-title fade-in">오늘의 시장 — 혼조세 속 상승 마감</h2>
+
+  <p class="fade-in">이날 미국 증시는 주요 지수 기준으로 상당한 상승세를 기록했습니다. <strong>다우존스가 1.62% 상승</strong>하며 강세를 이끌었고, S&P 500을 비롯한 대형주들도 동반 상승했습니다. 단, 지수 표면만으로는 확인하기 어려운 섹터별 혼조세가 내재해 있습니다.</p>
+
+  <div class="stat-grid fade-in">
+    <div class="stat-box">
+      <div class="stat-num">+1.62%</div>
+      <div class="stat-label">다우존스 상승률</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-num">~2%</div>
+      <div class="stat-label">미국 GDP 성장률</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-num">-0.2%p</div>
+      <div class="stat-label">GDP 예상 대비 차이</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-num">$384</div>
+      <div class="stat-label">알파벳(GOOG) 현재가</div>
+    </div>
+  </div>
+
+  <div class="callout fade-in">
+    <strong>상승의 두 가지 직접 원인</strong><br>
+    ① FOMC 금리 동결 + 파월 의장 이사 잔류 결정으로 정책 불확실성 완화<br>
+    ② S&P 500 구성 기업들의 실적 발표가 예상치를 상회하거나 인라인 수준 달성
+  </div>
+
+  <!-- 2. FOMC & 파월 -->
+  <div class="section-label"><span>Section 02</span></div>
+  <h2 class="section-title fade-in">파월 이사 잔류 — 시장 안정의 신호</h2>
+
+  <p class="fade-in">제롬 파월 연준 의장은 의장 임기 종료(5월 15일) 후에도 <strong>이사(Board Member)로 잔류</strong>하기로 결정했습니다. 차기 의장으로는 친트럼프 성향의 케빈 워시(Kevin Walsh)가 예정돼 있어 시장이 우려했으나, 파월의 이사 잔류로 일정 수준의 정책 균형 기대감이 형성됐습니다.</p>
+
+  <div class="pull-quote fade-in">"파월 연준 덕분에 개인적으로 저도 성장하는 그런 날들이었고, 그분한테 배웠습니다."</div>
+
+  <div class="card fade-in">
+    <div class="card-title">금리 정책 전망</div>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-dot">현</div>
+        <div class="tl-body">
+          <strong>금리 동결 유지</strong>
+          <p>인플레이션 리스크가 단기적으로 존재하며 FOMC 내부적으로도 금리 인하 메시지는 자제</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot">↓</div>
+        <div class="tl-body">
+          <strong>밸런스시트 축소 가능성</strong>
+          <p>금리 인하 없이도 밸런스시트(보유자산) 축소는 진행될 수 있음. 금리 인하와 밸런스시트 축소는 동시 시행 불가</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot">⚠</div>
+        <div class="tl-body">
+          <strong>5월 변동성 확대 예고</strong>
+          <p>케빈 워시 체제 출범 + 실적 시즌 마무리 이후 현금 비중 소폭 확대 권고</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. 종목 현황 -->
+  <div class="section-label"><span>Section 03</span></div>
+  <h2 class="section-title fade-in">핵심 종목 현황 — 목표가 vs 현재가</h2>
+
+  <p class="fade-in">방송에서 언급된 주요 종목의 기관 평균 목표가와 현재가를 정리합니다. 목표가와 현재가의 차이가 클수록 상승 여력이 크지만, 단기 변동성도 그만큼 크다는 점을 유의해야 합니다.</p>
+
+  <div class="chart-container fade-in" style="margin: 20px 0;">
+    <canvas id="priceChart" height="230"></canvas>
+  </div>
+
+  <div class="tbl-wrap fade-in">
+    <table>
+      <thead>
+        <tr>
+          <th>종목</th>
+          <th>현재가</th>
+          <th>목표가(평균)</th>
+          <th>상승여력</th>
+          <th>투자의견</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Meta</strong></td>
+          <td>~$600</td>
+          <td>$810 (기관) / $1,000 (진행자)</td>
+          <td class="badge-up">+35~67%</td>
+          <td><span class="tag tag-green">매수</span></td>
+        </tr>
+        <tr>
+          <td><strong>Alphabet (GOOGL)</strong></td>
+          <td>$384</td>
+          <td>$425 (평균)</td>
+          <td class="badge-hold">+10.7%</td>
+          <td><span class="tag tag-blue">홀드</span></td>
+        </tr>
+        <tr>
+          <td><strong>Sandisk</strong></td>
+          <td>$1,000+</td>
+          <td>스탁스플릿 예상</td>
+          <td class="badge-up">진입 후 +70~80%</td>
+          <td><span class="tag tag-green">보유</span></td>
+        </tr>
+        <tr>
+          <td><strong>Seagate (STX)</strong></td>
+          <td>—</td>
+          <td>DCF $1,061</td>
+          <td class="badge-up">강력</td>
+          <td><span class="tag tag-green">30대 포함</span></td>
+        </tr>
+        <tr>
+          <td><strong>Humana</strong></td>
+          <td>—</td>
+          <td>실적 호조 후 상향</td>
+          <td class="badge-up">양호</td>
+          <td><span class="tag tag-green">30대 포함</span></td>
+        </tr>
+        <tr>
+          <td><strong>Apple</strong></td>
+          <td>—</td>
+          <td>—</td>
+          <td class="badge-down">탈락</td>
+          <td><span class="tag tag-red">투자 제외</span></td>
+        </tr>
+        <tr>
+          <td><strong>Microsoft</strong></td>
+          <td>—</td>
+          <td>—</td>
+          <td class="badge-down">제외</td>
+          <td><span class="tag tag-red">투자 제외</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Meta vs Google 분석 -->
+  <div class="section-label"><span>Section 04</span></div>
+  <h2 class="section-title fade-in">Meta vs Google — 펀더멘털 비교</h2>
+
+  <p class="fade-in">두 테크 대형주 모두 하루에 8~10%의 극단적 변동성을 보이며 시장을 혼란스럽게 했습니다. 방송에서는 단기 주가 움직임을 노이즈로 보고, 펀더멘털(기초체력) 기준으로 판단해야 함을 강조했습니다.</p>
+
+  <div class="chart-container fade-in" style="margin: 20px 0;">
+    <canvas id="compChart" height="220"></canvas>
+  </div>
+
+  <div class="callout fade-in">
+    <strong>핵심 판단 근거:</strong> 메타는 자유현금흐름(Free Cash Flow)이 알파벳보다 훨씬 우수하며, 95%의 기관이 목표가를 상향 조정했습니다. 알파벳은 OpenAI-머스크 법정 분쟁, AI 전략 불확실성 등 변수가 남아 있어 홀드 권고.
+  </div>
+
+  <!-- 4. 신규 종목 — CGA Technology (Seagate) -->
+  <div class="section-label"><span>Section 05</span></div>
+  <h2 class="section-title fade-in">신규 편입 — CGA Technology (Seagate) & HAMR 기술</h2>
+
+  <p class="fade-in">이번 방송의 핵심 신규 편입 종목은 <strong>CGA 테크놀로지(시게이트 계열)</strong>입니다. 과거 저부가가치 HDD 제조사에서, 인도계 CEO의 인수 이후 AI 데이터센터용 고용량 HDD 전문 기업으로 완전히 탈바꿈했습니다.</p>
+
+  <div class="card fade-in">
+    <div class="card-title">HAMR 기술이란?</div>
+    <p style="font-size:13.5px; color: var(--text2); line-height:1.75;">
+      <strong>Heat-Assisted Magnetic Recording (열보조 자기기록)</strong>은 기존 HDD의 물리적 저장 한계를 극복한 차세대 기술입니다.<br><br>
+      레이저로 디스크 표면에 순간적 열을 가하면 자성 입자의 저항이 낮아져 데이터 기록이 쉬워지고, 빠르게 냉각시키면 강한 자기 안정성으로 데이터가 보존됩니다. 마치 <em>"촛농 위에 열을 가한 바늘로 글씨를 새긴 후 굳히는 원리"</em>와 같습니다.
+    </p>
+  </div>
+
+  <div class="chart-container fade-in" style="margin: 20px 0;">
+    <canvas id="epsChart" height="230"></canvas>
+  </div>
+
+  <div class="tbl-wrap fade-in">
+    <table>
+      <thead>
+        <tr><th>지표</th><th>수치</th><th>비고</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>DCF 내재가치</td><td>$1,061</td><td>현 주가 대비 큰 괴리</td></tr>
+        <tr><td>현재 PE</td><td>61</td><td>—</td></tr>
+        <tr><td>선행 PE (Forward)</td><td>45</td><td>이익 증가 반영</td></tr>
+        <tr><td>매출 성장 전망 (2025)</td><td>+39%</td><td>보수적 추정</td></tr>
+        <tr><td>매출 성장 전망 (2026)</td><td>+26%</td><td>—</td></tr>
+        <tr><td>그로스 마진</td><td>43%</td><td>소프트웨어 수준</td></tr>
+        <tr><td>Free Cash Flow</td><td>연 $2.6~3.2B</td><td>지속 개선 중</td></tr>
+        <tr><td>부채 비율 (Net)</td><td>1.1배</td><td>개선 추세</td></tr>
+        <tr><td>기관 보유 비중</td><td>84%</td><td>—</td></tr>
+        <tr><td>EPS 성장 (2025→)</td><td>×8배</td><td>AI 수요 반영</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 포트폴리오 전략 -->
+  <div class="section-label"><span>Section 06</span></div>
+  <h2 class="section-title fade-in">포트폴리오 전략 — 노이즈 캔슬레이션</h2>
+
+  <p class="fade-in">방송 전반에 걸쳐 강조된 핵심 메시지는 <strong>"일희일비 금지 + 포트폴리오 전체로 판단"</strong>입니다. 메가캡 주식조차 하루 8~10% 등락이 일상화된 현재 시장에서, 개별 종목 등락에 감정적으로 반응하는 것은 투자 실패의 가장 큰 원인으로 지목됐습니다.</p>
+
+  <div class="pull-quote fade-in">"같은 투자 리스크인데 변동성이 적거나 올라가는 속도가 빠른 포트폴리오가 좋은 포트폴리오다."</div>
+
+  <div class="card fade-in">
+    <div class="card-title">핵심 투자 원칙 요약</div>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-dot">①</div>
+        <div class="tl-body">
+          <strong>333 법칙</strong>
+          <p>폭락 시 3등분하여 분할 매수. 한 번에 몰빵 금지. 메타가 9.5% 떨어졌을 때 실전 적용.</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot">②</div>
+        <div class="tl-body">
+          <strong>4.11 법칙</strong>
+          <p>30대 기업 그룹 내 하락 폭락 시 추가 매입 원칙. 에너지주는 현재 줄일 시점.</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot">③</div>
+        <div class="tl-body">
+          <strong>종목 수 확대</strong>
+          <p>기존 10개에서 12~13개로 소폭 확대. 예: AMD + 마벨(MRVL) 같은 유사 섹터 내 분산. 5월 변동성 대비.</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot">④</div>
+        <div class="tl-body">
+          <strong>현금 비중 확대</strong>
+          <p>5월 실적 발표 이후 현금 비중 소폭 상향 권고. 너무 낮은 현금 비중은 위험.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 시뮬레이터 -->
+  <div class="section-label"><span>Interactive</span></div>
+  <h2 class="section-title fade-in">포트폴리오 비중 시뮬레이터</h2>
+  <p class="fade-in">내 포트폴리오에서 메타(Meta)가 차지하는 비중을 조절하며 리스크와 기대수익을 가늠해보세요. 방송에서는 목표가 $810을 기준으로 상승여력을 제시했습니다.</p>
+
+  <div class="sim-card fade-in">
+    <div class="sim-title">📊 메타 비중 & 수익 시뮬레이터</div>
+
+    <div class="sim-row">
+      <label>총 투자 자산 <span id="totalVal">$100,000</span></label>
+      <input type="range" id="totalAsset" min="10000" max="500000" step="5000" value="100000">
+    </div>
+    <div class="sim-row">
+      <label>메타 포트폴리오 비중 <span id="metaPct">10%</span></label>
+      <input type="range" id="metaWeight" min="1" max="30" step="1" value="10">
+    </div>
+    <div class="sim-row">
+      <label>메타 목표가 시나리오 <span id="targetScenario">기관 평균 ($810)</span></label>
+      <input type="range" id="targetPrice" min="1" max="3" step="1" value="2">
+    </div>
+
+    <div class="sim-result" id="simResult">
+      계산 중...
+    </div>
+
+    <button class="sim-btn" onclick="resetSim()">↺ 초기화</button>
+  </div>
+
+  <!-- 투자 원칙 — 멘탈 관리 -->
+  <div class="section-label"><span>Section 07</span></div>
+  <h2 class="section-title fade-in">투자와 멘탈 — "감정 노동 하지 마라"</h2>
+
+  <p class="fade-in">방송에서 반복적으로 강조된 또 하나의 메시지는 투자의 심리적 측면입니다. 자신의 투자 성향과 리스크 허용 범위를 정확히 파악하지 않고, 단순히 남을 따라하거나 일일 변동에 감정적으로 반응하는 것이 자산 형성의 가장 큰 장벽이라는 점을 여러 사례로 설명했습니다.</p>
+
+  <div class="callout fade-in">
+    <strong>"1억 있다가 500만 원 떨어지면 부들부들 떠는 사람은 투자해서는 안 됩니다."</strong><br>
+    성향과 리스크 허용 범위를 먼저 파악하라. 욕심은 많지만 변동성을 못 견디는 것은 자기 자신을 모르는 것.
+  </div>
+
+  <!-- 멤버십 철학 -->
+  <div class="section-label"><span>Section 08</span></div>
+  <h2 class="section-title fade-in">신규 멤버 필수 이행 사항</h2>
+
+  <div class="tbl-wrap fade-in">
+    <table>
+      <thead>
+        <tr><th>단계</th><th>필수 사항</th><th>기간</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>1</td><td>투자 아카데미 전편 시청 (40여 편)</td><td>가입 직후</td></tr>
+        <tr><td>2</td><td>30대 기업 그룹 80~90% 파악</td><td>3개월 내</td></tr>
+        <tr><td>3</td><td>과거 방송 복습</td><td>지속적으로</td></tr>
+        <tr><td>4</td><td>1대1 포트폴리오 면담 신청</td><td>3개월 이후</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout fade-in">
+    <strong>공부 없이 포트폴리오 면담을 요청하지 말 것.</strong> 30대 기업 그룹에 1~2개 종목만 보유하거나, 근거 없는 종목을 보유한 채로 오는 경우는 면담 의미가 없음. 최소 3개월 공부 후 신청 권장.
+  </div>
+
+  <!-- 거시경제 인사이트 -->
+  <div class="section-label"><span>Section 09</span></div>
+  <h2 class="section-title fade-in">거시경제 인사이트 — 왜 투자해야 하는가</h2>
+
+  <p class="fade-in">방송은 단순 주식 분석을 넘어, 투자를 해야 하는 근본적 이유를 반복 강조했습니다. <strong>"Everybody is trying to make money, but not many people try to make the money work for me."</strong> — 돈을 버는 것과, 돈이 스스로 일하게 만드는 것은 본질적으로 다릅니다.</p>
+
+  <div class="card fade-in">
+    <div class="card-title">핵심 인사이트</div>
+    <p style="font-size: 13.5px; line-height: 1.8; color: var(--text2);">
+      • 미국 인구의 약 70%가 미국 증시에 직간접 투자 중<br>
+      • 한국은 부동산 중심 자산 편중 + 금융 투자에 대한 부정적 인식이 여전히 강함<br>
+      • 무노동 무임금 원칙만 고수하면 평생 노동에서 벗어날 수 없음<br>
+      • 상속세 60% 수준의 한국 세금 구조는 자산 이전에 심각한 장벽<br>
+      • AI 등장으로 단순 노동의 한계가 명확해진 시대, 자산 소득 필요성 더욱 증대
+    </p>
+  </div>
+
+</div>
+
+<footer>
+  <strong>멤버 온리 방송 분석 리포트</strong> &nbsp;|&nbsp; 4월 30일 방송 기준 &nbsp;|&nbsp; 본 자료는 방송 내용 정리이며 투자 권유가 아닙니다
+</footer>
+
+<script>
+// ── INTERSECTION OBSERVERS ──
+const fadeObs = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), i * 80);
+      fadeObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.12 });
+document.querySelectorAll('.fade-in').forEach(el => fadeObs.observe(el));
+
+const chartConfigs = {};
+
+// Chart 1: 목표가 vs 현재가
+chartConfigs['priceChart'] = () => {
+  new Chart(document.getElementById('priceChart'), {
+    type: 'bar',
+    data: {
+      labels: ['Meta', 'Alphabet(GOOG)', 'Sandisk', 'Seagate(DCF)'],
+      datasets: [
+        {
+          label: '현재가 / 진입가',
+          data: [600, 384, 1000, null],
+          backgroundColor: '#1a1a1a',
+          borderRadius: 4,
+        },
+        {
+          label: '목표가 (기관 평균)',
+          data: [810, 425, null, 1061],
+          backgroundColor: '#e11d48',
+          borderRadius: 4,
+        },
+        {
+          label: '진행자 목표가',
+          data: [1000, null, null, null],
+          backgroundColor: '#f43f5e88',
+          borderRadius: 4,
+          borderWidth: 2,
+          borderColor: '#f43f5e',
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { labels: { font: { family: 'Noto Sans KR', size: 11 }, color: '#1a1a1a' } },
+        tooltip: { callbacks: { label: ctx => ` $${ctx.raw?.toLocaleString() ?? '—'}` } }
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: { callback: v => '$' + v.toLocaleString(), font: { size: 11 } },
+          grid: { color: '#e5e5e5' }
+        },
+        x: { ticks: { font: { size: 11 } }, grid: { display: false } }
+      }
+    }
+  });
+};
+
+// Chart 2: Meta vs Google 비교
+chartConfigs['compChart'] = () => {
+  new Chart(document.getElementById('compChart'), {
+    type: 'radar',
+    data: {
+      labels: ['FCF 강도', '목표가 상승여력', '기관 상향 비율', '변동성(역)', '펀더멘털'],
+      datasets: [
+        {
+          label: 'Meta',
+          data: [90, 85, 95, 60, 90],
+          backgroundColor: 'rgba(225,29,72,0.15)',
+          borderColor: '#e11d48',
+          pointBackgroundColor: '#e11d48',
+          borderWidth: 2,
+        },
+        {
+          label: 'Alphabet',
+          data: [65, 40, 70, 50, 70],
+          backgroundColor: 'rgba(37,99,235,0.1)',
+          borderColor: '#2563eb',
+          pointBackgroundColor: '#2563eb',
+          borderWidth: 2,
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { labels: { font: { family: 'Noto Sans KR', size: 11 }, color: '#1a1a1a' } }
+      },
+      scales: {
+        r: {
+          min: 0, max: 100,
+          ticks: { stepSize: 25, font: { size: 10 }, backdropColor: 'transparent' },
+          grid: { color: '#e5e5e5' },
+          pointLabels: { font: { size: 11, family: 'Noto Sans KR' }, color: '#1a1a1a' }
+        }
+      }
+    }
+  });
+};
+
+// Chart 3: CGA/Seagate EPS 성장
+chartConfigs['epsChart'] = () => {
+  new Chart(document.getElementById('epsChart'), {
+    type: 'line',
+    data: {
+      labels: ['2022', '2023', '2024', '2025E', '2026E', '2027E'],
+      datasets: [{
+        label: 'EPS 추이 (지수화)',
+        data: [1, 0.8, 1.29, 10.3, 14, 17],
+        borderColor: '#e11d48',
+        backgroundColor: 'rgba(225,29,72,0.08)',
+        pointBackgroundColor: '#e11d48',
+        borderWidth: 2.5,
+        fill: true,
+        tension: 0.3,
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { labels: { font: { family: 'Noto Sans KR', size: 11 }, color: '#1a1a1a' } },
+        tooltip: { callbacks: { label: ctx => ` EPS 지수: ${ctx.raw}` } }
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: { font: { size: 11 } },
+          grid: { color: '#e5e5e5' }
+        },
+        x: { ticks: { font: { size: 11 } }, grid: { display: false } }
+      }
+    }
+  });
+};
+
+const chartObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const canvas = e.target.querySelector('canvas');
+      if (canvas && chartConfigs[canvas.id]) {
+        chartConfigs[canvas.id]();
+        e.target.classList.add('chart-ready');
+        chartObs.unobserve(e.target);
+      }
+    }
+  });
+}, { threshold: 0.15 });
+document.querySelectorAll('.chart-container').forEach(el => chartObs.observe(el));
+
+// ── SIMULATOR ──
+const targetLabels = ['보수 시나리오 ($700)', '기관 평균 ($810)', '진행자 목표 ($1,000)'];
+const targetPrices = [700, 810, 1000];
+const currentMeta = 600;
+
+function updateSim() {
+  const total = parseInt(document.getElementById('totalAsset').value);
+  const pct = parseInt(document.getElementById('metaWeight').value);
+  const tIdx = parseInt(document.getElementById('targetPrice').value) - 1;
+
+  document.getElementById('totalVal').textContent = '$' + total.toLocaleString();
+  document.getElementById('metaPct').textContent = pct + '%';
+  document.getElementById('targetScenario').textContent = targetLabels[tIdx];
+
+  const metaInvest = total * pct / 100;
+  const targetP = targetPrices[tIdx];
+  const upside = ((targetP - currentMeta) / currentMeta * 100).toFixed(1);
+  const metaReturn = (metaInvest * (targetP - currentMeta) / currentMeta).toFixed(0);
+  const totalReturn = (total * pct / 100 * (targetP - currentMeta) / currentMeta / total * 100).toFixed(2);
+
+  document.getElementById('simResult').innerHTML = `
+    <div style="margin-bottom:10px;">
+      💼 메타 투자금: <strong>$${parseInt(metaInvest).toLocaleString()}</strong> (전체의 ${pct}%)
+    </div>
+    <div style="margin-bottom:10px;">
+      🎯 목표가 시나리오: <strong>${targetLabels[tIdx]}</strong><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;현재가 $${currentMeta} → 목표 <strong>$${targetP}</strong> (상승여력 ${upside}%)
+    </div>
+    <div style="margin-bottom:10px;">
+      📈 메타 부분 예상 수익: <strong style="color:#f43f5e;">+$${parseInt(metaReturn).toLocaleString()}</strong>
+    </div>
+    <div>
+      💡 전체 포트폴리오 기여 수익률: <strong style="color:#f43f5e;">+${totalReturn}%</strong>
+    </div>
+    <div style="margin-top:12px; padding-top:10px; border-top:1px solid rgba(255,255,255,0.15); font-size:11px; color:rgba(255,255,255,0.5);">
+      ⚠ 목표가는 달성을 보장하지 않습니다. 포트폴리오 내 비중은 본인의 투자 성향에 따라 결정하세요.
+    </div>
+  `;
+}
+
+function resetSim() {
+  document.getElementById('totalAsset').value = 100000;
+  document.getElementById('metaWeight').value = 10;
+  document.getElementById('targetPrice').value = 2;
+  updateSim();
+}
+
+document.getElementById('totalAsset').addEventListener('input', updateSim);
+document.getElementById('metaWeight').addEventListener('input', updateSim);
+document.getElementById('targetPrice').addEventListener('input', updateSim);
+updateSim();
+</script>
+</body>
+</html>
