@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>시장 포커스 — 잔인한 5월 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+  :root {
+    --bg: #ffffff;
+    --bg2: #fafafa;
+    --text: #1a1a1a;
+    --text2: #777777;
+    --accent: #e11d48;
+    --accent2: #f43f5e;
+    --border: #e5e5e5;
+    --chart1: #e11d48;
+    --chart2: #1a1a1a;
+    --chart3: #6b7280;
+    --chart4: #2563eb;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: 400;
+    line-height: 1.7;
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 0 20px 80px;
+  }
+
+  /* HERO */
+  .hero {
+    border-bottom: 3px solid var(--accent);
+    padding: 48px 0 28px;
+    margin-bottom: 36px;
+  }
+  .hero-label {
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(30px, 8vw, 48px);
+    font-weight: 900;
+    line-height: 1.1;
+    color: var(--text);
+    margin-bottom: 16px;
+  }
+  .hero h1 span { color: var(--accent); }
+  .hero-meta {
+    font-size: 12px;
+    color: var(--text2);
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .hero-meta strong { color: var(--text); }
+
+  /* SECTION HEADER */
+  .section-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 40px 0 14px;
+  }
+  .section-label::before {
+    content: '';
+    display: block;
+    width: 4px;
+    height: 20px;
+    background: var(--accent);
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+  .section-label h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  /* TEXT */
+  p {
+    font-size: 14px;
+    color: var(--text);
+    margin-bottom: 14px;
+    line-height: 1.8;
+  }
+  .lead {
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.7;
+    border-left: 3px solid var(--accent);
+    padding-left: 16px;
+    margin-bottom: 20px;
+    color: var(--text);
+  }
+
+  /* CARDS */
+  .card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 14px;
+  }
+  .card-title {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+  .card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 17px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: var(--text);
+  }
+
+  /* STAT GRID */
+  .stat-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .stat-box {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+    text-align: center;
+  }
+  .stat-box.highlight { border-color: var(--accent); }
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-weight: 900;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .stat-label { font-size: 11px; color: var(--text2); line-height: 1.4; }
+
+  /* TABLE */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    margin-bottom: 20px;
+    background: var(--bg2);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  th {
+    background: var(--accent);
+    color: #fff;
+    font-weight: 700;
+    padding: 10px 12px;
+    text-align: left;
+    font-size: 12px;
+  }
+  td {
+    padding: 9px 12px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+  }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: #f0f0f0; }
+  .badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 4px;
+  }
+  .badge.up { background: #dcfce7; color: #16a34a; }
+  .badge.down { background: #fee2e2; color: #dc2626; }
+  .badge.neutral { background: #f3f4f6; color: #6b7280; }
+
+  /* CHART CONTAINER */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .chart-container {
+    position: relative;
+    max-height: 340px;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 20px;
+  }
+  .chart-container canvas {
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    max-height: 300px;
+  }
+  .chart-container.chart-ready canvas { opacity: 1; }
+
+  /* RISK / SIGNAL BOX */
+  .signal-box {
+    border-radius: 8px;
+    padding: 16px 18px;
+    margin-bottom: 14px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .signal-box.warning {
+    background: #fff1f2;
+    border: 1px solid #fecdd3;
+  }
+  .signal-box.safe {
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+  }
+  .signal-box.info {
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+  }
+  .signal-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
+  .signal-content { flex: 1; }
+  .signal-content strong { font-size: 13px; font-weight: 700; display: block; margin-bottom: 4px; }
+  .signal-content p { font-size: 13px; margin-bottom: 0; color: var(--text2); }
+
+  /* DIVIDER */
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 32px 0;
+  }
+
+  /* TICKER ROW */
+  .ticker-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+  }
+  .ticker-row:last-child { border-bottom: none; }
+  .ticker-name { font-weight: 700; }
+  .ticker-detail { color: var(--text2); font-size: 12px; }
+
+  /* INTERACTIVE SLIDER SECTION */
+  .simulator {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+  .simulator h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .simulator p.desc { font-size: 12px; color: var(--text2); margin-bottom: 16px; }
+  .slider-row { margin-bottom: 14px; }
+  .slider-row label { font-size: 12px; color: var(--text2); display: flex; justify-content: space-between; margin-bottom: 6px; }
+  .slider-row label span { font-weight: 700; color: var(--accent); }
+  input[type=range] {
+    width: 100%;
+    accent-color: var(--accent);
+    cursor: pointer;
+    height: 4px;
+  }
+  .sim-result {
+    background: var(--accent);
+    color: #fff;
+    border-radius: 8px;
+    padding: 14px;
+    text-align: center;
+    margin-top: 14px;
+  }
+  .sim-result .big { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 900; }
+  .sim-result .sub { font-size: 12px; opacity: 0.85; margin-top: 2px; }
+  .btn-reset {
+    background: none;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    border-radius: 6px;
+    padding: 6px 14px;
+    font-size: 12px;
+    cursor: pointer;
+    margin-top: 10px;
+    font-family: 'Noto Sans KR', sans-serif;
+  }
+  .btn-reset:hover { background: var(--accent); color: #fff; }
+
+  /* TAG LIST */
+  .tag-list { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
+  .tag {
+    font-size: 11px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    color: var(--text2);
+    font-weight: 500;
+  }
+  .tag.danger { border-color: var(--accent); color: var(--accent); background: #fff1f2; }
+  .tag.safe-tag { border-color: #16a34a; color: #16a34a; background: #f0fdf4; }
+
+  /* FOOTER */
+  .footer {
+    margin-top: 60px;
+    padding-top: 20px;
+    border-top: 3px solid var(--accent);
+    font-size: 11px;
+    color: var(--text2);
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero fade-in">
+  <div class="hero-label">투자는인생 TV · 시장 포커스</div>
+  <h1>잔인한 <span>5월</span>,<br>현명한 투자자의 전략</h1>
+  <div class="hero-meta">
+    <span><strong>2026년 5월 4일</strong> 방송</span>
+    <span><strong>S&P 500 · 나스닥 100</strong> 분석</span>
+    <span><strong>실적 시즌 · 중간선거 · 유가</strong></span>
+  </div>
+</div>
+
+<!-- 핵심 키워드 -->
+<div class="section-label fade-in">
+  <h2>이번 주 핵심 키워드</h2>
+</div>
+<p class="lead fade-in">고유가·금리 불확실성 속에서도 AI 반도체 중심으로 시장이 버티고 있으나, 역사적 패턴상 5월은 약세 가능성이 높은 '조심 구간'이다.</p>
+
+<div class="tag-list fade-in">
+  <span class="tag danger">⚠ 5월 약세장</span>
+  <span class="tag danger">⚠ 유가 $110대</span>
+  <span class="tag danger">⚠ 10년물 4.4%+</span>
+  <span class="tag danger">⚠ 엔 캐리 트레이드 종료</span>
+  <span class="tag danger">⚠ 중간선거 불확실성</span>
+  <span class="tag safe-tag">✓ EPS 성장률 27.1%</span>
+  <span class="tag safe-tag">✓ M7 실적 기대치 초과</span>
+</div>
+
+<hr class="divider">
+
+<!-- 실적 시즌 현황 -->
+<div class="section-label fade-in">
+  <h2>Q1 2026 실적 시즌 현황</h2>
+</div>
+
+<div class="stat-grid fade-in">
+  <div class="stat-box highlight">
+    <div class="stat-num">27.1%</div>
+    <div class="stat-label">Blended EPS 성장률<br><strong>4년 만의 최고 수준</strong></div>
+  </div>
+  <div class="stat-box">
+    <div class="stat-num">63%</div>
+    <div class="stat-label">S&P 500 기업 중<br>실적 발표 완료 비율</div>
+  </div>
+  <div class="stat-box">
+    <div class="stat-num">75%</div>
+    <div class="stat-label">이번 주 이후<br>예상 발표 누적 비율</div>
+  </div>
+  <div class="stat-box">
+    <div class="stat-num">5개</div>
+    <div class="stat-label">M7 중<br>발표 완료 기업 수</div>
+  </div>
+</div>
+
+<p class="fade-in">실적 자체는 매우 강력하다. 그러나 주가 반응은 기대 이하인 경우가 많다. 강한 성장률이 곧 주가 상승을 보장하지 않는다는 것이 시장의 현실이다.</p>
+
+<!-- M7 실적 비교 차트 -->
+<div class="chart-container fade-in">
+  <canvas id="m7Chart" height="240"></canvas>
+</div>
+
+<p class="fade-in" style="font-size:12px; color:var(--text2); margin-top:-10px;">※ 위 수치는 시장 기대치 대비 상회 폭(EPS 기준). 높다고 주가가 그만큼 오르는 것은 아님.</p>
+
+<hr class="divider">
+
+<!-- 이번 주 주요 실적 발표 -->
+<div class="section-label fade-in">
+  <h2>이번 주 주요 실적 발표</h2>
+</div>
+
+<table class="fade-in">
+  <thead>
+    <tr><th>기업</th><th>EPS 성장률 예상</th><th>전망</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><span class="ticker-name">AppLovin</span></td>
+      <td><span class="badge up">+103%</span></td>
+      <td>모바일 앱 마케팅 시장 확대, 강한 성장</td>
+    </tr>
+    <tr>
+      <td><span class="ticker-name">AMD</span></td>
+      <td><span class="badge up">+35.9%</span></td>
+      <td>실적 상회 예상, 가이던스가 핵심 변수</td>
+    </tr>
+    <tr>
+      <td><span class="ticker-name">Shopify</span></td>
+      <td><span class="badge up">+30%↑</span></td>
+      <td>AI 상거래 선도, 컨센서스 상회 가능</td>
+    </tr>
+    <tr>
+      <td><span class="ticker-name">Disney</span></td>
+      <td><span class="badge neutral">안정</span></td>
+      <td>꾸준성·안정성이 관건</td>
+    </tr>
+    <tr>
+      <td><span class="ticker-name">ARM</span></td>
+      <td><span class="badge down">-11.9%</span></td>
+      <td>성장 둔화, 투자 리스크 상승</td>
+    </tr>
+    <tr>
+      <td><span class="ticker-name">Uber</span></td>
+      <td><span class="badge down">-14%</span></td>
+      <td>컨센서스 하회 가능성 주의</td>
+    </tr>
+    <tr>
+      <td><span class="ticker-name">Pfizer</span></td>
+      <td><span class="badge down">부정적</span></td>
+      <td>실적 부진 예상</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="signal-box info fade-in">
+  <span class="signal-icon">ℹ️</span>
+  <div class="signal-content">
+    <strong>AMD 핵심 포인트</strong>
+    <p>실적 발표 후 주가는 ±7% 변동 가능. 성장률 자체보다 '가이던스(미래 전망)'가 주가 방향을 결정한다. 추정 기관이 11개로 변동성 매우 큼.</p>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- 5월 역사적 패턴 -->
+<div class="section-label fade-in">
+  <h2>역사적 패턴 — Sell in May</h2>
+</div>
+
+<p class="fade-in">1945년부터 2026년까지 데이터를 보면, 겨울 시즌(11월~4월) 평균 수익률이 여름 시즌(5월~10월)보다 <strong>약 3배 이상</strong> 높다. 5월부터 10월은 평균 약 3% 수준의 낮은 수익률에 변동성이 크다.</p>
+
+<div class="chart-container fade-in">
+  <canvas id="seasonChart" height="220"></canvas>
+</div>
+
+<div class="signal-box warning fade-in">
+  <span class="signal-icon">🗓️</span>
+  <div class="signal-content">
+    <strong>2026년은 중간선거의 해</strong>
+    <p>중간선거가 있는 해(11월)는 역사적으로 시장 성장성이 낮고, 모든 자산군이 평균적으로 하락하는 경향이 있다. 불확실성이 높아지는 구간이다.</p>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- 3대 리스크 -->
+<div class="section-label fade-in">
+  <h2>현재 시장의 3대 핵심 리스크</h2>
+</div>
+
+<!-- 리스크 1: 유가 -->
+<div class="card fade-in">
+  <div class="card-title">Risk 01</div>
+  <h3>🛢 고유가 — $110대 지속</h3>
+  <p style="font-size:13px; margin-bottom:0;">유가 상승은 항공료, 플라스틱, 농산물, 물류비(트럭 운송) 등 연쇄 인플레이션을 일으킨다. 스피릿 항공 파산으로 8,000명 실직. 지금은 시장이 무시하지만 여행 성수기(여름)에 소비 충격으로 가시화될 수 있다. 거시경제 성장률 전망도 2.1% → 2.0%로 낮아졌으며, 장기화 시 1%대까지 하락 가능.</p>
+</div>
+
+<!-- 리스크 2: 금리 -->
+<div class="card fade-in">
+  <div class="card-title">Risk 02</div>
+  <h3>📈 금리 불확실성 — 10년물 4.4% 돌파</h3>
+  <p style="font-size:13px; margin-bottom:0;">10년 국채금리 4.4% 초과는 워닝 시그널이다. 연준(Fed)은 금리를 올리지 않지만 시중 유동성을 흡수(밸런스시트 축소)하고 있다. 인플레이션이 잡히지 않으면 금리 인상 압박이 커진다. 금리 인상 시 IT 섹터가 가장 큰 타격을 받는다.</p>
+</div>
+
+<!-- 리스크 3: 엔 캐리 트레이드 -->
+<div class="card fade-in">
+  <div class="card-title">Risk 03</div>
+  <h3>🇯🇵 엔 캐리 트레이드 종료 신호</h3>
+  <p style="font-size:13px; margin-bottom:0;">엔화 급등은 엔 캐리 트레이드 종료 신호다. 일본 중앙은행이 5월에 금리를 인상할 가능성이 있다. 유럽도 올해 1~2회 금리 인상 예상. 글로벌 자금이 미국 주식→일본·유럽 국채로 이동할 수 있으며, 이는 달러 약세와 미국 국채 금리 상승 압력으로 작용한다.</p>
+</div>
+
+<div class="signal-box warning fade-in">
+  <span class="signal-icon">⚠️</span>
+  <div class="signal-content">
+    <strong>연쇄 압박 메커니즘</strong>
+    <p>일본·유럽 금리 인상 → 달러 약세 → 글로벌 자금 이탈 → 미국 국채 금리 추가 상승 → IT 섹터 밸류에이션 압박 → 주가 변동성 확대</p>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- 복리 시뮬레이터 -->
+<div class="section-label fade-in">
+  <h2>📊 구매력 감소 시뮬레이터</h2>
+</div>
+<p class="fade-in">투자하지 않으면 인플레이션으로 실질 구매력이 어떻게 줄어드는지 확인해보세요. (방송 내용: 10년 전 $200이면 장 많이 봤지만 지금은 $500 필요 — 구매량 약 50% 감소)</p>
+
+<div class="simulator fade-in">
+  <h3>현금 보유 vs 투자의 차이</h3>
+  <p class="desc">슬라이더를 조절해 인플레이션과 투자 수익률에 따른 10년 후 구매력을 비교하세요.</p>
+  <div class="slider-row">
+    <label>초기 자산 <span id="assetVal">$100,000</span></label>
+    <input type="range" id="assetSlider" min="10000" max="1000000" step="10000" value="100000">
+  </div>
+  <div class="slider-row">
+    <label>연평균 인플레이션 <span id="inflVal">4.5%</span></label>
+    <input type="range" id="inflSlider" min="1" max="10" step="0.5" value="4.5">
+  </div>
+  <div class="slider-row">
+    <label>연평균 투자 수익률 <span id="retVal">10%</span></label>
+    <input type="range" id="retSlider" min="0" max="20" step="0.5" value="10">
+  </div>
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:14px;">
+    <div style="background:#fee2e2; border-radius:8px; padding:14px; text-align:center;">
+      <div style="font-size:11px; color:#dc2626; font-weight:700; margin-bottom:4px;">현금만 보유 시</div>
+      <div id="cashResult" style="font-family:'Playfair Display',serif; font-size:22px; font-weight:900; color:#dc2626;">-</div>
+      <div style="font-size:11px; color:#6b7280; margin-top:2px;">10년 후 실질 구매력</div>
+    </div>
+    <div style="background:#dcfce7; border-radius:8px; padding:14px; text-align:center;">
+      <div style="font-size:11px; color:#16a34a; font-weight:700; margin-bottom:4px;">투자 시</div>
+      <div id="investResult" style="font-family:'Playfair Display',serif; font-size:22px; font-weight:900; color:#16a34a;">-</div>
+      <div style="font-size:11px; color:#6b7280; margin-top:2px;">10년 후 실질 구매력</div>
+    </div>
+  </div>
+  <div class="sim-result" style="margin-top:12px;">
+    <div class="sub">투자가 현금보다</div>
+    <div class="big" id="diffResult">+$0</div>
+    <div class="sub">더 많은 구매력을 보존</div>
+  </div>
+  <div style="text-align:center;"><button class="btn-reset" onclick="resetSim()">↺ 초기값으로</button></div>
+</div>
+
+<hr class="divider">
+
+<!-- 섹터 분석 -->
+<div class="section-label fade-in">
+  <h2>섹터별 투자 판단</h2>
+</div>
+
+<div class="chart-container fade-in">
+  <canvas id="sectorChart" height="240"></canvas>
+</div>
+
+<table class="fade-in">
+  <thead>
+    <tr><th>섹터</th><th>현재 상황</th><th>판단</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>AI·반도체</td>
+      <td>주도 섹터, 과매수 신호</td>
+      <td><span class="badge neutral">비중 조절</span></td>
+    </tr>
+    <tr>
+      <td>소비재(Consumer Staple)</td>
+      <td>실적 양호, 주가 상승 제한</td>
+      <td><span class="badge up">방어적 비중↑</span></td>
+    </tr>
+    <tr>
+      <td>헬스케어</td>
+      <td>경기 방어 섹터</td>
+      <td><span class="badge up">방어적 비중↑</span></td>
+    </tr>
+    <tr>
+      <td>금융</td>
+      <td>실적 양호, 주가 반응 미흡</td>
+      <td><span class="badge up">중장기 관심</span></td>
+    </tr>
+    <tr>
+      <td>소재(Materials)</td>
+      <td>실적 양호, 시장 저평가</td>
+      <td><span class="badge up">중장기 관심</span></td>
+    </tr>
+    <tr>
+      <td>Lithium·에너지 일부</td>
+      <td>공매도 세력 집중</td>
+      <td><span class="badge down">회피 권고</span></td>
+    </tr>
+  </tbody>
+</table>
+
+<hr class="divider">
+
+<!-- Shopify 기업 분석 -->
+<div class="section-label fade-in">
+  <h2>기업 분석 사례 — Shopify</h2>
+</div>
+
+<div class="stat-grid fade-in">
+  <div class="stat-box highlight">
+    <div class="stat-num">30%</div>
+    <div class="stat-label">매출 성장률 (2025년)</div>
+  </div>
+  <div class="stat-box">
+    <div class="stat-num">29%</div>
+    <div class="stat-label">마진 성장률</div>
+  </div>
+  <div class="stat-box">
+    <div class="stat-num">26%</div>
+    <div class="stat-label">잉여현금흐름 증가율</div>
+  </div>
+  <div class="stat-box">
+    <div class="stat-num">175개국</div>
+    <div class="stat-label">수백만 상인 플랫폼</div>
+  </div>
+</div>
+
+<div class="card fade-in">
+  <div class="card-title">강점</div>
+  <p style="font-size:13px; margin-bottom:0;">① 지속적 고성장·높은 유지율 ② AI 상거래(Sidekick AI) 경쟁사보다 빠른 적용 ③ 175개국 글로벌 확장(미국 44%, 이머징마켓 31%, 아태 16%) ④ 창업자 중심 강력한 지배구조 → 빠른 의사결정</p>
+</div>
+<div class="card fade-in">
+  <div class="card-title">리스크</div>
+  <p style="font-size:13px; margin-bottom:0;">경쟁 심화(대기업 진입), 거시경제·인플레이션 영향, 규제 변화. <em>※ 기업 분석 사례 제시이며 매수 추천이 아님</em></p>
+</div>
+
+<hr class="divider">
+
+<!-- AI 섹터 장기 우려 -->
+<div class="section-label fade-in">
+  <h2>AI 섹터 장기 우려 — Capex 버블 가능성</h2>
+</div>
+
+<p class="lead fade-in">AI 투자는 계속되지만, 그 자금원이 자기자본 → 차입 → 인력 감축으로 이동하고 있다. 올해가 아닌 내년~내후년이 진짜 검증 시점이다.</p>
+
+<div class="signal-box warning fade-in">
+  <span class="signal-icon">🔄</span>
+  <div class="signal-content">
+    <strong>AI Capex 3단계 자금 조달 흐름</strong>
+    <p>① 자기 현금(Free Cash Flow)으로 투자 → ② 부채 차입으로 투자 → ③ 대량 해고로 비용 절감 후 투자. 현재 3단계(대량 해고)까지 진행 중이며, 금리가 낮아지지 않으면 한계에 다가온다.</p>
+  </div>
+</div>
+
+<p class="fade-in">AI 기업들이 수십조 달러를 투자하고 있지만, 실질적인 수익 창출(ROI) 검증은 2027년 전후에 이루어질 전망이다. 경쟁 심화로 AI 서비스의 마진은 장기적으로 압박을 받을 수밖에 없다.</p>
+
+<hr class="divider">
+
+<!-- 투자 전략 요약 -->
+<div class="section-label fade-in">
+  <h2>투자 전략 요약</h2>
+</div>
+
+<div class="signal-box info fade-in">
+  <span class="signal-icon">🎯</span>
+  <div class="signal-content">
+    <strong>장기 투자자</strong>
+    <p>계절적 패턴에 과도하게 반응할 필요 없다. 시장에 시간을 투자하는 것이 더 효과적이며, 변동성이 싫다면 일부만 세금 내고 정리하는 것도 선택이다.</p>
+  </div>
+</div>
+
+<div class="signal-box warning fade-in">
+  <span class="signal-icon">📊</span>
+  <div class="signal-content">
+    <strong>단기·전략적 투자자</strong>
+    <p>5~10월: 방어적 섹터(필수소비재·헬스케어·유틸리티) 비중 확대. 현금 비중 일시적으로 높이거나 변동성 헤지 전략 고려. 2026 중간선거로 변동성 확대 예상 → 철저한 리스크 관리 필요.</p>
+  </div>
+</div>
+
+<div class="signal-box safe fade-in">
+  <span class="signal-icon">✅</span>
+  <div class="signal-content">
+    <strong>공통 원칙</strong>
+    <p>"다 팔아라"가 아니라 "포트폴리오 리밸런싱"이다. 단기간 많이 오른 자산의 비중을 점검하고, 1~2개월 내 스탠스를 정비하는 것을 권고. 과도한 확신이 가장 위험하다.</p>
+  </div>
+</div>
+
+<div class="signal-box warning fade-in">
+  <span class="signal-icon">🚫</span>
+  <div class="signal-content">
+    <strong>회피 권고 (Short Sale Candidates)</strong>
+    <p>Lithium 관련주, League Auto, Sample Energy, Duke Energy — 공매도 세력이 집중되어 있어 회피 권고.</p>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- 투자 철학 -->
+<div class="section-label fade-in">
+  <h2>핵심 투자 철학</h2>
+</div>
+
+<div class="card fade-in" style="border-left: 4px solid var(--accent);">
+  <p style="font-size:15px; font-weight:500; line-height:1.8; margin-bottom:0;">"매일 주어진 일에만 파묻혀 몰두하다 보면 가난해질 수 있다. 돈이 나를 위해 돈을 벌어주게 하는 것이 현명한 일이다. 투자는 선택이 아니라 필수다."</p>
+</div>
+
+<p class="fade-in">현금 $10만 불의 구매력은 10년 전과 지금이 크게 다르다. 연봉 인상률이 인플레이션을 따라가지 못하는 현실에서, 투자소득이 근로소득을 초과하는 구조를 만드는 것이 장기 재정 목표가 되어야 한다.</p>
+<p class="fade-in">주식시장은 매 분기 주도 섹터가 바뀐다. 특정 주식·섹터에 과도하게 집중(과확신)하는 것이 가장 위험하다. 기관 투자자는 개인보다 항상 빠르다는 사실을 기억하고, 겸손한 자세로 분산 투자해야 한다.</p>
+
+<div class="footer fade-in">
+  <p>본 문서는 투자는인생TV 방송(2026.05.04) 내용을 정리한 것으로,<br>투자 권유가 아닌 교육·참고 목적입니다. 투자의 최종 판단은 본인에게 있습니다.</p>
+</div>
+
+<script>
+// ====== FADE-IN Observer ======
+const fadeObs = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), i * 80);
+      fadeObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.12 });
+document.querySelectorAll('.fade-in').forEach(el => fadeObs.observe(el));
+
+// ====== CHART CONFIGS ======
+const chartConfigs = {};
+
+chartConfigs['m7Chart'] = () => {
+  new Chart(document.getElementById('m7Chart'), {
+    type: 'bar',
+    data: {
+      labels: ['Meta', 'Amazon', 'Google', 'Apple', 'Microsoft'],
+      datasets: [{
+        label: '기대치 대비 초과 폭 (%)',
+        data: [55, 74, 94, 5, 5],
+        backgroundColor: ['#e11d48','#f43f5e','#1a1a1a','#6b7280','#2563eb'],
+        borderRadius: 6,
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display: false },
+        title: { display: true, text: 'M7 기업 실적 — 기대치 초과 폭 (%)', color:'#1a1a1a', font:{size:13, family:'Noto Sans KR'}, padding:{bottom:12} },
+        tooltip: { callbacks: { label: ctx => `+${ctx.parsed.y}% 초과` } }
+      },
+      scales: {
+        y: { beginAtZero: true, ticks: { callback: v => v + '%', color:'#777' }, grid: { color:'#f0f0f0' } },
+        x: { ticks: { color: '#1a1a1a', font:{weight:'700'} }, grid: { display: false } }
+      }
+    }
+  });
+};
+
+chartConfigs['seasonChart'] = () => {
+  new Chart(document.getElementById('seasonChart'), {
+    type: 'bar',
+    data: {
+      labels: ['11월~4월 (겨울 시즌)', '5월~10월 (여름 시즌)'],
+      datasets: [{
+        label: '평균 수익률',
+        data: [9, 3],
+        backgroundColor: ['#1a1a1a', '#e11d48'],
+        borderRadius: 8,
+      }]
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true,
+      plugins: {
+        legend: { display: false },
+        title: { display: true, text: 'S&P 500 시즌별 평균 수익률 (1945~2026)', color:'#1a1a1a', font:{size:13, family:'Noto Sans KR'}, padding:{bottom:12} },
+        tooltip: { callbacks: { label: ctx => `평균 +${ctx.parsed.x}%` } }
+      },
+      scales: {
+        x: { beginAtZero: true, ticks: { callback: v => v + '%', color:'#777' }, grid: { color:'#f0f0f0' } },
+        y: { ticks: { color: '#1a1a1a', font:{size:12} }, grid: { display: false } }
+      }
+    }
+  });
+};
+
+chartConfigs['sectorChart'] = () => {
+  new Chart(document.getElementById('sectorChart'), {
+    type: 'radar',
+    data: {
+      labels: ['실적 강도', '주가 반응', '방어성', '성장성', '리스크'],
+      datasets: [
+        {
+          label: 'AI·반도체',
+          data: [9, 6, 2, 9, 8],
+          borderColor: '#e11d48',
+          backgroundColor: 'rgba(225,29,72,0.15)',
+          pointBackgroundColor: '#e11d48',
+        },
+        {
+          label: '소비재·헬스케어',
+          data: [7, 5, 9, 5, 3],
+          borderColor: '#2563eb',
+          backgroundColor: 'rgba(37,99,235,0.12)',
+          pointBackgroundColor: '#2563eb',
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        title: { display: true, text: '섹터 특성 비교 (10점 만점)', color:'#1a1a1a', font:{size:13, family:'Noto Sans KR'}, padding:{bottom:8} },
+        legend: { position: 'bottom', labels: { color:'#1a1a1a', font:{size:12} } }
+      },
+      scales: {
+        r: {
+          min: 0, max: 10,
+          ticks: { stepSize: 2, color:'#777', backdropColor:'transparent' },
+          grid: { color:'#e5e5e5' },
+          pointLabels: { color:'#1a1a1a', font:{size:12} }
+        }
+      }
+    }
+  });
+};
+
+const chartObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const canvas = e.target.querySelector('canvas');
+      if (canvas && chartConfigs[canvas.id]) {
+        chartConfigs[canvas.id]();
+        e.target.classList.add('chart-ready');
+        chartObs.unobserve(e.target);
+      }
+    }
+  });
+}, { threshold: 0.15 });
+document.querySelectorAll('.chart-container').forEach(el => chartObs.observe(el));
+
+// ====== SIMULATOR ======
+function fmt(n) {
+  return '$' + Math.round(n).toLocaleString();
+}
+
+function calcSim() {
+  const asset = +document.getElementById('assetSlider').value;
+  const infl = +document.getElementById('inflSlider').value / 100;
+  const ret = +document.getElementById('retSlider').value / 100;
+
+  document.getElementById('assetVal').textContent = fmt(asset);
+  document.getElementById('inflVal').textContent = (infl * 100).toFixed(1) + '%';
+  document.getElementById('retVal').textContent = (ret * 100).toFixed(1) + '%';
+
+  const cashReal = asset / Math.pow(1 + infl, 10);
+  const investNominal = asset * Math.pow(1 + ret, 10);
+  const investReal = investNominal / Math.pow(1 + infl, 10);
+  const diff = investReal - cashReal;
+
+  document.getElementById('cashResult').textContent = fmt(cashReal);
+  document.getElementById('investResult').textContent = fmt(investReal);
+  document.getElementById('diffResult').textContent = (diff >= 0 ? '+' : '') + fmt(diff);
+}
+
+['assetSlider','inflSlider','retSlider'].forEach(id => {
+  document.getElementById(id).addEventListener('input', calcSim);
+});
+
+function resetSim() {
+  document.getElementById('assetSlider').value = 100000;
+  document.getElementById('inflSlider').value = 4.5;
+  document.getElementById('retSlider').value = 10;
+  calcSim();
+}
+
+calcSim();
+</script>
+</body>
+</html>
