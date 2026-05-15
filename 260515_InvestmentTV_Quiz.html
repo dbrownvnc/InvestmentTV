@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>5월14일 30대기업 방송 — 이해도 퀴즈 10문제</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #ffffff;
+    --bg2: #fafafa;
+    --text: #1a1a1a;
+    --muted: #777;
+    --accent: #e11d48;
+    --accent2: #f43f5e;
+    --border: #e5e5e5;
+    --green: #059669;
+    --red: #e11d48;
+    --orange: #f97316;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    padding-bottom: 60px;
+  }
+
+  /* ── STICKY SCOREBOARD ── */
+  .scoreboard {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--text);
+    color: #fff;
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  }
+  .sb-brand {
+    font-family: 'Playfair Display', serif;
+    font-size: 13px;
+    font-weight: 900;
+    letter-spacing: 0.03em;
+    margin-right: auto;
+    white-space: nowrap;
+  }
+  .sb-stat { font-size: 12px; color: #ccc; white-space: nowrap; }
+  .sb-stat strong { color: #fff; font-size: 14px; }
+  .sb-bar-wrap {
+    width: 100%;
+    height: 4px;
+    background: #333;
+    margin-top: 6px;
+  }
+  .sb-bar {
+    height: 4px;
+    width: 0%;
+    transition: width 0.5s ease, background 0.5s ease;
+    background: var(--green);
+  }
+
+  /* ── HEADER ── */
+  .hero {
+    background: var(--text);
+    color: #fff;
+    padding: 30px 20px 26px;
+  }
+  .hero-inner { max-width: 640px; margin: 0 auto; }
+  .hero-label {
+    display: inline-block;
+    background: var(--accent);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    margin-bottom: 14px;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px;
+    font-weight: 900;
+    line-height: 1.3;
+    margin-bottom: 10px;
+  }
+  .hero-sub { font-size: 13px; color: #aaa; }
+
+  /* ── QUIZ CONTAINER ── */
+  .quiz-wrap { max-width: 640px; margin: 0 auto; padding: 20px 16px 0; }
+
+  /* ── QUESTION CARD ── */
+  .q-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    margin-bottom: 20px;
+    padding: 20px;
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .q-card.visible { opacity: 1; transform: translateY(0); }
+
+  .q-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+  }
+  .q-num {
+    background: var(--accent);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 10px;
+    letter-spacing: 0.06em;
+  }
+  .q-type {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--muted);
+    border: 1px solid var(--border);
+    padding: 2px 8px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .q-diff {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 8px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .diff-easy { color: #059669; border: 1px solid #059669; }
+  .diff-mid  { color: #f97316; border: 1px solid #f97316; }
+  .diff-hard { color: #e11d48; border: 1px solid #e11d48; }
+
+  .q-text { font-size: 15px; font-weight: 700; line-height: 1.6; margin-bottom: 14px; }
+
+  /* ── OPTIONS ── */
+  .options { display: flex; flex-direction: column; gap: 8px; }
+  .opt-btn {
+    background: #fff;
+    border: 1.5px solid var(--border);
+    padding: 10px 14px;
+    text-align: left;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 13.5px;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    line-height: 1.5;
+  }
+  .opt-btn:hover:not(:disabled) { border-color: var(--accent); background: #fff5f7; }
+  .opt-btn .opt-marker { min-width: 20px; font-weight: 700; }
+  .opt-btn.correct { background: #f0fdf4; border-color: var(--green); color: #065f46; }
+  .opt-btn.wrong   { background: #fff1f2; border-color: var(--red); color: #9f1239; }
+  .opt-badge {
+    margin-left: auto;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 2px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .badge-ok  { background: var(--green); color: #fff; }
+  .badge-no  { background: var(--red); color: #fff; }
+
+  /* ── OX BUTTONS ── */
+  .ox-wrap { display: flex; gap: 12px; }
+  .ox-btn {
+    flex: 1;
+    padding: 14px;
+    font-size: 24px;
+    font-weight: 900;
+    border: 2px solid var(--border);
+    background: #fff;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+  }
+  .ox-btn:hover:not(:disabled) { border-color: var(--accent); }
+  .ox-btn.correct { background: #f0fdf4; border-color: var(--green); }
+  .ox-btn.wrong   { background: #fff1f2; border-color: var(--red); }
+
+  /* ── TEXT INPUT ── */
+  .sa-wrap { display: flex; gap: 8px; align-items: stretch; flex-wrap: wrap; }
+  .sa-input {
+    flex: 1;
+    min-width: 180px;
+    padding: 10px 12px;
+    border: 1.5px solid var(--border);
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .sa-input:focus { border-color: var(--accent); }
+  .sa-submit {
+    padding: 10px 18px;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s;
+    white-space: nowrap;
+  }
+  .sa-submit:hover:not(:disabled) { background: var(--accent2); }
+  .sa-submit:disabled { background: #ccc; cursor: default; }
+  .sa-input.correct { border-color: var(--green); background: #f0fdf4; }
+  .sa-input.wrong   { border-color: var(--red); background: #fff1f2; }
+
+  /* ── EXPLANATION ── */
+  .explanation {
+    display: none;
+    margin-top: 14px;
+    background: #fff;
+    border-left: 4px solid var(--accent);
+    padding: 12px 14px;
+    font-size: 13px;
+    line-height: 1.7;
+  }
+  .explanation.show { display: block; }
+  .explanation .ex-title {
+    font-weight: 700;
+    color: var(--accent);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .explanation .ex-answer {
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  /* ── RESULT MODAL ── */
+  .result-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(26,26,26,0.85);
+    z-index: 200;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .result-overlay.show { display: flex; }
+  .result-card {
+    background: #fff;
+    max-width: 400px;
+    width: 100%;
+    padding: 36px 28px;
+    text-align: center;
+  }
+  .result-emoji { font-size: 48px; margin-bottom: 12px; }
+  .result-grade {
+    font-family: 'Playfair Display', serif;
+    font-size: 64px;
+    font-weight: 900;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .result-score { font-size: 20px; font-weight: 700; margin-bottom: 8px; }
+  .result-msg { font-size: 14px; color: var(--muted); margin-bottom: 24px; line-height: 1.6; }
+  .result-retry {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    padding: 14px 32px;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    letter-spacing: 0.04em;
+  }
+  .result-retry:hover { background: var(--accent2); }
+
+  @media (max-width: 400px) {
+    .hero h1 { font-size: 20px; }
+    .sa-wrap { flex-direction: column; }
+    .sa-submit { width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+<!-- STICKY SCOREBOARD -->
+<div class="scoreboard" id="scoreboard">
+  <div class="sb-brand">📊 투자하는 인생TV 이해도 퀴즈</div>
+  <div class="sb-stat">푼 문제 <strong id="sbSolved">0</strong> / 10</div>
+  <div class="sb-stat">맞힌 문제 <strong id="sbCorrect">0</strong></div>
+  <div class="sb-stat">정답률 <strong id="sbRate">0%</strong></div>
+  <div class="sb-bar-wrap">
+    <div class="sb-bar" id="sbBar"></div>
+  </div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-label">이해도 검증 퀴즈</div>
+    <h1>5월 14일 방송<br>핵심 내용 10문제</h1>
+    <div class="hero-sub">객관식 · 단답형 · OX 혼합 | 클릭하면 즉시 채점 + 해설 공개</div>
+  </div>
+</div>
+
+<!-- QUIZ -->
+<div class="quiz-wrap" id="quizWrap"></div>
+
+<!-- RESULT MODAL -->
+<div class="result-overlay" id="resultOverlay">
+  <div class="result-card">
+    <div class="result-emoji" id="resEmoji"></div>
+    <div class="result-grade" id="resGrade"></div>
+    <div class="result-score" id="resScore"></div>
+    <div class="result-msg" id="resMsg"></div>
+    <button class="result-retry" onclick="resetQuiz()">🔄 다시 풀기</button>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════
+//  QUIZ DATA
+// ══════════════════════════════════════
+const QUIZ_DATA = [
+  {
+    id: 1,
+    type: 'mcq',
+    difficulty: 'easy',
+    question: '방송인이 현재 NVIDIA의 RSI(상대강도지수)를 몇으로 언급했나요?',
+    options: ['65', '72', '79', '88'],
+    answer: 2, // 0-based index
+    explanation: '방송에서 "엔비디아 RSI가 79고 AMD가 80이고 ME가 85입니다"라고 직접 수치를 언급했습니다. RSI 70 이상은 통상 과매수 구간으로 해석됩니다.'
+  },
+  {
+    id: 2,
+    type: 'mcq',
+    difficulty: 'easy',
+    question: '1분기 S&P500 EPS 성장률은 얼마였나요? (방송인 언급 기준)',
+    options: ['약 5~6%', '약 10%', '약 15~16%', '약 25%'],
+    answer: 2,
+    explanation: '방송에서 "전체 EPS 성장률이 10%대 중반으로 예상보다는 양호합니다. 실제로 해보니까 15, 16% 정도 됐다"고 언급했습니다. 초기 전망 10%를 크게 상회한 수치입니다.'
+  },
+  {
+    id: 3,
+    type: 'mcq',
+    difficulty: 'mid',
+    question: '방송인이 AI 투자를 비유한 것으로 가장 적절한 것은?',
+    options: [
+      '금광 앞에서 팻말 든 사람',
+      '빚 내서 대학원까지 갔는데 졸업 후 3년째 수익 없는 사업',
+      '손해 없는 정기예금',
+      '단기 채권 투자'
+    ],
+    answer: 1,
+    explanation: '방송인은 "AI 투자는 빚을 내서 지금 투자하고 있죠. 20억 써서 PhD까지 10명을 썼는데 그래서 연봉이 어떻게 돼? 이런 질문들을 투자자들한테 할 때가 되는 겁니다"라고 비유했습니다.'
+  },
+  {
+    id: 4,
+    type: 'mcq',
+    difficulty: 'mid',
+    question: '오늘(5월 14일) 방송에서 30대 기업에 신규 추가된 기업은?',
+    options: ['Teradyne', 'SanDisk', 'URI (United Rentals)', 'Cerebras Systems'],
+    answer: 2,
+    explanation: '방송인은 "URI 인트리식 밸류가 1,142불이고 DCF 밸류가 1,322불. 오늘부로 추가합니다"라고 명확히 선언했습니다. URI는 장비 렌탈 업체로, 데이터센터·인프라 붐 수혜주입니다.'
+  },
+  {
+    id: 5,
+    type: 'mcq',
+    difficulty: 'mid',
+    question: '방송인이 강조한 단일 종목 최대 투자 비중 원칙은?',
+    options: ['10% 이하', '15% 이하', '25% 이하', '40% 이하'],
+    answer: 2,
+    explanation: '방송에서 "아무리 좋은 주식도 25%가 넘게 되면 투자 리스크가 커지는 거예요. 25% 이하로 줄여야 됩니다"라고 명시했습니다.'
+  },
+  {
+    id: 6,
+    type: 'mcq',
+    difficulty: 'hard',
+    question: '세레브라스(Cerebras) WSE-3 칩이 NVIDIA 대비 가격이 저렴한 비율은?',
+    options: ['약 10%', '약 20%', '약 32%', '약 50%'],
+    answer: 2,
+    explanation: '방송인은 "비용도 NVDA 칩보다 세브라스가 훨씬 더 저렴합니다. 32% 정도"라고 언급했습니다. 기술적으로도 AI 추론 속도 21배, 전력 소비 제외 대부분 지표에서 Cerebras가 우세합니다.'
+  },
+  {
+    id: 7,
+    type: 'ox',
+    difficulty: 'easy',
+    question: '방송인은 인플레이션이 상승하면 비트코인 가격도 오른다고 주장했다. (O/X)',
+    answer: 'X',
+    explanation: '방송에서 "인플레이션과 금리 인상이 되면 금융 긴축이 되겠죠. 금융 긴축이 되니까 비트코인 가격이 떨어지는 거예요"라고 설명했습니다. 인플레이션 → 금리 인상 → 금융 긴축 → 비트코인 하락의 흐름입니다.'
+  },
+  {
+    id: 8,
+    type: 'ox',
+    difficulty: 'mid',
+    question: '방송인은 일본 중앙은행(BOJ)이 6월 15일 회의에서 금리를 인상할 가능성이 90% 이상이라고 언급했다. (O/X)',
+    answer: 'O',
+    explanation: '방송에서 "방법이 없어요. 지금으로서는 거의 90% 이상 올린다고 생각합니다"라고 직접 언급했습니다. 인플레이션·원유 공급 감소로 금리 인상이 불가피하다는 판단입니다.'
+  },
+  {
+    id: 9,
+    type: 'short',
+    difficulty: 'mid',
+    question: 'IEA 보고서 기준, 호르무즈 해역 봉쇄 10주 이상으로 글로벌 원유 공급이 하루 몇 만 배럴 감소했나요? (숫자만, 단위: 만 배럴)',
+    answer: '1280',
+    answerAlts: ['1,280', '천이백팔십', '1280만'],
+    explanation: '방송에서 "IEA 보고서 호르무즈 해역 봉쇄 10주 이상으로 글로벌 원유 공급이 1,280만 배럴 감소하고 있습니다"라고 언급했습니다. 누적 공급 손실은 10억 배럴로 사상 최대입니다.'
+  },
+  {
+    id: 10,
+    type: 'short',
+    difficulty: 'hard',
+    question: '3월 26일 방송 추천 종목 중 약 2개월 만에 가장 높은 수익률을 기록한 종목은? (종목명)',
+    answer: 'AMD',
+    answerAlts: ['amd', 'a.m.d', 'Advanced Micro Devices'],
+    explanation: '방송에서 "AMD가 180% 올랐고요. 두 달 정도에 비해서 샌디스크 140% 마이크로는 124% 테레라니 22% 메타가 8.1% 이렇게 올랐습니다"라고 언급했습니다. AMD가 180%로 최고 성과.'
+  }
+];
+
+// ══════════════════════════════════════
+//  STATE
+// ══════════════════════════════════════
+let state = { solved: 0, correct: 0 };
+
+// ══════════════════════════════════════
+//  RENDER
+// ══════════════════════════════════════
+function renderQuiz() {
+  const wrap = document.getElementById('quizWrap');
+  wrap.innerHTML = '';
+
+  QUIZ_DATA.forEach((q, qi) => {
+    const card = document.createElement('div');
+    card.className = 'q-card';
+    card.id = `card-${q.id}`;
+
+    const diffClass = q.difficulty === 'easy' ? 'diff-easy' : q.difficulty === 'mid' ? 'diff-mid' : 'diff-hard';
+    const diffLabel = q.difficulty === 'easy' ? '쉬움' : q.difficulty === 'mid' ? '보통' : '어려움';
+    const typeLabel = q.type === 'mcq' ? '객관식' : q.type === 'ox' ? 'O/X' : '단답형';
+
+    let questionHTML = `
+      <div class="q-header">
+        <span class="q-num">Q${q.id}</span>
+        <span class="q-type">${typeLabel}</span>
+        <span class="q-diff ${diffClass}">${diffLabel}</span>
+      </div>
+      <div class="q-text">${q.question}</div>
+    `;
+
+    if (q.type === 'mcq') {
+      const markers = ['①', '②', '③', '④'];
+      questionHTML += `<div class="options" id="opts-${q.id}">`;
+      q.options.forEach((opt, oi) => {
+        questionHTML += `
+          <button class="opt-btn" onclick="checkMcq(${q.id}, ${oi})">
+            <span class="opt-marker">${markers[oi]}</span>
+            <span>${opt}</span>
+          </button>`;
+      });
+      questionHTML += `</div>`;
+    } else if (q.type === 'ox') {
+      questionHTML += `
+        <div class="ox-wrap" id="ox-${q.id}">
+          <button class="ox-btn" onclick="checkOX(${q.id}, 'O')">⭕</button>
+          <button class="ox-btn" onclick="checkOX(${q.id}, 'X')">❌</button>
+        </div>`;
+    } else {
+      questionHTML += `
+        <div class="sa-wrap" id="sa-wrap-${q.id}">
+          <input class="sa-input" type="text" id="sa-input-${q.id}" placeholder="답을 입력하세요" onkeydown="if(event.key==='Enter')checkSA(${q.id})">
+          <button class="sa-submit" id="sa-btn-${q.id}" onclick="checkSA(${q.id})">제출</button>
+        </div>`;
+    }
+
+    questionHTML += `
+      <div class="explanation" id="ex-${q.id}">
+        <div class="ex-title">📖 해설</div>
+        <div class="ex-answer">정답: ${getAnswerLabel(q)}</div>
+        <div>${q.explanation}</div>
+      </div>`;
+
+    card.innerHTML = questionHTML;
+    wrap.appendChild(card);
+  });
+
+  // Intersection Observer for cards
+  const cardObs = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 60);
+        cardObs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.q-card').forEach(c => cardObs.observe(c));
+}
+
+function getAnswerLabel(q) {
+  if (q.type === 'mcq') return q.options[q.answer];
+  if (q.type === 'ox') return q.answer;
+  return q.answer;
+}
+
+// ══════════════════════════════════════
+//  CHECK FUNCTIONS
+// ══════════════════════════════════════
+function checkMcq(qid, chosen) {
+  const q = QUIZ_DATA.find(x => x.id === qid);
+  const opts = document.querySelectorAll(`#opts-${qid} .opt-btn`);
+  opts.forEach(btn => { btn.disabled = true; });
+
+  const isCorrect = chosen === q.answer;
+  state.solved++;
+  if (isCorrect) state.correct++;
+
+  opts[chosen].classList.add(isCorrect ? 'correct' : 'wrong');
+  const badge = document.createElement('span');
+  badge.className = `opt-badge ${isCorrect ? 'badge-ok' : 'badge-no'}`;
+  badge.textContent = isCorrect ? '✓ 정답!' : '✗ 오답';
+  opts[chosen].appendChild(badge);
+
+  if (!isCorrect) {
+    opts[q.answer].classList.add('correct');
+    const correctBadge = document.createElement('span');
+    correctBadge.className = 'opt-badge badge-ok';
+    correctBadge.textContent = '✓ 정답';
+    opts[q.answer].appendChild(correctBadge);
+  }
+
+  showExplanation(qid);
+  updateScoreboard();
+}
+
+function checkOX(qid, chosen) {
+  const q = QUIZ_DATA.find(x => x.id === qid);
+  const btns = document.querySelectorAll(`#ox-${qid} .ox-btn`);
+  btns.forEach(btn => { btn.disabled = true; });
+
+  const isCorrect = chosen === q.answer;
+  state.solved++;
+  if (isCorrect) state.correct++;
+
+  const chosenIdx = chosen === 'O' ? 0 : 1;
+  btns[chosenIdx].classList.add(isCorrect ? 'correct' : 'wrong');
+  if (!isCorrect) {
+    const correctIdx = q.answer === 'O' ? 0 : 1;
+    btns[correctIdx].classList.add('correct');
+  }
+
+  showExplanation(qid);
+  updateScoreboard();
+}
+
+function checkSA(qid) {
+  const q = QUIZ_DATA.find(x => x.id === qid);
+  const input = document.getElementById(`sa-input-${qid}`);
+  const btn = document.getElementById(`sa-btn-${qid}`);
+  const userVal = input.value.trim();
+  if (!userVal) return;
+
+  input.disabled = true;
+  btn.disabled = true;
+
+  const allAnswers = [q.answer.toLowerCase(), ...(q.answerAlts || []).map(a => a.toLowerCase())];
+  const isCorrect = allAnswers.includes(userVal.toLowerCase());
+  state.solved++;
+  if (isCorrect) state.correct++;
+
+  input.classList.add(isCorrect ? 'correct' : 'wrong');
+  showExplanation(qid);
+  updateScoreboard();
+}
+
+function showExplanation(qid) {
+  const ex = document.getElementById(`ex-${qid}`);
+  ex.classList.add('show');
+}
+
+// ══════════════════════════════════════
+//  SCOREBOARD
+// ══════════════════════════════════════
+function updateScoreboard() {
+  document.getElementById('sbSolved').textContent = state.solved;
+  document.getElementById('sbCorrect').textContent = state.correct;
+  const rate = state.solved > 0 ? Math.round((state.correct / state.solved) * 100) : 0;
+  document.getElementById('sbRate').textContent = rate + '%';
+
+  const bar = document.getElementById('sbBar');
+  bar.style.width = (state.solved / 10 * 100) + '%';
+  bar.style.background = rate >= 70 ? '#059669' : rate >= 40 ? '#f97316' : '#e11d48';
+
+  if (state.solved === 10) {
+    setTimeout(showResult, 600);
+  }
+}
+
+// ══════════════════════════════════════
+//  RESULT
+// ══════════════════════════════════════
+function showResult() {
+  const pct = Math.round((state.correct / 10) * 100);
+  let grade, emoji, msg;
+
+  if (pct >= 90) { grade = 'A+'; emoji = '🏆'; msg = '완벽합니다! 방송 내용을 완전히 이해하셨군요. 투자 인사이트를 실전에 잘 활용하세요.'; }
+  else if (pct >= 80) { grade = 'A';  emoji = '🎯'; msg = '훌륭합니다! 핵심 내용을 잘 파악하셨습니다. 한두 문제만 더 복습하면 완벽해요.'; }
+  else if (pct >= 70) { grade = 'B';  emoji = '👍'; msg = '잘하셨습니다! 기본 개념은 이해했지만 세부 수치나 세레브라스 관련 내용을 다시 보면 좋겠어요.'; }
+  else if (pct >= 50) { grade = 'C';  emoji = '📖'; msg = '절반은 맞추셨네요. 방송 내용을 한 번 더 정독하고 다시 도전해보세요!'; }
+  else { grade = 'D'; emoji = '💪'; msg = '아직 갈 길이 있네요. 괜찮습니다. 방송을 다시 보고 도전해보세요!'; }
+
+  document.getElementById('resEmoji').textContent = emoji;
+  document.getElementById('resGrade').textContent = grade;
+  document.getElementById('resScore').textContent = `${state.correct}개 / 10개 (${pct}점)`;
+  document.getElementById('resMsg').textContent = msg;
+  document.getElementById('resultOverlay').classList.add('show');
+}
+
+function resetQuiz() {
+  state = { solved: 0, correct: 0 };
+  document.getElementById('resultOverlay').classList.remove('show');
+  updateScoreboard();
+  renderQuiz();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ══════════════════════════════════════
+//  INIT
+// ══════════════════════════════════════
+renderQuiz();
+</script>
+</body>
+</html>
