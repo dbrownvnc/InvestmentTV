@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>시장포커스 — 반도체주 폭등과 투자 리스크 경고</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--main:#e11d48;--main-light:#f43f5e;--bg:#ffffff;--bg-alt:#fafafa;--text:#1a1a1a;--text-sub:#777777;--blue:#2563eb;--gray:#6b7280;--table-border:#e5e5e5;--shadow:0 2px 16px rgba(0,0,0,0.06)}
+body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text);line-height:1.75;font-size:15px;-webkit-font-smoothing:antialiased}
+h1,h2,h3,.serif{font-family:'Playfair Display','Noto Sans KR',serif}
+.hero{background:linear-gradient(135deg,#0f0f0f 0%,#1a1a2e 50%,#16213e 100%);color:#fff;padding:80px 20px 60px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle at 30% 70%,rgba(225,29,72,0.15),transparent 50%);animation:pulse 8s ease-in-out infinite}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+.hero-tag{display:inline-block;background:var(--main);color:#fff;padding:4px 16px;border-radius:20px;font-size:12px;font-weight:700;letter-spacing:1px;margin-bottom:16px;text-transform:uppercase}
+.hero h1{font-size:clamp(28px,6vw,48px);font-weight:900;line-height:1.2;margin-bottom:12px;letter-spacing:-1px}
+.hero p{font-size:15px;color:rgba(255,255,255,0.7);max-width:600px;margin:0 auto}
+.hero .meta{margin-top:20px;font-size:13px;color:rgba(255,255,255,0.5)}
+.container{max-width:680px;margin:0 auto;padding:0 20px}
+section{padding:48px 0 32px}
+.section-label{display:inline-block;color:var(--main);font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;border-bottom:2px solid var(--main);padding-bottom:2px}
+h2{font-size:clamp(22px,5vw,32px);font-weight:900;line-height:1.3;margin-bottom:16px;color:var(--text)}
+h3{font-size:18px;font-weight:700;margin:24px 0 10px;color:var(--text)}
+p{margin-bottom:14px;color:var(--text)}
+.text-sub{color:var(--text-sub);font-size:14px}
+.highlight-box{background:linear-gradient(135deg,#fff5f7,#fef2f2);border-left:4px solid var(--main);padding:16px 20px;border-radius:0 8px 8px 0;margin:20px 0;font-size:14px}
+.highlight-box strong{color:var(--main)}
+.warning-box{background:#fffbeb;border-left:4px solid #f59e0b;padding:16px 20px;border-radius:0 8px 8px 0;margin:20px 0;font-size:14px}
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin:20px 0}
+.stat-card{background:var(--bg-alt);border:1px solid var(--table-border);border-radius:10px;padding:16px;text-align:center;transition:transform 0.2s}
+.stat-card:hover{transform:translateY(-2px)}
+.stat-card .value{font-family:'Playfair Display',serif;font-size:24px;font-weight:900;color:var(--main)}
+.stat-card .label{font-size:12px;color:var(--text-sub);margin-top:4px}
+.stat-card.green .value{color:#16a34a}
+.stat-card.red .value{color:#dc2626}
+.stat-card.blue .value{color:var(--blue)}
+table{width:100%;border-collapse:collapse;margin:16px 0;font-size:13px}
+table thead th{background:var(--main);color:#fff;padding:10px 12px;text-align:left;font-weight:600;font-size:12px}
+table tbody td{padding:9px 12px;border-bottom:1px solid var(--table-border);background:var(--bg-alt)}
+table tbody tr:hover td{background:#fff5f7}
+.positive{color:#16a34a;font-weight:700}
+.negative{color:#dc2626;font-weight:700}
+.chart-container{position:relative;max-height:340px;background:var(--bg-alt);border-radius:10px;padding:16px;margin:16px 0;border:1px solid var(--table-border)}
+.chart-container canvas{opacity:0;transition:opacity 0.4s ease;max-height:300px}
+.chart-container.chart-ready canvas{opacity:1}
+.fade-in{opacity:0;transform:translateY(18px);transition:opacity 0.7s ease,transform 0.7s ease}
+.fade-in.visible{opacity:1;transform:translateY(0)}
+.divider{height:1px;background:linear-gradient(90deg,transparent,var(--table-border),transparent);margin:40px 0}
+.tag{display:inline-block;background:#fee2e2;color:var(--main);padding:2px 10px;border-radius:12px;font-size:11px;font-weight:700;margin:2px}
+.tag.blue{background:#dbeafe;color:var(--blue)}
+.tag.gray{background:#f3f4f6;color:var(--gray)}
+.quote-block{position:relative;padding:20px 24px;margin:24px 0;background:var(--bg-alt);border-radius:10px;font-style:italic;font-size:15px;color:var(--text-sub)}
+.quote-block::before{content:'"';font-family:'Playfair Display',serif;font-size:60px;color:var(--main);position:absolute;top:-10px;left:12px;opacity:0.3}
+.sim-container{background:var(--bg-alt);border:1px solid var(--table-border);border-radius:12px;padding:20px;margin:24px 0}
+.sim-container h4{font-size:15px;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:6px}
+.slider-group{margin:12px 0}
+.slider-group label{font-size:13px;color:var(--text-sub);display:block;margin-bottom:4px}
+.slider-group input[type=range]{width:100%;accent-color:var(--main);cursor:pointer}
+.slider-value{font-size:14px;font-weight:700;color:var(--main)}
+.sim-result{background:#fff;border:1px solid var(--table-border);border-radius:8px;padding:14px;margin-top:12px;text-align:center}
+.sim-result .big{font-family:'Playfair Display',serif;font-size:28px;font-weight:900;color:var(--main)}
+.sim-result .desc{font-size:12px;color:var(--text-sub)}
+.btn-reset{background:var(--main);color:#fff;border:none;padding:8px 18px;border-radius:6px;font-size:13px;cursor:pointer;margin-top:8px}
+.btn-reset:hover{background:var(--main-light)}
+.timeline{position:relative;padding-left:24px;margin:20px 0}
+.timeline::before{content:'';position:absolute;left:8px;top:0;bottom:0;width:2px;background:var(--table-border)}
+.timeline-item{position:relative;margin-bottom:20px;padding-left:20px}
+.timeline-item::before{content:'';position:absolute;left:-20px;top:6px;width:12px;height:12px;border-radius:50%;background:var(--main);border:2px solid #fff;box-shadow:0 0 0 2px var(--main)}
+.timeline-item .year{font-weight:900;font-size:14px;color:var(--main)}
+.timeline-item .event{font-size:13px;color:var(--text-sub)}
+.flow-diagram{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px;margin:20px 0;font-size:13px;font-weight:600}
+.flow-box{background:var(--main);color:#fff;padding:8px 14px;border-radius:6px;text-align:center}
+.flow-arrow{color:var(--main);font-size:18px;font-weight:900}
+footer{background:var(--bg-alt);border-top:1px solid var(--table-border);padding:32px 20px;text-align:center;color:var(--text-sub);font-size:12px;margin-top:40px}
+@media(max-width:480px){.stat-grid{grid-template-columns:1fr 1fr}.flow-diagram{flex-direction:column}.flow-arrow{transform:rotate(90deg)}table{font-size:12px}}
+</style>
+</head>
+<body>
+
+<div class="hero">
+<div class="hero-tag">투자는인생TV · 5월 26일 생방송</div>
+<h1>시장포커스<br>반도체주 폭등 &<br>투자 리스크 경고</h1>
+<p>다우존스 130세 생일, ERP 급락, PCE 변동성 경고까지 — 2026년 5월 시장의 핵심 이슈를 한눈에</p>
+<div class="meta">David Lee · 테일러투자그룹 CIO | 2026.05.26</div>
+</div>
+
+<div class="container">
+
+<!-- ===== 1. 시장 개황 ===== -->
+<section>
+<div class="fade-in">
+<span class="section-label">Market Overview</span>
+<h2>주요 시장지수 YTD 현황</h2>
+<p>S&P 500이 8주 연속 상승세를 유지하며 사상 최고치를 경신했고, 다우존스 지수는 130번째 생일에 50,579를 기록했다. 나스닥은 YTD 13.35%로 기술주 중심의 강세가 두드러지며, 러셀 2000도 15.61%의 견조한 흐름을 보이고 있다.</p>
+</div>
+
+<div class="stat-grid fade-in">
+<div class="stat-card green"><div class="value">7,473</div><div class="label">S&P 500 (+9.17%)</div></div>
+<div class="stat-card green"><div class="value">26,344</div><div class="label">NASDAQ (+13.35%)</div></div>
+<div class="stat-card green"><div class="value">50,579</div><div class="label">다우존스 (+5.24%)</div></div>
+<div class="stat-card green"><div class="value">2,869</div><div class="label">Russell 2000 (+15.61%)</div></div>
+</div>
+
+<div class="stat-grid fade-in">
+<div class="stat-card red"><div class="value">$97</div><div class="label">유가 (+103.76%)</div></div>
+<div class="stat-card"><div class="value">16.70</div><div class="label">VIX (Lo 14.4 / Hi 35.3)</div></div>
+<div class="stat-card blue"><div class="value">4.57%</div><div class="label">10년 국채 (+39bp)</div></div>
+<div class="stat-card red"><div class="value">$75,825</div><div class="label">비트코인 (-13.47%)</div></div>
+</div>
+
+<div class="highlight-box fade-in">
+<strong>핵심 포인트:</strong> VIX가 14.4까지 내려앉아 표면적 안정감이 있지만, 10년물 국채가 4.57%까지 급등하고 유가가 YTD 103.76% 폭등한 상황. 투자 리스크는 여전히 높은 편이므로 비중 확대보다는 현 수준 유지가 권고된다.
+</div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ===== 2. 섹터별 수익률 ===== -->
+<section>
+<div class="fade-in">
+<span class="section-label">Sector Performance</span>
+<h2>S&P 500 섹터별 3개월 수익률</h2>
+<p>기술주가 23.05%로 압도적 1위를 기록한 반면, 소재(-5.04%), 헬스케어(-4.42%), 필수소비재(-3.52%) 등 방어주는 약세를 보였다. 커뮤니케이션(구글, MS 등)과 금융도 마이너스를 기록하며 극단적인 섹터 양극화가 진행 중이다.</p>
+</div>
+
+<div class="chart-container fade-in">
+<canvas id="sectorChart" height="250"></canvas>
+</div>
+
+<div class="fade-in">
+<table>
+<thead><tr><th>섹터</th><th>3개월 수익률</th><th>평가</th></tr></thead>
+<tbody>
+<tr><td>Technology</td><td class="positive">+23.05%</td><td><span class="tag">핵심 상승</span></td></tr>
+<tr><td>Energy</td><td class="positive">+8.40%</td><td><span class="tag gray">장기 투자 비적합</span></td></tr>
+<tr><td>Real Estate</td><td class="positive">+2.30%</td><td><span class="tag gray">부진</span></td></tr>
+<tr><td>Discretionary</td><td class="positive">+1.47%</td><td><span class="tag gray">부진</span></td></tr>
+<tr><td>Communications</td><td class="negative">-1.15%</td><td><span class="tag">구글·MS 약세</span></td></tr>
+<tr><td>Financials</td><td class="negative">-1.05%</td><td><span class="tag blue">금리 상승 수혜 예상</span></td></tr>
+<tr><td>Industrials</td><td class="negative">-3.08%</td><td></td></tr>
+<tr><td>Staples</td><td class="negative">-3.52%</td><td></td></tr>
+<tr><td>Healthcare</td><td class="negative">-4.42%</td><td></td></tr>
+<tr><td>Materials</td><td class="negative">-5.04%</td><td></td></tr>
+<tr><td>Utilities</td><td class="negative">-2.12%</td><td></td></tr>
+</tbody>
+</table>
+</div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ===== 3. S&P 500 역사적 패턴 ===== -->
+<section>
+<div class="fade-in">
+<span class="section-label">Historical Pattern</span>
+<h2>S&P 500 역사적 패턴 분석</h2>
+<p>5월까지 신고가를 기록한 상위 20개 연도의 평균 연간 상승률은 약 19%다. 이 중 17개 연도(85%)에서 하반기에 평균 8% 추가 상승이 발생했다. 이를 2026년에 적용하면 중반 16% 상승 가능성이 시사된다.</p>
+</div>
+
+<div class="stat-grid fade-in">
+<div class="stat-card blue"><div class="value">~19%</div><div class="label">연간 평균 상승률</div></div>
+<div class="stat-card blue"><div class="value">17/20</div><div class="label">하반기 추가 상승 연도</div></div>
+<div class="stat-card"><div class="value">+8%</div><div class="label">하반기 평균 추가 상승</div></div>
+<div class="stat-card green"><div class="value">16%</div><div class="label">2026 중반 상승 가능</div></div>
+</div>
+
+<div class="warning-box fade-in">
+⚠️ <strong>경고:</strong> 단, 어떤 섹터·종목이냐에 따라 천차만별로 차이가 나는 시장이 될 것. 건설·엔지니어링, 석유·가스, 반도체 장비·소재 섹터가 강력한 신고가 신호를 보이고 있다.
+</div>
+
+<div class="fade-in">
+<h3>인플레이션 전이 경로</h3>
+<div class="flow-diagram">
+<div class="flow-box">유가 상승<br><small>+103.76% YTD</small></div>
+<div class="flow-arrow">→</div>
+<div class="flow-box">인플레이션<br>상승</div>
+<div class="flow-arrow">→</div>
+<div class="flow-box">국채 금리<br>상승</div>
+<div class="flow-arrow">→</div>
+<div class="flow-box">Fed 금리<br>인상 가능</div>
+</div>
+</div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ===== 4. PCE 중요성 ===== -->
+<section>
+<div class="fade-in">
+<span class="section-label">Key Indicator</span>
+<h2>올해 가장 중요한 지표: Core PCE</h2>
+<p>PCE(Personal Consumption Expenditures)는 미국 개인 소비 지출 물가지수로, 연준(Fed)이 가장 중요하게 보는 공식 인플레이션 지표다. 특히 Core PCE(식료품·에너지 제외)는 Fed의 금리 결정에 가장 큰 영향을 미친다. 이번 주 목요일 발표 예정이며, 시장 변동성이 크게 확대될 수 있다.</p>
+</div>
+
+<div class="fade-in">
+<table>
+<thead><tr><th>지표</th><th>시장 영향력</th><th>Fed 중요도</th><th>변동성</th><th>특징</th></tr></thead>
+<tbody>
+<tr><td><strong style="color:var(--main)">Core PCE</strong></td><td>★★★★★</td><td>★★★★★</td><td>매우 높음</td><td>Fed의 최우선 지표</td></tr>
+<tr><td>CPI</td><td>★★★★</td><td>★★★★</td><td>높음</td><td>일반인에게 더 익숙</td></tr>
+<tr><td>PPI</td><td>★★★</td><td>★★★</td><td>중간</td><td>기업 비용 압력 확인</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="sim-container fade-in">
+<h4>🔢 Core PCE 시나리오 시뮬레이터</h4>
+<p class="text-sub">Core PCE 결과에 따른 시장 반응을 시뮬레이션합니다.</p>
+<div class="slider-group">
+<label>Core PCE 발표값 (전월 대비 %): <span class="slider-value" id="pceVal">0.30</span>%</label>
+<input type="range" id="pceSlider" min="0.05" max="0.60" step="0.05" value="0.30">
+</div>
+<div class="slider-group">
+<label>시장 예상치: <strong>0.25%</strong> (고정)</label>
+</div>
+<div id="pceResult" class="sim-result">
+<div class="big" id="pceImpact">▲ Hot</div>
+<div class="desc" id="pceDesc">예상보다 높음 → 금리 인상 우려 → 테크주 매도 압력</div>
+</div>
+<div id="pceDetailBox" style="margin-top:10px;padding:12px;background:#fff;border-radius:8px;border:1px solid var(--table-border);font-size:13px"></div>
+<button class="btn-reset" onclick="document.getElementById('pceSlider').value=0.30;updatePCE()">초기화</button>
+</div>
+
+<div class="warning-box fade-in">
+⚠️ <strong>경고:</strong> 매년 다른 지표에 시장 영향력이 달라지므로 통계화·일반화하지 말 것. 올해는 PCE이지만 내년에는 다른 이슈가 될 수 있다.
+</div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ===== 5. Kevin Warsh & Fed ===== -->
+<section>
+<div class="fade-in">
+<span class="section-label">Fed Leadership</span>
+<h2>케빈 워시 신임 Fed 의장 출범</h2>
+<p>케빈 워시가 공식 취임하며 "개혁 지향적 Fed"를 이끌겠다고 밝혔다. 핵심 변화는 Fed의 소통을 줄이겠다는 방침으로, 이는 시장의 금리 예측 불확실성을 높일 수 있다. 한마디 할 때의 임팩트가 더 커질 전망이다.</p>
+</div>
+
+<div class="highlight-box fade-in">
+<strong>월러(Waller) 이사 매파 발언:</strong> 취임 직전 "올해 금리 인상 확률 70%"라는 발언. 유가 고공행진이 지속되면 금리 인상은 불가피한 상황이다.
+</div>
+
+<div class="fade-in">
+<h3>금리 인상 시 섹터 영향</h3>
+<p>금리가 상승하면 파이낸셜 섹터가 가장 큰 수혜를 받고, IT/테크 섹터가 가장 큰 피해를 입는다. 유가 상승으로 인한 비용 전이(비료, 나프타, 플라스틱, 아스팔트 등)가 2~3개월 시차를 두고 산업 전반으로 퍼진다.</p>
+</div>
+
+<div class="chart-container fade-in">
+<canvas id="rateImpactChart" height="220"></canvas>
+</div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ===== 6. ERP 분석 ===== -->
+<section>
+<div class="fade-in">
+<span class="section-label">Risk Analysis</span>
+<h2>ERP 급락 — 주식의 상대적 매력 하락</h2>
+<p>ERP(Equity Risk Premium)는 S&P 500 수익률(Earnings Yield)과 10년 국채 금리 간의 차이를 나타내는 지표다. 최근 3개월 동안 0.70에서 0.17로 급락하면서, 국채 금리 상승 속도가 주식 수익률 증가 속도를 크게 앞지르고 있다.</p>
+</div>
+
+<div class="chart-container fade-in">
+<canvas id="erpChart" height="220"></canvas>
+</div>
+
+<div class="fade-in">
+<table>
+<thead><tr><th>기간</th><th>Earnings Yield</th><th>10년 국채</th><th>ERP</th><th>평가</th></tr></thead>
+<tbody>
+<tr><td>2025년 말</td><td>4.63%</td><td>3.93%</td><td><strong>0.70</strong></td><td>정상 수준</td></tr>
+<tr><td>2026년 2월 (전쟁 전)</td><td>4.85%</td><td>4.20%</td><td><strong>0.65</strong></td><td>양호</td></tr>
+<tr><td style="font-weight:700">2026년 5월 현재</td><td>4.80%</td><td>4.63%</td><td style="color:var(--main);font-weight:900">0.17</td><td style="color:var(--main);font-weight:700">매우 낮음</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="sim-container fade-in">
+<h4>🔢 ERP 시뮬레이터</h4>
+<p class="text-sub">Earnings Yield와 국채 금리를 조절하여 ERP 변화를 확인하세요.</p>
+<div class="slider-group">
+<label>S&P 500 Earnings Yield: <span class="slider-value" id="eyVal">4.80</span>%</label>
+<input type="range" id="eySlider" min="3.0" max="7.0" step="0.05" value="4.80">
+</div>
+<div class="slider-group">
+<label>10년 국채 금리: <span class="slider-value" id="bondVal">4.63</span>%</label>
+<input type="range" id="bondSlider" min="2.0" max="6.0" step="0.05" value="4.63">
+</div>
+<div class="sim-result">
+<div class="big" id="erpResult">0.17%</div>
+<div class="desc" id="erpDesc">ERP 매우 낮음 — 주식 투자 매력 감소</div>
+</div>
+<button class="btn-reset" onclick="document.getElementById('eySlider').value=4.80;document.getElementById('bondSlider').value=4.63;updateERP()">초기화</button>
+</div>
+
+<div class="quote-block fade-in">
+주식의 상대적 매력이 떨어지고 있다. 투자 리스크는 올랐는데 리턴은 크지 않을 시장이다. ERP가 확대되려면 실적 성장 또는 금리 하락이 필요한데, 현재 환경에서는 그 반대 방향이다.
+</div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ===== 7. 섹터 로테이션 ===== -->
+<section>
+<div class="fade-in">
+<span class="section-label">Sector Rotation</span>
+<h2>현재 섹터 로테이션 전략</h2>
+<p>금리 상승 환경에서는 파이낸셜이 순이자마진 확대로 가장 큰 수혜를 받고, IT는 모멘텀이 있지만 비중 축소가 권고된다. 원자재(Materials)와 인더스트리얼(방산·인프라)도 주목해야 할 섹터다.</p>
+</div>
+
+<div class="fade-in">
+<table>
+<thead><tr><th>우선순위</th><th>섹터</th><th>이유 및 기대 효과</th></tr></thead>
+<tbody>
+<tr><td style="font-weight:900;color:var(--main)">1</td><td><strong>Financials</strong></td><td>금리 상승 → 순이자마진 확대</td></tr>
+<tr><td style="font-weight:900">2</td><td><strong>Information Technology</strong></td><td>AI 성장 모멘텀 지속 (비중 축소 권고)</td></tr>
+<tr><td style="font-weight:900">3</td><td><strong>Materials</strong></td><td>원자재 가격 상승 수혜</td></tr>
+<tr><td style="font-weight:900">4</td><td><strong>Industrials</strong></td><td>인프라·방산 수요</td></tr>
+</tbody>
+</table>
+</div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ===== 8. 소비자 심리 ===== -->
+<section>
+<div class="fade-in">
+<span class="section-label">Consumer Sentiment</span>
+<h2>소비자 심리 급락 & K-경제</h2>
+<p>미시간대 5월 소비자 심리지수가 44.8로 사상 최저 수준을 기록했다. 1년 후 인플레이션 기대치는 전쟁 전 3.4%에서 4.8%로 급등했다. AAII 투자자 심리 조사에서도 Bearish(43.6%)가 Bullish(31.7%)를 크게 앞서면서, 시장 심리는 전반적으로 비관적 방향으로 전환 중이다.</p>
+</div>
+
+<div class="stat-grid fade-in">
+<div class="stat-card red"><div class="value">44.8</div><div class="label">미시간대 소비자 심리<br>(사상 최저)</div></div>
+<div class="stat-card red"><div class="value">4.8%</div><div class="label">1년 인플레 기대치<br>(전쟁 전 3.4%)</div></div>
+<div class="stat-card red"><div class="value">43.6%</div><div class="label">AAII Bearish</div></div>
+<div class="stat-card green"><div class="value">31.7%</div><div class="label">AAII Bullish</div></div>
+</div>
+
+<div class="chart-container fade-in">
+<canvas id="sentimentChart" height="220"></canvas>
+</div>
+
+<div class="highlight-box fade-in">
+<strong>K-경제:</strong> 빈익빈 부익부 현상 심화. 주식시장 투자자는 큰 수익을 올리지만, 투자 못 하는 사람은 물가 상승으로 생활이 더욱 어려워지는 양극화 구조. 월급 인상률은 S&P 500 수익률을 따라가지 못한다.
+</div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ===== 9. 다우존스 130년 & 1929년 교훈 ===== -->
+<section>
+<div class="fade-in">
+<span class="section-label">Historical Lessons</span>
+<h2>다우존스 130년 역사와 1929년의 교훈</h2>
+<p>다우존스 지수가 1896년 40.94에서 시작해 130년 만에 50,579로 사상 최고치를 경신했다. 그 과정에서 대공황, 세계대전, 오일쇼크, 닷컴 버블, 2008 금융위기, 팬데믹 등 수많은 위기를 거쳤고, 매번 회복에 성공했다.</p>
+</div>
+
+<div class="timeline fade-in">
+<div class="timeline-item"><div class="year">1929</div><div class="event">대공황 — 마진 대출 폭발, 회복까지 8년 이상 소요. 투자자 보호법 대거 제정</div></div>
+<div class="timeline-item"><div class="year">1939</div><div class="event">2차 세계대전 — 경공업에서 중공업으로 전환, 10여 년 이상 걸림</div></div>
+<div class="timeline-item"><div class="year">1973</div><div class="event">1차 오일쇼크 — 주가 반토막</div></div>
+<div class="timeline-item"><div class="year">1979</div><div class="event">2차 오일쇼크 — 다시 반토막</div></div>
+<div class="timeline-item"><div class="year">2000</div><div class="event">닷컴 버블 붕괴 — 반토막</div></div>
+<div class="timeline-item"><div class="year">2008</div><div class="event">글로벌 금융위기 — 반토막, 2년 후 회복</div></div>
+<div class="timeline-item"><div class="year">2020</div><div class="event">팬데믹 — 40~43% 급락 후 빠른 회복</div></div>
+<div class="timeline-item"><div class="year">2026</div><div class="event">현재 — 사상 최고치 50,579 경신</div></div>
+</div>
+
+<div class="warning-box fade-in">
+⚠️ <strong>1929년 대공황과 현재 한국의 유사점:</strong><br>
+① 잘 모르는 사람들이 대출 받아 투자(마진·빚투) ② 인플레이션 심각 ③ 투자자 보호 인프라 미약 ④ 폭락장 경험 부재 → 패닉 시 100% 가까이 전부 매도하는 구조적 취약성
+</div>
+
+<div class="fade-in">
+<h3>미국 vs 한국 시장 구조 비교</h3>
+<table>
+<thead><tr><th>항목</th><th>미국</th><th>한국</th></tr></thead>
+<tbody>
+<tr><td>폭락 시 매도 비율</td><td>60~70% (30~40% 매수)</td><td>거의 100% 매도</td></tr>
+<tr><td>세금 구조</td><td>Short-term 25% → 장기투자 유도</td><td>거의 무세 → 단타 유인</td></tr>
+<tr><td>투자자 보호법</td><td>1939년~ 체계적 정비</td><td>미약, 취약</td></tr>
+<tr><td>투자 문화</td><td>장기 투자 중심</td><td>단타·눈치게임 중심</td></tr>
+<tr><td>폭락장 회복</td><td>빠른 회복 (2008→2년)</td><td>회복 경험 부재</td></tr>
+</tbody>
+</table>
+</div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ===== 10. 학비 자금 운용 가이드 ===== -->
+<section>
+<div class="fade-in">
+<span class="section-label">Asset Allocation</span>
+<h2>4년 후 학비 5억 — 자금 운용 가이드</h2>
+<p>구독자 사연: 사촌 언니(병원장)의 딸이 4년 후 미국 대학 진학 예정. 약 5억 원의 학비 자금 운용 문의. 핵심 답변은 "확실히 필요한 돈은 시장 노출 20% 이하로 제한하라"는 것이다.</p>
+</div>
+
+<div class="sim-container fade-in">
+<h4>🔢 학비 자금 배분 시뮬레이터</h4>
+<p class="text-sub">시장 노출 비중을 조절해 리스크를 확인해 보세요.</p>
+<div class="slider-group">
+<label>총 자금 (억 원): <span class="slider-value" id="totalVal">5.0</span></label>
+<input type="range" id="totalSlider" min="1" max="20" step="0.5" value="5">
+</div>
+<div class="slider-group">
+<label>시장 노출 비중: <span class="slider-value" id="mktVal">20</span>%</label>
+<input type="range" id="mktSlider" min="0" max="100" step="5" value="20">
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px">
+<div class="sim-result">
+<div class="big" id="safeAmt">4.0억</div>
+<div class="desc">안전자산 (국채/TIPS/MMF)</div>
+</div>
+<div class="sim-result">
+<div class="big" id="riskAmt" style="color:var(--blue)">1.0억</div>
+<div class="desc">시장 노출 (S&P/QQQ 등)</div>
+</div>
+</div>
+<div class="sim-result" style="margin-top:10px">
+<div class="desc">최악 시나리오 (시장 -70%)</div>
+<div class="big" id="worstCase">4.3억</div>
+<div class="desc" id="worstDesc">남은 자금</div>
+</div>
+<button class="btn-reset" onclick="document.getElementById('totalSlider').value=5;document.getElementById('mktSlider').value=20;updateFund()">초기화</button>
+</div>
+
+<div class="highlight-box fade-in">
+<strong>권고 사항:</strong> 한국 시장 투자 금지. Treasury, Bond, TIPS 등 안전자산 중심 배분. 시장 노출은 S&P 500 ETF·QQQ 합산 20% 이하. 하락장 시 분할 매수(6월 등).
+</div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ===== 11. 이번 주 실적 ===== -->
+<section>
+<div class="fade-in">
+<span class="section-label">Earnings Calendar</span>
+<h2>이번 주 주요 실적 발표 기업</h2>
+</div>
+
+<div class="fade-in">
+<table>
+<thead><tr><th>종목</th><th>기업명</th><th>시가총액</th><th>EPS 전망</th><th>전년 EPS</th><th>YoY 성장</th></tr></thead>
+<tbody>
+<tr><td><strong>MRVL</strong></td><td>Marvell Technology</td><td>$171.9B</td><td>$0.61</td><td>$0.47</td><td class="positive">+29.8%</td></tr>
+<tr><td>CRM</td><td>Salesforce</td><td>$166.2B</td><td>$2.30</td><td>$1.94</td><td class="positive">+18.6%</td></tr>
+<tr><td><strong>PDD</strong></td><td>PDD Holdings</td><td>$134.5B</td><td>$2.03</td><td>$1.37</td><td class="positive">+48.2%</td></tr>
+<tr><td><strong>BMO</strong></td><td>Bank of Montreal</td><td>$114.7B</td><td>$2.80</td><td>$1.84</td><td class="positive">+52.2%</td></tr>
+<tr><td>SNPS</td><td>Synopsys</td><td>$100.5B</td><td>$2.24</td><td>$2.59</td><td class="negative">-13.5%</td></tr>
+<tr><td>SNOW</td><td>Snowflake</td><td>$59.7B</td><td>($0.59)</td><td>($0.91)</td><td class="positive">+35.2%</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="fade-in">
+<p>방송에서 마벨(MRVL), PDD홀딩스, BMO, Dell(DL) 등이 실적 상회할 것으로 전망했다. Snowflake는 적자가 줄어들고 있으나 시장 반응은 불확실하다고 언급.</p>
+</div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ===== 12. 핵심 투자 원칙 ===== -->
+<section>
+<div class="fade-in">
+<span class="section-label">Investment Principles</span>
+<h2>핵심 투자 원칙 정리</h2>
+</div>
+
+<div class="highlight-box fade-in">
+<strong>4.11 법칙 고수:</strong> 빨리 올라가면 떨어질 때도 무섭게 떨어진다. 이럴 때일수록 정신 똑바로 차리고, 비중 조절을 유지해야 한다.
+</div>
+
+<div class="quote-block fade-in">
+현금이 좀 올려놓으니 올라도 좋고 빠져도 안심입니다. 이게 투자하는 거죠. 매일매일 괴롭게 투자하면 장기투자가 안 되는 거예요.
+</div>
+
+<div class="fade-in">
+<h3>방송 핵심 메시지 요약</h3>
+<p>① <strong>비중 조절 유지</strong> — 더 줄일 필요는 없지만 더 늘리지도 말 것<br>
+② <strong>빚투 금지</strong> — 돈 빌려서 투자하면 망할 수 있다 (1929년 대공황 교훈)<br>
+③ <strong>6월 변동성 주의</strong> — PCE 발표, 케빈 워시 정책 불확실성<br>
+④ <strong>테크주 주의</strong> — 금리 인상 시 가장 먼저 하락하는 섹터<br>
+⑤ <strong>한국 은퇴자산 투자 주의</strong> — 폭락장에 매우 취약한 시장 구조<br>
+⑥ <strong>섹터 로테이션</strong> — Financials, IT(축소), Materials, Industrials 주시</p>
+</div>
+</section>
+
+</div>
+
+<footer>
+<p>본 리포트는 투자는인생TV 5월 26일 생방송을 분석·정리한 것으로, 투자 권유가 아닙니다.<br>
+David Lee · 테일러투자그룹 CIO | 정리: AI 분석 리포트 | 2026.05.27</p>
+</footer>
+
+<script>
+// ===== Fade-in Observer =====
+const fadeObs=new IntersectionObserver((entries)=>{entries.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('visible'),i*80);fadeObs.unobserve(e.target)}})},{threshold:0.12});
+document.querySelectorAll('.fade-in').forEach(el=>fadeObs.observe(el));
+
+// ===== Chart Configs =====
+const chartConfigs={};
+
+// Sector Chart
+chartConfigs['sectorChart']=()=>{
+const ctx=document.getElementById('sectorChart');
+new Chart(ctx,{type:'bar',data:{labels:['Tech','Energy','Real Est.','Disc.','Comm.','Fin.','Indust.','Staples','Health','Materials','Utilities'],datasets:[{label:'3개월 수익률 (%)',data:[23.05,8.40,2.30,1.47,-1.15,-1.05,-3.08,-3.52,-4.42,-5.04,-2.12],backgroundColor:d=>d.raw>=0?'#e11d48':'#6b7280',borderRadius:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.raw+'%'}}},scales:{y:{grid:{color:'#f0f0f0'},ticks:{callback:v=>v+'%'}},x:{grid:{display:false},ticks:{font:{size:10}}}},animation:{duration:1200,easing:'easeOutQuart'}}});
+};
+
+// Rate Impact Chart
+chartConfigs['rateImpactChart']=()=>{
+new Chart(document.getElementById('rateImpactChart'),{type:'bar',data:{labels:['Financials','Materials','Industrials','Energy','Staples','Healthcare','Comm.','Disc.','Real Est.','IT/Tech'],datasets:[{label:'금리 인상 시 영향도',data:[85,60,45,40,10,-10,-25,-30,-50,-80],backgroundColor:d=>d.raw>=0?'#2563eb':'#e11d48',borderRadius:4}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>(c.raw>0?'수혜 ':'피해 ')+Math.abs(c.raw)+'점'}}},scales:{x:{grid:{color:'#f0f0f0'}},y:{grid:{display:false},ticks:{font:{size:11}}}},animation:{duration:1200,easing:'easeOutQuart'}}});
+};
+
+// ERP Chart
+chartConfigs['erpChart']=()=>{
+new Chart(document.getElementById('erpChart'),{type:'bar',data:{labels:['2025년 말','2026년 2월','2026년 5월 현재'],datasets:[{label:'Earnings Yield',data:[4.63,4.85,4.80],backgroundColor:'#2563eb',borderRadius:4},{label:'10년 국채',data:[3.93,4.20,4.63],backgroundColor:'#6b7280',borderRadius:4},{label:'ERP',data:[0.70,0.65,0.17],backgroundColor:'#e11d48',borderRadius:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{tooltip:{callbacks:{label:c=>c.dataset.label+': '+c.raw+'%'}}},scales:{y:{grid:{color:'#f0f0f0'},ticks:{callback:v=>v+'%'}},x:{grid:{display:false}}},animation:{duration:1200,easing:'easeOutQuart'}}});
+};
+
+// Sentiment Chart
+chartConfigs['sentimentChart']=()=>{
+new Chart(document.getElementById('sentimentChart'),{type:'doughnut',data:{labels:['Bearish (비관)','Bullish (낙관)','Neutral (중립)'],datasets:[{data:[43.6,31.7,24.7],backgroundColor:['#e11d48','#2563eb','#6b7280'],borderWidth:2,borderColor:'#fff'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:12}}},tooltip:{callbacks:{label:c=>c.label+': '+c.raw+'%'}}},animation:{duration:1200,easing:'easeOutQuart'}}});
+};
+
+// Chart Observer
+const chartObs=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting){const canvas=e.target.querySelector('canvas');if(canvas&&chartConfigs[canvas.id]){chartConfigs[canvas.id]();e.target.classList.add('chart-ready');chartObs.unobserve(e.target)}}})},{threshold:0.15});
+document.querySelectorAll('.chart-container').forEach(el=>chartObs.observe(el));
+
+// ===== PCE Simulator =====
+function updatePCE(){
+const v=parseFloat(document.getElementById('pceSlider').value);
+document.getElementById('pceVal').textContent=v.toFixed(2);
+const expected=0.25;
+const diff=v-expected;
+const el=document.getElementById('pceImpact');
+const desc=document.getElementById('pceDesc');
+const detail=document.getElementById('pceDetailBox');
+if(diff>0.1){el.textContent='🔥 Very Hot';el.style.color='#dc2626';desc.textContent='예상보다 매우 높음 → 금리 인상 확정적 → 테크주 급락';detail.innerHTML='<b style="color:#dc2626">시나리오:</b> 금리 인상 기대 급등, 10년 국채 4.7%+ 돌파 가능. S&P 500 -2~3%, 나스닥 -3~5% 조정 가능. 달러 강세, 위험자산 대규모 회피.'}
+else if(diff>0){el.textContent='▲ Hot';el.style.color='#f59e0b';desc.textContent='예상보다 높음 → 금리 인상 우려 → 테크주 매도 압력';detail.innerHTML='<b style="color:#f59e0b">시나리오:</b> 금리 인상 가능성 상승. 칩/성장주 강한 매도세. 10년물 국채 금리 상승, 달러 강세, 위험자산 회피 심리 확대.'}
+else if(diff===0){el.textContent='— In-line';el.style.color='var(--gray)';desc.textContent='예상 부합 → 시장 중립적 반응';detail.innerHTML='<b>시나리오:</b> 큰 변동 없음. 기존 추세 유지. 다만 세부 항목(주거비, 서비스 등)에 따라 미세 변동 가능.'}
+else if(diff>-0.1){el.textContent='▽ Cool';el.style.color='#2563eb';desc.textContent='예상보다 낮음 → 금리 인하 기대 → 테크주 강세';detail.innerHTML='<b style="color:#2563eb">시나리오:</b> 금리 인하 기대 상승. 테크/성장주 강세. 채권 금리 하락 → 위험자산 선호. 하반기 +8% 추가 상승 가능성.'}
+else{el.textContent='❄️ Very Cool';el.style.color='#16a34a';desc.textContent='예상보다 매우 낮음 → 금리 인하 기대 급등 → 전면 랠리';detail.innerHTML='<b style="color:#16a34a">시나리오:</b> 인플레 둔화 확인 → Fed 인하 기대 폭발. 나스닥 +3%+ 급등 가능. 채권 가격 상승, 달러 약세, 전 섹터 랠리.'}
+}
+document.getElementById('pceSlider').addEventListener('input',updatePCE);
+updatePCE();
+
+// ===== ERP Simulator =====
+function updateERP(){
+const ey=parseFloat(document.getElementById('eySlider').value);
+const bond=parseFloat(document.getElementById('bondSlider').value);
+document.getElementById('eyVal').textContent=ey.toFixed(2);
+document.getElementById('bondVal').textContent=bond.toFixed(2);
+const erp=(ey-bond).toFixed(2);
+document.getElementById('erpResult').textContent=erp+'%';
+const d=document.getElementById('erpDesc');
+const el=document.getElementById('erpResult');
+if(erp>=1.5){d.textContent='ERP 양호 — 주식 투자 매력 높음';el.style.color='#16a34a'}
+else if(erp>=0.5){d.textContent='ERP 정상 — 적정 수준';el.style.color='var(--blue)'}
+else if(erp>=0){d.textContent='ERP 매우 낮음 — 주식 투자 매력 감소';el.style.color='var(--main)'}
+else{d.textContent='ERP 마이너스 — 국채가 주식보다 매력적';el.style.color='#dc2626'}
+}
+document.getElementById('eySlider').addEventListener('input',updateERP);
+document.getElementById('bondSlider').addEventListener('input',updateERP);
+updateERP();
+
+// ===== Fund Simulator =====
+function updateFund(){
+const total=parseFloat(document.getElementById('totalSlider').value);
+const mkt=parseInt(document.getElementById('mktSlider').value);
+document.getElementById('totalVal').textContent=total.toFixed(1);
+document.getElementById('mktVal').textContent=mkt;
+const safe=total*(1-mkt/100);
+const risk=total*(mkt/100);
+document.getElementById('safeAmt').textContent=safe.toFixed(1)+'억';
+document.getElementById('riskAmt').textContent=risk.toFixed(1)+'억';
+const worst=safe+risk*0.3;
+document.getElementById('worstCase').textContent=worst.toFixed(1)+'억';
+document.getElementById('worstCase').style.color=worst>=total*0.7?'#16a34a':'#dc2626';
+document.getElementById('worstDesc').textContent='시장 -70% 시 남는 금액 (원금 '+total.toFixed(1)+'억 대비 '+(worst/total*100).toFixed(0)+'%)';
+}
+document.getElementById('totalSlider').addEventListener('input',updateFund);
+document.getElementById('mktSlider').addEventListener('input',updateFund);
+updateFund();
+</script>
+</body>
+</html>
