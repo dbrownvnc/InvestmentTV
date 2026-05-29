@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>미-이란 종전 합의 & 천운의 PCE | 5월 28일 멤버온리 분석</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;0,900;1,500&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+:root{
+  --bg:#ffffff; --bg2:#fafafa;
+  --text:#1a1a1a; --text2:#777777;
+  --accent:#e11d48; --accent2:#f43f5e;
+  --c1:#e11d48; --c2:#1a1a1a; --c3:#6b7280; --c4:#2563eb;
+  --table-bg:#fafafa; --table-head:#e11d48; --border:#e5e5e5;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--bg); color:var(--text);
+  font-family:'Noto Sans KR',sans-serif; font-weight:400;
+  line-height:1.75; font-size:16px; -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:680px;margin:0 auto;padding:0 22px;}
+
+/* HERO */
+.hero{padding:64px 22px 48px;max-width:680px;margin:0 auto;border-bottom:3px solid var(--text);}
+.kicker{font-family:'Noto Sans KR';font-weight:700;font-size:12px;letter-spacing:3px;color:var(--accent);text-transform:uppercase;margin-bottom:22px;}
+.kicker::before{content:"";display:inline-block;width:32px;height:2px;background:var(--accent);vertical-align:middle;margin-right:10px;}
+.hero h1{font-family:'Playfair Display',serif;font-weight:900;font-size:42px;line-height:1.12;letter-spacing:-0.5px;margin-bottom:24px;}
+.hero h1 em{font-style:italic;color:var(--accent);}
+.hero .dek{font-size:17px;color:var(--text2);font-weight:300;line-height:1.7;}
+.meta{display:flex;gap:18px;flex-wrap:wrap;margin-top:28px;font-size:12px;color:var(--text2);letter-spacing:0.5px;}
+.meta span{position:relative;padding-left:14px;}
+.meta span::before{content:"";position:absolute;left:0;top:50%;width:5px;height:5px;border-radius:50%;background:var(--accent);transform:translateY(-50%);}
+
+/* SECTION */
+section{padding:48px 0;border-bottom:1px solid var(--border);}
+.sec-num{font-family:'Playfair Display',serif;font-style:italic;font-size:14px;color:var(--accent);margin-bottom:8px;}
+h2{font-family:'Playfair Display',serif;font-weight:700;font-size:28px;line-height:1.25;margin-bottom:8px;letter-spacing:-0.3px;}
+h2 .ko{font-family:'Noto Sans KR';font-weight:900;font-size:23px;display:block;margin-top:2px;}
+.lead{font-size:15px;color:var(--text2);margin:14px 0 24px;font-weight:300;}
+p{margin-bottom:16px;font-size:15.5px;}
+strong{font-weight:700;color:var(--text);}
+.hl{background:linear-gradient(transparent 60%,rgba(225,29,72,0.18) 60%);font-weight:700;}
+
+/* PULLQUOTE */
+.pull{margin:32px 0;padding:8px 0 8px 24px;border-left:4px solid var(--accent);}
+.pull p{font-family:'Playfair Display',serif;font-style:italic;font-size:20px;line-height:1.5;color:var(--text);margin:0;}
+.pull cite{display:block;font-family:'Noto Sans KR';font-style:normal;font-size:12px;color:var(--text2);margin-top:10px;letter-spacing:1px;}
+
+/* CARDS */
+.cards{display:flex;flex-direction:column;gap:14px;margin:24px 0;}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:4px;padding:20px;}
+.card h4{font-weight:700;font-size:15px;margin-bottom:6px;color:var(--accent);}
+.card p{font-size:14px;color:var(--text);margin:0;}
+
+/* STAT GRID */
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--border);border:1px solid var(--border);margin:24px 0;border-radius:4px;overflow:hidden;}
+.stat{background:var(--bg);padding:22px 16px;text-align:center;}
+.stat .num{font-family:'Playfair Display',serif;font-weight:900;font-size:32px;color:var(--accent);line-height:1;}
+.stat .lbl{font-size:11.5px;color:var(--text2);margin-top:8px;letter-spacing:0.5px;}
+.stat .sub{font-size:10.5px;color:var(--c3);margin-top:3px;}
+
+/* TABLE */
+.tbl-wrap{overflow-x:auto;margin:24px 0;border-radius:4px;border:1px solid var(--border);}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:var(--table-bg);min-width:340px;}
+th{background:var(--table-head);color:#fff;font-weight:700;padding:12px 10px;text-align:left;font-size:12.5px;letter-spacing:0.5px;}
+td{padding:11px 10px;border-bottom:1px solid var(--border);}
+tr:last-child td{border-bottom:none;}
+td.pos{color:var(--accent);font-weight:700;}
+td.neg{color:var(--c4);font-weight:700;}
+.badge{display:inline-block;font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:20px;}
+.b-out{background:rgba(225,29,72,0.12);color:var(--accent);}
+.b-keep{background:rgba(26,26,26,0.08);color:var(--text);}
+
+/* CHART */
+.fade-in{opacity:0;transform:translateY(18px);transition:opacity 0.7s ease,transform 0.7s ease;}
+.fade-in.visible{opacity:1;transform:translateY(0);}
+.chart-container{position:relative;max-height:340px;margin:24px 0;background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:18px 14px;}
+.chart-container canvas{opacity:0;transition:opacity 0.4s ease;max-height:300px;}
+.chart-container.chart-ready canvas{opacity:1;}
+.chart-cap{font-size:11.5px;color:var(--text2);text-align:center;margin-top:10px;letter-spacing:0.5px;}
+
+/* INTERACTIVE - SIMULATOR */
+.sim{background:var(--bg2);border:1px solid var(--border);border-left:4px solid var(--accent);border-radius:6px;padding:24px 20px;margin:28px 0;}
+.sim h4{font-weight:900;font-size:16px;margin-bottom:4px;}
+.sim .desc{font-size:13px;color:var(--text2);margin-bottom:20px;}
+.sim-row{margin-bottom:18px;}
+.sim-row label{display:flex;justify-content:space-between;font-size:13px;font-weight:500;margin-bottom:8px;}
+.sim-row label b{color:var(--accent);font-weight:700;}
+input[type=range]{width:100%;-webkit-appearance:none;height:6px;border-radius:3px;background:#e5e5e5;outline:none;}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:var(--accent);cursor:pointer;box-shadow:0 2px 6px rgba(225,29,72,0.4);}
+input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:var(--accent);cursor:pointer;border:none;}
+.sim-result{background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:18px;text-align:center;margin-top:8px;}
+.sim-result .big{font-family:'Playfair Display',serif;font-weight:900;font-size:36px;color:var(--accent);line-height:1;}
+.sim-result .big.warn{color:var(--c4);}
+.sim-result .rlbl{font-size:12px;color:var(--text2);margin-top:8px;}
+.sim-msg{font-size:13px;margin-top:14px;padding:12px;border-radius:5px;line-height:1.6;}
+.msg-good{background:rgba(225,29,72,0.08);color:var(--accent);}
+.msg-warn{background:rgba(37,99,235,0.08);color:var(--c4);}
+.reset-btn{margin-top:14px;width:100%;padding:11px;background:var(--text);color:#fff;border:none;border-radius:5px;font-family:'Noto Sans KR';font-weight:700;font-size:13px;cursor:pointer;transition:background 0.2s;}
+.reset-btn:hover{background:var(--accent);}
+
+/* FLOW DIAGRAM */
+.flow{display:flex;flex-direction:column;gap:10px;margin:24px 0;}
+.flow-step{background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:16px 18px;cursor:pointer;transition:all 0.25s;position:relative;}
+.flow-step:hover{border-color:var(--accent);}
+.flow-step.active{background:var(--accent);color:#fff;border-color:var(--accent);}
+.flow-step.active .fs-detail{color:rgba(255,255,255,0.9);}
+.flow-step .fs-title{font-weight:700;font-size:14px;display:flex;align-items:center;gap:10px;}
+.flow-step .fs-n{width:24px;height:24px;background:var(--accent);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;}
+.flow-step.active .fs-n{background:#fff;color:var(--accent);}
+.fs-detail{font-size:13px;color:var(--text2);margin-top:0;max-height:0;overflow:hidden;transition:max-height 0.3s ease,margin-top 0.3s ease;}
+.flow-step.active .fs-detail{max-height:200px;margin-top:10px;}
+.flow-hint{font-size:11.5px;color:var(--text2);text-align:center;margin-top:6px;}
+
+/* KEY BOX */
+.keybox{background:var(--text);color:#fff;border-radius:8px;padding:28px 24px;margin:32px 0;}
+.keybox h4{font-family:'Playfair Display',serif;font-style:italic;color:var(--accent2);font-size:18px;margin-bottom:14px;}
+.keybox ul{list-style:none;}
+.keybox li{padding:8px 0 8px 22px;position:relative;font-size:14.5px;border-bottom:1px solid rgba(255,255,255,0.1);}
+.keybox li:last-child{border-bottom:none;}
+.keybox li::before{content:"→";position:absolute;left:0;color:var(--accent2);font-weight:700;}
+
+/* TERM */
+.term{background:var(--bg2);border:1px dashed var(--border);border-radius:5px;padding:14px 16px;margin:18px 0;font-size:13px;}
+.term b{color:var(--accent);}
+
+/* FOOTER */
+footer{padding:48px 22px 64px;text-align:center;max-width:680px;margin:0 auto;}
+footer .disc{font-size:11px;color:var(--text2);line-height:1.7;margin-top:20px;border-top:1px solid var(--border);padding-top:20px;}
+.endmark{font-family:'Playfair Display',serif;font-style:italic;font-size:22px;color:var(--accent);margin-bottom:8px;}
+
+@media(max-width:480px){
+  .hero h1{font-size:32px;}
+  h2{font-size:23px;}
+  .stat .num{font-size:26px;}
+  .stats{grid-template-columns:repeat(2,1fr);}
+}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="kicker">투자는인생TV · 멤버온리 라이브</div>
+  <h1>천운의 PCE,<br>그리고 <em>미-이란 종전</em>이 만든 30%의 밤</h1>
+  <p class="dek">예상보다 낮게 나온 물가지표와 종전 합의 뉴스가 테크주를 끌어올린 5월 28일. 하지만 형님의 메시지는 "축포"가 아니라 "경고"였다 — 6월을 조심하라.</p>
+  <div class="meta">
+    <span>2026.05.29</span>
+    <span>David Lee · 테일러투자그룹 CIO</span>
+    <span>읽는 시간 약 9분</span>
+  </div>
+</header>
+
+<main class="wrap">
+
+<!-- 1 -->
+<section>
+  <div class="sec-num">I. The Headline</div>
+  <h2>Market or Casino?<span class="ko">시장이 투기판으로 변했다</span></h2>
+  <p class="lead">델(DELL)이 시간외에서 39% 폭등하고, 스노우플레이크는 38%, 달러트리는 13%. 하루 만에 벌어진 일이다.</p>
+  <p>형님은 첫 마디부터 단호했다. <span class="hl">미국 증시가 '투자시장'이 아니라 '투기시장'으로 변하고 있다</span>는 것. 방향이 바뀌거나 캐털리스트(촉매)가 부정적으로 돌아서는 순간, 지금 올라간 만큼 큰 피해가 따라온다는 경고다.</p>
+  <p>오늘 테크 섹터가 하락세에서 반등한 직접적 이유는 <strong>미-이란 종전 합의 뉴스</strong>. 다만 핵심은 합의가 아니라 <strong>'2개월 유예'</strong>라는 점이다. 트럼프가 최종 사인할지는 미지수이며, 7월 말까지 어떻게 흘러갈지 아무도 모른다 — 바로 이 불확실성(uncertainty)이 시장에 깔려 있다.</p>
+
+  <div class="flow">
+    <div class="flow-step" onclick="toggleFlow(this)">
+      <div class="fs-title"><span class="fs-n">1</span>종전 '합의' 뉴스 등장</div>
+      <div class="fs-detail">미-이란 간 종전 합의 소식이 보도되며 위험회피 심리 완화. 장중 하락하던 칩·테크 섹터가 반등 성공.</div>
+    </div>
+    <div class="flow-step" onclick="toggleFlow(this)">
+      <div class="fs-title"><span class="fs-n">2</span>실체는 '2개월 유예'</div>
+      <div class="fs-detail">종전이 확정된 게 아니라 두 달간 유예된 상태. 5월 말 기준 7월 말까지가 시한이며, 구체적 상황은 불투명.</div>
+    </div>
+    <div class="flow-step" onclick="toggleFlow(this)">
+      <div class="fs-title"><span class="fs-n">3</span>남은 변수: 트럼프의 사인</div>
+      <div class="fs-detail">트럼프가 실제로 사인하느냐에 따라 방향이 완전히 갈린다. 이 불확실성이 6월 변동성의 핵심 뇌관.</div>
+    </div>
+  </div>
+  <p class="flow-hint">↑ 각 단계를 눌러 상세 내용을 확인하세요</p>
+</section>
+
+<!-- 2 -->
+<section>
+  <div class="sec-num">II. The Data</div>
+  <h2>천운의 PCE<span class="ko">4월 물가, 예상보다 낮았다</span></h2>
+  <p class="lead">헤드라인도, 코어도 모두 예상치를 밑돌았다. 형님 표현 그대로 "천운"이자 "도저히 이해가 안 가는" 결과.</p>
+
+  <div class="stats">
+    <div class="stat"><div class="num">0.4%</div><div class="lbl">헤드라인 PCE</div><div class="sub">예상 0.5% 하회</div></div>
+    <div class="stat"><div class="num">0.2%</div><div class="lbl">Core PCE</div><div class="sub">예상 0.3% 하회</div></div>
+    <div class="stat"><div class="num">3.8%</div><div class="lbl">헤드라인 (연율)</div><div class="sub">여전히 높은 편</div></div>
+    <div class="stat"><div class="num">3.3%</div><div class="lbl">Core PCE (연율)</div><div class="sub">목표 위 잔존</div></div>
+  </div>
+
+  <div class="term"><b>PCE란?</b> 개인소비지출 물가지수. 연준(Fed)이 가장 중시하는 인플레이션 지표다. '코어(Core)'는 변동성 큰 식료품·에너지를 뺀 수치로, 추세적 물가를 본다.</div>
+
+  <p>형님은 이번 4월 수치가 낮게 나온 배경을 <strong>전쟁 돌입 한 달밖에 안 된 시점 + 재고분</strong>으로 해석한다. 즉 진짜 시험대는 <span class="hl">6월에 나올 5월 PCE</span>라는 것. 특히 코어 PCE가 예상보다 높게 나오면, 금리 인상 얘기가 나오면서 고배율 테크주가 폭락할 가능성이 크다고 봤다.</p>
+
+  <div class="chart-container fade-in">
+    <canvas id="chartPCE" height="230"></canvas>
+    <div class="chart-cap">4월 PCE: 예상치 vs 실제치 (전월 대비, %)</div>
+  </div>
+
+  <p>한편 <strong>1분기 GDP는 연율 1.6%로 하향 조정</strong>됐다(초기 추정치 2% → 1.6%). 개인소득은 보합세인데 개인지출은 +0.5% 증가했는데, 그 이유가 무겁다 — <span class="hl">저소득층이 저축을 줄여가며 소비를 유지</span>하고 있기 때문이다.</p>
+</section>
+
+<!-- 3 -->
+<section>
+  <div class="sec-num">III. The Field Report</div>
+  <h2>뉴욕에서 온 목소리<span class="ko">맨해튼 요식업자의 증언</span></h2>
+  <p class="lead">뉴욕·뉴저지에서 식당을 여러 곳 운영하는 멤버 '은경진' 님과의 실시간 통화. 월스트리트와 메인스트리트의 온도차가 적나라하게 드러났다.</p>
+
+  <div class="pull">
+    <p>"고급 식당은 예약이 꽉 차는데, 일반 식당 손님은 눈에 띄게 줄었어요. 단골이 맥도날드 앞에서 만나면 오히려 저한테 미안해합니다."</p>
+    <cite>— 뉴욕 멤버 인터뷰 중</cite>
+  </div>
+
+  <p>현장에서 체감하는 신호들은 이렇다. <strong>유가가 50% 가까이 급등</strong>(배럴당 40~50불 → 70~80불)하면서 운영비가 치솟았고, 손님들은 <span class="hl">18~20%의 팁이 부담스러워 카운터에서 주문하는 맥도날드로 이동</span>한다. 심지어 차를 두고 대중교통을 타기 시작했다 — 기름값 때문이다.</p>
+
+  <p>그런데 이분이 견딜 수 있는 이유는 단 하나, <strong>주식 투자로 자산이 늘고 있어서</strong>다. 형님이 강조한 섹터 로테이션, 333 법칙, 비중 조절을 작년부터 적용한 결과다.</p>
+
+  <div class="card">
+    <h4>핵심 통찰 — 비즈니스 vs 주식</h4>
+    <p>"내 식당은 안 된다고 바로 다른 업종으로 못 갈아탑니다. 하지만 주식은 이 섹터가 안 좋으면 손절·익절하고 다른 섹터로 옮기면 돼요. 직접 경영 대신 <strong>간접 경영</strong>을 하는 셈이죠."</p>
+  </div>
+</section>
+
+<!-- 4 -->
+<section>
+  <div class="sec-num">IV. The K-Curve</div>
+  <h2>K자로 갈라진 경제<span class="ko">고유가·고인플레이션 시대의 계층</span></h2>
+  <p class="lead">위로 가는 사람과 아래로 가는 사람. 같은 경제 안에서 정반대 방향으로 움직이는 'K-Shape Economy'.</p>
+
+  <div class="cards">
+    <div class="card"><h4>고소득층 — 구매력 ↑</h4><p>AI·기술주 투자 수익, 자산 가격 상승, 원격근무 가능. <strong>주식 투자를 하고 있다면 여기에 해당</strong>한다.</p></div>
+    <div class="card"><h4>중산층 — 양극화 심화</h4><p>에너지·식료품 가격 상승 부담. 일을 해야 먹고살 수 있으며, 중상·중하로 다시 갈린다.</p></div>
+    <div class="card"><h4>저소득층 — 가장 큰 타격</h4><p>필수 소비 지출 증가, 저축 감소, 실질 소득 하락. 저축을 헐어 소비를 버티는 중.</p></div>
+  </div>
+
+  <div class="term"><b>페이체크 투 페이체크(paycheck to paycheck)란?</b> 받은 월급으로 그 주기를 겨우 버티며 사는 상태. 미국인의 약 70%가 이렇게 살고 있으며, 뉴욕은 주급(週給) 구조가 많다.</div>
+
+  <p>형님이 던진 현실 인식의 핵심: <span class="hl">"우리만 올라가는 거예요."</span> 미국·한국 모두 실물 경기는 안 좋은데 AI·칩 종목만 오르니, 마치 시장 전체가 좋은 것처럼 착각하기 쉽다는 것. 한국은 하이닉스·삼성 두 종목에 쏠려 더 위태롭다 — "가분수의 머리는 큰데 팔다리는 짧아 언제든 뒤집힐 수 있다."</p>
+</section>
+
+<!-- 5 -->
+<section>
+  <div class="sec-num">V. The Warnings</div>
+  <h2>기술주 취약성 경고<span class="ko">7가지 워닝 사인</span></h2>
+  <p class="lead">슬라이드에 정리된 위험 신호들. 심각도가 높을수록 6월 변동성의 뇌관이 된다.</p>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>순위</th><th>워닝 사인</th><th>심각도</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>유가 급등 + 공급 충격</td><td class="pos">★★★★★</td></tr>
+        <tr><td>2</td><td>10년물 국채 금리 급등</td><td class="pos">★★★★☆</td></tr>
+        <tr><td>3</td><td>애널리스트 대규모 하향 조정</td><td class="pos">★★★★</td></tr>
+        <tr><td>4</td><td>시장 과열 (Overbought)</td><td class="pos">★★★★</td></tr>
+        <tr><td>5</td><td>좁은 랠리 (Narrow Rally)</td><td class="pos">★★★☆</td></tr>
+        <tr><td>6</td><td>저소득층 소비 위축 (K-shaped)</td><td class="pos">★★★☆</td></tr>
+        <tr><td>7</td><td>여름 장세 + Sell in May</td><td class="pos">★★★</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>유가는 이란 사태로 89~110불을 오가며 떨어지지 않고 있다. 시장 폭(breadth, 상승 종목 비율)은 43%에서 58%로 개선됐지만 여전히 좁은 랠리 상태다. 고배율 성장주는 <strong>금리 상승과 에너지 비용 증가에 특히 민감</strong>하다.</p>
+
+  <div class="keybox">
+    <h4>5월 말 포트폴리오 점검 — 5가지 결론</h4>
+    <ul>
+      <li>강한 실적으로 신고가 경신했으나 과열(froth) 조짐 뚜렷</li>
+      <li>시장이 카지노처럼 변했다 — 단기 자금이 특정 테마에 집중</li>
+      <li>이미 테크주 비중 조절 완료, 테크 노출 더 늘리면 안 됨</li>
+      <li>연중 절반 시점, 포트폴리오 리밸런싱 권고</li>
+      <li>6월은 역사적으로 약세 경향이 강한 달</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 6 -->
+<section>
+  <div class="sec-num">VI. The Strategy</div>
+  <h2>비중 조절의 묘미<span class="ko">주가가 아니라 '리스크'를 본다</span></h2>
+  <p class="lead">최근 들어온 멤버들이 가장 헷갈려하는 지점. 비중 조절은 주가의 등락과 전혀 상관없다.</p>
+
+  <div class="pull">
+    <p>"투자 리스크가 올라가면 줄이고, 내려가면 늘린다. 주가하고는 전혀 상관이 없어요."</p>
+  </div>
+
+  <p>예를 들어 MU(마이크론)는 200불에 사서 800불이 됐다. 400% 이상 올랐으니 노출이 커졌고 — 그래서 일부를 줄여 AMD·인텔·마벨로 옮긴다. 동반 하락장이 와도 떨어지는 속도가 달라지기 때문이다. <span class="hl">엔비디아는 한때 20%까지 차올랐다가 지금은 5% 수준으로 줄여놨다.</span></p>
+
+  <div class="sim">
+    <h4>🎚️ 333 법칙 자산배분 시뮬레이터</h4>
+    <p class="desc">333 법칙 = 부동산 30% · 주식 30% · 나머지(현금/채권/금) 30%. 슬라이더로 부동산 비중을 조절해 한국형 '부동산 편중'의 위험을 체감해 보세요.</p>
+    <div class="sim-row">
+      <label>총 자산 규모 <b><span id="totalAsset">20</span>억 원</b></label>
+      <input type="range" id="assetSlider" min="5" max="50" value="20" step="1">
+    </div>
+    <div class="sim-row">
+      <label>부동산 비중 <b><span id="reRatio">30</span>%</b></label>
+      <input type="range" id="reSlider" min="0" max="100" value="30" step="5">
+    </div>
+    <div class="sim-result">
+      <div class="big" id="reAmount">6.0억</div>
+      <div class="rlbl">부동산에 묶인 자산 / 투자자산: <b id="investAmount">14.0억</b></div>
+    </div>
+    <div class="sim-msg" id="simMsg"></div>
+    <button class="reset-btn" onclick="resetSim()">초기값(20억·30%)으로 리셋</button>
+  </div>
+
+  <div class="term"><b>형님의 부동산 경고:</b> "한국 50대 이상은 재산의 80~90%가 부동산이다. 20억짜리 아파트가 있으면 투자자산도 20억은 돼야 정상이다." 부동산을 사지 말라는 게 아니라, <b>한 곳에 몰빵하지 말라</b>는 뜻. 인구 감소(향후 4천만 이하)로 강남 일부 외엔 일본처럼 될 수 있다는 장기 우려도 함께 제시됐다.</p></div>
+</section>
+
+<!-- 7 -->
+<section>
+  <div class="sec-num">VII. The AI Engine</div>
+  <h2>국가경제를 떠받치는 AI<span class="ko">소비가 아니라 '투자'다</span></h2>
+  <p class="lead">일반 경기는 나쁜데 GDP가 버티는 이유. 답은 AI 인프라 투자에 있다.</p>
+
+  <div class="stats">
+    <div class="stat"><div class="num">1.3%p</div><div class="lbl">GDP 성장 기여</div><div class="sub">컴퓨터·SW·R&D</div></div>
+    <div class="stat"><div class="num">+17%</div><div class="lbl">설비투자</div><div class="sub">컴퓨터 장비 +67%</div></div>
+    <div class="stat"><div class="num">11.3%</div><div class="lbl">GDP 대비 AI 투자</div><div class="sub">2000년 11.6% 근접</div></div>
+    <div class="stat"><div class="num">+4.3%</div><div class="lbl">2Q26 성장률 예상</div><div class="sub">애틀랜타 연준</div></div>
+  </div>
+
+  <p>엔비디아 CFO는 <strong>AI 인프라 투자 규모가 2030년까지 연간 3~4조 달러 수준으로 성장</strong>할 것으로 전망했다. 즉 다른 경제가 안 좋아도 이 부분은 가져가야 한다 — 단, <span class="hl">비중 조절은 필수</span>다. "엔비디아를 20%씩 들고 있으면 안 된다"는 게 핵심.</p>
+
+  <div class="chart-container fade-in">
+    <canvas id="chartAI" height="240"></canvas>
+    <div class="chart-cap">AI 인프라 투자 구성별 비중 (추정, %)</div>
+  </div>
+
+  <div class="card">
+    <h4>스페이스X와 전력난 — 형님의 큰 그림</h4>
+    <p>AI 전력 수요 급증으로 어느 시점엔 전력난이 온다. 미국에서 핵발전소 하나 짓는 데 15년. 그래서 머스크는 <strong>데이터센터를 우주에 짓겠다</strong>고 했다 — 24시간 태양광 + 열 관리 불필요. 스타링크·xAI 연결성과 맞물리며, 형님은 스페이스X(프리IPO 990~2,500불)를 주목한다.</p>
+  </div>
+</section>
+
+<!-- 8 -->
+<section>
+  <div class="sec-num">VIII. The Movers</div>
+  <h2>오늘의 강세 종목<span class="ko">Stocks on the Move</span></h2>
+  <p class="lead">하루 만에 두 자릿수씩 뛴 종목들. 형님은 "이것도 미친 거"라며 오히려 워닝 사인으로 읽었다.</p>
+
+  <div class="chart-container fade-in">
+    <canvas id="chartMove" height="250"></canvas>
+    <div class="chart-cap">주요 종목 당일/시간외 등락률 (%)</div>
+  </div>
+
+  <p>특히 <strong>달러트리(+13%)</strong>처럼 하루 1~2불짜리 파는 회사가 13% 오를 이유는 없다는 게 형님 시각. <span class="hl">시장이 갬블링처럼 변하고 있다는 신호</span>다. 다만 AMD(+5%, 5일간 15% 상승, 목표가 500불 상향)처럼 펀더멘털이 받쳐주는 종목은 홀드.</p>
+
+  <div class="card">
+    <h4>30대 그룹 신규 편입: 마벨(MRVL)</h4>
+    <p>AI 데이터센터 모멘텀으로 <strong>목표가 250불 상향</strong>. MU 비중을 줄이고 마벨을 사두라는 형님 조언. 맞춤형 AI 칩(커스텀)을 하이퍼스케일러(구글·아마존·메타)에 공급한다. <strong>탈락 기업은 CRM(세일즈포스)</strong> — 투자 리스크 상승으로 제외.</p>
+  </div>
+</section>
+
+<!-- 9 -->
+<section>
+  <div class="sec-num">IX. The Map</div>
+  <h2>가져갈 것 vs 피할 것<span class="ko">AI 수혜주 & 하향조정 기업</span></h2>
+  <p class="lead">AI 투자 증가로 매출이 느는 직접·간접 수혜주, 그리고 최근 투자의견이 내려간 종목들.</p>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>분류</th><th>종목</th></tr></thead>
+      <tbody>
+        <tr><td>직접 수혜</td><td>NVIDIA, AMD, Broadcom, MRVL, Super Micro, Dell, HPE</td></tr>
+        <tr><td>간접(전력·냉각)</td><td>Vertiv(VRT), GE Vernova(GEV)</td></tr>
+        <tr><td>스토리지</td><td>Micron(MU), SanDisk(SNDK), Seagate(STX)</td></tr>
+        <tr><td>네트워킹</td><td>Arista(ANET), Cisco</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p style="margin-top:24px;">반대로 최근 <strong>투자의견이 하향 조정</strong>된 기업들. 형님은 "다 팔라는 게 아니라 비중을 낮추거나, 사지는 말라"고 강조했다. 이런 종목은 더 이상 팔로업하지 않는다.</p>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>티커</th><th>기업</th><th>변경</th></tr></thead>
+      <tbody>
+        <tr><td>INTU</td><td>Intuit</td><td><span class="badge b-keep">Buy → Hold</span></td></tr>
+        <tr><td>REGN</td><td>Regeneron</td><td><span class="badge b-keep">Buy → Hold</span></td></tr>
+        <tr><td>BAC</td><td>Bank of America</td><td><span class="badge b-keep">Buy → Hold</span></td></tr>
+        <tr><td>C</td><td>Citigroup</td><td><span class="badge b-keep">Buy → Hold</span></td></tr>
+        <tr><td>COF</td><td>Capital One</td><td><span class="badge b-keep">Buy → Hold</span></td></tr>
+        <tr><td>BSX</td><td>Boston Scientific</td><td><span class="badge b-keep">Buy → Hold</span></td></tr>
+        <tr><td>SYF</td><td>Synchrony</td><td><span class="badge b-keep">Buy → Hold</span></td></tr>
+        <tr><td>ENPH</td><td>Enphase Energy</td><td><span class="badge b-out">Hold → Sell</span></td></tr>
+        <tr><td>CEG</td><td>Constellation Energy</td><td><span class="badge b-out">Hold → Sell</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p style="margin-top:24px;"><strong>다음 주 주목 실적:</strong> 브로드컴(AVGO, 6/5) — 커스텀 AI 액셀러레이터 매출이 가장 큰 변수. 크라우드스트라이크(CRWD, 6/3) — 흑자 전환 첫 분기 기대. 형님은 AVGO 실적이 마벨·AMD의 동반 상승/하락을 좌우할 것으로 봤다.</p>
+</section>
+
+<!-- 10 -->
+<section style="border-bottom:none;">
+  <div class="sec-num">X. The Closing</div>
+  <h2>형님 생각<span class="ko">나를 먼저 사랑하라</span></h2>
+  <p class="lead">방송의 마지막은 종목이 아니었다. 자산보다 먼저 챙겨야 할 것에 대한 이야기.</p>
+
+  <div class="pull">
+    <p>"불행은 나에게서 나오는 게 아니라 남의 시선에서 찾아옵니다. 구속된 나부터 자유롭게 풀어주세요."</p>
+  </div>
+
+  <p>형님은 멍 때리는 시간의 필요성부터 이야기했다. 아무것도 안 할 때 비로소 긴장이 풀리고 머리가 맑아지며, 그래야 "내가 지금 잘 가고 있는지" 심사숙고할 수 있다는 것. 한국 사람들은 열심히 일하지만 투자를 안 해서 40~50대에 자산이 거의 없다 — <span class="hl">노력한 만큼 자산이 늘려면 '쉬어가며 정리하는 시간'이 필요하다.</span></p>
+
+  <p>그리고 남의 기준(역할론)에 자신을 가두지 말 것. 명문대·대기업·연봉·집값 같은 조건을 다 충족하는 사람은 0.1%도 안 된다. 자산이 많아도 고난은 온다. 그러니 <strong>기쁠 때 덜 기뻐하고, 슬플 때 덜 슬퍼하는 중심</strong>을 가지라는 것이 형님의 마지막 당부다.</p>
+</section>
+
+</main>
+
+<footer>
+  <div class="endmark">— 投資는 人生 —</div>
+  <p style="font-size:13px;color:var(--text2);">5월 28일 멤버온리 라이브 · 분석 리포트</p>
+  <div class="disc">본 문서는 방송 내용을 정리·요약한 자료이며 투자 권유나 자문이 아닙니다. 모든 투자 판단과 책임은 투자자 본인에게 있습니다. 언급된 종목·수치는 방송 시점 기준이며 실제와 다를 수 있습니다.</div>
+</footer>
+
+<script>
+/* ===== Fade-in observer ===== */
+const fadeObs = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), i * 80);
+      fadeObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.12 });
+document.querySelectorAll('.fade-in').forEach(el => fadeObs.observe(el));
+
+/* ===== Chart configs ===== */
+const ACCENT='#e11d48', DARK='#1a1a1a', GRAY='#6b7280', BLUE='#2563eb';
+Chart.defaults.font.family="'Noto Sans KR',sans-serif";
+Chart.defaults.color='#777777';
+
+const chartConfigs = {};
+
+chartConfigs['chartPCE'] = () => {
+  new Chart(document.getElementById('chartPCE'), {
+    type:'bar',
+    data:{
+      labels:['헤드라인 PCE','Core PCE'],
+      datasets:[
+        {label:'예상치',data:[0.5,0.3],backgroundColor:GRAY,borderRadius:4,barPercentage:0.6},
+        {label:'실제치',data:[0.4,0.2],backgroundColor:ACCENT,borderRadius:4,barPercentage:0.6}
+      ]
+    },
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{position:'top'},tooltip:{callbacks:{label:c=>c.dataset.label+': '+c.parsed.y+'%'}}},
+      scales:{y:{beginAtZero:true,ticks:{callback:v=>v+'%'},grid:{color:'#eee'}},x:{grid:{display:false}}}
+    }
+  });
+};
+
+chartConfigs['chartAI'] = () => {
+  new Chart(document.getElementById('chartAI'), {
+    type:'doughnut',
+    data:{
+      labels:['GPU/AI칩 (35~40%)','서버·컴퓨팅 (25~30%)','데이터센터 건설 (20~25%)','네트워킹 (8~12%)','SW·스토리지 (5~10%)'],
+      datasets:[{data:[37,27,22,10,7],backgroundColor:[ACCENT,DARK,GRAY,BLUE,'#f43f5e'],borderColor:'#fff',borderWidth:2}]
+    },
+    options:{responsive:true,maintainAspectRatio:false,cutout:'55%',
+      plugins:{legend:{position:'bottom',labels:{boxWidth:12,padding:10,font:{size:11}}}}}
+  });
+};
+
+chartConfigs['chartMove'] = () => {
+  new Chart(document.getElementById('chartMove'), {
+    type:'bar',
+    data:{
+      labels:['DELL(시간외)','SNOW','DLTR','APP','KSS','BBY','AMD'],
+      datasets:[{label:'등락률(%)',
+        data:[39,38,13,10,9,7,5],
+        backgroundColor:['#e11d48','#e11d48','#f43f5e','#f43f5e','#6b7280','#6b7280','#1a1a1a'],
+        borderRadius:4}]
+    },
+    options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>'+'+c.parsed.x+'%'}}},
+      scales:{x:{beginAtZero:true,ticks:{callback:v=>v+'%'},grid:{color:'#eee'}},y:{grid:{display:false}}}
+    }
+  });
+};
+
+const chartObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const canvas = e.target.querySelector('canvas');
+      if (canvas && chartConfigs[canvas.id]) {
+        chartConfigs[canvas.id]();
+        e.target.classList.add('chart-ready');
+        chartObs.unobserve(e.target);
+      }
+    }
+  });
+}, { threshold: 0.15 });
+document.querySelectorAll('.chart-container').forEach(el => chartObs.observe(el));
+
+/* ===== Flow diagram ===== */
+function toggleFlow(el){
+  const wasActive = el.classList.contains('active');
+  el.parentElement.querySelectorAll('.flow-step').forEach(s=>s.classList.remove('active'));
+  if(!wasActive) el.classList.add('active');
+}
+
+/* ===== 333 Simulator ===== */
+const assetSlider=document.getElementById('assetSlider');
+const reSlider=document.getElementById('reSlider');
+function updateSim(){
+  const total=parseInt(assetSlider.value);
+  const reRatio=parseInt(reSlider.value);
+  const reAmt=(total*reRatio/100);
+  const investAmt=(total*(100-reRatio)/100);
+  document.getElementById('totalAsset').textContent=total;
+  document.getElementById('reRatio').textContent=reRatio;
+  document.getElementById('reAmount').textContent=reAmt.toFixed(1)+'억';
+  document.getElementById('investAmount').textContent=investAmt.toFixed(1)+'억';
+  const bigEl=document.getElementById('reAmount');
+  const msg=document.getElementById('simMsg');
+  if(reRatio>=60){
+    bigEl.classList.add('warn');
+    msg.className='sim-msg msg-warn';
+    msg.innerHTML='⚠️ <b>위험: 부동산 편중</b> — 자산의 '+reRatio+'%가 부동산에 묶여 있습니다. 형님 경고대로 "집에 문제 생기면 핵폭탄처럼 터지는" 구조입니다. 투자자산 비중을 늘려 균형을 맞추세요.';
+  } else if(reRatio>=40){
+    bigEl.classList.remove('warn');
+    msg.className='sim-msg msg-warn';
+    msg.innerHTML='🔶 <b>다소 높음</b> — 부동산 비중 '+reRatio+'%는 333 법칙(30%)보다 높습니다. 시장 변동 시 유연성이 떨어질 수 있습니다.';
+  } else {
+    bigEl.classList.remove('warn');
+    msg.className='sim-msg msg-good';
+    msg.innerHTML='✅ <b>균형 양호</b> — 부동산 '+reRatio+'%, 투자자산 '+(100-reRatio)+'%. 333 법칙에 부합하는 분산 구조입니다. 한 자산에 묶이지 않아 위기에 대응할 수 있습니다.';
+  }
+}
+function resetSim(){ assetSlider.value=20; reSlider.value=30; updateSim(); }
+assetSlider.addEventListener('input',updateSim);
+reSlider.addEventListener('input',updateSim);
+updateSim();
+</script>
+</body>
+</html>
