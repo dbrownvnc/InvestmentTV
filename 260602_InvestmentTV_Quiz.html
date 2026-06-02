@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>고고저저 월말결산전 — 이해도 점검 퀴즈 (10문제)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,500&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#ffffff; --bg2:#fafafa; --text:#1a1a1a; --text2:#777777;
+    --accent:#e11d48; --accent2:#f43f5e; --border:#e5e5e5;
+    --green:#15803d; --greenbg:#e7f6ec; --redbg:#fdecef;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg2);color:var(--text);font-family:'Noto Sans KR',sans-serif;line-height:1.7;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:720px;margin:0 auto;background:var(--bg);min-height:100vh;}
+
+  /* HEADER */
+  header{background:#0e0e10;color:#fff;padding:40px 24px 34px;position:relative;overflow:hidden;}
+  header::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 80% 10%,rgba(225,29,72,.3),transparent 55%);}
+  header .k{position:relative;font-family:'Playfair Display',serif;font-style:italic;color:var(--accent2);font-size:14px;letter-spacing:.04em;margin-bottom:10px;}
+  header h1{position:relative;font-family:'Playfair Display',serif;font-weight:900;font-size:clamp(26px,7vw,40px);line-height:1.1;}
+  header h1 .ko{display:block;font-family:'Noto Sans KR';font-weight:900;font-size:clamp(18px,4.5vw,24px);margin-top:8px;}
+  header p{position:relative;margin-top:14px;font-size:13.5px;color:#bdbdc6;}
+
+  /* STICKY SCOREBOARD */
+  .score{position:sticky;top:0;z-index:50;background:#fff;border-bottom:1px solid var(--border);padding:12px 20px;box-shadow:0 2px 12px rgba(0,0,0,.05);}
+  .score .row{display:flex;justify-content:space-between;align-items:center;font-size:13px;margin-bottom:8px;}
+  .score .stat{display:flex;gap:16px;}
+  .score .stat b{font-family:'Playfair Display';font-size:17px;color:var(--accent);}
+  .score .stat span{color:var(--text2);}
+  .score .rate{font-weight:700;font-size:14px;}
+  .pbar{height:8px;background:var(--border);border-radius:5px;overflow:hidden;}
+  .pfill{height:100%;width:0;border-radius:5px;background:var(--accent);transition:width .5s ease,background .4s;}
+
+  /* QUIZ */
+  .quiz{padding:24px 20px 60px;}
+  .q{background:#fff;border:1px solid var(--border);border-radius:14px;padding:22px 20px;margin-bottom:20px;box-shadow:0 1px 6px rgba(0,0,0,.03);}
+  .q-top{display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap;}
+  .q-num{font-family:'Playfair Display';font-style:italic;font-size:20px;color:var(--accent);font-weight:700;}
+  .badge{font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;letter-spacing:.02em;}
+  .b-type{background:#0e0e10;color:#fff;}
+  .b-easy{background:#e7f6ec;color:var(--green);}
+  .b-mid{background:#eef2ff;color:#2563eb;}
+  .b-hard{background:var(--redbg);color:var(--accent);}
+  .q-text{font-size:16px;font-weight:500;line-height:1.55;margin-bottom:16px;}
+
+  .opts{display:flex;flex-direction:column;gap:9px;}
+  .opt{text-align:left;background:var(--bg2);border:1.5px solid var(--border);border-radius:10px;padding:13px 15px;font-size:14.5px;font-family:inherit;cursor:pointer;transition:.18s;display:flex;align-items:center;gap:11px;color:var(--text);}
+  .opt:hover:not(:disabled){border-color:var(--accent);background:#fff;}
+  .opt:disabled{cursor:default;}
+  .opt .mk{width:24px;height:24px;border-radius:50%;border:1.5px solid #ccc;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#999;}
+  .opt.correct{background:var(--greenbg);border-color:var(--green);color:#0f5132;}
+  .opt.correct .mk{background:var(--green);border-color:var(--green);color:#fff;}
+  .opt.wrong{background:var(--redbg);border-color:var(--accent);color:#842029;}
+  .opt.wrong .mk{background:var(--accent);border-color:var(--accent);color:#fff;}
+  .res-badge{margin-left:auto;font-size:12px;font-weight:700;padding:2px 9px;border-radius:14px;}
+  .res-badge.ok{background:var(--green);color:#fff;}
+  .res-badge.no{background:var(--accent);color:#fff;}
+
+  /* OX */
+  .ox{display:flex;gap:12px;}
+  .ox .opt{flex:1;justify-content:center;font-family:'Playfair Display';font-size:28px;font-weight:900;padding:18px;}
+
+  /* short answer */
+  .sa{display:flex;gap:8px;}
+  .sa input{flex:1;border:1.5px solid var(--border);border-radius:10px;padding:13px 14px;font-size:15px;font-family:inherit;outline:none;}
+  .sa input:focus{border-color:var(--accent);}
+  .sa input:disabled{background:var(--bg2);}
+  .sa button{background:var(--accent);color:#fff;border:none;border-radius:10px;padding:0 20px;font-size:14px;font-weight:700;font-family:inherit;cursor:pointer;}
+  .sa button:disabled{background:#ccc;cursor:default;}
+  .sa-hint{font-size:12px;color:var(--text2);margin-top:8px;}
+
+  .expl{max-height:0;overflow:hidden;transition:max-height .45s ease;}
+  .expl.show{max-height:600px;}
+  .expl-inner{margin-top:16px;padding:15px 16px;background:#0e0e10;color:#e9e9ee;border-radius:10px;font-size:13.5px;line-height:1.65;}
+  .expl-inner .lab{display:inline-block;font-weight:700;color:var(--accent2);margin-bottom:5px;font-size:12px;letter-spacing:.03em;}
+  .expl-inner .src{margin-top:9px;padding-top:9px;border-top:1px solid rgba(255,255,255,.14);font-size:12.5px;color:#a8a8b0;}
+
+  /* MODAL */
+  .modal{position:fixed;inset:0;background:rgba(0,0,0,.72);display:none;align-items:center;justify-content:center;z-index:100;padding:24px;}
+  .modal.show{display:flex;}
+  .modal-card{background:#fff;border-radius:20px;padding:36px 28px;max-width:380px;width:100%;text-align:center;animation:pop .4s cubic-bezier(.2,.9,.3,1.3);}
+  @keyframes pop{from{transform:scale(.8);opacity:0;}to{transform:scale(1);opacity:1;}}
+  .modal-card .grade{font-family:'Playfair Display';font-size:64px;font-weight:900;line-height:1;}
+  .modal-card .sc{font-size:18px;font-weight:700;margin:10px 0 4px;}
+  .modal-card .msg{font-size:14px;color:var(--text2);margin-bottom:24px;}
+  .modal-card button{background:var(--accent);color:#fff;border:none;border-radius:12px;padding:14px 28px;font-size:15px;font-weight:700;font-family:inherit;cursor:pointer;width:100%;}
+  .modal-card button:hover{background:var(--accent2);}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="k">투자는인생TV · 이해도 점검</div>
+    <h1>Window Dressing Quiz<span class="ko">고고저저 월말결산전 — 10문제</span></h1>
+    <p>6월 1일 시장 포커스 방송 내용 기반 · 보기를 클릭하면 즉시 채점됩니다</p>
+  </header>
+
+  <div class="score">
+    <div class="row">
+      <div class="stat">
+        <span>푼 문제 <b id="sSolved">0</b>/10</span>
+        <span>맞힘 <b id="sCorrect">0</b></span>
+      </div>
+      <div class="rate" id="sRate">정답률 0%</div>
+    </div>
+    <div class="pbar"><div class="pfill" id="pfill"></div></div>
+  </div>
+
+  <div class="quiz" id="quiz"></div>
+</div>
+
+<div class="modal" id="modal">
+  <div class="modal-card">
+    <div class="grade" id="mGrade">A</div>
+    <div class="sc" id="mScore">10 / 10</div>
+    <div class="msg" id="mMsg"></div>
+    <button id="mReset">다시 풀기</button>
+  </div>
+</div>
+
+<script>
+const QUIZ_DATA=[
+  {
+    id:1,type:"mc",difficulty:"쉬움",
+    question:"오늘 방송 기준, S&P 500은 몇 주 연속 상승하며 신고가를 경신했나요?",
+    options:["5주 연속","7주 연속","9주 연속","12주 연속"],
+    answer:2,
+    explanation:"S&P 500은 9주 연속 상승하며 2023년 말 이후 최장 상승 기록을 세웠습니다.",
+    src:"방송: '주요 지수 성과 → S&P 500 9주 연속 상승 (2023년 말 이후 최장 기록)'"
+  },
+  {
+    id:2,type:"mc",difficulty:"쉬움",
+    question:"오늘 시장을 표현한 '고고저저(하이하이로로)'의 의미로 가장 알맞은 것은?",
+    options:["모든 종목이 고르게 상승","오른 건 더 오르고 떨어진 건 더 떨어진다","고배당주만 상승","저가주가 급등한다"],
+    answer:1,
+    explanation:"'고고저저'는 지금까지 올라간 건 더 올라가고, 떨어지는 건 더 떨어지는 양극화 흐름을 뜻합니다. 월말 윈도드레싱이 만든 현상입니다.",
+    src:"방송: '지금까지 올라간 건 더 많이 올라가고 지금까지 떨어지는 건 더 떨어지는 시장'"
+  },
+  {
+    id:3,type:"ox",difficulty:"쉬움",
+    question:"오늘 지수는 신고가였고, 11개 섹터가 모두 상승했다.",
+    answer:"X",
+    explanation:"지수는 신고가였지만 11개 섹터 중 9개 섹터는 오히려 하락했습니다. 기술주 중심의 '편중 랠리'였다는 점이 핵심 경고입니다.",
+    src:"방송: '9개 섹터가 하락… 기술주 중심으로 지수가 올랐다는 점에서 편중 랠리 특징이 뚜렷'"
+  },
+  {
+    id:4,type:"mc",difficulty:"보통",
+    question:"오늘 Dell(DELL) 주가가 +32.8% 폭등한 직접적인 이유는?",
+    options:["배당 인상 발표","AI 서버 매출 575% 급증","자사주 매입 확대","신규 PC 출시"],
+    answer:1,
+    explanation:"Dell은 AI 서버 매출이 575% 급증하면서 +32.8% 폭등했습니다. IBM은 양자컴퓨팅 투자 발표로 +12.9% 상승했습니다.",
+    src:"방송: 'Dell(DELL): +32.80% 폭등 → AI 서버 매출 575% 급증'"
+  },
+  {
+    id:5,type:"mc",difficulty:"보통",
+    question:"방송에서 제시한 현재 S&P 500의 Shiller PE 값과 그 평가는?",
+    options:["22.0배 · 적정","27.0배 · 다소 고평가","38.2배 · 매우 고평가","44배 · 적정"],
+    answer:2,
+    explanation:"Shiller PE는 현재 38.2배로 '매우 고평가'. 2000년 닷컴 버블 때 44배였고, 통념상 40을 넘으면 위험하다고 봅니다.",
+    src:"방송: 'Shiller PE 38.2 (5년 32.5, 역사적 27.0) → 매우 고평가… 40 넘어가면 위험'"
+  },
+  {
+    id:6,type:"sa",difficulty:"보통",
+    question:"기관이 월말 결산을 앞두고 성과 좋은 주식을 대량 매입하고 부진한 주식을 대량 매각해 장부를 좋게 보이게 하는 전략을 영어로 무엇이라 하나요? (영어, 두 단어)",
+    answer:["window dressing","windowdressing","윈도드레싱","윈도우드레싱","window-dressing"],
+    explanation:"정답은 Window Dressing(윈도 드레싱)입니다. 4월 말~5월 초에도 같은 현상이 있었던 월말 결산 효과입니다.",
+    src:"방송: '월말 윈도드레싱… 주가 성과 저조한 주식은 대량 매각하고 성과 좋은 주식을 대량 매입'",
+    hint:"힌트: 'W'로 시작합니다."
+  },
+  {
+    id:7,type:"mc",difficulty:"보통",
+    question:"Broadcom(AVGO) 매출에서 가장 큰 비중(48~52%)을 차지하는 고객사 유형은?",
+    options:["Apple","Hyperscalers (초대형 클라우드)","Networking 장비","자동차/산업용"],
+    answer:1,
+    explanation:"하이퍼스케일러(Google·Amazon·Meta·Microsoft)가 48~52%로 1위이며 +80% 이상 급증 중. Apple은 18~20%로 2위입니다.",
+    src:"방송: '하이퍼스케일러가 48~52% 차지… Google 18%, Amazon 15%, Meta 13%, Microsoft 8%'"
+  },
+  {
+    id:8,type:"ox",difficulty:"보통",
+    question:"방송은 비트코인을 리스크를 분산해주는 안전한 자산으로 평가했다.",
+    answer:"X",
+    explanation:"반대입니다. 투자자들이 비트코인을 '리스크를 분산하는 것이 아니라 리스크를 더 안고 가는' 위험 자산으로 인식하는 중이라고 했습니다. MicroStrategy의 매입 중단도 약세 요인입니다.",
+    src:"방송: '리스크를 diversification 분산하는 것이 아니라 리스크를 더 안고 간다라고 판단'"
+  },
+  {
+    id:9,type:"mc",difficulty:"어려움",
+    question:"Berkshire Hathaway가 $85억 현금 인수를 발표하며 +22% 폭등한 종목은?",
+    options:["Arm Holdings (ARM)","Taylor Morrison Home (TMHC)","ServiceNow","Ecopetrol (EC)"],
+    answer:1,
+    explanation:"주택 건설사 Taylor Morrison Home(TMHC)이 Berkshire Hathaway의 $85억 현금 인수 발표로 +22% 폭등했습니다.",
+    src:"방송: 'Taylor Morrison Home (TMHC): +22% 폭등, Berkshire Hathaway가 $85억 현금 인수 발표'"
+  },
+  {
+    id:10,type:"sa",difficulty:"어려움",
+    question:"방송에 따르면, Fed 정책에서 이제 노동시장보다 '더 중요하게' 평가되는 지표는 무엇인가요? (한 단어)",
+    answer:["인플레이션","물가","inflation","인플레","물가상승"],
+    explanation:"정답은 인플레이션(물가)입니다. 노동시장보다 인플레이션이 더 중요해졌고, 노동시장이 강하게 나오면 오히려 금리 인상 가능성이 커진다고 했습니다.",
+    src:"방송: 'Fed 정책 주목: 노동시장보다 인플레이션이 더 중요해졌다는 평가'",
+    hint:"힌트: 물가와 관련된 단어입니다."
+  }
+];
+
+let state={solved:0,correct:0};
+const done=new Array(QUIZ_DATA.length).fill(false);
+
+function diffClass(d){return d==="쉬움"?"b-easy":d==="보통"?"b-mid":"b-hard";}
+function typeLabel(t){return t==="mc"?"객관식":t==="ox"?"O / X":"단답형";}
+
+function render(){
+  const root=document.getElementById('quiz');
+  root.innerHTML='';
+  QUIZ_DATA.forEach((q,qi)=>{
+    const card=document.createElement('div');
+    card.className='q'; card.id='q'+qi;
+    let inner=`<div class="q-top">
+        <span class="q-num">Q${q.id}</span>
+        <span class="badge b-type">${typeLabel(q.type)}</span>
+        <span class="badge ${diffClass(q.difficulty)}">${q.difficulty}</span>
+      </div>
+      <div class="q-text">${q.question}</div>`;
+
+    if(q.type==='mc'){
+      inner+='<div class="opts">';
+      q.options.forEach((o,oi)=>{
+        inner+=`<button class="opt" data-q="${qi}" data-o="${oi}">
+          <span class="mk">${String.fromCharCode(65+oi)}</span><span>${o}</span></button>`;
+      });
+      inner+='</div>';
+    }else if(q.type==='ox'){
+      inner+=`<div class="ox">
+        <button class="opt" data-q="${qi}" data-o="O">O</button>
+        <button class="opt" data-q="${qi}" data-o="X">X</button>
+      </div>`;
+    }else{
+      inner+=`<div class="sa">
+        <input type="text" id="sa${qi}" placeholder="정답 입력...">
+        <button data-q="${qi}" class="sa-btn">제출</button>
+      </div><div class="sa-hint">${q.hint||''}</div>`;
+    }
+    inner+=`<div class="expl" id="expl${qi}"><div class="expl-inner">
+        <span class="lab">해설</span><div>${q.explanation}</div>
+        <div class="src">📌 ${q.src}</div></div></div>`;
+    card.innerHTML=inner;
+    root.appendChild(card);
+  });
+  bind();
+}
+
+function bind(){
+  document.querySelectorAll('.opt[data-o]').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const qi=+btn.dataset.q; if(done[qi])return;
+      const q=QUIZ_DATA[qi];
+      let isCorrect;
+      if(q.type==='mc'){ isCorrect=(+btn.dataset.o===q.answer); markMC(qi,+btn.dataset.o); }
+      else { isCorrect=(btn.dataset.o===q.answer); markOX(qi,btn.dataset.o); }
+      finish(qi,isCorrect);
+    });
+  });
+  document.querySelectorAll('.sa-btn').forEach(btn=>{
+    btn.addEventListener('click',()=>submitSA(+btn.dataset.q));
+  });
+  document.querySelectorAll('.sa input').forEach(inp=>{
+    inp.addEventListener('keydown',e=>{ if(e.key==='Enter'){const qi=+inp.id.replace('sa','');submitSA(qi);} });
+  });
+}
+
+function submitSA(qi){
+  if(done[qi])return;
+  const q=QUIZ_DATA[qi];
+  const inp=document.getElementById('sa'+qi);
+  const val=(inp.value||'').trim().toLowerCase().replace(/\s+/g,'');
+  if(!val){inp.focus();return;}
+  const ok=q.answer.some(a=>a.toLowerCase().replace(/\s+/g,'')===val);
+  inp.disabled=true;
+  inp.style.borderColor=ok?'var(--green)':'var(--accent)';
+  inp.style.background=ok?'var(--greenbg)':'var(--redbg)';
+  inp.style.color=ok?'#0f5132':'#842029';
+  inp.style.fontWeight='700';
+  const b=document.querySelector(`.sa-btn[data-q="${qi}"]`);
+  b.disabled=true; b.textContent=ok?'✓ 정답':'✗ 오답';
+  b.style.background=ok?'var(--green)':'var(--accent)';
+  if(!ok){
+    const hint=document.querySelector('#q'+qi+' .sa-hint');
+    hint.innerHTML=`정답: <b style="color:var(--accent)">${q.answer[0]}</b>`;
+  }
+  finish(qi,ok);
+}
+
+function markMC(qi,chosen){
+  const q=QUIZ_DATA[qi];
+  document.querySelectorAll(`#q${qi} .opt`).forEach(o=>{
+    o.disabled=true;
+    const oi=+o.dataset.o;
+    if(oi===q.answer){o.classList.add('correct');
+      if(oi===chosen){o.insertAdjacentHTML('beforeend','<span class="res-badge ok">✓ 정답!</span>');}
+      else{o.insertAdjacentHTML('beforeend','<span class="res-badge ok">정답</span>');}
+    }else if(oi===chosen){o.classList.add('wrong');
+      o.insertAdjacentHTML('beforeend','<span class="res-badge no">✗ 오답</span>');}
+  });
+}
+function markOX(qi,chosen){
+  const q=QUIZ_DATA[qi];
+  document.querySelectorAll(`#q${qi} .opt`).forEach(o=>{
+    o.disabled=true;
+    const ov=o.dataset.o;
+    if(ov===q.answer){o.classList.add('correct');
+      o.insertAdjacentHTML('beforeend',`<span class="res-badge ok">${ov===chosen?'✓ 정답!':'정답'}</span>`);}
+    else if(ov===chosen){o.classList.add('wrong');
+      o.insertAdjacentHTML('beforeend','<span class="res-badge no">✗ 오답</span>');}
+  });
+}
+
+function finish(qi,ok){
+  done[qi]=true;
+  state.solved++; if(ok)state.correct++;
+  document.getElementById('expl'+qi).classList.add('show');
+  updateScore();
+  if(state.solved===QUIZ_DATA.length) setTimeout(showModal,500);
+}
+
+function updateScore(){
+  document.getElementById('sSolved').textContent=state.solved;
+  document.getElementById('sCorrect').textContent=state.correct;
+  const rate=state.solved?Math.round(state.correct/state.solved*100):0;
+  document.getElementById('sRate').textContent='정답률 '+rate+'%';
+  const fill=document.getElementById('pfill');
+  fill.style.width=(state.solved/QUIZ_DATA.length*100)+'%';
+  let col=rate<40?'var(--accent)':rate<70?'#f59e0b':'var(--green)';
+  fill.style.background=col;
+  document.getElementById('sRate').style.color=col;
+}
+
+function showModal(){
+  const total=QUIZ_DATA.length, c=state.correct;
+  const pct=Math.round(c/total*100);
+  let g,msg;
+  if(pct>=90){g='A';msg='완벽합니다! 방송 내용을 정확히 이해하셨네요. 👏';}
+  else if(pct>=70){g='B';msg='훌륭해요. 핵심을 잘 잡으셨습니다.';}
+  else if(pct>=50){g='C';msg='절반은 맞히셨어요. 해설을 다시 보면 더 탄탄해집니다.';}
+  else{g='D';msg='리포트를 한 번 더 읽고 도전해보세요. 충분히 오릅니다!';}
+  document.getElementById('mGrade').textContent=g;
+  document.getElementById('mGrade').style.color=pct>=70?'var(--green)':pct>=50?'#f59e0b':'var(--accent)';
+  document.getElementById('mScore').textContent=`${c} / ${total}  ·  정답률 ${pct}%`;
+  document.getElementById('mMsg').textContent=msg;
+  document.getElementById('modal').classList.add('show');
+}
+
+document.getElementById('mReset').addEventListener('click',()=>{
+  state={solved:0,correct:0};
+  for(let i=0;i<done.length;i++)done[i]=false;
+  document.getElementById('modal').classList.remove('show');
+  render(); updateScore();
+  window.scrollTo({top:0,behavior:'smooth'});
+});
+
+render(); updateScore();
+</script>
+</body>
+</html>
