@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>333 법칙 번개방송 — 이해도 점검 퀴즈</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,500&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#ffffff;--bg2:#fafafa;--text:#1a1a1a;--text2:#777777;
+  --accent:#e11d48;--accent2:#f43f5e;--border:#e5e5e5;
+  --green:#16a34a;--greenbg:#dcfce7;--red:#dc2626;--redbg:#fee2e2;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg2);color:var(--text);font-family:'Noto Sans KR',sans-serif;line-height:1.7;-webkit-font-smoothing:antialiased;font-size:16px;}
+.wrap{max-width:680px;margin:0 auto;padding:0 16px 60px;}
+
+/* header */
+header{text-align:center;padding:34px 16px 22px;}
+.kicker{font-family:'Playfair Display',serif;font-style:italic;color:var(--accent);font-size:.85rem;letter-spacing:.04em;margin-bottom:8px;}
+header h1{font-family:'Playfair Display',serif;font-weight:900;font-size:2rem;line-height:1.15;}
+header h1 .em{color:var(--accent);font-style:italic;}
+header p{color:var(--text2);font-size:.88rem;margin-top:10px;font-weight:300;}
+
+/* sticky score bar */
+.scorebar{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.97);backdrop-filter:blur(6px);border-bottom:1px solid var(--border);padding:11px 16px;box-shadow:0 2px 10px rgba(0,0,0,.05);}
+.scorebar .inner{max-width:680px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:12px;}
+.scorebar .stats{display:flex;gap:16px;font-size:.82rem;}
+.scorebar .stats b{font-family:'Playfair Display',serif;font-size:1.05rem;color:var(--accent);}
+.scorebar .stats .lbl{color:var(--text2);font-size:.72rem;display:block;}
+.progress-wrap{flex:1;max-width:160px;}
+.progress-track{height:8px;background:var(--border);border-radius:8px;overflow:hidden;}
+.progress-fill{height:100%;width:0;background:var(--accent);border-radius:8px;transition:width .4s ease,background .3s ease;}
+.progress-pct{font-size:.74rem;color:var(--text2);text-align:right;margin-top:3px;}
+
+/* question card */
+.q{background:#fff;border:1px solid var(--border);border-radius:8px;padding:22px 18px;margin:18px 0;box-shadow:0 1px 3px rgba(0,0,0,.03);}
+.q-head{display:flex;align-items:center;gap:8px;margin-bottom:14px;flex-wrap:wrap;}
+.q-num{font-family:'Playfair Display',serif;font-weight:900;font-size:1.3rem;color:var(--accent);}
+.q-type{font-size:.68rem;font-weight:700;letter-spacing:.05em;padding:3px 8px;border-radius:20px;background:#f1f1f1;color:#555;}
+.diff{font-size:.68rem;font-weight:700;padding:3px 8px;border-radius:20px;}
+.diff.easy{background:#dcfce7;color:#15803d;}
+.diff.mid{background:#fef3c7;color:#b45309;}
+.diff.hard{background:#fee2e2;color:#b91c1c;}
+.q-text{font-size:1.04rem;font-weight:500;margin-bottom:16px;line-height:1.55;}
+
+/* options */
+.opts{display:flex;flex-direction:column;gap:9px;}
+.opt{display:flex;align-items:flex-start;gap:10px;padding:13px 14px;border:1.5px solid var(--border);border-radius:6px;background:#fff;cursor:pointer;transition:all .15s;font-size:.94rem;text-align:left;font-family:inherit;color:var(--text);line-height:1.45;}
+.opt:hover:not(:disabled){border-color:var(--accent);background:#fff5f7;}
+.opt:disabled{cursor:default;}
+.opt .mk{flex-shrink:0;width:22px;height:22px;border:1.5px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:700;color:var(--text2);}
+.opt.correct{border-color:var(--green);background:var(--greenbg);}
+.opt.correct .mk{background:var(--green);border-color:var(--green);color:#fff;}
+.opt.wrong{border-color:var(--red);background:var(--redbg);}
+.opt.wrong .mk{background:var(--red);border-color:var(--red);color:#fff;}
+.badge{margin-left:auto;font-size:.72rem;font-weight:700;padding:2px 8px;border-radius:4px;align-self:center;}
+.badge.ok{background:var(--green);color:#fff;}
+.badge.no{background:var(--red);color:#fff;}
+
+/* OX */
+.ox{display:flex;gap:12px;}
+.ox .opt{flex:1;justify-content:center;font-size:1.3rem;font-weight:700;font-family:'Playfair Display',serif;}
+
+/* short answer */
+.short{display:flex;gap:8px;}
+.short input{flex:1;padding:12px 14px;border:1.5px solid var(--border);border-radius:6px;font-family:inherit;font-size:.95rem;outline:none;}
+.short input:focus{border-color:var(--accent);}
+.short input:disabled{background:#f5f5f5;}
+.short button{padding:12px 18px;background:var(--accent);color:#fff;border:none;border-radius:6px;font-family:inherit;font-weight:700;font-size:.9rem;cursor:pointer;transition:background .2s;}
+.short button:hover:not(:disabled){background:var(--accent2);}
+.short button:disabled{background:#ccc;cursor:default;}
+.sa-result{margin-top:10px;font-size:.88rem;font-weight:700;}
+.sa-result.ok{color:var(--green);}
+.sa-result.no{color:var(--red);}
+
+/* explanation */
+.exp{margin-top:14px;padding:14px;background:var(--bg2);border-left:3px solid var(--accent);border-radius:4px;font-size:.86rem;line-height:1.6;color:#444;display:none;}
+.exp.show{display:block;animation:fade .35s ease;}
+.exp .h{font-weight:700;color:var(--accent);margin-bottom:5px;font-size:.8rem;letter-spacing:.03em;}
+@keyframes fade{from{opacity:0;transform:translateY(-6px);}to{opacity:1;transform:translateY(0);}}
+
+/* final modal */
+.modal{position:fixed;inset:0;background:rgba(26,26,26,.7);display:none;align-items:center;justify-content:center;z-index:100;padding:20px;}
+.modal.show{display:flex;animation:fade .3s ease;}
+.modal-card{background:#fff;border-radius:12px;padding:34px 26px;max-width:380px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.3);}
+.modal-card .grade{font-family:'Playfair Display',serif;font-weight:900;font-size:4rem;line-height:1;color:var(--accent);}
+.modal-card .score{font-size:1.1rem;font-weight:700;margin:10px 0 6px;}
+.modal-card .msg{color:var(--text2);font-size:.92rem;margin-bottom:22px;}
+.modal-card button{padding:13px 26px;background:var(--accent);color:#fff;border:none;border-radius:8px;font-family:inherit;font-weight:700;font-size:.95rem;cursor:pointer;transition:background .2s;}
+.modal-card button:hover{background:var(--accent2);}
+
+@media(max-width:420px){
+  header h1{font-size:1.6rem;}
+  .scorebar .stats{gap:10px;}
+  .q{padding:18px 14px;}
+}
+</style>
+</head>
+<body>
+
+<div class="scorebar">
+  <div class="inner">
+    <div class="stats">
+      <div><span class="lbl">푼 문제</span><b id="sSolved">0</b> / 10</div>
+      <div><span class="lbl">맞힌 문제</span><b id="sCorrect">0</b></div>
+      <div><span class="lbl">정답률</span><b id="sRate">0%</b></div>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-track"><div class="progress-fill" id="pFill"></div></div>
+      <div class="progress-pct" id="pPct">0 / 10</div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+  <header>
+    <div class="kicker">Member-Only Lightning Broadcast</div>
+    <h1>‘<span class="em">333</span>’ 이해도 점검 퀴즈</h1>
+    <p>6월 2일 번개방송 · 총 10문제 · 클릭하면 즉시 채점됩니다</p>
+  </header>
+
+  <div id="quiz"></div>
+</div>
+
+<!-- final modal -->
+<div class="modal" id="modal">
+  <div class="modal-card">
+    <div class="grade" id="mGrade">A</div>
+    <div class="score" id="mScore">10 / 10 정답</div>
+    <div class="msg" id="mMsg"></div>
+    <button id="retryBtn">↺ 다시 풀기</button>
+  </div>
+</div>
+
+<script>
+const QUIZ_DATA = [
+  {
+    id:1, type:'mc', difficulty:'easy',
+    question:'‘333 매수 법칙’에서, 정해둔 목표 비중을 하루에 몇 %씩 나눠 사라고 했나요?',
+    options:['10%씩','30%씩','50%씩','100%(한 번에)'],
+    answer:1,
+    explanation:'방송에서 “오늘부터 3, 3, 3 그러면 오늘 사고 내일도 30% 사고… 내가 정해놓은 비중의 30%씩 사는 거예요”라고 설명했습니다. 목표 비중을 3일에 걸쳐 30%씩 나눠 매수합니다.'
+  },
+  {
+    id:2, type:'mc', difficulty:'mid',
+    question:'333 분할 매수의 핵심 원칙으로 방송에서 강조한 것은?',
+    options:['오를 때만 산다','떨어질 때만 산다','떨어져도 사고 올라가도 산다','목표가에 도달하면 한 번에 산다'],
+    answer:2,
+    explanation:'“그래서 떨어지도 사고 올라가도 사는 거예요”라고 명확히 말했습니다. 가격 방향과 무관하게 정해둔 30%씩 기계적으로 매수하는 것이 333의 핵심입니다.'
+  },
+  {
+    id:3, type:'ox', difficulty:'easy',
+    question:'333으로 나눠 사면, 하루에 100%를 한 번에 사는 것보다 변동성 노출이 약 3분의 1로 줄어든다.',
+    answer:'O',
+    explanation:'“변동성이 하루에 100을 사는 것보다 변동성이 훨씬 더 3분의 1밖에 안 되는 거예요”라고 설명했습니다. 분할 매수로 단가가 평준화되어 변동성 위험이 감소합니다.'
+  },
+  {
+    id:4, type:'mc', difficulty:'mid',
+    question:'‘자산 배분으로서의 333’에서 각 30%씩 나누는 세 가지 영역은?',
+    options:[
+      '국내주식 · 해외주식 · 채권',
+      '주식 · 부동산(주택) · 현금성 자산(현금·금·코인 등)',
+      '예금 · 보험 · 연금',
+      '대형주 · 중소형주 · 배당주'
+    ],
+    answer:1,
+    explanation:'“전체 자산이 30%만 주식 투자… 집이나 주택 30%… 현금이나 금이나 코인이나 비트코인이나 PE 30%”라고 했습니다. 유동성을 확보하면서 구매력을 지키는 배분 모델입니다.'
+  },
+  {
+    id:5, type:'short', difficulty:'mid',
+    question:'진행자가 “마이크론을 줄이고 마벨로 옮기라”고 다시 강조한 날짜는 몇 월 며칠인가요? (예: 5월 14일)',
+    answer:['5월 14일','5월14일','514','5/14','5.14','14일','5 14'],
+    explanation:'“5월 14일 마이크론 줄이고 마블로 옮겨라”, “5월 14일날 제가 이런 얘기를 했습니다”라고 반복해 언급했습니다. 약 2~3주 전 시점입니다.'
+  },
+  {
+    id:6, type:'mc', difficulty:'mid',
+    question:'방송에서 언급한 마벨(MRVL)의 연초 대비(YTD) 수익률은?',
+    options:['약 +60%','약 +150%','약 +242%','약 +800%'],
+    answer:2,
+    explanation:'“YTD로 지금 242% 정도가 됐습니다”라고 했습니다. 참고로 +150%는 최근 3개월 급등 폭, +60%는 금(Gold)의 수익률이었습니다.'
+  },
+  {
+    id:7, type:'mc', difficulty:'hard',
+    question:'마벨이 당초 제시한 목표가(Target Price)와 익일 예상 거래가에 대한 설명으로 옳은 것은?',
+    options:[
+      '목표가 $318, 익일 예상가 $250',
+      '목표가 $250, 익일 예상가 $318로 목표가를 이미 초과',
+      '목표가와 익일 예상가 모두 $250',
+      '아직 목표가에 도달하지 못함'
+    ],
+    answer:1,
+    explanation:'“목표가가 지금 250불밖에 안 돼요… 현재 목표가를 초과했습니다”, “내일 거래가가 318불로 나와요”라고 했습니다. 익일 예상가($318)가 목표가($250)를 넘어선 상태입니다.'
+  },
+  {
+    id:8, type:'short', difficulty:'easy',
+    question:'장 마감 후 9.6% 추가 상승을 반영한 마벨의 익일 예상 거래가는 몇 달러인가요? (숫자만, 예: 318)',
+    answer:['318','318불','318달러','$318','318$'],
+    explanation:'“내일 거래가가 318불로 나와요. 318불로 나옵니다”라고 명시했습니다.'
+  },
+  {
+    id:9, type:'mc', difficulty:'mid',
+    question:'한 종목의 비중이 얼마를 넘으면 줄이라고 했나요? (비중 관리 원칙)',
+    options:['5%','10%','15%','30%'],
+    answer:1,
+    explanation:'“마벨이 10%가 넘으면 줄이십시오. 만약에 10%가 넘으면 줄여야 됩니다”라고 했습니다. 특정 종목의 과도한 집중을 막는 비중 관리 원칙입니다.'
+  },
+  {
+    id:10, type:'ox', difficulty:'hard',
+    question:'내년 1월부터 일반 멤버십 가격을 ‘333’ 숫자에 맞춰 $33.33으로, 1:1 포트폴리오 리뷰는 ‘525’에 맞춰 $52.50으로 변경할 예정이다.',
+    answer:'O',
+    explanation:'“내년에는 31.33전… 333으로 바꿀 겁니다”, “1대1 포트폴리오 리뷰는 525로 바꿀 겁니다. 52.50전”이라고 했습니다. 규칙의 숫자(333·525)를 가격에 그대로 적용합니다.'
+  }
+];
+
+let state = { solved:0, correct:0 };
+const answered = new Array(QUIZ_DATA.length).fill(false);
+const quizEl = document.getElementById('quiz');
+
+function diffMeta(d){
+  if(d==='easy')return{c:'easy',t:'쉬움'};
+  if(d==='hard')return{c:'hard',t:'어려움'};
+  return{c:'mid',t:'보통'};
+}
+function typeLabel(t){return t==='mc'?'객관식':t==='ox'?'O / X':'단답형';}
+
+function render(){
+  quizEl.innerHTML='';
+  QUIZ_DATA.forEach((q,idx)=>{
+    const dm=diffMeta(q.difficulty);
+    const card=document.createElement('div');
+    card.className='q';
+    card.id='q'+idx;
+    card.innerHTML=`
+      <div class="q-head">
+        <span class="q-num">Q${q.id}</span>
+        <span class="q-type">${typeLabel(q.type)}</span>
+        <span class="diff ${dm.c}">${dm.t}</span>
+      </div>
+      <div class="q-text">${q.question}</div>
+      <div class="body"></div>
+      <div class="exp" id="exp${idx}"><div class="h">💡 해설</div>${q.explanation}</div>
+    `;
+    const body=card.querySelector('.body');
+
+    if(q.type==='mc'){
+      const opts=document.createElement('div');opts.className='opts';
+      const letters=['A','B','C','D'];
+      q.options.forEach((opt,i)=>{
+        const b=document.createElement('button');
+        b.className='opt';
+        b.innerHTML=`<span class="mk">${letters[i]}</span><span>${opt}</span>`;
+        b.onclick=()=>handleMC(idx,i,opts);
+        opts.appendChild(b);
+      });
+      body.appendChild(opts);
+    } else if(q.type==='ox'){
+      const wrap=document.createElement('div');wrap.className='ox';
+      ['O','X'].forEach(val=>{
+        const b=document.createElement('button');
+        b.className='opt';b.textContent=val;
+        b.onclick=()=>handleOX(idx,val,wrap);
+        wrap.appendChild(b);
+      });
+      body.appendChild(wrap);
+    } else {
+      const wrap=document.createElement('div');wrap.className='short';
+      const inp=document.createElement('input');
+      inp.type='text';inp.placeholder='답을 입력하세요';
+      const btn=document.createElement('button');btn.textContent='제출';
+      const res=document.createElement('div');res.className='sa-result';
+      btn.onclick=()=>handleShort(idx,inp,btn,res);
+      inp.addEventListener('keydown',e=>{if(e.key==='Enter')btn.click();});
+      wrap.appendChild(inp);wrap.appendChild(btn);
+      body.appendChild(wrap);body.appendChild(res);
+    }
+    quizEl.appendChild(card);
+  });
+}
+
+function markSolved(idx,isCorrect){
+  if(answered[idx])return;
+  answered[idx]=true;
+  state.solved++;
+  if(isCorrect)state.correct++;
+  updateBar();
+  document.getElementById('exp'+idx).classList.add('show');
+  if(state.solved===QUIZ_DATA.length)setTimeout(showModal,500);
+}
+
+function handleMC(idx,choice,optsEl){
+  if(answered[idx])return;
+  const q=QUIZ_DATA[idx];
+  const btns=optsEl.querySelectorAll('.opt');
+  const correct=choice===q.answer;
+  btns.forEach((b,i)=>{
+    b.disabled=true;
+    if(i===q.answer){b.classList.add('correct');b.insertAdjacentHTML('beforeend','<span class="badge ok">✓ 정답</span>');}
+    if(i===choice&&!correct){b.classList.add('wrong');b.insertAdjacentHTML('beforeend','<span class="badge no">✗ 오답</span>');}
+  });
+  markSolved(idx,correct);
+}
+
+function handleOX(idx,val,wrapEl){
+  if(answered[idx])return;
+  const q=QUIZ_DATA[idx];
+  const btns=wrapEl.querySelectorAll('.opt');
+  const correct=val===q.answer;
+  btns.forEach(b=>{
+    b.disabled=true;
+    if(b.textContent===q.answer){b.classList.add('correct');b.insertAdjacentHTML('beforeend','<span class="badge ok">✓</span>');}
+    if(b.textContent===val&&!correct){b.classList.add('wrong');b.insertAdjacentHTML('beforeend','<span class="badge no">✗</span>');}
+  });
+  markSolved(idx,correct);
+}
+
+function normalize(s){return s.toLowerCase().replace(/\s+/g,'').replace(/[.,]/g,'');}
+function handleShort(idx,inp,btn,res){
+  if(answered[idx])return;
+  const val=inp.value.trim();
+  if(!val){res.className='sa-result no';res.textContent='답을 입력해 주세요.';return;}
+  const q=QUIZ_DATA[idx];
+  const norm=normalize(val);
+  const correct=q.answer.some(a=>normalize(a)===norm||norm.includes(normalize(a))||normalize(a).includes(norm));
+  inp.disabled=true;btn.disabled=true;
+  if(correct){
+    res.className='sa-result ok';res.textContent='✓ 정답입니다!';
+    inp.style.borderColor='var(--green)';inp.style.background='var(--greenbg)';
+  }else{
+    res.className='sa-result no';
+    res.innerHTML=`✗ 오답입니다. 정답: <span style="color:var(--green)">${q.answer[0]}</span>`;
+    inp.style.borderColor='var(--red)';inp.style.background='var(--redbg)';
+  }
+  markSolved(idx,correct);
+}
+
+function updateBar(){
+  document.getElementById('sSolved').textContent=state.solved;
+  document.getElementById('sCorrect').textContent=state.correct;
+  const rate=state.solved?Math.round(state.correct/state.solved*100):0;
+  document.getElementById('sRate').textContent=rate+'%';
+  const fill=document.getElementById('pFill');
+  fill.style.width=(state.solved/QUIZ_DATA.length*100)+'%';
+  let col='#dc2626';
+  if(rate>=70)col='#16a34a';else if(rate>=40)col='#f59e0b';
+  fill.style.background=col;
+  document.getElementById('pPct').textContent=state.solved+' / '+QUIZ_DATA.length;
+}
+
+function showModal(){
+  const total=QUIZ_DATA.length;
+  const c=state.correct;
+  const pct=Math.round(c/total*100);
+  let grade,msg;
+  if(pct>=90){grade='A';msg='완벽합니다! 333 법칙과 마벨 케이스를 정확히 이해하셨네요.';}
+  else if(pct>=70){grade='B';msg='훌륭합니다. 핵심 원칙을 잘 잡으셨어요. 틀린 부분만 해설로 복습해 보세요.';}
+  else if(pct>=50){grade='C';msg='기본기는 갖추셨습니다. 해설을 보며 한 번 더 정리하면 좋겠어요.';}
+  else{grade='D';msg='아직 헷갈리는 부분이 있네요. 분석 리포트를 다시 읽고 도전해 보세요.';}
+  document.getElementById('mGrade').textContent=grade;
+  document.getElementById('mScore').textContent=`${c} / ${total} 정답 (${pct}%)`;
+  document.getElementById('mMsg').textContent=msg;
+  document.getElementById('modal').classList.add('show');
+}
+
+document.getElementById('retryBtn').onclick=()=>{
+  state={solved:0,correct:0};
+  for(let i=0;i<answered.length;i++)answered[i]=false;
+  updateBar();
+  document.getElementById('modal').classList.remove('show');
+  render();
+  window.scrollTo({top:0,behavior:'smooth'});
+};
+
+render();
+updateBar();
+</script>
+</body>
+</html>
