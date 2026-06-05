@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>투자는인생TV · 6월 4일 멤버온리 시험문제</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#ffffff; --bg2:#fafafa; --text:#1a1a1a; --text2:#777777;
+    --accent:#e11d48; --accent2:#f43f5e; --border:#e5e5e5;
+    --green:#16a34a; --green-bg:#dcfce7; --red-bg:#fee2e2;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'Noto Sans KR',sans-serif;background:var(--bg2);color:var(--text);line-height:1.7;font-weight:400;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:680px;margin:0 auto;background:var(--bg);min-height:100vh;}
+
+  /* HEADER */
+  .hero{padding:48px 24px 30px;border-bottom:3px solid var(--text);}
+  .hero .kicker{font-family:'Playfair Display',serif;font-style:italic;font-size:14px;color:var(--accent);margin-bottom:10px;}
+  .hero h1{font-family:'Playfair Display',serif;font-weight:900;font-size:34px;line-height:1.1;letter-spacing:-.5px;}
+  .hero h1 em{color:var(--accent);font-style:italic;}
+  .hero p{font-size:14px;color:var(--text2);margin-top:12px;}
+
+  /* STICKY SCOREBOARD */
+  .score{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.96);backdrop-filter:blur(8px);border-bottom:1px solid var(--border);padding:14px 24px;}
+  .score-row{display:flex;justify-content:space-between;align-items:center;font-size:13px;font-weight:500;margin-bottom:9px;}
+  .score-row .item b{font-family:'Playfair Display',serif;font-size:18px;color:var(--accent);font-variant-numeric:tabular-nums;}
+  .score-row .item.dim b{color:var(--text);}
+  .pbar{height:7px;background:var(--border);border-radius:10px;overflow:hidden;}
+  .pbar-fill{height:100%;width:0;background:var(--accent);border-radius:10px;transition:width .5s ease,background .4s ease;}
+
+  /* QUIZ */
+  .quiz{padding:26px 24px;}
+  .card{background:var(--bg);border:1px solid var(--border);border-radius:14px;padding:22px 20px;margin-bottom:22px;box-shadow:0 1px 3px rgba(0,0,0,.03);}
+  .card-top{display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap;}
+  .qno{font-family:'Playfair Display',serif;font-weight:900;font-size:22px;color:var(--accent);line-height:1;}
+  .badge{font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;letter-spacing:.4px;}
+  .badge.easy{background:#dcfce7;color:#16a34a;}
+  .badge.mid{background:#fef3c7;color:#d97706;}
+  .badge.hard{background:#fee2e2;color:#dc2626;}
+  .badge.type{background:#f1f5f9;color:#64748b;}
+  .q-text{font-size:16.5px;font-weight:500;line-height:1.55;margin-bottom:18px;color:var(--text);}
+
+  .opt{display:block;width:100%;text-align:left;background:var(--bg);border:1.5px solid var(--border);border-radius:10px;padding:13px 16px;margin:9px 0;font-family:'Noto Sans KR';font-size:15px;font-weight:400;color:var(--text);cursor:pointer;transition:.18s;position:relative;}
+  .opt:hover:not(:disabled){border-color:var(--accent);background:#fff5f7;}
+  .opt:disabled{cursor:default;}
+  .opt.correct{background:var(--green-bg);border-color:var(--green);color:#14532d;font-weight:500;}
+  .opt.wrong{background:var(--red-bg);border-color:var(--accent);color:#7f1d1d;font-weight:500;}
+  .opt .tag{float:right;font-size:12px;font-weight:700;padding:1px 8px;border-radius:12px;}
+  .opt.correct .tag{background:var(--green);color:#fff;}
+  .opt.wrong .tag{background:var(--accent);color:#fff;}
+
+  /* SHORT */
+  .short-row{display:flex;gap:8px;}
+  .short-row input{flex:1;border:1.5px solid var(--border);border-radius:10px;padding:13px 14px;font-family:'Noto Sans KR';font-size:15px;outline:none;transition:.18s;}
+  .short-row input:focus{border-color:var(--accent);}
+  .short-row input:disabled{background:var(--bg2);}
+  .btn-submit{background:var(--accent);color:#fff;border:none;border-radius:10px;padding:0 20px;font-family:'Noto Sans KR';font-size:14px;font-weight:500;cursor:pointer;transition:.18s;white-space:nowrap;}
+  .btn-submit:hover{background:var(--accent2);}
+  .btn-submit:disabled{background:#cbd5e1;cursor:default;}
+  .short-hint{font-size:12px;color:var(--text2);margin-top:8px;}
+
+  /* OX */
+  .ox-row{display:flex;gap:12px;}
+  .ox-btn{flex:1;border:1.5px solid var(--border);background:var(--bg);border-radius:12px;padding:18px;font-size:26px;font-weight:900;cursor:pointer;transition:.18s;color:var(--text);}
+  .ox-btn:hover:not(:disabled){border-color:var(--accent);background:#fff5f7;}
+  .ox-btn:disabled{cursor:default;}
+  .ox-btn.correct{background:var(--green-bg);border-color:var(--green);color:var(--green);}
+  .ox-btn.wrong{background:var(--red-bg);border-color:var(--accent);color:var(--accent);}
+
+  /* EXPLANATION */
+  .expl{max-height:0;overflow:hidden;transition:max-height .4s ease,margin .3s ease;}
+  .expl.show{max-height:600px;margin-top:16px;}
+  .expl-inner{background:var(--bg2);border-left:4px solid var(--accent);border-radius:0 8px 8px 0;padding:15px 17px;}
+  .expl-inner .res{font-size:13px;font-weight:700;margin-bottom:7px;}
+  .expl-inner .res.o{color:var(--green);}
+  .expl-inner .res.x{color:var(--accent);}
+  .expl-inner p{font-size:14px;color:#333;font-weight:400;line-height:1.6;}
+  .expl-inner .src{font-size:12.5px;color:var(--text2);margin-top:9px;padding-top:9px;border-top:1px dashed var(--border);font-style:italic;}
+
+  /* RESULT MODAL */
+  .modal{position:fixed;inset:0;background:rgba(26,26,26,.78);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;z-index:100;padding:24px;}
+  .modal.show{display:flex;animation:fade .4s ease;}
+  @keyframes fade{from{opacity:0}to{opacity:1}}
+  .modal-card{background:var(--bg);border-radius:20px;padding:38px 30px;max-width:380px;width:100%;text-align:center;animation:pop .4s cubic-bezier(.18,.89,.32,1.28);}
+  @keyframes pop{from{transform:scale(.85);opacity:0}to{transform:scale(1);opacity:1}}
+  .modal-card .grade{font-family:'Playfair Display',serif;font-weight:900;font-size:80px;line-height:1;color:var(--accent);}
+  .modal-card .scoretxt{font-size:17px;font-weight:700;margin:12px 0 6px;}
+  .modal-card .msg{font-size:14px;color:var(--text2);margin-bottom:24px;line-height:1.6;}
+  .modal-card .btn-retry{background:var(--accent);color:#fff;border:none;border-radius:30px;padding:13px 30px;font-family:'Noto Sans KR';font-size:15px;font-weight:500;cursor:pointer;transition:.18s;}
+  .modal-card .btn-retry:hover{background:var(--accent2);transform:translateY(-1px);}
+
+  footer{text-align:center;padding:30px 24px 50px;color:var(--text2);font-size:12px;}
+  footer .logo{font-family:'Playfair Display',serif;font-style:italic;font-size:18px;color:var(--accent);}
+
+  @media(max-width:480px){.hero h1{font-size:28px;}.q-text{font-size:15.5px;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hero">
+    <div class="kicker">Members Only Live · Quiz</div>
+    <h1>6월 4일 <em>이해도 점검</em></h1>
+    <p>투자는인생TV 멤버온리 방송 — 총 10문제 · 클릭하면 즉시 채점됩니다</p>
+  </div>
+
+  <!-- SCOREBOARD -->
+  <div class="score">
+    <div class="score-row">
+      <div class="item dim">푼 문제 <b><span id="sSolved">0</span>/10</b></div>
+      <div class="item dim">맞힌 문제 <b id="sCorrect">0</b></div>
+      <div class="item">정답률 <b id="sRate">0%</b></div>
+    </div>
+    <div class="pbar"><div class="pbar-fill" id="pbar"></div></div>
+  </div>
+
+  <div class="quiz" id="quiz"></div>
+
+  <footer>
+    <div class="logo">투자는인생TV</div>
+    <p>데이빗 리 테일러투자그룹 CIO · 2026.06.04</p>
+  </footer>
+</div>
+
+<!-- RESULT MODAL -->
+<div class="modal" id="modal">
+  <div class="modal-card">
+    <div class="grade" id="mGrade">A</div>
+    <div class="scoretxt" id="mScore">10 / 10 정답</div>
+    <div class="msg" id="mMsg"></div>
+    <button class="btn-retry" onclick="resetQuiz()">↺ 다시 풀기</button>
+  </div>
+</div>
+
+<script>
+const QUIZ_DATA=[
+  {
+    id:1,type:'mc',difficulty:'mid',
+    question:'데이빗 형님이 밝힌 5월 한 달간의 감원 규모는?',
+    options:['약 5만 4천 명','약 7만 명','약 9만 7천 명','약 12만 3천 명'],
+    answer:2,
+    explanation:'5월 감원 규모는 97,006명으로 전월 대비 큰 폭으로 증가했습니다. 주된 원인은 AI 재편(AI restructuring)으로, 기술 부문 감원이 급증했습니다.',
+    src:'자막: "5월 감원 규모가 97,000으로 나왔습니다. 전월 대비 큰 폭으로 증가"'
+  },
+  {
+    id:2,type:'mc',difficulty:'easy',
+    question:'SpaceX가 상장할 때 사용할 거래소와 티커(ticker)는?',
+    options:['NYSE / SPX','NASDAQ / SPCX','NASDAQ / SPACE','NYSE / SPCE'],
+    answer:1,
+    explanation:'SpaceX는 NASDAQ에 SPCX 티커로 상장 예정입니다. 예상 IPO일은 2026년 6월 12일(변경 가능)입니다.',
+    src:'자막: "Exchange의 티커가 SPCX 이건 알고 있을 거고"'
+  },
+  {
+    id:3,type:'mc',difficulty:'mid',
+    question:'5월 감원에서 누적 감원 인원이 가장 많았던 섹터는?',
+    options:['Health Care','Transportation','Technology','Utilities'],
+    answer:2,
+    explanation:'Technology(XLK)가 123,653명으로 최대 감원 섹터였습니다. AI 도입으로 반복·중간 업무가 자동화되며 기술 부문이 가장 큰 타격을 받았습니다.',
+    src:'슬라이드: Technology(XLK) 123,653명 — 최대 감원 섹터'
+  },
+  {
+    id:4,type:'ox',difficulty:'easy',
+    question:'데이빗 형님은 안전자산으로 미국 10년 국채를 적극 매수하라고 권했다.',
+    answer:'X',
+    explanation:'정반대입니다. 형님은 국채(Treasury bond/bill)에 손대지 말라고 했습니다. 국채 4% 이자로는 인플레이션을 따라가지 못해 구매력이 떨어지며, 파킹용 CD·커머셜페이퍼·MMF도 권하지 않았습니다.',
+    src:'자막: "절대 우리 멤버들은 더 이상은 Treasury bond에 손대지 마라"'
+  },
+  {
+    id:5,type:'mc',difficulty:'mid',
+    question:'실적 발표 후 약 -15% 급락하며 칩·기술주 전반을 끌어내린 종목은?',
+    options:['CrowdStrike (CRWD)','Broadcom / Avago (AVGO)','Micron (MU)','Marvell (MRVL)'],
+    answer:1,
+    explanation:'Broadcom(AVGO/아바고)은 실적은 소폭 상회했으나 가이던스가 기대에 미치지 못해 -15% 급락했습니다. CrowdStrike(CRWD)는 -9% 하락했습니다.',
+    src:'슬라이드: Broadcom(AVGO) 실적 후 -15% 급락, CrowdStrike(CRWD) -9% 하락'
+  },
+  {
+    id:6,type:'short',difficulty:'mid',
+    question:'SpaceX가 Anthropic과 사업 체결을 통해 매년 지불하는 서비스 사용료는 약 몇 빌리언 달러인가? (숫자만)',
+    answer:['14','$14','14billion','14빌리언','14b'],
+    explanation:'슬라이드 기준 SpaceX는 Anthropic에 매년 약 $14B의 서비스 사용료를 지불하여 SpaceXAI의 Colossus 1 데이터센터 사용권을 확보합니다. (방송 중 구두로는 1.25B 언급도 있었으나 슬라이드 공식 수치는 $14B)',
+    src:'슬라이드: "Anthropic 사업 체결 하여 매년 $14BN 의 서비스 사용료 지불"'
+  },
+  {
+    id:7,type:'mc',difficulty:'hard',
+    question:'RDDT(Reddit)의 DCF(현금흐름할인) 평가 가치는 약 얼마인가?',
+    options:['$183','$193','$232','$278'],
+    answer:3,
+    explanation:'RDDT의 DCF 가치는 $278.19입니다. 현재가 $183, 타깃 $232, Intrinsic Value $193으로, DCF가 현재가를 크게 상회한다는 것은 "앞으로 벌 것이 더 크다"는 인식을 의미합니다.',
+    src:'슬라이드: DCF Value of one RDDT stock is $278.194'
+  },
+  {
+    id:8,type:'ox',difficulty:'mid',
+    question:'형님이 "메타를 줄이라"고 한 이유는 메타의 전망이 나빠졌기 때문이다.',
+    answer:'X',
+    explanation:'아닙니다. 형님은 메타가 더 좋아진다고 명시했습니다. 비중을 줄이라는 건 같은 섹터(Communication Services)의 Reddit으로 일부(예: 10% 중 2%)를 옮기라는 뜻이지, 메타가 나빠서가 아닙니다.',
+    src:'자막: "메타를 줄이라는 얘기는 메타가 안 좋아서가 아니라 더 좋아집니다"'
+  },
+  {
+    id:9,type:'short',difficulty:'easy',
+    question:'마블(MRVL)의 올해 연초 대비(YTD) 수익률은 약 몇 %인가? (숫자만)',
+    answer:['272','272%'],
+    explanation:'마블(MRVL)은 올해 YTD +272%로 30대 그룹 중 압도적 성과를 보였습니다. 칩 폭락장에서도 비중 조절을 통해 변동성을 흡수한 핵심 종목입니다.',
+    src:'자막: "마벨이 올해 272% 했네요"'
+  },
+  {
+    id:10,type:'mc',difficulty:'hard',
+    question:'형님이 "칩 줄이고" 늘리라고 권한 헬스케어 섹터의 비중 확대 범위는?',
+    options:['1~2%','2~4%','4~8%','10~15%'],
+    answer:2,
+    explanation:'형님은 "칩 줄이고 헬스케어 섹터 비중 4~8% 늘릴 시기"라고 명시했습니다. 마이크론을 15%→8%로 줄이고 남은 3~4%를 헬스케어(휴머나·힘스·UNH 등 라지캡)로 옮기라는 전략입니다.',
+    src:'슬라이드: "칩줄이고 헬스케어 섹터 비중 4-8% 늘릴 시기"'
+  }
+];
+
+let state={solved:0,correct:0};
+const answered={};
+
+function buildQuiz(){
+  const c=document.getElementById('quiz');
+  c.innerHTML='';
+  QUIZ_DATA.forEach(q=>{
+    const card=document.createElement('div');card.className='card';card.id='card'+q.id;
+    const diffMap={easy:['easy','쉬움'],mid:['mid','보통'],hard:['hard','어려움']};
+    const typeMap={mc:'객관식',short:'단답형',ox:'O/X'};
+    let inner='<div class="card-top"><span class="qno">Q'+q.id+'</span>'+
+      '<span class="badge '+diffMap[q.difficulty][0]+'">'+diffMap[q.difficulty][1]+'</span>'+
+      '<span class="badge type">'+typeMap[q.type]+'</span></div>'+
+      '<div class="q-text">'+q.question+'</div>';
+
+    if(q.type==='mc'){
+      inner+='<div class="opts" id="opts'+q.id+'">';
+      q.options.forEach((o,i)=>{inner+='<button class="opt" onclick="ansMC('+q.id+','+i+')">'+o+'</button>';});
+      inner+='</div>';
+    }else if(q.type==='short'){
+      inner+='<div class="short-row"><input type="text" id="inp'+q.id+'" placeholder="정답 입력..." onkeydown="if(event.key===\'Enter\')ansShort('+q.id+')">'+
+        '<button class="btn-submit" id="sub'+q.id+'" onclick="ansShort('+q.id+')">제출</button></div>'+
+        '<div class="short-hint">숫자/단어로 입력 후 Enter 또는 제출</div>';
+    }else if(q.type==='ox'){
+      inner+='<div class="ox-row"><button class="ox-btn" onclick="ansOX('+q.id+',\'O\')">O</button>'+
+        '<button class="ox-btn" onclick="ansOX('+q.id+',\'X\')">X</button></div>';
+    }
+    inner+='<div class="expl" id="expl'+q.id+'"></div>';
+    card.innerHTML=inner;
+    c.appendChild(card);
+  });
+}
+
+function showExpl(q,isCorrect){
+  const e=document.getElementById('expl'+q.id);
+  let ansLabel='';
+  if(q.type==='mc') ansLabel=q.options[q.answer];
+  else if(q.type==='ox') ansLabel=q.answer;
+  else ansLabel=Array.isArray(q.answer)?q.answer[0]:q.answer;
+  e.innerHTML='<div class="expl-inner">'+
+    '<div class="res '+(isCorrect?'o':'x')+'">'+(isCorrect?'✓ 정답입니다!':'✗ 오답 — 정답: '+ansLabel)+'</div>'+
+    '<p>'+q.explanation+'</p>'+
+    '<div class="src">📌 '+q.src+'</div></div>';
+  requestAnimationFrame(()=>e.classList.add('show'));
+}
+
+function record(isCorrect){
+  state.solved++;
+  if(isCorrect)state.correct++;
+  updateScore();
+  if(state.solved===QUIZ_DATA.length)setTimeout(showResult,500);
+}
+
+function ansMC(id,idx){
+  if(answered[id])return;answered[id]=true;
+  const q=QUIZ_DATA.find(x=>x.id===id);
+  const opts=document.querySelectorAll('#opts'+id+' .opt');
+  const correct=idx===q.answer;
+  opts.forEach((o,i)=>{
+    o.disabled=true;
+    if(i===q.answer){o.classList.add('correct');o.innerHTML+='<span class="tag">✓ 정답</span>';}
+    else if(i===idx){o.classList.add('wrong');o.innerHTML+='<span class="tag">✗ 오답</span>';}
+  });
+  showExpl(q,correct);record(correct);
+}
+
+function ansShort(id){
+  if(answered[id])return;
+  const inp=document.getElementById('inp'+id);
+  const val=inp.value.trim().toLowerCase().replace(/\s|,/g,'');
+  if(val==='')return;
+  answered[id]=true;
+  const q=QUIZ_DATA.find(x=>x.id===id);
+  const correct=q.answer.some(a=>val===a.toLowerCase().replace(/\s|,/g,''));
+  inp.disabled=true;document.getElementById('sub'+id).disabled=true;
+  inp.style.borderColor=correct?'var(--green)':'var(--accent)';
+  inp.style.background=correct?'var(--green-bg)':'var(--red-bg)';
+  showExpl(q,correct);record(correct);
+}
+
+function ansOX(id,val){
+  if(answered[id])return;answered[id]=true;
+  const q=QUIZ_DATA.find(x=>x.id===id);
+  const btns=document.querySelectorAll('#card'+id+' .ox-btn');
+  const correct=val===q.answer;
+  btns.forEach(b=>{
+    b.disabled=true;
+    const t=b.textContent.trim();
+    if(t===q.answer)b.classList.add('correct');
+    else if(t===val)b.classList.add('wrong');
+  });
+  showExpl(q,correct);record(correct);
+}
+
+function updateScore(){
+  document.getElementById('sSolved').textContent=state.solved;
+  document.getElementById('sCorrect').textContent=state.correct;
+  const rate=state.solved?Math.round(state.correct/state.solved*100):0;
+  document.getElementById('sRate').textContent=rate+'%';
+  const fill=document.getElementById('pbar');
+  fill.style.width=(state.solved/QUIZ_DATA.length*100)+'%';
+  if(rate<40)fill.style.background='var(--accent)';
+  else if(rate<70)fill.style.background='#f59e0b';
+  else fill.style.background='var(--green)';
+}
+
+function showResult(){
+  const total=QUIZ_DATA.length,c=state.correct;
+  const pct=c/total*100;
+  let grade,msg;
+  if(pct>=90){grade='A';msg='완벽합니다! 데이빗 형님의 메시지를 정확히 이해하셨습니다. 🎉';}
+  else if(pct>=70){grade='B';msg='훌륭합니다! 핵심을 잘 파악하셨어요. 조금만 더 복습해 보세요.';}
+  else if(pct>=50){grade='C';msg='기본기는 충분합니다. 리포트를 다시 한번 읽고 도전해 보세요.';}
+  else{grade='D';msg='괜찮아요! 분석 리포트를 천천히 복습한 뒤 다시 풀어 보세요. 💪';}
+  document.getElementById('mGrade').textContent=grade;
+  document.getElementById('mScore').textContent=c+' / '+total+' 정답 ('+Math.round(pct)+'%)';
+  document.getElementById('mMsg').textContent=msg;
+  document.getElementById('modal').classList.add('show');
+}
+
+function resetQuiz(){
+  state={solved:0,correct:0};
+  for(const k in answered)delete answered[k];
+  document.getElementById('modal').classList.remove('show');
+  buildQuiz();updateScore();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+buildQuiz();updateScore();
+</script>
+</body>
+</html>
