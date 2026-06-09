@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SpaceX IPO · 미증시 시장 포커스 — 이해도 점검 퀴즈</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,500&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#ffffff; --bg-soft:#fafafa; --text:#1a1a1a; --text-soft:#777777;
+    --accent:#e11d48; --accent-2:#f43f5e; --line:#e5e5e5;
+    --green:#16a34a; --green-bg:#f0fdf4; --red:#dc2626; --red-bg:#fef2f2;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{ font-family:'Noto Sans KR',sans-serif; background:var(--bg); color:var(--text); line-height:1.7; -webkit-font-smoothing:antialiased;}
+  .wrap{max-width:680px;margin:0 auto;padding:0 18px 80px;}
+
+  /* HEADER */
+  header{padding:48px 0 26px;text-align:center;border-bottom:2px solid var(--text);margin-bottom:0;}
+  .eyebrow{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--accent);font-weight:700;margin-bottom:14px;}
+  header h1{font-family:'Playfair Display',serif;font-weight:800;font-size:32px;line-height:1.2;letter-spacing:-0.5px;}
+  header p{font-size:14px;color:var(--text-soft);margin-top:12px;font-weight:300;}
+
+  /* STICKY SCOREBOARD */
+  .scoreboard{position:sticky;top:0;z-index:50;background:rgba(255,255,255,0.97);backdrop-filter:blur(6px);border-bottom:1px solid var(--line);padding:12px 0;margin-bottom:8px;}
+  .sb-inner{max-width:680px;margin:0 auto;padding:0 18px;}
+  .sb-stats{display:flex;justify-content:space-between;font-size:13px;font-weight:500;margin-bottom:9px;}
+  .sb-stats .item b{font-family:'Playfair Display',serif;font-size:17px;color:var(--accent);font-weight:700;}
+  .sb-stats .item span{color:var(--text-soft);}
+  .progress{height:7px;background:var(--line);border-radius:6px;overflow:hidden;}
+  .progress-bar{height:100%;width:0%;border-radius:6px;background:var(--accent);transition:width .4s ease,background .4s ease;}
+
+  /* QUESTION CARD */
+  .q-card{background:var(--bg-soft);border:1px solid var(--line);border-radius:12px;padding:24px 20px;margin:22px 0;}
+  .q-head{display:flex;align-items:center;gap:9px;margin-bottom:14px;flex-wrap:wrap;}
+  .q-num{font-family:'Playfair Display',serif;font-weight:800;font-size:22px;color:var(--accent);}
+  .badge{font-size:10.5px;font-weight:700;padding:3px 9px;border-radius:20px;letter-spacing:.5px;}
+  .b-easy{background:#dcfce7;color:#15803d;}
+  .b-mid{background:#fef9c3;color:#a16207;}
+  .b-hard{background:#fee2e2;color:#b91c1c;}
+  .b-type{background:#e5e5e5;color:#555;}
+  .q-text{font-size:16.5px;font-weight:500;line-height:1.55;margin-bottom:18px;}
+
+  /* OPTIONS */
+  .opts{display:flex;flex-direction:column;gap:9px;}
+  .opt{display:flex;align-items:flex-start;gap:11px;padding:13px 15px;background:#fff;border:1.5px solid var(--line);border-radius:9px;cursor:pointer;font-size:14.5px;transition:all .15s;}
+  .opt:hover:not(.disabled){border-color:var(--accent);background:#fff5f7;}
+  .opt.disabled{cursor:default;}
+  .opt .mark{flex-shrink:0;width:23px;height:23px;border-radius:50%;border:1.5px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--text-soft);}
+  .opt.correct{background:var(--green-bg);border-color:var(--green);}
+  .opt.correct .mark{background:var(--green);border-color:var(--green);color:#fff;}
+  .opt.wrong{background:var(--red-bg);border-color:var(--red);}
+  .opt.wrong .mark{background:var(--red);border-color:var(--red);color:#fff;}
+  .res-badge{margin-left:auto;font-size:11.5px;font-weight:700;padding:2px 9px;border-radius:14px;align-self:center;}
+  .rb-ok{background:var(--green);color:#fff;}
+  .rb-no{background:var(--red);color:#fff;}
+
+  /* OX */
+  .ox-wrap{display:flex;gap:12px;}
+  .ox-btn{flex:1;padding:22px;font-family:'Playfair Display',serif;font-size:30px;font-weight:700;background:#fff;border:1.5px solid var(--line);border-radius:11px;cursor:pointer;transition:all .15s;}
+  .ox-btn:hover:not(.disabled){border-color:var(--accent);background:#fff5f7;}
+  .ox-btn.correct{background:var(--green-bg);border-color:var(--green);color:var(--green);}
+  .ox-btn.wrong{background:var(--red-bg);border-color:var(--red);color:var(--red);}
+  .ox-btn.disabled{cursor:default;}
+
+  /* SHORT ANSWER */
+  .sa-wrap{display:flex;gap:9px;}
+  .sa-wrap input{flex:1;padding:13px 15px;border:1.5px solid var(--line);border-radius:9px;font-family:inherit;font-size:15px;}
+  .sa-wrap input:focus{outline:none;border-color:var(--accent);}
+  .sa-wrap input:disabled{background:var(--bg-soft);}
+  .sa-submit{padding:0 22px;background:var(--accent);color:#fff;border:none;border-radius:9px;font-family:inherit;font-size:14px;font-weight:500;cursor:pointer;transition:background .15s;}
+  .sa-submit:hover:not(:disabled){background:var(--accent-2);}
+  .sa-submit:disabled{background:var(--text-soft);cursor:default;}
+  .sa-feedback{margin-top:11px;font-size:14px;font-weight:500;}
+  .sa-feedback.ok{color:var(--green);}
+  .sa-feedback.no{color:var(--red);}
+
+  /* EXPLANATION */
+  .explain{max-height:0;overflow:hidden;transition:max-height .45s ease;background:#fff;border-radius:9px;margin-top:0;}
+  .explain.open{max-height:600px;margin-top:15px;}
+  .explain-in{padding:15px 17px;border-left:4px solid var(--accent);font-size:13.8px;line-height:1.7;}
+  .explain-in .ttl{font-weight:700;color:var(--accent);font-size:12px;letter-spacing:.5px;text-transform:uppercase;margin-bottom:7px;}
+  .explain-in .ans{font-weight:700;margin-bottom:6px;}
+  .explain-in .src{margin-top:9px;padding-top:9px;border-top:1px dashed var(--line);font-size:12.5px;color:var(--text-soft);font-style:italic;}
+
+  /* RESULT MODAL */
+  .overlay{position:fixed;inset:0;background:rgba(26,26,26,0.6);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;z-index:100;padding:20px;}
+  .overlay.show{display:flex;}
+  .modal{background:#fff;border-radius:18px;padding:38px 28px;max-width:380px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.3);}
+  .modal .grade{font-family:'Playfair Display',serif;font-size:72px;font-weight:800;line-height:1;color:var(--accent);}
+  .modal .score{font-size:15px;color:var(--text-soft);margin:12px 0 4px;}
+  .modal .score b{font-family:'Playfair Display',serif;font-size:24px;color:var(--text);}
+  .modal .msg{font-size:15px;margin:16px 0 24px;line-height:1.6;}
+  .modal .retry{background:var(--accent);color:#fff;border:none;padding:13px 30px;border-radius:30px;font-family:inherit;font-size:14.5px;font-weight:500;cursor:pointer;transition:background .15s;}
+  .modal .retry:hover{background:var(--accent-2);}
+
+  @media(max-width:420px){
+    header h1{font-size:26px;}
+    .q-text{font-size:15.5px;}
+    .ox-btn{font-size:25px;padding:18px;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">투자는인생TV · 이해도 점검</div>
+  <h1>SpaceX IPO &amp; 미증시 포커스 퀴즈</h1>
+  <p>6월 9일 공개 라이브 · 총 10문제 · 클릭하면 바로 채점됩니다</p>
+</header>
+
+<div class="scoreboard">
+  <div class="sb-inner">
+    <div class="sb-stats">
+      <div class="item"><b id="sSolved">0</b> <span>/ 10 푼 문제</span></div>
+      <div class="item"><b id="sCorrect">0</b> <span>맞힌 문제</span></div>
+      <div class="item"><b id="sRate">0%</b> <span>정답률</span></div>
+    </div>
+    <div class="progress"><div class="progress-bar" id="pBar"></div></div>
+  </div>
+</div>
+
+<div class="wrap">
+  <div id="quiz"></div>
+</div>
+
+<div class="overlay" id="overlay">
+  <div class="modal">
+    <div class="grade" id="mGrade">A</div>
+    <div class="score">10문제 중 <b id="mScore">0</b>문제 정답</div>
+    <div class="msg" id="mMsg"></div>
+    <button class="retry" id="mRetry">다시 풀기</button>
+  </div>
+</div>
+
+<script>
+const QUIZ_DATA = [
+  {
+    id:1, type:'ox', difficulty:'easy',
+    question:'진행자는 지난 9주 연속 상승 랠리가 마감될 가능성이 매우 크다고 진단했다.',
+    answer:'O',
+    explanation:'방송 초반 "주요 지수 하락 출발했습니다. 지난 9주 동안 연속 상승 랠리가 오늘 마감 가능성이 매우 크다"고 언급했습니다. 더 이상 연속적 상승이 아닌 선택적 상승장으로 진단했습니다.',
+    source:'시장포커스 슬라이드 — "주요 지수: 하락 출발. 지난 9주 연속 상승 랠리가 마감 가능성 매우 커."'
+  },
+  {
+    id:2, type:'mc', difficulty:'easy',
+    question:'지난 금요일 급락의 직접적 원인으로 진단한 것은?',
+    options:['일본의 갑작스러운 금리 인상','5월 고용 지표가 예상보다 강하게 나오며 금리 인상 우려 급부상','비트코인 폭락에 따른 위험자산 회피','SpaceX IPO 연기 소식'],
+    answer:1,
+    explanation:'5월 고용 지표가 예상보다 강하게 나오면서 금리 인상 우려가 급부상한 것이 금요일 급락의 원인입니다. 일본은 오히려 금리를 보류해 급격한 상승을 피했습니다.',
+    source:'시장포커스 슬라이드 — "금요일 급락 원인: 5월 고용 지표가 예상보다 강하게 나오면서 금리 인상 우려가 급부상. 아직 유효."'
+  },
+  {
+    id:3, type:'mc', difficulty:'easy',
+    question:'6월 8일 섹터별 1일 변동률에서 가장 강했던(상승 1위) 섹터는?',
+    options:['Utilities (+0.8%)','Financials (+0.2%)','Consumer Staples (+1.6%)','Health Care (+0.5%)'],
+    answer:2,
+    explanation:'Consumer Staples가 +1.6%로 상위 1위였습니다. 그 뒤로 Utilities(+0.8%), Real Estate(+0.8%), Health Care(+0.5%), Financials(+0.2%) 순으로, 방어적 성격의 섹터가 상대적으로 강했습니다.',
+    source:'섹터별 실적 비교 슬라이드 — 상위 5개 섹터 표.'
+  },
+  {
+    id:4, type:'mc', difficulty:'mid',
+    question:'6월 8일 정보기술(Information Technology) 섹터의 1일 변동률은?',
+    options:['-1.7%','-2.3%','-2.0%','-5.8%'],
+    answer:3,
+    explanation:'정보기술 섹터가 -5.8%로 하위 1위였습니다. Consumer Discretionary(-2.3%), Materials(-2.3%), Energy(-2.0%), Communication Services(-1.7%)가 뒤를 이었습니다.',
+    source:'BOTTOM PERFORMERS 슬라이드 — Information Technology -5.8%.'
+  },
+  {
+    id:5, type:'mc', difficulty:'mid',
+    question:'이번 주 목요일 상장하는 SpaceX의 IPO 평가가치 규모는?',
+    options:['$1.77조 (trillion)','$1.6조 (trillion)','$16억 (billion)','$130억 (billion)'],
+    answer:0,
+    explanation:'SpaceX는 사상 최대 규모로 $1.77조(trillion)의 평가가치로 IPO에 나섭니다. ($16B는 상장 후 패시브 자금 유입 예상치, $130대는 분할 후 주가입니다.)',
+    source:'슬라이드 — "스페이스X 이번주 IPO 사상최대 규모; $1.77T".'
+  },
+  {
+    id:6, type:'short', difficulty:'mid',
+    question:'SpaceX가 IPO 이전에 진행한 주식분할 비율은? (예: 0:0 형태로 입력)',
+    answer:['5:1','5대1','5 : 1','5대 1'],
+    explanation:'IPO 전 이미 한 차례 5:1 주식분할이 진행됐습니다. 기존 $600대였던 주가가 $130대로 조정되어 프리IPO 시장에서 거래되고 있습니다.',
+    source:'슬라이드 — "IPO 전 이미 한차례 주식분할 5:1 $600대에서 $130대로".'
+  },
+  {
+    id:7, type:'mc', difficulty:'mid',
+    question:'SpaceX 강세(Bull) 시나리오의 6개월 후 목표 주가 범위와 발생 확률은?',
+    options:['$220~$270, 확률 40%','$280~$350+, 확률 45%','$150~$190, 확률 15%','$130~$200, 확률 60%'],
+    answer:1,
+    explanation:'강세(Bull) 시나리오는 $280~$350+, 수익률 +30~60%, 확률 45%입니다. 중립(Base)은 $220~$270/40%, 약세(Bear)는 $150~$190/15%입니다.',
+    source:'스페이스X 주가 세가지 시나리오 슬라이드 — 강세(Bull) $280~$350+, 45%.'
+  },
+  {
+    id:8, type:'short', difficulty:'mid',
+    question:'금리 인상 가능성을 뒷받침한 5월 비농업 고용 증가 인원은? (숫자만, 예: 172000 또는 17만2천)',
+    answer:['172000','172,000','17만2천','17만 2천','17만2천명','172000명','172,000명'],
+    explanation:'5월 비농업 고용이 +172,000명으로 예상치를 대폭 상회했습니다. ADP 민간 고용도 강하게 나오며 경기 과열 우려가 증폭됐고, Fed 금리 인상 확률이 72%까지 치솟았습니다.',
+    source:'금리 인상 가능성을 뒷받침하는 경제 지수 슬라이드 — "5월 비농업 고용: +172,000명".'
+  },
+  {
+    id:9, type:'mc', difficulty:'hard',
+    question:'S&P 500 밸류에이션 분석에서 제시된 Forward P/E와 YTD 상승률은?',
+    options:['P/E 24배 / YTD +21.7%','P/E 21.7배 / YTD 약 +10%','P/E 9.1배 / YTD +6%','P/E 21.7배 / YTD -6%'],
+    answer:1,
+    explanation:'Forward P/E는 21.7배, YTD 상승률은 약 +10%입니다. P/E는 연초 대비 오히려 -6% 낮아진 수준으로, 이번 랠리가 "가격이 실적을 앞서는" 거품이 아니라 실적이 가격을 따라잡는 형태라고 분석했습니다.',
+    source:'S&P 500 랠리와 밸류에이션 분석 슬라이드 — "YTD 상승률 약 +10%, Forward P/E 21.7배".'
+  },
+  {
+    id:10, type:'short', difficulty:'hard',
+    question:'오늘 나스닥에 데뷔한 전고체 EV 배터리 기업의 티커(종목코드)는?',
+    answer:['FAC','fac'],
+    explanation:'전고체 배터리 기업 Factorial Energy가 나스닥에 데뷔했으며 티커는 FAC입니다. 1회 충전 745마일(1,200km), 공모가 $13.80으로 장 마감 후 +52% 급등했습니다.',
+    source:'SOLID STATE EV 나스닥 데뷔 슬라이드 — "Ticker: FAC, $13.80 (장마감후 +52%)".'
+  }
+];
+
+const state = { solved:0, correct:0, answered:{} };
+const TOTAL = QUIZ_DATA.length;
+const DIFF = { easy:['쉬움','b-easy'], mid:['보통','b-mid'], hard:['어려움','b-hard'] };
+const TYPE = { mc:'객관식', short:'단답형', ox:'OX' };
+
+function normalize(s){ return String(s).trim().toLowerCase().replace(/\s+/g,'').replace(/[,]/g,'').replace(/명$/,''); }
+
+function updateBoard(){
+  document.getElementById('sSolved').textContent = state.solved;
+  document.getElementById('sCorrect').textContent = state.correct;
+  const rate = state.solved ? Math.round(state.correct/state.solved*100) : 0;
+  document.getElementById('sRate').textContent = rate+'%';
+  const bar = document.getElementById('pBar');
+  bar.style.width = (state.solved/TOTAL*100)+'%';
+  if(rate<40) bar.style.background='var(--red)';
+  else if(rate<70) bar.style.background='#f59e0b';
+  else bar.style.background='var(--green)';
+  if(state.solved===TOTAL) setTimeout(showResult, 450);
+}
+
+function openExplain(id){ document.getElementById('exp-'+id).classList.add('open'); }
+
+function lock(q, isCorrect){
+  if(state.answered[q.id]) return false;
+  state.answered[q.id]=true;
+  state.solved++;
+  if(isCorrect) state.correct++;
+  updateBoard();
+  openExplain(q.id);
+  return true;
+}
+
+function buildCard(q){
+  const [dLabel,dCls] = DIFF[q.difficulty];
+  let body='';
+
+  if(q.type==='mc'){
+    body='<div class="opts" id="opts-'+q.id+'">';
+    q.options.forEach((o,i)=>{
+      body+='<div class="opt" data-i="'+i+'"><span class="mark">'+String.fromCharCode(65+i)+'</span><span>'+o+'</span></div>';
+    });
+    body+='</div>';
+  } else if(q.type==='ox'){
+    body='<div class="ox-wrap" id="opts-'+q.id+'"><button class="ox-btn" data-v="O">O</button><button class="ox-btn" data-v="X">X</button></div>';
+  } else {
+    body='<div class="sa-wrap"><input type="text" id="sa-'+q.id+'" placeholder="정답 입력..."><button class="sa-submit" id="sb-'+q.id+'">제출</button></div><div class="sa-feedback" id="saf-'+q.id+'"></div>';
+  }
+
+  return '<div class="q-card">'+
+    '<div class="q-head"><span class="q-num">'+String(q.id).padStart(2,'0')+'</span>'+
+    '<span class="badge '+dCls+'">'+dLabel+'</span>'+
+    '<span class="badge b-type">'+TYPE[q.type]+'</span></div>'+
+    '<div class="q-text">'+q.question+'</div>'+
+    body+
+    '<div class="explain" id="exp-'+q.id+'"><div class="explain-in">'+
+      '<div class="ttl">해설</div>'+
+      '<div class="ans">정답: '+answerText(q)+'</div>'+
+      '<div>'+q.explanation+'</div>'+
+      '<div class="src">근거 — '+q.source+'</div>'+
+    '</div></div>'+
+  '</div>';
+}
+
+function answerText(q){
+  if(q.type==='mc') return String.fromCharCode(65+q.answer)+'. '+q.options[q.answer];
+  if(q.type==='ox') return q.answer;
+  return Array.isArray(q.answer) ? q.answer[0] : q.answer;
+}
+
+function render(){
+  document.getElementById('quiz').innerHTML = QUIZ_DATA.map(buildCard).join('');
+  QUIZ_DATA.forEach(attach);
+}
+
+function attach(q){
+  if(q.type==='mc'){
+    const wrap=document.getElementById('opts-'+q.id);
+    wrap.querySelectorAll('.opt').forEach(el=>{
+      el.addEventListener('click',()=>{
+        if(state.answered[q.id]) return;
+        const i=+el.dataset.i;
+        const ok=(i===q.answer);
+        if(!lock(q,ok)) return;
+        wrap.querySelectorAll('.opt').forEach((o,oi)=>{
+          o.classList.add('disabled');
+          if(oi===q.answer){ o.classList.add('correct'); o.insertAdjacentHTML('beforeend','<span class="res-badge rb-ok">✓ 정답</span>'); }
+        });
+        if(!ok){ el.classList.add('wrong'); el.insertAdjacentHTML('beforeend','<span class="res-badge rb-no">✗ 오답</span>'); }
+      });
+    });
+  } else if(q.type==='ox'){
+    const wrap=document.getElementById('opts-'+q.id);
+    wrap.querySelectorAll('.ox-btn').forEach(el=>{
+      el.addEventListener('click',()=>{
+        if(state.answered[q.id]) return;
+        const v=el.dataset.v;
+        const ok=(v===q.answer);
+        if(!lock(q,ok)) return;
+        wrap.querySelectorAll('.ox-btn').forEach(b=>{
+          b.classList.add('disabled');
+          if(b.dataset.v===q.answer) b.classList.add('correct');
+        });
+        if(!ok) el.classList.add('wrong');
+      });
+    });
+  } else {
+    const inp=document.getElementById('sa-'+q.id);
+    const btn=document.getElementById('sb-'+q.id);
+    const fb=document.getElementById('saf-'+q.id);
+    const submit=()=>{
+      if(state.answered[q.id]) return;
+      const val=inp.value;
+      if(!val.trim()){ fb.textContent='답을 입력해주세요.'; fb.className='sa-feedback no'; return; }
+      const accepts=(Array.isArray(q.answer)?q.answer:[q.answer]).map(normalize);
+      const ok=accepts.includes(normalize(val));
+      if(!lock(q,ok)) return;
+      inp.disabled=true; btn.disabled=true;
+      if(ok){ fb.textContent='✓ 정답입니다!'; fb.className='sa-feedback ok'; }
+      else{ fb.textContent='✗ 오답 — 정답: '+answerText(q); fb.className='sa-feedback no'; }
+    };
+    btn.addEventListener('click',submit);
+    inp.addEventListener('keydown',e=>{ if(e.key==='Enter') submit(); });
+  }
+}
+
+function showResult(){
+  const pct=state.correct/TOTAL*100;
+  let g,msg;
+  if(pct>=90){g='A';msg='완벽합니다! 오늘 방송의 핵심을 거의 모두 잡으셨네요.';}
+  else if(pct>=70){g='B';msg='훌륭합니다. 큰 흐름을 잘 이해하고 계십니다.';}
+  else if(pct>=50){g='C';msg='절반은 넘겼습니다. 해설을 다시 한 번 짚어보세요.';}
+  else{g='D';msg='괜찮습니다. 리포트와 해설을 복습하면 금방 잡힙니다.';}
+  document.getElementById('mGrade').textContent=g;
+  document.getElementById('mScore').textContent=state.correct;
+  document.getElementById('mMsg').textContent=msg;
+  document.getElementById('overlay').classList.add('show');
+}
+
+document.getElementById('mRetry').addEventListener('click',()=>{
+  state.solved=0; state.correct=0; state.answered={};
+  document.getElementById('overlay').classList.remove('show');
+  updateBoard();
+  render();
+  window.scrollTo({top:0,behavior:'smooth'});
+});
+
+render();
+updateBoard();
+</script>
+
+</body>
+</html>

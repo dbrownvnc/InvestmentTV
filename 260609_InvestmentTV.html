@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>시장 참여도 낮은 오늘 미증시 · SpaceX IPO 분석 리포트</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,500&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg: #ffffff;
+    --bg-soft: #fafafa;
+    --text: #1a1a1a;
+    --text-soft: #777777;
+    --accent: #e11d48;
+    --accent-2: #f43f5e;
+    --line: #e5e5e5;
+    --c-blue: #2563eb;
+    --c-gray: #6b7280;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.75;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 680px; margin: 0 auto; padding: 0 22px; }
+
+  /* ---------- HERO ---------- */
+  .hero { padding: 64px 0 40px; border-bottom: 2px solid var(--text); }
+  .eyebrow {
+    font-size: 12px; letter-spacing: 3px; text-transform: uppercase;
+    color: var(--accent); font-weight: 700; margin-bottom: 18px;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 800; font-size: 42px; line-height: 1.12;
+    letter-spacing: -0.5px; margin-bottom: 18px;
+  }
+  .hero .sub {
+    font-size: 16px; color: var(--text-soft); font-weight: 300;
+    border-left: 3px solid var(--accent); padding-left: 14px;
+  }
+  .meta {
+    display: flex; flex-wrap: wrap; gap: 8px 18px; margin-top: 26px;
+    font-size: 12.5px; color: var(--text-soft); letter-spacing: 0.5px;
+  }
+  .meta b { color: var(--text); font-weight: 500; }
+
+  /* ---------- SECTION ---------- */
+  section { padding: 46px 0; border-bottom: 1px solid var(--line); }
+  .kicker {
+    font-family: 'Playfair Display', serif; font-style: italic;
+    font-size: 15px; color: var(--accent); margin-bottom: 6px;
+  }
+  h2 {
+    font-family: 'Playfair Display', serif; font-weight: 700;
+    font-size: 27px; line-height: 1.25; letter-spacing: -0.3px;
+    margin-bottom: 20px;
+  }
+  h3 {
+    font-size: 17px; font-weight: 700; margin: 28px 0 12px;
+    padding-left: 12px; border-left: 4px solid var(--accent);
+  }
+  p { margin-bottom: 15px; font-size: 15.5px; }
+  p.lead { font-size: 17px; color: var(--text); font-weight: 400; }
+  strong { font-weight: 700; }
+  .hl { color: var(--accent); font-weight: 700; }
+  .num { font-family: 'Playfair Display', serif; font-weight: 700; }
+
+  ul.clean { list-style: none; margin: 8px 0 16px; }
+  ul.clean li {
+    position: relative; padding-left: 20px; margin-bottom: 10px;
+    font-size: 15px;
+  }
+  ul.clean li::before {
+    content: "—"; position: absolute; left: 0; color: var(--accent); font-weight: 700;
+  }
+
+  /* ---------- PULL QUOTE ---------- */
+  .pull {
+    font-family: 'Playfair Display', serif; font-style: italic;
+    font-size: 22px; line-height: 1.5; color: var(--text);
+    border-top: 2px solid var(--text); border-bottom: 2px solid var(--text);
+    padding: 26px 0; margin: 34px 0; text-align: center;
+  }
+  .pull span { color: var(--accent); }
+
+  /* ---------- CALLOUT ---------- */
+  .callout {
+    background: var(--bg-soft); border: 1px solid var(--line);
+    border-left: 4px solid var(--accent); border-radius: 4px;
+    padding: 18px 20px; margin: 22px 0; font-size: 14.5px;
+  }
+  .callout .t { font-weight: 700; color: var(--accent); margin-bottom: 6px; font-size: 13px; letter-spacing: 1px; text-transform: uppercase; }
+
+  /* ---------- TABLE ---------- */
+  .tbl-wrap { overflow-x: auto; margin: 18px 0; border: 1px solid var(--line); border-radius: 6px; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; min-width: 320px; }
+  thead th { background: var(--accent); color: #fff; padding: 12px 14px; text-align: left; font-weight: 500; letter-spacing: 0.5px; }
+  tbody td { padding: 11px 14px; border-top: 1px solid var(--line); }
+  tbody tr:nth-child(even) { background: var(--bg-soft); }
+  .pos { color: var(--accent); font-weight: 700; }
+  .neg { color: var(--c-blue); font-weight: 700; }
+
+  /* ---------- CHART ---------- */
+  .fade-in { opacity: 0; transform: translateY(18px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .fade-in.visible { opacity: 1; transform: translateY(0); }
+  .chart-container { position: relative; max-height: 340px; margin: 14px 0 6px; }
+  .chart-container canvas { opacity: 0; transition: opacity 0.4s ease; max-height: 300px; }
+  .chart-container.chart-ready canvas { opacity: 1; }
+  .cap { font-size: 12px; color: var(--text-soft); text-align: center; margin-top: 4px; font-style: italic; }
+
+  /* ---------- INTERACTIVE ---------- */
+  .sim {
+    background: var(--bg-soft); border: 1px solid var(--line);
+    border-radius: 10px; padding: 22px 20px; margin: 24px 0;
+  }
+  .sim h4 {
+    font-size: 15px; font-weight: 700; margin-bottom: 4px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .sim h4::before { content: "▸"; color: var(--accent); }
+  .sim .desc { font-size: 13px; color: var(--text-soft); margin-bottom: 18px; }
+  .field { margin-bottom: 16px; }
+  .field label { display: block; font-size: 13px; font-weight: 500; margin-bottom: 7px; }
+  .field .val { color: var(--accent); font-weight: 700; font-family: 'Playfair Display', serif; }
+  input[type=range] {
+    -webkit-appearance: none; width: 100%; height: 5px; border-radius: 5px;
+    background: var(--line); outline: none;
+  }
+  input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none; width: 20px; height: 20px; border-radius: 50%;
+    background: var(--accent); cursor: pointer; border: 3px solid #fff; box-shadow: 0 1px 4px rgba(0,0,0,.25);
+  }
+  input[type=range]::-moz-range-thumb {
+    width: 20px; height: 20px; border-radius: 50%; background: var(--accent);
+    cursor: pointer; border: 3px solid #fff;
+  }
+  input[type=number] {
+    width: 100%; padding: 10px 12px; border: 1px solid var(--line);
+    border-radius: 6px; font-family: inherit; font-size: 15px;
+  }
+  input[type=number]:focus { outline: none; border-color: var(--accent); }
+  .btn-reset {
+    background: none; border: 1px solid var(--accent); color: var(--accent);
+    padding: 8px 16px; border-radius: 6px; font-family: inherit; font-size: 13px;
+    font-weight: 500; cursor: pointer; margin-top: 6px; transition: all .15s;
+  }
+  .btn-reset:hover { background: var(--accent); color: #fff; }
+  .result-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 18px; }
+  .rcard { background: #fff; border: 1px solid var(--line); border-radius: 8px; padding: 14px 10px; text-align: center; }
+  .rcard .lbl { font-size: 11px; color: var(--text-soft); letter-spacing: 0.5px; margin-bottom: 6px; }
+  .rcard .big { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 21px; }
+  .rcard.bull .big { color: var(--accent); }
+  .rcard.base .big { color: var(--c-gray); }
+  .rcard.bear .big { color: var(--c-blue); }
+  .ev-box { margin-top: 16px; padding: 14px 16px; background: #fff; border: 1px solid var(--line); border-radius: 8px; text-align: center; font-size: 14px; }
+  .ev-box .ev { font-family: 'Playfair Display', serif; font-weight: 800; font-size: 26px; color: var(--accent); display: block; margin-top: 4px; }
+
+  /* ---------- SCENARIO TOGGLE ---------- */
+  .scn-tabs { display: flex; gap: 8px; margin: 18px 0 14px; }
+  .scn-tabs button {
+    flex: 1; padding: 10px; border: 1px solid var(--line); background: #fff;
+    border-radius: 8px; font-family: inherit; font-size: 13px; font-weight: 500;
+    cursor: pointer; transition: all .15s; color: var(--text-soft);
+  }
+  .scn-tabs button.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .scn-body {
+    background: var(--bg-soft); border: 1px solid var(--line); border-radius: 8px;
+    padding: 18px 18px; font-size: 14px;
+  }
+  .scn-body .pr { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 22px; color: var(--accent); }
+  .scn-body .prob { font-size: 13px; color: var(--text-soft); }
+
+  /* ---------- FOOTER ---------- */
+  footer { padding: 40px 0 60px; text-align: center; }
+  footer .disc { font-size: 11.5px; color: var(--text-soft); line-height: 1.7; margin-top: 14px; }
+  .sig { font-family: 'Playfair Display', serif; font-style: italic; font-size: 15px; color: var(--text); }
+
+  @media (max-width: 420px) {
+    .hero h1 { font-size: 33px; }
+    h2 { font-size: 23px; }
+    .pull { font-size: 18px; }
+    .result-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="eyebrow">미증시 시장 포커스 · 2026.06.09</div>
+    <h1>큰 배는 파고에<br>크게 출렁이지 않는다</h1>
+    <p class="sub">시장 참여도 낮은 오늘의 미증시 — SpaceX 사상 최대 IPO를 앞두고, 금리 인상 우려와 변동성 확대 속 '질량과 관성'의 투자 원칙을 다시 짚는다.</p>
+    <div class="meta">
+      <span><b>채널</b> 투자는인생TV</span>
+      <span><b>진행</b> David Lee</span>
+      <span><b>기준일</b> 6월 8일 장 마감</span>
+    </div>
+  </header>
+
+  <!-- 1. 시장 개관 -->
+  <section>
+    <div class="kicker">Market Overview</div>
+    <h2>9주 연속 랠리, 멈춤 신호</h2>
+    <p class="lead">주요 지수가 하락 출발했다. 지난 <span class="hl">9주 연속 상승 랠리</span>가 마감될 가능성이 매우 커진 국면이다.</p>
+    <p>더 이상 모든 테크주가 함께 오르는 시장이 아니다. 같은 테크주라도 오르는 종목과 떨어지는 종목이 갈리는 <strong>선택적 상승장</strong>으로, 종목을 잘 고르지 못하면 6월·7월에는 큰 재미를 보기 어렵다는 진단이다.</p>
+    <p>지난 금요일 급락의 직접적 원인은 <strong>5월 고용 지표가 예상보다 강하게</strong> 나오면서 금리 인상 우려가 급부상한 데 있다. 일본이 금리를 보류하기로 하면서 급격한 국채 금리 상승은 피했고, 이것이 오늘 일부 반등의 배경이 됐다.</p>
+    <div class="callout">
+      <div class="t">핵심 경고</div>
+      반등할 때 조심해야 한다. "내일도 오르겠지"라는 6주간의 습관은 더 이상 통하지 않는다. 노이즈 하나에 왕창 팔고, 떨어지면 또 왕창 사는 <strong>'눈치게임' 시장</strong>은 오래 지속될 수 없다.
+    </div>
+  </section>
+
+  <!-- 2. 섹터별 실적 -->
+  <section>
+    <div class="kicker">Sector Performance · 06/08</div>
+    <h2>방어주는 강하게, 기술주는 무너지다</h2>
+    <p>6월 8일 섹터별 1일 변동률을 보면 <strong>방어적 성격의 섹터</strong>가 상대적으로 강했고, 정보기술(IT)이 <span class="hl">-5.8%</span>로 가장 크게 무너졌다. 흐름을 읽지 못한 채 보유 종목에만 집중하면 "왜 떨어지는지 모르게" 손실을 볼 수 있는 장이다.</p>
+
+    <div class="chart-container fade-in">
+      <canvas id="sectorChart" height="240"></canvas>
+    </div>
+    <p class="cap">6월 8일 S&amp;P 500 섹터별 1일 변동률 (%) — 상위 5 / 하위 5</p>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>순위</th><th>상위 섹터</th><th>변동률</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>Consumer Staples</td><td class="pos">+1.6%</td></tr>
+          <tr><td>2</td><td>Utilities</td><td class="pos">+0.8%</td></tr>
+          <tr><td>3</td><td>Real Estate</td><td class="pos">+0.8%</td></tr>
+          <tr><td>4</td><td>Health Care</td><td class="pos">+0.5%</td></tr>
+          <tr><td>5</td><td>Financials</td><td class="pos">+0.2%</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>순위</th><th>하위 섹터</th><th>변동률</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>Information Technology</td><td class="neg">-5.8%</td></tr>
+          <tr><td>2</td><td>Consumer Discretionary</td><td class="neg">-2.3%</td></tr>
+          <tr><td>3</td><td>Materials</td><td class="neg">-2.3%</td></tr>
+          <tr><td>4</td><td>Energy</td><td class="neg">-2.0%</td></tr>
+          <tr><td>5</td><td>Communication Services</td><td class="neg">-1.7%</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 3. SpaceX IPO -->
+  <section>
+    <div class="kicker">Spotlight · SpaceX IPO</div>
+    <h2>사상 최대 규모, $1.77조의 데뷔</h2>
+    <p class="lead">이번 주 목요일, SpaceX가 <span class="hl">사상 최대 규모 IPO</span>에 나선다. 현재 평가가치는 <strong>$1.77조(trillion)</strong>다.</p>
+    <p>IPO 이전에 이미 한 차례 <strong>5:1 주식분할</strong>이 진행됐다. $600대였던 주가가 $130대로 조정돼 프리IPO 시장에서 거래되고 있다. 모닝스타는 "가치가 너무 높다"며 부정적이지만, 진행자는 모닝스타의 적중률에 회의적이라며 여전히 매력적이라고 평가했다.</p>
+
+    <h3>시장에 줄 영향 (첫 3개월 변동성 강할 전망)</h3>
+    <ul class="clean">
+      <li>전체 주식 시장에 단기 긍정적 — 대형 IPO 성공은 <strong>Risk-on 분위기</strong> 조성</li>
+      <li>AI · 우주 · 위성 기술 투자 열기 확대</li>
+      <li>항공우주 섹터 강한 수혜 — <strong>Rocket Lab, AST SpaceMobile</strong> 등 관련주</li>
+      <li>상장 후 <strong>NASDAQ 100 편입</strong> 가능성 → 패시브 자금 $16B 이상 유입 예상</li>
+      <li>직원·초기 투자자 지분 매각으로 시장에 대규모 현금 유동성 공급</li>
+      <li>밸류에이션 부담 — 고평가 논란 + 대형 IPO로 인한 자금 분산 우려</li>
+    </ul>
+    <p>첫 실적 발표는 <strong>8월</strong>로 예정돼 있다. Starlink는 이미 1천만 명이 등록한 현실적 수익원이며, 데이터센터를 우주에 배치할 경우 24시간 태양광 공급과 우주 공간의 열효율로 에너지 비용을 크게 줄일 수 있다는 장기 호재가 거론된다. 이 경우 AT&amp;T, Verizon 같은 기존 지상 통신 인프라가 위협받을 수 있다.</p>
+
+    <div class="pull">"프리IPO에 산 사람이 가장 많이 번다. <span>$150에 사기는 어렵고, $200 내외면 럭키하다."</span></div>
+
+    <!-- 시나리오 토글 -->
+    <h3>6개월 후 예상 주가 — 3가지 시나리오</h3>
+    <p class="desc" style="font-size:13px;color:var(--text-soft);margin-bottom:6px;">탭을 눌러 시나리오별 목표가·예상 수익률·확률을 확인하세요.</p>
+    <div class="scn-tabs">
+      <button data-scn="bull" class="active">강세 Bull</button>
+      <button data-scn="base">중립 Base</button>
+      <button data-scn="bear">약세 Bear</button>
+    </div>
+    <div class="scn-body" id="scnBody"></div>
+
+    <div class="chart-container fade-in" style="margin-top:22px;">
+      <canvas id="scenarioChart" height="220"></canvas>
+    </div>
+    <p class="cap">시나리오별 6개월 후 목표 주가 범위 ($) 및 발생 확률</p>
+
+    <!-- 수익률 시뮬레이터 -->
+    <div class="sim">
+      <h4>SpaceX 매입가 수익률 시뮬레이터</h4>
+      <div class="desc">매입 가격을 입력하면 3가지 시나리오의 목표 중간값 기준 수익률과 확률가중 기대수익을 계산합니다.</div>
+      <div class="field">
+        <label>매입 단가 ($) <span class="val" id="buyVal">$200</span></label>
+        <input type="range" id="buyPrice" min="130" max="350" value="200" step="5">
+      </div>
+      <div class="result-grid">
+        <div class="rcard bull"><div class="lbl">강세 ($315)</div><div class="big" id="rBull">+57.5%</div></div>
+        <div class="rcard base"><div class="lbl">중립 ($245)</div><div class="big" id="rBase">+22.5%</div></div>
+        <div class="rcard bear"><div class="lbl">약세 ($170)</div><div class="big" id="rBear">-15.0%</div></div>
+      </div>
+      <div class="ev-box">
+        확률가중 기대수익 (Bull 45% · Base 40% · Bear 15%)
+        <span class="ev" id="evVal">+27.9%</span>
+      </div>
+      <button class="btn-reset" id="resetSim">초기값으로 리셋</button>
+    </div>
+    <div class="callout">
+      <div class="t">진행자 디스클로저</div>
+      진행자는 SpaceX를 IPO 이전에 이미 매입했다고 밝혔다. 다만 "내가 가지고 있으니 사라"는 뜻이 아니며, 투자 비중과 진입 여부는 본인의 리스크 감내 능력에 따라 판단할 사항이라고 강조했다.
+    </div>
+  </section>
+
+  <!-- 4. 산업가스 -->
+  <section>
+    <div class="kicker">Ripple Effect</div>
+    <h2>로켓이 날수록 가스가 필요하다</h2>
+    <p>SpaceX 상장은 로켓 발사 공급망에 대한 투자자 관심을 크게 높였다. 스타십은 한 번 쏘는 게 아니라 <strong>수천 번 재사용·재발사</strong>되며, 그때마다 대량의 <strong>산업가스(Industrial Gas)</strong>가 소모된다.</p>
+    <p>이런 구조 덕분에 산업가스 기업들은 SpaceX 주가의 등락과 무관하게 <span class="hl">꾸준히 수익을 낼 수 있는</span> 상대적 저위험·고성장 영역으로 부각됐다. (구체 종목 3개는 멤버 대상 별도 포스트로 공개 예정.)</p>
+  </section>
+
+  <!-- 5. 금리 -->
+  <section>
+    <div class="kicker">Macro · Rates</div>
+    <h2>고용은 호조, 금리는 부담</h2>
+    <p class="lead">하반기 가장 큰 걸림돌은 <span class="hl">연준의 금리 인상과 국채 금리 상승</span> 두 가지다. 이것이 진짜 '캐털리스트'이고 나머지는 노이즈라는 진단이다.</p>
+    <ul class="clean">
+      <li>5월 비농업 고용 <strong>+172,000명</strong> — 예상치 대폭 상회</li>
+      <li>ADP 민간 고용도 강하게 나오며 경기 과열 우려 증폭</li>
+      <li>10년물 국채 금리 상승 → Fed 금리 인상 확률 <strong>72%</strong>까지 치솟음</li>
+    </ul>
+    <p>인플레이션은 올라오는데 고용시장이 예상보다 뜨겁다. 시장 입장에서는 "금리를 올려야 한다"는 결론으로 향할 수밖에 없는 셈이다. 금리가 인상되는 날에는 풀백 가능성이 크다.</p>
+
+    <h3>케빈 워시 연준의장 체제 금리 시나리오</h3>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>기간</th><th>동결</th><th>인상(25bp)</th><th>인하</th></tr></thead>
+        <tbody>
+          <tr><td>6월 FOMC</td><td class="pos">95%+</td><td>5% 미만</td><td>거의 0%</td></tr>
+          <tr><td>2026년 말까지</td><td>약 40%</td><td class="pos">약 60%<br>(최소 1회)</td><td>매우 낮음</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="chart-container fade-in">
+      <canvas id="fedChart" height="220"></canvas>
+    </div>
+    <p class="cap">기간별 금리 결정 확률 (%)</p>
+
+    <div class="callout">
+      <div class="t">11월 변수</div>
+      연내 최소 1회 인상은 10~11월경 올 수 있다. 특히 11월은 중간선거 시기로, 정치 지형 변화와 금리 인상이 겹치면 시장에 큰 지진이 일어날 수 있다.
+    </div>
+  </section>
+
+  <!-- 6. 투자심리 3개 축 -->
+  <section>
+    <div class="kicker">Sentiment</div>
+    <h2>기관 투자심리를 대변하는 3개 축</h2>
+    <h3>① 고용 호조 → 금리 인상 우려</h3>
+    <p>강한 고용 데이터로 Fed가 인플레이션 억제를 위해 금리를 더 올릴 수 있다는 관측이 강해졌다.</p>
+    <h3>② 실적 불안</h3>
+    <p>AI 투자 확대에 따른 차입 비용 증가 우려. 기술주 실적 기대치가 과도하게 높아 조정 압력이 크다.</p>
+    <h3>③ 비트코인 급락</h3>
+    <p>비트코인이 <span class="hl">-6%</span> 하락하며 $60,000 아래로 붕괴. 최근 한 달간 -26% 조정으로 "크립토 윈터" 재도래 우려가 나온다. (이후 +5% 반등하며 $63,000 회복.)</p>
+  </section>
+
+  <!-- 7. Stocks on the move -->
+  <section>
+    <div class="kicker">Stocks on the Move</div>
+    <h2>오늘 움직인 종목들</h2>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>종목</th><th>변동</th><th>이슈</th></tr></thead>
+        <tbody>
+          <tr><td>Nvidia (NVDA)</td><td class="pos">+2.3%</td><td>6개월째 박스권</td></tr>
+          <tr><td>SK Hynix</td><td>—</td><td>차세대 AI 메모리 공동개발 파트너십 발표</td></tr>
+          <tr><td>Corning (GLW)</td><td class="pos">+9%</td><td>급등</td></tr>
+          <tr><td>Amazon</td><td>—</td><td>AI 데이터센터 대규모 광섬유 공급 계약</td></tr>
+          <tr><td>Flex (FLEX)</td><td class="pos">+4.6%</td><td>S&amp;P 500 편입 확정</td></tr>
+          <tr><td>비트코인</td><td class="pos">+5%</td><td>$63,000 회복 → MSTR·COIN 동반 상승</td></tr>
+          <tr><td>Apple (AAPL)</td><td class="pos">소폭↑</td><td>WWDC 개최, AI 기능 업데이트 기대</td></tr>
+          <tr><td>VIX</td><td class="neg">-13%</td><td>금요일 급등 후 19 아래로 안정화</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>방어 섹터(헬스케어·필수소비재)는 금요일 상승 후 오늘 약세로, 안전자산 선호가 단기적으로 약화된 모습이다.</p>
+
+    <h3>전고체 EV 데뷔 — Factorial Energy (FAC)</h3>
+    <p>전고체 배터리 기업 <strong>Factorial Energy</strong>가 나스닥에 데뷔했다. 1회 충전 <strong>745마일(1,200km)</strong> 주행, 기업가치 $1.3B, 티커 <strong>FAC</strong>, 공모가 $13.80로 장 마감 후 <span class="hl">+52%</span> 급등했다.</p>
+    <p>전고체는 리튬이 움직이지 않아 화재 위험이 적고 수명이 길다. 항속거리가 4~5배 늘면 유인 드론·로봇의 가동 시간이 폭발적으로 길어져 산업 전반을 바꿀 잠재력이 있다. (투자 평가는 목요일 별도 진행 예정.)</p>
+  </section>
+
+  <!-- 8. 밸류에이션 -->
+  <section>
+    <div class="kicker">Valuation</div>
+    <h2>빚으로 쌓은 실적, 금리의 그림자</h2>
+    <p class="lead">이번 랠리는 "가격이 실적을 앞서는" 전형적 거품이 아니라, <span class="hl">실적이 가격을 따라잡는</span> 형태다. 문제는 그 실적이 상당 부분 <strong>빚을 내서</strong> 만들어졌다는 점이다.</p>
+    <ul class="clean">
+      <li>YTD 상승률 약 <strong>+10%</strong></li>
+      <li>Forward P/E <strong>21.7배</strong> — 연초 대비 오히려 -6%로 낮아짐</li>
+    </ul>
+    <p>NVIDIA 칩을 사려면 빚을 내야 하고, 그 빚으로 실적이 올라간다. 이자율이 높아지면 도미노처럼 무너질 수 있는 구조라 투자는 하되 노출(레버리지)을 과도하게 높여서는 안 된다.</p>
+
+    <div class="callout">
+      <div class="t">Broadcom의 경고</div>
+      지난주 목요일 브로드컴(아바고)이 가이던스에서 "앞으로 볼 게 줄었다"는 신호를 내자 주가가 10%대 급락, 금요일 하루 만에 <strong>약 1조 달러</strong>가 증발했다. 이제는 실적을 아주 우수하게 상회해야 현재 주가를 유지할 수 있고, 그 폭이 점점 좁아지고 있다.
+    </div>
+
+    <h3>2026 예상 실적 성장 기여도</h3>
+    <div class="chart-container fade-in">
+      <canvas id="earningsChart" height="240"></canvas>
+    </div>
+    <p class="cap">섹터별 2026 예상 실적 성장 기여도 (% of total) — Tech가 절반(49.4%)</p>
+    <p>2026년 예상 실적 성장의 <strong>49.4%</strong>가 Tech 섹터에 집중돼 있다. 반도체주가 하락세를 타면 전체 시장도 하락할 수밖에 없는 구조('스프레드가 약하다')라 투자 리스크가 높아진 상황이다.</p>
+  </section>
+
+  <!-- 9. 하반기 전망 -->
+  <section>
+    <div class="kicker">H2 Outlook</div>
+    <h2>S&amp;P 500 하반기 시나리오</h2>
+    <ul class="clean">
+      <li>단기적으로 추가 조정 가능성 — <strong>5~9.9% pullback</strong></li>
+      <li>그러나 전체 <strong>bull market은 유지</strong>될 것으로 예상</li>
+      <li>올해 이미 한 차례 9.1% 조정 경험 — pullback은 폭락 가능성을 낮추는 현상</li>
+      <li>pullback 트리거: 8월 반도체 실적 발표, 금리 인하 시점, 이란전쟁 격화 등 한두 차례 올 수 있음</li>
+    </ul>
+    <p>구글·아마존 같은 대형주가 하루 10%씩 오르내리는 것은 정상적인 시장이 아니다. 8월 반도체 실적 발표가 분수령으로, 5개 칩 기업 중 2개는 오르고 3개는 20%씩 떨어질 수도 있다. 위로든 아래로든 변동성이 큰 것은 언제나 <span class="hl">워닝 시그널</span>이다.</p>
+  </section>
+
+  <!-- 10. 포트폴리오 + 복리 -->
+  <section>
+    <div class="kicker">Strategy 2026</div>
+    <h2>선(先) 자산보호, 후(後) 리스크 확대</h2>
+    <ol style="padding-left:20px;margin:10px 0 18px;">
+      <li style="margin-bottom:9px;font-size:15px;">고유가·인플레이션 환경 → <strong>Consumer Staples, Utilities</strong> 비중 확대</li>
+      <li style="margin-bottom:9px;font-size:15px;">경기 침체 우려 → <strong>Health Care + Staples</strong> 중심</li>
+      <li style="margin-bottom:9px;font-size:15px;">시장 하락 시 자산 보호 + 안정적 배당 수익</li>
+      <li style="margin-bottom:9px;font-size:15px;">테크주 투자하되, 1일·3일 변동성이 크면 심리적 압박으로 대량 매각에 취약</li>
+      <li style="font-size:15px;">선 자산보호, 후 투자리스크 확대</li>
+    </ol>
+    <p>최근 3~40% 수익을 냈다면 그것을 지키는 게 먼저다. 이 시장은 언제든 15~20%씩 떨어질 수 있다는 점을 늘 기억해야 한다. Starlink는 들었다 놨다 하지 말고 <strong>장기 투자용</strong>으로 보유하라는 조언이다.</p>
+
+    <div class="pull">"오늘 20% 벌고 내일 20% 떨어지는 종목은 오래 못 버틴다.<br><span>적게, 오래 벌어야 한다."</span></div>
+
+    <h3>복리의 법칙 — 시작은 미약하나</h3>
+    <p>파이가 커질수록 같은 1%의 크기도 달라진다. 1억의 100%는 2억이지만, 2억의 100%는 4억이다. 작게라도 일찍 시작한 투자가 시간과 만나면 직선이 아니라 곡선으로 불어난다는 것이 복리의 핵심이다.</p>
+
+    <div class="sim">
+      <h4>복리 시뮬레이터</h4>
+      <div class="desc">초기 투자금·연 수익률·기간을 조절해 복리 효과를 직접 확인하세요.</div>
+      <div class="field">
+        <label>초기 투자금 (만원)</label>
+        <input type="number" id="ciPrincipal" value="500" min="1" step="100">
+      </div>
+      <div class="field">
+        <label>연 수익률 <span class="val" id="ciRateVal">20%</span></label>
+        <input type="range" id="ciRate" min="3" max="40" value="20" step="1">
+      </div>
+      <div class="field">
+        <label>투자 기간 <span class="val" id="ciYearVal">20년</span></label>
+        <input type="range" id="ciYears" min="1" max="30" value="20" step="1">
+      </div>
+      <div class="chart-container fade-in" style="max-height:300px;">
+        <canvas id="compoundChart" height="200"></canvas>
+      </div>
+      <div class="ev-box">
+        예상 최종 자산
+        <span class="ev" id="ciResult">1.9억원</span>
+      </div>
+      <button class="btn-reset" id="resetCi">초기값으로 리셋</button>
+    </div>
+    <p style="font-size:12px;color:var(--text-soft);font-style:italic;">* 단순 복리 가정의 교육용 예시이며, 실제 수익을 보장하지 않습니다.</p>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p class="sig">"감옥에서 탈출하는 열쇠는 투자다."</p>
+    <p class="disc">
+      본 자료는 투자는인생TV 6월 9일 공개 라이브 방송 내용을 정리·요약한 것으로, 투자 권유나 자문이 아닙니다.
+      모든 수치는 방송에서 언급된 원본 데이터를 기준으로 하며, 시장 상황에 따라 달라질 수 있습니다.
+      투자 판단과 그 결과에 대한 책임은 투자자 본인에게 있습니다.<br>
+      Investment Products Are Not FDIC Insured · Not Bank Guaranteed · May Lose Value
+    </p>
+  </footer>
+
+</div>
+
+<script>
+  /* ===== Fade-in observer ===== */
+  const fadeObs = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 80);
+        fadeObs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.fade-in').forEach(el => fadeObs.observe(el));
+
+  /* ===== Chart defaults ===== */
+  Chart.defaults.font.family = "'Noto Sans KR', sans-serif";
+  Chart.defaults.color = '#777777';
+  const C = { accent:'#e11d48', accent2:'#f43f5e', dark:'#1a1a1a', gray:'#6b7280', blue:'#2563eb' };
+
+  const chartConfigs = {};
+
+  chartConfigs['sectorChart'] = () => {
+    new Chart(document.getElementById('sectorChart'), {
+      type: 'bar',
+      data: {
+        labels: ['Cons. Staples','Utilities','Real Estate','Health Care','Financials','Comm. Svcs','Energy','Materials','Cons. Disc.','Info Tech'],
+        datasets: [{
+          data: [1.6,0.8,0.8,0.5,0.2,-1.7,-2.0,-2.3,-2.3,-5.8],
+          backgroundColor: ctx => ctx.raw >= 0 ? C.accent : C.blue,
+          borderRadius: 4
+        }]
+      },
+      options: {
+        indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+        plugins: { legend:{display:false}, tooltip:{ callbacks:{ label: c => c.raw + '%' } } },
+        scales: {
+          x: { grid:{color:'#eee'}, ticks:{ callback: v => v+'%' } },
+          y: { grid:{display:false}, ticks:{font:{size:11}} }
+        }
+      }
+    });
+  };
+
+  const SCN = {
+    bull: { name:'강세 (Bull)', range:'$280 ~ $350+', ret:'+30 ~ 60%', prob:'45%', mid:315, lo:280, hi:350,
+            note:'Starlink 성장 지속, Starship 성공적 발사, AI 데이터센터 호재' },
+    base: { name:'중립 (Base)', range:'$220 ~ $270', ret:'+0 ~ 25%', prob:'40%', mid:245, lo:220, hi:270,
+            note:'시장 평균 수준 성과, Starlink 성장 둔화' },
+    bear: { name:'약세 (Bear)', range:'$150 ~ $190', ret:'-15 ~ -30%', prob:'15%', mid:170, lo:150, hi:190,
+            note:'Starship 실패, 규제 리스크, 고금리 장기화' }
+  };
+
+  function renderScn(key){
+    const s = SCN[key];
+    document.getElementById('scnBody').innerHTML =
+      '<div style="font-weight:700;margin-bottom:8px;">'+s.name+' · 확률 <span class="pr" style="font-size:16px;">'+s.prob+'</span></div>'+
+      '<div class="pr">'+s.range+'</div>'+
+      '<div class="prob" style="margin:4px 0 10px;">예상 수익률 '+s.ret+'</div>'+
+      '<div style="font-size:13.5px;color:var(--text);">'+s.note+'</div>';
+  }
+  renderScn('bull');
+  document.querySelectorAll('.scn-tabs button').forEach(b => {
+    b.addEventListener('click', () => {
+      document.querySelectorAll('.scn-tabs button').forEach(x=>x.classList.remove('active'));
+      b.classList.add('active');
+      renderScn(b.dataset.scn);
+    });
+  });
+
+  chartConfigs['scenarioChart'] = () => {
+    new Chart(document.getElementById('scenarioChart'), {
+      type: 'bar',
+      data: {
+        labels: ['약세 Bear (15%)','중립 Base (40%)','강세 Bull (45%)'],
+        datasets: [{
+          label:'목표가 범위 ($)',
+          data: [ [150,190], [220,270], [280,350] ],
+          backgroundColor: [C.blue, C.gray, C.accent],
+          borderRadius: 5
+        }]
+      },
+      options: {
+        indexAxis:'y', responsive:true, maintainAspectRatio:false,
+        plugins:{ legend:{display:false}, tooltip:{ callbacks:{ label: c => '$'+c.raw[0]+' ~ $'+c.raw[1] } } },
+        scales:{ x:{ min:100, max:380, grid:{color:'#eee'}, ticks:{callback:v=>'$'+v} }, y:{grid:{display:false}} }
+      }
+    });
+  };
+
+  chartConfigs['fedChart'] = () => {
+    new Chart(document.getElementById('fedChart'), {
+      type:'bar',
+      data:{
+        labels:['동결','인상 (25bp)','인하'],
+        datasets:[
+          { label:'6월 FOMC', data:[95,5,0], backgroundColor:C.dark, borderRadius:4 },
+          { label:'2026년 말까지', data:[40,60,2], backgroundColor:C.accent, borderRadius:4 }
+        ]
+      },
+      options:{
+        responsive:true, maintainAspectRatio:false,
+        plugins:{ legend:{position:'top'}, tooltip:{callbacks:{label:c=>c.dataset.label+': '+c.raw+'%'}} },
+        scales:{ y:{ max:100, grid:{color:'#eee'}, ticks:{callback:v=>v+'%'} }, x:{grid:{display:false}} }
+      }
+    });
+  };
+
+  chartConfigs['earningsChart'] = () => {
+    new Chart(document.getElementById('earningsChart'), {
+      type:'bar',
+      data:{
+        labels:['Tech','Comm.Svcs','Energy','Financials','Cons.Disc','Industrials','Materials','Health Care','Cons.Stap','Utilities','Real Estate'],
+        datasets:[{
+          data:[49.4,13.1,11.7,7.9,5.5,3.6,3.4,1.7,1.6,1.6,0.6],
+          backgroundColor: ctx => ctx.dataIndex===0 ? C.accent : C.gray,
+          borderRadius:4
+        }]
+      },
+      options:{
+        responsive:true, maintainAspectRatio:false,
+        plugins:{ legend:{display:false}, tooltip:{callbacks:{label:c=>c.raw+'%'}} },
+        scales:{ y:{grid:{color:'#eee'}, ticks:{callback:v=>v+'%'}}, x:{grid:{display:false}, ticks:{font:{size:9}, maxRotation:60, minRotation:60}} }
+      }
+    });
+  };
+
+  /* ===== Chart observer ===== */
+  const chartObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const canvas = e.target.querySelector('canvas');
+        if (canvas && chartConfigs[canvas.id]) {
+          chartConfigs[canvas.id]();
+          e.target.classList.add('chart-ready');
+          chartObs.unobserve(e.target);
+        }
+      }
+    });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.chart-container').forEach(el => chartObs.observe(el));
+
+  /* ===== SpaceX return simulator ===== */
+  const buy = document.getElementById('buyPrice');
+  const PROB = { bull:0.45, base:0.40, bear:0.15 };
+  function calcSim(){
+    const p = +buy.value;
+    document.getElementById('buyVal').textContent = '$'+p;
+    const rb = (315-p)/p*100, rba = (245-p)/p*100, rbe = (170-p)/p*100;
+    const fmt = v => (v>=0?'+':'')+v.toFixed(1)+'%';
+    document.getElementById('rBull').textContent = fmt(rb);
+    document.getElementById('rBase').textContent = fmt(rba);
+    document.getElementById('rBear').textContent = fmt(rbe);
+    const ev = rb*PROB.bull + rba*PROB.base + rbe*PROB.bear;
+    document.getElementById('evVal').textContent = fmt(ev);
+  }
+  buy.addEventListener('input', calcSim);
+  document.getElementById('resetSim').addEventListener('click', () => { buy.value=200; calcSim(); });
+  calcSim();
+
+  /* ===== Compound interest simulator ===== */
+  let compoundChart = null;
+  const ciP = document.getElementById('ciPrincipal');
+  const ciR = document.getElementById('ciRate');
+  const ciY = document.getElementById('ciYears');
+  function fmtMoney(manwon){
+    if (manwon >= 10000) return (manwon/10000).toFixed(1)+'억원';
+    return Math.round(manwon).toLocaleString()+'만원';
+  }
+  function calcCi(){
+    let P = +ciP.value; if(!P||P<1){P=1;}
+    const r = +ciR.value/100, n = +ciY.value;
+    document.getElementById('ciRateVal').textContent = ciR.value+'%';
+    document.getElementById('ciYearVal').textContent = ciY.value+'년';
+    const labels=[], data=[];
+    for(let y=0;y<=n;y++){ labels.push(y+'년'); data.push(P*Math.pow(1+r,y)); }
+    document.getElementById('ciResult').textContent = fmtMoney(data[data.length-1]);
+    if(compoundChart){
+      compoundChart.data.labels=labels;
+      compoundChart.data.datasets[0].data=data;
+      compoundChart.update();
+    }
+  }
+  chartConfigs['compoundChart'] = () => {
+    compoundChart = new Chart(document.getElementById('compoundChart'), {
+      type:'line',
+      data:{ labels:[], datasets:[{ label:'자산', data:[], borderColor:C.accent, backgroundColor:'rgba(225,29,72,0.08)', fill:true, tension:0.3, pointRadius:0, borderWidth:2.5 }] },
+      options:{
+        responsive:true, maintainAspectRatio:false,
+        plugins:{ legend:{display:false}, tooltip:{callbacks:{label:c=>fmtMoney(c.raw)}} },
+        scales:{ y:{grid:{color:'#eee'}, ticks:{callback:v=> v>=10000?(v/10000).toFixed(0)+'억':v.toLocaleString()}}, x:{grid:{display:false}, ticks:{maxTicksLimit:8}} }
+      }
+    });
+    calcCi();
+  };
+  [ciP,ciR,ciY].forEach(el=>el.addEventListener('input', calcCi));
+  document.getElementById('resetCi').addEventListener('click', ()=>{ ciP.value=500; ciR.value=20; ciY.value=20; calcCi(); });
+</script>
+
+</body>
+</html>
