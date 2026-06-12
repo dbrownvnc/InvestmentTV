@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>6월11일 멤버온리 라이브 분석 — 이란 타격 취소와 반도체 급등</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;0,900;1,500&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+  :root{
+    --bg:#ffffff; --bg2:#fafafa;
+    --ink:#1a1a1a; --ink2:#777777;
+    --accent:#e11d48; --accent2:#f43f5e;
+    --line:#e5e5e5;
+    --blue:#2563eb; --gray:#6b7280;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg); color:var(--ink);
+    font-family:'Noto Sans KR',sans-serif;
+    font-weight:400; line-height:1.78; font-size:16px;
+    word-break:keep-all;
+  }
+  .wrap{max-width:680px;margin:0 auto;padding:0 22px 90px}
+
+  /* ───── header ───── */
+  header{padding:58px 0 36px;border-bottom:3px solid var(--ink)}
+  .eyebrow{
+    display:flex;align-items:center;gap:10px;
+    font-size:12px;letter-spacing:.18em;font-weight:700;color:var(--accent);
+    text-transform:uppercase;margin-bottom:18px;
+  }
+  .eyebrow::before{content:'';width:34px;height:2px;background:var(--accent)}
+  h1{
+    font-family:'Playfair Display','Noto Sans KR',serif;
+    font-size:clamp(30px,7vw,44px);line-height:1.22;font-weight:900;
+    letter-spacing:-.01em;
+  }
+  h1 em{font-style:normal;color:var(--accent)}
+  .meta{margin-top:20px;font-size:13px;color:var(--ink2);display:flex;flex-wrap:wrap;gap:6px 16px}
+  .meta b{color:var(--ink);font-weight:700}
+  .pull{
+    margin-top:26px;padding:20px 22px;background:var(--bg2);
+    border-left:4px solid var(--accent);
+    font-family:'Playfair Display','Noto Sans KR',serif;
+    font-size:18px;font-weight:500;font-style:italic;line-height:1.6;
+  }
+  .pull small{display:block;margin-top:8px;font-family:'Noto Sans KR';font-style:normal;font-size:12px;color:var(--ink2);letter-spacing:.06em}
+
+  /* ───── sections ───── */
+  section{margin-top:64px}
+  .kicker{font-size:12px;font-weight:900;letter-spacing:.22em;color:var(--accent);margin-bottom:10px}
+  h2{
+    font-family:'Playfair Display','Noto Sans KR',serif;
+    font-size:26px;font-weight:700;line-height:1.35;margin-bottom:18px;
+  }
+  h3{font-size:17px;font-weight:700;margin:26px 0 10px}
+  p{margin-bottom:14px}
+  p:last-child{margin-bottom:0}
+  .lead{font-size:17.5px;font-weight:500}
+  mark{background:linear-gradient(transparent 62%, rgba(225,29,72,.18) 62%);padding:0 2px}
+  .note{font-size:13.5px;color:var(--ink2);background:var(--bg2);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:16px 0}
+  .note b{color:var(--ink)}
+
+  /* stat cards */
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin:20px 0}
+  .stat{background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:16px 14px}
+  .stat .v{font-family:'Playfair Display',serif;font-size:26px;font-weight:900;color:var(--accent);line-height:1.1}
+  .stat .v.dark{color:var(--ink)}
+  .stat .l{font-size:12px;color:var(--ink2);margin-top:6px;line-height:1.45}
+
+  /* tables */
+  table{width:100%;border-collapse:collapse;font-size:13.5px;margin:18px 0;background:var(--bg2);border:1px solid var(--line)}
+  th{background:var(--accent);color:#fff;font-weight:700;padding:10px 12px;text-align:left;font-size:12.5px;letter-spacing:.03em}
+  td{padding:10px 12px;border-top:1px solid var(--line);vertical-align:top}
+  td.num{font-variant-numeric:tabular-nums;font-weight:500;white-space:nowrap}
+  .up{color:var(--accent);font-weight:700}
+  .dn{color:var(--blue);font-weight:700}
+
+  /* fade-in + chart pattern (필수 패턴) */
+  .fade-in{opacity:0;transform:translateY(18px);transition:opacity .7s ease, transform .7s ease}
+  .fade-in.visible{opacity:1;transform:translateY(0)}
+  .chart-container{position:relative;max-height:340px;background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:16px 12px 10px;margin:18px 0}
+  .chart-container canvas{opacity:0;transition:opacity .4s ease;max-height:300px}
+  .chart-container.chart-ready canvas{opacity:1}
+  .chart-cap{font-size:12px;color:var(--ink2);text-align:center;margin-top:-12px;margin-bottom:20px}
+
+  /* flow stepper */
+  .flow{margin:20px 0}
+  .flow-track{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:14px}
+  .flow-step{
+    border:1.5px solid var(--line);border-radius:10px;background:#fff;
+    padding:10px 6px;text-align:center;cursor:pointer;
+    transition:all .25s ease;user-select:none;
+  }
+  .flow-step:hover{border-color:var(--accent2)}
+  .flow-step .n{font-family:'Playfair Display',serif;font-weight:900;font-size:19px;color:var(--gray);transition:color .25s}
+  .flow-step .t{font-size:11px;line-height:1.3;color:var(--ink2);margin-top:3px}
+  .flow-step.on{border-color:var(--accent);background:var(--accent);box-shadow:0 6px 16px rgba(225,29,72,.25)}
+  .flow-step.on .n,.flow-step.on .t{color:#fff}
+  .flow-detail{background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:18px}
+  .flow-detail h4{font-size:15px;font-weight:700;color:var(--accent);margin-bottom:6px}
+  .flow-detail p{font-size:14px;margin:0}
+  .flow-detail .tags{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+  .tag{font-size:11.5px;font-weight:700;border-radius:999px;padding:4px 12px;background:#fff;border:1px solid var(--line);color:var(--ink2)}
+  .tag.hot{background:var(--accent);border-color:var(--accent);color:#fff}
+
+  /* simulator */
+  .sim{background:var(--bg2);border:1px solid var(--line);border-radius:14px;padding:22px 20px;margin:20px 0}
+  .sim h3{margin:0 0 4px;font-size:16px}
+  .sim .sub{font-size:13px;color:var(--ink2);margin-bottom:18px}
+  .sim label{display:flex;justify-content:space-between;font-size:13.5px;font-weight:700;margin-bottom:8px}
+  .sim label output{color:var(--accent);font-variant-numeric:tabular-nums}
+  input[type=range]{
+    width:100%;height:6px;border-radius:99px;appearance:none;-webkit-appearance:none;
+    background:linear-gradient(to right,var(--accent) var(--p,30%),var(--line) var(--p,30%));
+    outline:none;cursor:pointer;margin-bottom:18px;
+  }
+  input[type=range]::-webkit-slider-thumb{
+    appearance:none;-webkit-appearance:none;width:22px;height:22px;border-radius:50%;
+    background:#fff;border:3px solid var(--accent);box-shadow:0 2px 8px rgba(0,0,0,.18);
+  }
+  input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;background:#fff;border:3px solid var(--accent)}
+  .tranches{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+  .tr-card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:13px 10px;text-align:center}
+  .tr-card .step{font-size:11px;font-weight:900;letter-spacing:.08em;color:var(--accent)}
+  .tr-card .amt{font-family:'Playfair Display',serif;font-size:18px;font-weight:900;margin:4px 0 2px;font-variant-numeric:tabular-nums}
+  .tr-card .when{font-size:10.5px;color:var(--ink2);line-height:1.35}
+  .reset-btn{
+    margin-top:16px;width:100%;padding:11px;border:1.5px solid var(--ink);border-radius:10px;
+    background:#fff;font-family:inherit;font-size:13.5px;font-weight:700;cursor:pointer;
+    transition:all .2s;
+  }
+  .reset-btn:hover{background:var(--ink);color:#fff}
+
+  /* list */
+  ul.dash{list-style:none;margin:12px 0 16px}
+  ul.dash li{position:relative;padding-left:20px;margin-bottom:9px;font-size:15px}
+  ul.dash li::before{content:'—';position:absolute;left:0;color:var(--accent);font-weight:700}
+
+  /* divider */
+  .div{display:flex;align-items:center;gap:14px;margin:60px 0 0;color:var(--accent)}
+  .div::before,.div::after{content:'';flex:1;height:1px;background:var(--line)}
+  .div span{font-family:'Playfair Display',serif;font-size:18px;letter-spacing:.3em}
+
+  footer{margin-top:70px;padding-top:24px;border-top:3px solid var(--ink);font-size:12px;color:var(--ink2);line-height:1.7}
+  footer b{color:var(--ink)}
+
+  @media (max-width:420px){
+    .wrap{padding:0 16px 70px}
+    .flow-step .t{font-size:10px}
+    .tranches{grid-template-columns:1fr}
+    .stats{grid-template-columns:1fr 1fr}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="eyebrow">투자는인생TV · 멤버온리 라이브</div>
+  <h1>이란 타격 <em>전격 취소</em>,<br>반도체는 하루 만에 +7.9%</h1>
+  <div class="meta">
+    <span><b>방송일</b> 2026년 6월 11일</span>
+    <span><b>진행</b> David Lee 테일러투자그룹 CIO</span>
+  </div>
+  <div class="pull">
+    "큰 배는 파고에 크게 출렁이지 않는다. 질량과 관성 있게 투자해야 할 때."
+    <small>이날 방송의 핵심 메시지 — 변동성 확대 국면에서 비중조절의 힘</small>
+  </div>
+</header>
+
+<!-- ============ 핵심 요약 ============ -->
+<section class="fade-in">
+  <div class="kicker">EXECUTIVE SUMMARY</div>
+  <h2>오늘의 핵심 4가지</h2>
+  <ul class="dash">
+    <li><b>PPI 쇼크 → 금리인상 리스크</b> — 5월 헤드라인 PPI +1.1%(예상 0.7%)로 2022년 말 이후 가장 빠른 상승. 연내 금리인상 확률 약 70%, 시점은 10~11월로 전망.</li>
+    <li><b>트럼프, 이란 타격 실행 취소</b> — 폭락했던 시장이 급반등. 필라델피아 반도체지수 +7.9%, 2025년 4월 이후 최대 일간 상승.</li>
+    <li><b>내일 SpaceX IPO</b> — 공모가 $135 책정, 200불 이상 상승 기대. '333 법칙'으로 분할 진입 전략 제시.</li>
+    <li><b>데이빗형님 30대 신규 진입: Sezzle(SEZL)</b> — BNPL 기업, 2023년 흑자전환 후 마진율 급성장. 포트폴리오 1~2% 소규모 비중 권고.</li>
+  </ul>
+</section>
+
+<!-- ============ PPI ============ -->
+<section class="fade-in">
+  <div class="kicker">MACRO · INFLATION</div>
+  <h2>PPI가 다시 불 지핀 금리인상 공포</h2>
+  <p class="lead">5월 생산자물가지수(PPI)가 예상을 크게 웃돌며 시장에 부정적으로 작용했다. 유가 상승이 주된 원인으로, <mark>2022년 말 이후 가장 빠른 상승 속도</mark>다.</p>
+
+  <div class="stats">
+    <div class="stat"><div class="v">+1.1%</div><div class="l">헤드라인 PPI<br>(예상 +0.7%)</div></div>
+    <div class="stat"><div class="v dark">+0.4%</div><div class="l">코어 PPI<br>(예상과 부합)</div></div>
+    <div class="stat"><div class="v">+6.5%</div><div class="l">연율 PPI<br>(예상 +6.4%)</div></div>
+    <div class="stat"><div class="v dark">4.9%</div><div class="l">코어 PPI 연율<br>(예상 5.4%보다 낮음)</div></div>
+  </div>
+
+  <div class="chart-container fade-in">
+    <canvas id="ppiChart" height="220"></canvas>
+  </div>
+  <div class="chart-cap">5월 PPI 발표치 vs 시장 예상치 (%) — 막대를 터치하면 수치 확인</div>
+
+  <p>PPI가 안 좋게 나오면 약 3개월 뒤 연준이 가장 중시하는 <b>PCE</b>가 안 좋아진다. 그러면 케빈 워시(Kevin Warsh) 신임 의장 체제에서 <mark>금리를 인상할 것이라는 두려움</mark>이 커지고, 금리인상 시 가장 크게 타격받는 것이 테크주다.</p>
+  <div class="note"><b>진행자 전망:</b> 연내 금리인상 한 차례(확률 약 70%), 시점은 <b>10월~11월 전</b>. 인상 후에는 'Wait &amp; See' — 에너지 가격이 떨어지면 한 번으로 끝날 수 있다. 단기적으로 테크주 조정 가능성에 대비.</div>
+
+  <h3>코어 CPI 논리의 허점</h3>
+  <p>코어 지표는 식재료와 에너지를 제외하는데, <mark>에너지 가격은 다른 모든 물가를 끌어올리는 효과</mark>가 있어 "물가가 오르지 않았다"는 논리는 통계학적 차원일 뿐 실물경제와 맞지 않다는 것이 진행자의 비판이다. 차이는 결국 '시차(時差)'의 문제다.</p>
+</section>
+
+<!-- ============ PPI→PCE 지연효과 ============ -->
+<section class="fade-in">
+  <div class="kicker">MECHANISM · 인터랙티브</div>
+  <h2>PPI → PCE, 4단계 전달 경로</h2>
+  <p>기업은 높아진 원가를 약 3개월에 걸쳐 소비자에게 전가한다. 지금은 타격감이 없어도 <mark>9~10월쯤 타격이 온다</mark>는 것이 '지연효과'다. 아래 단계를 눌러 경로를 따라가 보자.</p>
+
+  <div class="flow">
+    <div class="flow-track" id="flowTrack"></div>
+    <div class="flow-detail" id="flowDetail"></div>
+  </div>
+</section>
+
+<!-- ============ Fed 주간 ============ -->
+<section class="fade-in">
+  <div class="kicker">MACRO · CENTRAL BANKS</div>
+  <h2>Fed 정책 결정 주간 — 10년물 상승 불가피</h2>
+  <ul class="dash">
+    <li><b>다음 주 FOMC</b> — 케빈 워시 신임 의장 하 첫 회의. 금리 동결이 예상되지만 향후 정책 방향성에 관심 집중.</li>
+    <li><b>ECB는 이미 금리 인상</b>, <b>BOJ(일본중앙은행)도 다음 주 인상 예상</b> — 미 국채금리 상승 압력으로 작용.</li>
+    <li><b>미 10년 국채 상승 불가피</b> — 미 부채율 증가, 기업 자금압박 증가, GDP 하락 요인. 다만 현재 시장에 미치는 영향은 아주 크지는 않다는 판단.</li>
+  </ul>
+  <div class="note"><b>월요일 방송의 연장선:</b> 지금은 가격이 실적을 앞서는 상황이 아니라 <b>실적이 가격을 따라잡는 형태</b>. 연초 대비 앞으로 벌 것이 많아져 P(밸류에이션)는 오히려 낮아졌다 — 노이즈에 흔들릴 필요 없다는 논리.</div>
+</section>
+
+<!-- ============ 이란 + 반도체 ============ -->
+<section class="fade-in">
+  <div class="kicker">MARKET · SEMICONDUCTOR</div>
+  <h2>이란 타격 취소 → 반도체 하루 +7.9%</h2>
+  <p class="lead">트럼프의 이란 타격 결정으로 폭락했던 시장이, 타격 실행 취소 소식에 폭발적으로 반등했다. <mark>필라델피아 반도체지수는 7.9% 급등 — 2025년 4월 이후 최대 일간 상승폭</mark>이다.</p>
+  <p>마이크론·샌디스크 등 30대 그룹 칩 종목들은 10% 이상 빠졌다가 하루에 10% 가까이 되돌렸다. "하루에 7.9%씩 움직이는 것은 올라가도 불안한 변동성"이며, 언제든 다시 10% 빠질 수 있는 시장이라는 경고를 잊지 않았다.</p>
+
+  <h3>마이크론은 '보유', 신규 자금은 나머지로</h3>
+  <ul class="dash">
+    <li><b>마이크론(MU)</b> — 목표가에 이미 진입. 레이팅 회사들이 새 목표가를 내는 데 한두 달 걸리므로 상승 속도는 더디겠지만 <mark>반드시 보유</mark>.</li>
+    <li><b>마벨(MRVL)·샌디스크(SNDK) 등 나머지 칩</b> — 아직 <b>20~25% 업사이드</b>가 남아 "아직 싸다". 신규 진입자는 마이크론보다 이쪽을 먼저 채우는 것이 유리.</li>
+    <li>지금까지 기술주 비중을 줄여놨기 때문에 멤버들의 손실은 제한적 — "남들이 10% 떨어질 때 우리는 3%만 떨어지면 된다."</li>
+  </ul>
+</section>
+
+<!-- ============ 섹터 ============ -->
+<section class="fade-in">
+  <div class="kicker">SECTOR ROTATION</div>
+  <h2>섹터별 1개월 수익률 — 디펜시브의 시간</h2>
+  <p>최근 1개월 변동성 구간에서 <mark>헬스케어·파이낸셜이 시장을 주도</mark>했고, IT는 여전히 마이너스다. 진행자가 2주 전부터 "사놓는 것이 좋다"고 했던 섹터들이 실제로 상위권을 차지했다.</p>
+
+  <div class="chart-container fade-in">
+    <canvas id="sectorChart" height="260"></canvas>
+  </div>
+  <div class="chart-cap">S&amp;P 500 섹터별 1개월 수익률 (%) · 자료: 방송 슬라이드</div>
+
+  <h3>이번 풀백에서 기관들이 매입한 섹터</h3>
+  <table>
+    <tr><th>섹터</th><th>당일 변동률 (06/11)</th><th>비고</th></tr>
+    <tr><td>Consumer Staples</td><td class="num up">+3.7%</td><td>폭락 시 반대급부 상승 (올스테이트, 오렐리 등)</td></tr>
+    <tr><td>Healthcare</td><td class="num up">+2.5%</td><td>30대 그룹 내 다수 — "언젠가 떨어질 때를 위해 보유"</td></tr>
+    <tr><td>Financial</td><td class="num up">+1.0%</td><td>2~3년차 펀더멘털 개선 구간, 투자 적기 판단</td></tr>
+    <tr><td>Energy</td><td class="num up">+0.9%</td><td>유가 상승 수혜</td></tr>
+  </table>
+  <p>앞으로도 풀백(pullback)은 계속 온다 — <mark>10% 올라갈 때 지금 미리 디펜시브 섹터를 생각해야 한다</mark>는 메시지.</p>
+</section>
+
+<!-- ============ SpaceX ============ -->
+<section class="fade-in">
+  <div class="kicker">IPO · SPACE</div>
+  <h2>내일 SpaceX 상장 — 공모가 $135</h2>
+  <p class="lead">전무후무한 사이즈와 매그니튜드, 그리고 비이성적 투자자들. 예측은 어렵지만 <mark>"미친 듯이 올라갈 가능성이 크다"</mark> — 200불 이상, 300불까지도 본다.</p>
+
+  <div class="sim fade-in">
+    <h3>🚀 333 법칙 분할매수 시뮬레이터</h3>
+    <div class="sub">총 투자 예정액을 정하면 3회 분할 진입 금액을 계산합니다. (15클럽 멤버 예시: 1억 → 첫 진입 약 3천만 원)</div>
+    <label>총 투자 예정액 <output id="simOut">1.0억 원</output></label>
+    <input type="range" id="simRange" min="1000" max="50000" step="500" value="10000">
+    <div class="tranches">
+      <div class="tr-card"><div class="step">1차 · ⅓</div><div class="amt" id="t1">3,333만</div><div class="when">상장 직후 첫 진입<br>(첫날 급등 시에도 소량)</div></div>
+      <div class="tr-card"><div class="step">2차 · ⅓</div><div class="amt" id="t2">3,333만</div><div class="when">30~40% 급락<br>'꼬꾸라질 때' 매수</div></div>
+      <div class="tr-card"><div class="step">3차 · ⅓</div><div class="amt" id="t3">3,333만</div><div class="when">평균단가 조절용<br>추가 변동성 구간</div></div>
+    </div>
+    <button class="reset-btn" id="simReset">초기값으로 리셋</button>
+  </div>
+
+  <h3>락업(Lock-up) 일정 — 8월 말을 조심하라</h3>
+  <p>진행자는 프리IPO로 약 1,000주를 보유 중이라고 밝히며 락업 해제 일정을 공유했다.</p>
+  <table>
+    <tr><th>시점</th><th>해제 물량</th><th>시사점</th></tr>
+    <tr><td>8월 실적발표 +2일</td><td class="num">약 10%</td><td><b>프리IPO 물량 출회로 폭락 가능성</b></td></tr>
+    <tr><td>12월</td><td class="num">약 절반</td><td>2차 물량 부담</td></tr>
+    <tr><td>내년까지</td><td class="num">전량</td><td>단계적 해제 완료</td></tr>
+  </table>
+
+  <h3>우주 관련주 동반 상승</h3>
+  <table>
+    <tr><th>종목</th><th>등락</th><th>비고</th></tr>
+    <tr><td>Powerlaw Corp (PWPL)</td><td class="num up">+14%</td><td>SpaceX 지분 최다 보유 추정 — <b>직접 못 사면 대안</b></td></tr>
+    <tr><td>Intuitive Machines (LUNR)</td><td class="num up">+3%</td><td>우주 관련주</td></tr>
+    <tr><td>Rocket Lab (RKLB)</td><td class="num up">+2%</td><td>우주 관련주</td></tr>
+    <tr><td>Linde (LIN)</td><td class="num up">+1.56%</td><td>관련 기업 동반 상승 기대 종목</td></tr>
+  </table>
+
+  <h3>머스크의 장기 비전 (Sci-Fi 수준)</h3>
+  <ul class="dash">
+    <li><b>스타링크</b> — 현재 위성 약 9,600기 → 목표 10만 기. 구독자 1,000만 명 → 1억 명 목표. 통신사를 대체할 잠재력.</li>
+    <li><b>우주여행</b> — 약 20만 명 신청 전망. 1인 2만 불만 잡아도 거대한 수요.</li>
+    <li><b>달 기지 → 화성 식민지화</b> — 최소 100만 명 이주 계획. 희토류 등 자원 탐사 '땅따먹기'.</li>
+    <li><b>머스크는 SpaceX 지분 약 82%</b> 보유 — 지구상 최초의 <mark>트릴리어네어(조만장자)</mark>가 됐다.</li>
+    <li>xAI의 <b>그로크(Grok)</b>도 업그레이드를 거듭하며 수익원으로 성장 중.</li>
+  </ul>
+  <div class="note"><b>참고:</b> 한국은 국토의 70%가 산지라 위성 각도 한계로 스타링크 효용이 제한적일 수 있다는 멤버 의견에 진행자도 동의 — "산에서도 와이파이 되는 나라"라 당장 위협은 크지 않을 수 있다.</div>
+</section>
+
+<!-- ============ Stocks on the move ============ -->
+<section class="fade-in">
+  <div class="kicker">STOCKS ON THE MOVE</div>
+  <h2>오늘 움직인 종목들</h2>
+  <table>
+    <tr><th>종목</th><th>등락</th><th>이유</th></tr>
+    <tr><td>Oracle (ORCL)</td><td class="num dn">-10%</td><td>실적은 상회했으나 클라우드 SW 매출 미달 + AI 투자용 <b>200억 달러 자금조달</b> 발표("빚내서 또 사네"). 펀더멘털 문제는 없음</td></tr>
+    <tr><td>Adobe (ADBE)</td><td class="num dn">-6.25%</td><td>실적 좋고 자사주 매입 발표에도 하락 — 30대 그룹 아님</td></tr>
+    <tr><td>Intel (INTC)</td><td class="num up">+4.5%</td><td>Bank of America, Underperform → <b>Buy</b> 상향</td></tr>
+    <tr><td>Applied Materials (AMAT)</td><td class="num up">+4%</td><td>싱가포르 공장 확대 + Oracle AI 투자 수혜</td></tr>
+    <tr><td>Marvell · SanDisk</td><td class="num up">반등</td><td>최근 약세 종목 회복 — "아직 싸다"</td></tr>
+    <tr><td>Google (GOOGL)</td><td class="num dn">하락</td><td>트럼프 퀀텀펀딩(약 20억 달러) 참가 거부 — 정부 사업으로부터의 독립성 우선</td></tr>
+  </table>
+
+  <h3>6월 공매도 세력의 표적 — 쿠팡</h3>
+  <p>6월 공매도 관심기업 중 <mark>쿠팡의 공매도가 79% 증가</mark>로 가장 두드러졌다. 한국 개인정보 유출 사태와 관련해 한국 정부로부터 수천억 원대의 징벌적 배상 책임 가능성이 거론되고 있으며, 진행자는 "비즈니스적으로 잘못은 한 것 같다"고 평가했다. 그 외 Lumentum, Skyworks, Celsius, Core Scientific, Rigetti 등이 공매도 잔고 상위에 올랐다.</p>
+  <div class="note"><b>리짓(RGTI) 관련 원칙:</b> 공매도 비중이 높은 이런 종목은 <b>포트폴리오의 0.5% 이상 가져가면 안 된다</b>는 기존 원칙 재확인.</div>
+</section>
+
+<!-- ============ Sezzle ============ -->
+<section class="fade-in">
+  <div class="kicker">NEW ENTRY · 데이빗형님 30대</div>
+  <h2>신규 진입: Sezzle (SEZL)</h2>
+  <p class="lead">BNPL(Buy Now, Pay Later) — 6주간 4회 분할, <mark>무이자</mark> 결제 서비스. 고금리 환경에서 동종 업체 중 유일하게 사업이 번창하고 있는 기업으로, 별 5개 평가와 함께 30대 그룹에 새로 합류했다.</p>
+
+  <div class="stats">
+    <div class="stat"><div class="v">59.5%</div><div class="l">Operating Margin (LTM)<br>피어 평균 19.5%</div></div>
+    <div class="stat"><div class="v">66.4%</div><div class="l">Return on Capital (LTM)<br>피어 평균 12.5%</div></div>
+    <div class="stat"><div class="v dark">$450M</div><div class="l">2025년 매출<br>(2023년 $159M)</div></div>
+    <div class="stat"><div class="v dark">$3.72</div><div class="l">2025년 EPS<br>(2023년 $0.21)</div></div>
+  </div>
+
+  <div class="chart-container fade-in">
+    <canvas id="sezzleChart" height="240"></canvas>
+  </div>
+  <div class="chart-cap">SEZL 연도별 매출·영업이익·순이익 (백만 달러) · 범례 터치로 토글</div>
+
+  <p>2021년까지 줄곧 적자였다가 <mark>2023년 흑자전환</mark>(매출 159 / 영업이익 45.4 / EPS 0.21) 후 기하급수적으로 성장 중이다. 2025년 매출 450, 영업이익 266.2, 순이익 133.1, EPS 3.72. "이렇게 안 좋다가 좋아지고 2~3년차에 접어들 때 주가가 훨씬 빨리 올라가는 경향이 있다" — 파이낸셜 섹터의 투자 적기가 왔다는 판단이다.</p>
+
+  <h3>왜 목표가가 없는가 — DCF의 한계</h3>
+  <p>흑자전환 후 <b>1년 반</b>밖에 되지 않아 DCF(현금흐름할인) 산출이 불가능하다. 트랙레코드가 약 3년은 쌓여야 DCF가 나오고, 그래야 목표가가 생성된다. 인베스팅닷컴·모닝스타 등에 표시되는 목표가는 <mark>"베이스가 허수일 가능성이 큰, 그냥 찍은 숫자"</mark>이므로 신뢰하지 말라는 경고. 실질적 목표가는 4년쯤 뒤에나 나올 수 있다.</p>
+
+  <h3>비중 가이드</h3>
+  <ul class="dash">
+    <li>종형 포트폴리오 기준 <b>은행주 전체 2~5%</b> 권장 (그보다 적어도 무방).</li>
+    <li>골드만삭스(IB)를 5% 든다면 <b>Sezzle류는 1~2%</b> — 같은 파이낸셜이라도 성격이 다르다(크레딧카드·결제 vs 투자은행).</li>
+    <li>신규 편입 종목이므로 <mark>비중을 너무 많이 가져가서는 안 된다</mark>. 아직은 '예비후보' 성격 — 마벨·마이크론·엔비디아처럼 "올라가기 전에 미리 알려주고 싶은" 종목.</li>
+  </ul>
+</section>
+
+<!-- ============ 2027 전망 ============ -->
+<section class="fade-in">
+  <div class="kicker">OUTLOOK · 2027</div>
+  <h2>2027년은 올해처럼 생각하면 안 된다</h2>
+  <p class="lead"><mark>2027년이 AI 설비투자의 정점(맥스)</mark>이 될 것으로 예상 — 2026년 말부터 2027년 초 사이 상당한 조정(correction) 가능성이 있다.</p>
+  <ul class="dash">
+    <li><b>내년의 주인공은 AI가 아닐 가능성</b> — 퀀텀 컴퓨팅, 전고체 배터리(Solid State Battery), 우주항공, 상용화가 시작되는 자율주행, 그리고 AI 데이터센터를 활용한 새로운 파생 산업들.</li>
+    <li>AI는 결국 셀폰·애플 주식처럼 <b>커뮤디티(일상재)화</b>될 것 — 데이터센터 투자에는 임계점이 있다.</li>
+    <li>리튬이온 배터리는 물리적 한계가 명확("폭발할 수밖에 없는 불안정한 물질") — 전고체가 다음 단계. 단, 최근 도넛랩 전고체 사기 사건처럼 옥석 가리기 필요. "미국엔 전고체 빠꾸미(전문가)들이 많아 속일 수 없다."</li>
+    <li>작년 엔비디아·슈퍼마이크로, 올해 마이크론·마벨·인텔·샌디스크처럼 <mark>매년 주도주는 바뀐다</mark> — "계속 연구하고, 시도하고, 깨지면서 배우고, 조정한다."</li>
+  </ul>
+  <div class="note"><b>당부:</b> 기대치를 너무 높이지 말 것. "매년 이렇게 할 수는 없다. S&amp;P 500보다 높으면 좋은 것" — 내년엔 30%도 안 될 수 있다.</div>
+</section>
+
+<!-- ============ 투자 철학 ============ -->
+<section class="fade-in">
+  <div class="kicker">PHILOSOPHY</div>
+  <h2>돈을 왜 버는가 — "하고 싶은 걸 하기 위해"</h2>
+  <p>6월은 특히 보수적으로 — <b>조금씩 투자하되 현금을 크게 쓸 시기는 아직 아니다</b>. 트럼프의 말이 또 뒤집히면 시장은 5~6% 또 떨어질 수 있다.</p>
+  <p>이날 방송 후반부는 요트, 경비행기, 나이와 패션에 대한 긴 이야기로 이어졌다. 결론은 하나다. <mark>"자산증식 자체가 인생의 목적이 되면 안 된다. 이 자산으로 언제 무엇을 하고 싶은가를 생각하고 거기에 맞춰 살라"</mark> — 자산이 생기면 겁이 줄어들고, 하고 싶은 것을 하고 하기 싫은 것을 안 해도 되는 자유가 생긴다. 그것이 투자의 가장 큰 행복감이라는 메시지로 방송을 마쳤다.</p>
+</section>
+
+<div class="div"><span>✦ ✦ ✦</span></div>
+
+<footer>
+  <b>면책 고지</b> — 본 문서는 2026년 6월 11일 투자는인생TV 멤버온리 라이브 방송 내용을 정리한 학습용 자료입니다. 방송 원문에 명시된 대로 Investment Products are Not FDIC Insured / Not Bank Guaranteed / May Lose Value. 특정 종목 언급은 투자 권유가 아니며, 모든 투자 판단과 책임은 투자자 본인에게 있습니다.
+</footer>
+
+</div>
+
+<script>
+/* ─── 필수 패턴: fade-in observer ─── */
+const fadeObs = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), i * 80);
+      fadeObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.12 });
+document.querySelectorAll('.fade-in').forEach(el => fadeObs.observe(el));
+
+/* ─── 차트 설정 ─── */
+Chart.defaults.font.family = "'Noto Sans KR', sans-serif";
+Chart.defaults.color = '#777777';
+
+const chartConfigs = {};
+
+chartConfigs['ppiChart'] = () => {
+  new Chart(document.getElementById('ppiChart'), {
+    type: 'bar',
+    data: {
+      labels: ['헤드라인 PPI', '코어 PPI', '연율 PPI'],
+      datasets: [
+        { label: '예상치', data: [0.7, 0.4, 6.4], backgroundColor: '#6b7280', borderRadius: 6, barPercentage: .65 },
+        { label: '발표치', data: [1.1, 0.4, 6.5], backgroundColor: '#e11d48', borderRadius: 6, barPercentage: .65 }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      animation: { duration: 900, easing: 'easeOutQuart' },
+      plugins: {
+        legend: { position: 'top', labels: { boxWidth: 12, boxHeight: 12, font: { size: 12 } } },
+        tooltip: { callbacks: { label: c => ` ${c.dataset.label}: +${c.parsed.y}%` } }
+      },
+      scales: {
+        y: { grid: { color: '#e5e5e5' }, ticks: { callback: v => v + '%' } },
+        x: { grid: { display: false }, ticks: { color: '#1a1a1a', font: { weight: 700 } } }
+      }
+    }
+  });
+};
+
+chartConfigs['sectorChart'] = () => {
+  const labels = ['Health Care','Financials','Real Estate','Energy','Cons. Staples','Info Tech','Utilities','Industrials','Comm. Svcs','Cons. Disc.','Materials'];
+  const data = [4.19, 2.43, 1.76, 1.08, 0.91, -0.12, -1.50, -2.28, -2.71, -4.41, -4.73];
+  new Chart(document.getElementById('sectorChart'), {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [{
+        label: '1개월 변동률',
+        data,
+        backgroundColor: data.map(v => v >= 0 ? '#e11d48' : '#6b7280'),
+        borderRadius: 4, barPercentage: .72
+      }]
+    },
+    options: {
+      indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+      animation: { duration: 1000, easing: 'easeOutQuart' },
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: c => ` ${c.parsed.x > 0 ? '+' : ''}${c.parsed.x}%` } }
+      },
+      scales: {
+        x: { grid: { color: '#e5e5e5' }, ticks: { callback: v => v + '%' } },
+        y: { grid: { display: false }, ticks: { font: { size: 11 }, color: '#1a1a1a' } }
+      }
+    }
+  });
+};
+
+chartConfigs['sezzleChart'] = () => {
+  new Chart(document.getElementById('sezzleChart'), {
+    type: 'line',
+    data: {
+      labels: ['2018','2019','2020','2021','2022','2023','2024','2025'],
+      datasets: [
+        { label: '매출', data: [2,16,59,115,126,159,271,450], borderColor: '#e11d48', backgroundColor: 'rgba(225,29,72,.08)', fill: true, tension: .35, pointRadius: 3, borderWidth: 2.5 },
+        { label: '영업이익', data: [-3.2,-11.3,-27.9,-16.1,-10.0,45.4,137.3,266.2], borderColor: '#2563eb', tension: .35, pointRadius: 3, borderWidth: 2 },
+        { label: '순이익', data: [-4.5,-13.1,-32.4,-75.2,-38.1,7.1,78.5,133.1], borderColor: '#1a1a1a', borderDash: [5,4], tension: .35, pointRadius: 3, borderWidth: 2 }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      animation: { duration: 1100, easing: 'easeOutQuart' },
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: { position: 'top', labels: { boxWidth: 12, boxHeight: 12, font: { size: 12 } } },
+        tooltip: { callbacks: { label: c => ` ${c.dataset.label}: $${c.parsed.y}M` } }
+      },
+      scales: {
+        y: { grid: { color: '#e5e5e5' }, ticks: { callback: v => '$' + v + 'M' } },
+        x: { grid: { display: false } }
+      }
+    }
+  });
+};
+
+/* ─── 필수 패턴: chart observer ─── */
+const chartObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const canvas = e.target.querySelector('canvas');
+      if (canvas && chartConfigs[canvas.id]) {
+        chartConfigs[canvas.id]();
+        e.target.classList.add('chart-ready');
+        chartObs.unobserve(e.target);
+      }
+    }
+  });
+}, { threshold: 0.15 });
+document.querySelectorAll('.chart-container').forEach(el => chartObs.observe(el));
+
+/* ─── PPI→PCE 플로우 스테퍼 ─── */
+const FLOW = [
+  { n:'1단계', t:'원자재 가격 상승', d:'원자재·중간재 가격이 상승하며 PPI가 먼저 오른다. 이번에는 유가가 핵심 — 기름값은 모든 산업에 걸쳐 영향을 미친다.', time:'즉시~1개월', power:'강함', hot:false },
+  { n:'2단계', t:'기업 생산원가 증가', d:'기업이 체감하는 생산원가가 본격적으로 올라간다. 마진 압박이 시작되는 구간.', time:'1~3개월', power:'매우 강함', hot:false },
+  { n:'3단계', t:'소비자 가격 전가', d:'기업이 높아진 원가를 소비자 가격에 전가한다. 이 과정이 약 3개월 — 인플레이션 체감의 핵심 구간.', time:'2~6개월', power:'가장 중요', hot:true },
+  { n:'4단계', t:'PCE 상승 (지연효과)', d:'최종 소비자물가(PCE)가 상승한다. 연준이 가장 중시하는 지표 — 지금은 타격감이 없어도 9~10월쯤 타격이 온다.', time:'3~9개월', power:'지연 효과', hot:true }
+];
+const flowTrack = document.getElementById('flowTrack');
+const flowDetail = document.getElementById('flowDetail');
+let flowIdx = 0;
+
+FLOW.forEach((s, i) => {
+  const el = document.createElement('div');
+  el.className = 'flow-step';
+  el.innerHTML = `<div class="n">${i+1}</div><div class="t">${s.t}</div>`;
+  el.addEventListener('click', () => setFlow(i));
+  flowTrack.appendChild(el);
+});
+
+function setFlow(i){
+  flowIdx = i;
+  [...flowTrack.children].forEach((el, k) => el.classList.toggle('on', k === i));
+  const s = FLOW[i];
+  flowDetail.innerHTML = `
+    <h4>${s.n} · ${s.t}</h4>
+    <p>${s.d}</p>
+    <div class="tags">
+      <span class="tag">전달 시간: ${s.time}</span>
+      <span class="tag ${s.hot ? 'hot' : ''}">영향력: ${s.power}</span>
+    </div>`;
+}
+setFlow(0);
+
+/* ─── 333 시뮬레이터 ─── */
+const simRange = document.getElementById('simRange');
+const simOut = document.getElementById('simOut');
+const tEls = [document.getElementById('t1'), document.getElementById('t2'), document.getElementById('t3')];
+const SIM_DEFAULT = 10000;
+
+function fmtTotal(man){
+  if (man >= 10000) {
+    const eok = man / 10000;
+    return (Number.isInteger(eok) ? eok : eok.toFixed(1)) + '억 원';
+  }
+  return man.toLocaleString('ko-KR') + '만 원';
+}
+function fmtTranche(man){
+  if (man >= 10000) {
+    const eok = Math.floor(man / 10000);
+    const rest = Math.round(man % 10000);
+    return rest > 0 ? `${eok}억 ${rest.toLocaleString('ko-KR')}만` : `${eok}억`;
+  }
+  return Math.round(man).toLocaleString('ko-KR') + '만';
+}
+function updateSim(){
+  let v = parseInt(simRange.value, 10);
+  if (isNaN(v) || v < 1000) v = 1000;
+  if (v > 50000) v = 50000;
+  simOut.textContent = fmtTotal(v);
+  const tranche = v / 3;
+  tEls.forEach(el => el.textContent = fmtTranche(tranche));
+  const p = ((v - 1000) / (50000 - 1000)) * 100;
+  simRange.style.setProperty('--p', p + '%');
+}
+simRange.addEventListener('input', updateSim);
+document.getElementById('simReset').addEventListener('click', () => {
+  simRange.value = SIM_DEFAULT;
+  updateSim();
+});
+updateSim();
+</script>
+</body>
+</html>
