@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>새내기 멤버 오리엔테이션 2 · 분석 리포트</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;0,900;1,500&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+  :root{
+    --bg:#ffffff; --bg2:#fafafa;
+    --ink:#1a1a1a; --sub:#777777;
+    --accent:#e11d48; --accent2:#f43f5e;
+    --c1:#e11d48; --c2:#1a1a1a; --c3:#6b7280; --c4:#2563eb;
+    --line:#e5e5e5;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg); color:var(--ink);
+    font-family:'Noto Sans KR',sans-serif; font-weight:400;
+    line-height:1.75; font-size:16px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:720px; margin:0 auto; padding:0 22px;}
+
+  /* ===== Masthead ===== */
+  .masthead{padding:46px 0 30px; border-bottom:2px solid var(--ink);}
+  .kicker{
+    font-size:11px; letter-spacing:.32em; text-transform:uppercase;
+    color:var(--accent); font-weight:700; margin-bottom:18px;
+    display:flex; align-items:center; gap:10px;
+  }
+  .kicker::after{content:""; flex:1; height:1px; background:var(--line);}
+  .masthead h1{
+    font-family:'Playfair Display',serif; font-weight:900;
+    font-size:clamp(34px,9vw,52px); line-height:1.06; letter-spacing:-.01em;
+    margin-bottom:18px;
+  }
+  .masthead h1 em{font-style:italic; color:var(--accent);}
+  .dek{font-size:16.5px; color:var(--sub); font-weight:300; max-width:90%;}
+  .meta-row{
+    display:flex; flex-wrap:wrap; gap:8px 18px; margin-top:24px;
+    font-size:12px; color:var(--sub); letter-spacing:.02em;
+  }
+  .meta-row span strong{color:var(--ink); font-weight:500;}
+
+  /* ===== Lead ===== */
+  .lead{padding:36px 0 8px;}
+  .lead p{font-size:18px; line-height:1.85;}
+  .lead .dropcap::first-letter{
+    font-family:'Playfair Display',serif; font-weight:900;
+    font-size:64px; float:left; line-height:.82; padding:6px 12px 0 0; color:var(--accent);
+  }
+
+  /* ===== Section ===== */
+  section{padding:30px 0; border-top:1px solid var(--line);}
+  .sec-num{
+    font-family:'Playfair Display',serif; font-style:italic;
+    font-size:13px; color:var(--accent); letter-spacing:.04em; margin-bottom:8px;
+  }
+  h2{
+    font-family:'Playfair Display',serif; font-weight:700;
+    font-size:clamp(24px,6vw,32px); line-height:1.18; margin-bottom:18px; letter-spacing:-.01em;
+  }
+  h3{
+    font-size:17px; font-weight:700; margin:26px 0 10px;
+    padding-left:13px; border-left:3px solid var(--accent);
+  }
+  p{margin-bottom:15px;}
+  .sub-em{color:var(--accent); font-weight:700;}
+  strong{font-weight:700;}
+
+  /* ===== Pullquote ===== */
+  .pull{
+    font-family:'Playfair Display',serif; font-style:italic; font-weight:500;
+    font-size:clamp(21px,5.4vw,27px); line-height:1.4;
+    padding:28px 0 28px 24px; margin:30px 0; border-left:4px solid var(--accent);
+    color:var(--ink);
+  }
+  .pull span{color:var(--accent);}
+
+  /* ===== Callout ===== */
+  .callout{
+    background:var(--bg2); border:1px solid var(--line); border-radius:4px;
+    padding:20px 22px; margin:22px 0;
+  }
+  .callout .tag{
+    font-size:11px; letter-spacing:.18em; text-transform:uppercase;
+    color:var(--accent); font-weight:700; margin-bottom:9px;
+  }
+  .callout p:last-child{margin-bottom:0;}
+
+  /* ===== Table ===== */
+  .tbl-wrap{overflow-x:auto; margin:22px 0; border:1px solid var(--line); border-radius:4px;}
+  table{width:100%; border-collapse:collapse; font-size:14px; min-width:460px;}
+  thead th{
+    background:var(--accent); color:#fff; font-weight:500;
+    padding:12px 14px; text-align:left; letter-spacing:.02em; font-size:13px;
+  }
+  tbody td{padding:12px 14px; border-top:1px solid var(--line); background:var(--bg2);}
+  tbody tr td:first-child{font-weight:700;}
+  .up{color:var(--accent); font-weight:700;}
+
+  /* ===== Chart ===== */
+  .chart-card{
+    background:var(--bg2); border:1px solid var(--line); border-radius:6px;
+    padding:20px 18px 16px; margin:24px 0;
+  }
+  .chart-card .ttl{font-size:14px; font-weight:700; margin-bottom:4px;}
+  .chart-card .cap{font-size:12px; color:var(--sub); margin-bottom:14px;}
+  .chart-container{position:relative; max-height:340px;}
+  .chart-container canvas{opacity:0; transition:opacity .4s ease; max-height:300px;}
+  .chart-container.chart-ready canvas{opacity:1;}
+
+  /* ===== Compound calculator ===== */
+  .calc{
+    background:var(--ink); color:#fff; border-radius:8px;
+    padding:26px 22px; margin:26px 0;
+  }
+  .calc h4{font-family:'Playfair Display',serif; font-size:21px; font-weight:700; margin-bottom:4px;}
+  .calc .csub{font-size:12.5px; color:#bbb; margin-bottom:22px;}
+  .field{margin-bottom:20px;}
+  .field .flabel{
+    display:flex; justify-content:space-between; align-items:baseline;
+    font-size:13px; margin-bottom:9px;
+  }
+  .field .flabel b{color:var(--accent2); font-weight:700; font-size:16px; font-family:'Playfair Display',serif;}
+  input[type=range]{
+    -webkit-appearance:none; appearance:none; width:100%; height:4px;
+    background:#444; border-radius:3px; outline:none;
+  }
+  input[type=range]::-webkit-slider-thumb{
+    -webkit-appearance:none; appearance:none; width:20px; height:20px;
+    border-radius:50%; background:var(--accent); cursor:pointer; border:3px solid #fff;
+  }
+  input[type=range]::-moz-range-thumb{
+    width:20px; height:20px; border-radius:50%; background:var(--accent);
+    cursor:pointer; border:3px solid #fff;
+  }
+  .calc-out{
+    display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:24px;
+    padding-top:22px; border-top:1px solid #333;
+  }
+  .calc-out .box{text-align:center;}
+  .calc-out .box .lab{font-size:11px; color:#999; letter-spacing:.06em; margin-bottom:6px;}
+  .calc-out .box .val{font-family:'Playfair Display',serif; font-weight:900; font-size:clamp(22px,6vw,30px);}
+  .calc-out .box .val.hi{color:var(--accent2);}
+  .calc-mult{
+    text-align:center; margin-top:18px; font-size:13px; color:#ccc;
+  }
+  .calc-mult b{color:var(--accent2); font-size:20px; font-family:'Playfair Display',serif;}
+  .btn-reset{
+    margin-top:18px; width:100%; padding:11px; background:transparent;
+    border:1px solid #555; color:#ddd; border-radius:5px; font-family:'Noto Sans KR';
+    font-size:13px; cursor:pointer; transition:.2s;
+  }
+  .btn-reset:hover{background:#fff; color:var(--ink); border-color:#fff;}
+
+  /* ===== Risk self-check ===== */
+  .risk{
+    background:var(--bg2); border:1px solid var(--line); border-radius:8px;
+    padding:24px 20px; margin:26px 0;
+  }
+  .risk h4{font-family:'Playfair Display',serif; font-size:20px; font-weight:700; margin-bottom:6px;}
+  .risk .rsub{font-size:12.5px; color:var(--sub); margin-bottom:20px;}
+  .rq{margin-bottom:16px;}
+  .rq .qtxt{font-size:14px; font-weight:500; margin-bottom:9px;}
+  .rq .opts{display:flex; gap:8px;}
+  .rq .opt{
+    flex:1; padding:9px 4px; text-align:center; font-size:12.5px;
+    border:1.5px solid var(--line); border-radius:6px; background:#fff;
+    cursor:pointer; transition:.18s; user-select:none;
+  }
+  .rq .opt:hover{border-color:var(--accent2);}
+  .rq .opt.sel{background:var(--accent); color:#fff; border-color:var(--accent);}
+  .risk-result{
+    margin-top:20px; padding-top:18px; border-top:1px solid var(--line);
+    text-align:center; min-height:30px;
+  }
+  .risk-result .rtype{font-family:'Playfair Display',serif; font-size:24px; font-weight:900; color:var(--accent);}
+  .risk-result .rdesc{font-size:13.5px; color:var(--sub); margin-top:6px;}
+
+  /* ===== Step cards ===== */
+  .steps{display:flex; flex-direction:column; gap:14px; margin:24px 0;}
+  .step{
+    display:flex; gap:16px; padding:18px 18px; background:var(--bg2);
+    border:1px solid var(--line); border-radius:6px; align-items:flex-start;
+  }
+  .step .n{
+    font-family:'Playfair Display',serif; font-weight:900; font-size:30px;
+    color:var(--accent); line-height:1; flex-shrink:0; width:34px;
+  }
+  .step .stxt b{display:block; font-size:15px; margin-bottom:4px;}
+  .step .stxt p{font-size:13.5px; color:var(--sub); margin:0;}
+
+  /* ===== Term box ===== */
+  .term{
+    font-size:13px; background:#fff; border:1px dashed var(--accent2);
+    border-radius:5px; padding:13px 15px; margin:16px 0; color:var(--ink);
+  }
+  .term b{color:var(--accent);}
+
+  /* ===== Footer ===== */
+  footer{
+    border-top:2px solid var(--ink); margin-top:30px; padding:30px 0 50px;
+    text-align:center;
+  }
+  footer .fmark{font-family:'Playfair Display',serif; font-style:italic; font-size:18px; color:var(--accent);}
+  footer p{font-size:12px; color:var(--sub); margin-top:10px;}
+
+  /* ===== fade-in ===== */
+  .fade-in{opacity:0; transform:translateY(18px); transition:opacity .7s ease, transform .7s ease;}
+  .fade-in.visible{opacity:1; transform:translateY(0);}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <!-- Masthead -->
+  <header class="masthead fade-in">
+    <div class="kicker">Investment Academy · Orientation Vol.2</div>
+    <h1>시작은 작아도,<br><em>굴려야</em> 태산이 된다</h1>
+    <p class="dek">새내기 멤버를 위한 두 번째 오리엔테이션 — 종목 한두 개를 빼가는 자리가 아니라, '스스로 굴리는 법'을 배우는 자리에 대하여.</p>
+    <div class="meta-row">
+      <span><strong>새냐기 멤버 오리엔테이션 2</strong></span>
+      <span>2026.06.17</span>
+      <span>경제 · 투자 관점 분석</span>
+    </div>
+  </header>
+
+  <!-- Lead -->
+  <div class="lead fade-in">
+    <p class="dropcap">멤버가 늘었다. 그래서 진행자의 어깨도 무거워졌다. 이 방송의 메시지는 한 문장으로 압축된다 — "좋은 주식 하나 찍어주는 자리가 아니다." 30분 듣고 종목만 받아가려는 사람에게는 가차 없지만, 작은 돈으로 시작해 자산을 불리겠다는 사람에게는 그 방법 전부를 나눠주겠다는 것이 이 오리엔테이션의 뼈대다.</p>
+  </div>
+
+  <!-- 1. 멤버십과 공짜 심리 -->
+  <section class="fade-in">
+    <div class="sec-num">I. The Premise</div>
+    <h2>멤버십은 축하할 일, 그러나 '할 일'이 따라온다</h2>
+    <p>가입은 시작일 뿐이다. "직장 다녀서 시간이 없다"는 말은 통하지 않는다. 진행자 본인이 새벽 6시부터 자정까지 일하면서도 시간을 쪼갠다는 점을 강조한다. 핵심 전제는 단순하다. <span class="sub-em">남보다 자산을 빨리 늘리려면 그만큼의 노력이 필요하고, 공짜 법칙은 없다.</span></p>
+
+    <div class="callout">
+      <div class="tag">가격 안내 · 3-3-3 법칙</div>
+      <p>현재 월 <strong>$29.99</strong> → 내년 <strong>$33.30</strong>으로 약 10% 인상 예정. '3-3-3 법칙'(매년 일정 비율 인상)에 근거한 조정이라고 설명한다.</p>
+    </div>
+
+    <p class="pull">"가성비 좋은 것? 그건 효율성이 아니라 <span>게으름</span>의 다른 말일 수 있다."</p>
+  </section>
+
+  <!-- 2. 복리의 법칙 -->
+  <section class="fade-in">
+    <div class="sec-num">II. Compounding</div>
+    <h2>왜 '액티브 매니지먼트'인가 — 복리의 법칙</h2>
+    <p>이 방송의 투자 철학을 관통하는 단어는 <strong>컴파운딩(복리)</strong>이다. 300만 원이 500만 원이 되고, 500만 원이 1,000만 원, 2,000만 원, 1억으로 불어나는 — 기하급수적 성장을 믿어야 한다는 것.</p>
+    <p>그래서 가만히 들고 있기보다, 비슷한 리스크라면 <strong>섹터 로테이션과 리밸런싱</strong>을 통해 일부를 팔고 더 성장성 강한 주식으로 갈아탄다. 한정된 자산을 계속 굴려 복리 효과를 극대화하는 것이 '액티브 매니지먼트'의 이유다.</p>
+
+    <div class="term">
+      <b>섹터 로테이션</b> — 경기·시장 국면에 따라 유망 업종으로 비중을 옮기는 전략. <b>리밸런싱</b> — 오른 자산 일부를 팔아 다른 자산으로 재배분해 위험과 수익 균형을 맞추는 것.
+    </div>
+
+    <p>아래 계산기로 '굴리는 것'과 '두는 것'의 차이를 직접 확인해 보자. 시드 금액·연 수익률·기간을 바꾸면 결과가 즉시 갱신된다.</p>
+
+    <!-- Compound calculator -->
+    <div class="calc">
+      <h4>복리 시뮬레이터</h4>
+      <div class="csub">"티끌은 모으면 티끌이다. 굴려야 태산이 된다"는 말을 숫자로 확인해 보세요.</div>
+
+      <div class="field">
+        <div class="flabel"><span>시작 시드</span><b id="seedVal">500만원</b></div>
+        <input type="range" id="seed" min="100" max="5000" step="100" value="500">
+      </div>
+      <div class="field">
+        <div class="flabel"><span>연 수익률</span><b id="rateVal">20%</b></div>
+        <input type="range" id="rate" min="3" max="50" step="1" value="20">
+      </div>
+      <div class="field">
+        <div class="flabel"><span>투자 기간</span><b id="yearVal">10년</b></div>
+        <input type="range" id="years" min="1" max="30" step="1" value="10">
+      </div>
+
+      <div class="calc-out">
+        <div class="box">
+          <div class="lab">원금</div>
+          <div class="val" id="outSeed">500만원</div>
+        </div>
+        <div class="box">
+          <div class="lab">복리 결과</div>
+          <div class="val hi" id="outFinal">3,096만원</div>
+        </div>
+      </div>
+      <div class="calc-mult">원금 대비 <b id="outMult">6.2배</b></div>
+      <button class="btn-reset" id="calcReset">초기값으로 리셋</button>
+    </div>
+
+    <div class="callout">
+      <div class="tag">진행자 사례</div>
+      <p>엔비디아를 단 10주만 일찍 담았더라도 지금은 비교할 수 없는 규모가 됐다는 예시, 그리고 탈북 후 5~6년 만에 1억을 만들어 3~4억으로 키운 멤버 사례를 든다. 교육 수준이 아니라 <strong>시작과 자신감</strong>의 문제라는 메시지다.</p>
+    </div>
+  </section>
+
+  <!-- 3. 첫번째 할 일 + 두번째 할 일 (steps) -->
+  <section class="fade-in">
+    <div class="sec-num">III. The Method</div>
+    <h2>멤버가 반드시 해야 할 일</h2>
+    <p>진행자는 "나는 원단(좋은 종목·재료)을 제공하는 사람이고, 그 원단으로 <strong>자기 몸에 맞는 옷을 재단하는 것</strong>(포트폴리오 구성)은 본인의 몫"이라고 비유한다. 그 재단법을 익히는 두 가지 숙제는 다음과 같다.</p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="n">1</div>
+        <div class="stxt">
+          <b>투자 아카데미를 볼 것</b>
+          <p>투자의 기본 원칙 없이 남의 말만 주워들으면 귀가 얇아져 중심이 흔들린다. 내가 감당할 리스크가 얼마인지 — 즉 '내 옷 사이즈'를 알아야 포트폴리오를 짤 수 있다.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="n">2</div>
+        <div class="stxt">
+          <b>과거 방송을 볼 것</b>
+          <p>왜 그때 그 종목을 그 가격에 얘기했는지, 당시 경제 상황과 S&amp;P500은 어땠는지 — 그 '패턴'을 찾아야 새 종목이 나왔을 때 스스로 행동할 수 있다.</p>
+        </div>
+      </div>
+    </div>
+
+    <p class="pull">"내가 중심을 잡아야 할 자리를 모르는데, 어떻게 중심을 <span>잡겠는가</span>."</p>
+  </section>
+
+  <!-- 4. 올해 성과 (table + chart) -->
+  <section class="fade-in">
+    <div class="sec-num">IV. Track Record</div>
+    <h2>'데뷔 형님 30대 그룹'의 올해 성적</h2>
+    <p>진행자는 자신이 모든 종목을 맞히지는 못한다고 전제하면서도, 기관의 움직임을 읽고 미리 제시했던 종목들의 올해 흐름을 짚는다. 아래 수치는 <strong>방송에서 언급된 가격 기준</strong>이다.</p>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr><th>종목</th><th>제시 가격</th><th>현재(방송 시점)</th><th>변화</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>샌디스크 (SNDK)</td><td>$851</td><td>$1,991</td><td class="up">약 +134%</td></tr>
+          <tr><td>마이크론 (MU)</td><td>$421</td><td>$1,020</td><td class="up">약 +142%</td></tr>
+          <tr><td>마벨 (MRVL)</td><td>$109<small> (4/1)</small></td><td>$278</td><td class="up">약 +155%</td></tr>
+          <tr><td>시게이트 (STX)</td><td>YTD 기준</td><td>$1,031</td><td class="up">YTD +274%</td></tr>
+          <tr><td>세수<small>(언급 종목)</small></td><td>5일 전</td><td>—</td><td class="up">5일 +17%</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="chart-card">
+      <div class="ttl">방송 언급 종목 상승률</div>
+      <div class="cap">진행자가 미리 제시한 종목들의 변화율 (방송 발언 기준, %)</div>
+      <div class="chart-container fade-in">
+        <canvas id="perfChart" height="240"></canvas>
+      </div>
+    </div>
+
+    <div class="callout">
+      <div class="tag">중요한 단서</div>
+      <p>멤버들은 마이크론을 <strong>80불대</strong>에 진입했다고 강조한다. 또 메타·구글은 "하이퍼스케일러로 비중을 줄이라"던 종목, 클락(Klarna)은 스톡 스플릿 반영 시 약 3~40% 상승, AMD는 "마벨로 갈아타라"고 안내한 사례로 든다. <span class="sub-em">제시 시점과 그 이유(패턴)를 봐야 한다는 것이 핵심.</span></p>
+    </div>
+
+    <div class="term">
+      <b>하이퍼스케일러</b> — 대규모 데이터센터·클라우드 인프라를 운영하는 거대 기술기업(메타·구글·아마존 등). <b>스톡 스플릿</b> — 주식을 쪼개 1주당 가격을 낮추는 액면분할로, 실제 가치 변화는 없지만 표시 가격이 내려간다.
+    </div>
+  </section>
+
+  <!-- 5. 액기스 빼먹기 경고 -->
+  <section class="fade-in">
+    <div class="sec-num">V. The Warning</div>
+    <h2>'족보'만 빼가는 사람은 1년을 못 간다</h2>
+    <p>세 번째 메시지는 경고다. 시험 족보 외우듯 '30대 그룹 종목 리스트'만 빼가서 똑같이 따라 사는 방식 — 진행자는 이를 기본기 없는 게으름으로 본다. 이유는 명확하다.</p>
+
+    <div class="callout">
+      <div class="tag">왜 안 되나</div>
+      <p><strong>30대 그룹은 1년에 절반가량이 바뀐다.</strong> 작년의 마이크로소프트는 빠졌고, 슈퍼마이크로는 20~30불에 사서 120~130불에 팔았다. 리스트만 따라가면, 정작 빠지는 신호를 못 읽어 물려버린다. 목표가가 갱신되면(예: 마이크론 900불 → 1,500불) 구성도 급격히 돌아간다.</p>
+    </div>
+
+    <p class="pull">"잔머리 굴리지 말 것. 시간이 걸려도 <span>정도(正道)</span>로 가라."</p>
+  </section>
+
+  <!-- 6. 기관 추적 + 자기 객관화 -->
+  <section class="fade-in">
+    <div class="sec-num">VI. The Edge</div>
+    <h2>핵심 역량: 기관의 자산 흐름을 읽는다</h2>
+    <p>진행자가 내세우는 가장 큰 강점은 <strong>대형 기관의 자산 이동을 대략 예측</strong>하는 것이다. 항상 맞지는 않지만 중요한 잣대가 된다. 어떤 어드바이저리 펌(예: Charles Schwab)에서 무엇을 가장 많이 사는지 읽어내는 식이다.</p>
+    <p>반대로 신뢰하지 않는 것도 분명하다. <span class="sub-em">"모닝스타는 보지 마라 — 그대로 투자하면 하나도 안 오른다"</span>고 단언한다. 소문이 안 좋은 애널리스트의 의견은 거르고, 적중률이 70~80%대인 사람만 본다는 것.</p>
+
+    <div class="callout">
+      <div class="tag">시장 앞에서는 겸손</div>
+      <p>사람에게는 겸손하지 않지만 <strong>시장에는 겸손해야 한다</strong>고 말한다. 경험은 자산이되, 경험에 갇힌 높은 자아(ego)가 사람을 망친다는 것. 그래서 새로운 것을 계속 배워야 한다.</p>
+    </div>
+  </section>
+
+  <!-- 7. 나를 알라 (risk self-check) -->
+  <section class="fade-in">
+    <div class="sec-num">VII. Know Thyself</div>
+    <h2>투자 전에, 나 자신을 먼저 알라</h2>
+    <p>장기투자는 이론적으로 옳다. 그러나 변동성 10%에 매일 잠 못 자고 폰만 들여다본다면 장기투자는 불가능하다. <strong>마음이 편해야 밤에 잘 자고, 잘 자야 끝까지 들고 간다.</strong> 1억을 넣었는데 다음 날 3천만 원이 날아가 있으면 실생활이 무너진다 — 그건 너무 많이 투자한 것이다.</p>
+
+    <h3>경계해야 할 세 가지 약점</h3>
+    <p>진행자는 망하는 사람의 유형을 셋으로 정리한다. ① <strong>귀가 얇은 사람</strong>(남 말에 흔들림), ② <strong>리스크를 과도하게 지는 사람</strong>, ③ <strong>행동을 못 하는 사람</strong>. 특히 ③은 "장고(長考) 끝에 악수(惡手)" — 망설이다 아무것도 안 하다가 10년, 20년이 흘러버린다.</p>
+
+    <!-- Risk self-check -->
+    <div class="risk">
+      <h4>나의 투자 성향 셀프 체크</h4>
+      <div class="rsub">세 문항에 답하면, 진행자가 말한 '경계 유형'을 기준으로 간단히 진단합니다.</div>
+
+      <div class="rq" data-q="0">
+        <div class="qtxt">1. 다른 유튜버나 지인이 추천하면?</div>
+        <div class="opts">
+          <div class="opt" data-v="2">바로 사고 싶다</div>
+          <div class="opt" data-v="1">한 번 흔들린다</div>
+          <div class="opt" data-v="0">내 기준대로 본다</div>
+        </div>
+      </div>
+      <div class="rq" data-q="1">
+        <div class="qtxt">2. 1억 중 3천이 하루 만에 빠지면?</div>
+        <div class="opts">
+          <div class="opt" data-v="2">잠을 못 잔다</div>
+          <div class="opt" data-v="1">불안하지만 버틴다</div>
+          <div class="opt" data-v="0">감당 가능 범위다</div>
+        </div>
+      </div>
+      <div class="rq" data-q="2">
+        <div class="qtxt">3. 좋다고 판단한 종목 앞에서 나는?</div>
+        <div class="opts">
+          <div class="opt" data-v="2">계속 미룬다</div>
+          <div class="opt" data-v="1">고민이 길다</div>
+          <div class="opt" data-v="0">결정하면 행동한다</div>
+        </div>
+      </div>
+
+      <div class="risk-result" id="riskResult">
+        <div class="rdesc">세 문항에 모두 답하면 진단이 나타납니다.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. 구매력 침식 -->
+  <section class="fade-in">
+    <div class="sec-num">VIII. Why You Must</div>
+    <h2>월급은 제자리, 시장은 달린다 — 구매력의 침식</h2>
+    <p>왜 굳이 투자해야 하는가? 답은 <strong>구매력</strong>에 있다. 진행자의 계산은 이렇다. 10년 전 5천만 원이 미국 주식 평균 상승률(약 500%)을 따라갔다면 <strong>2억 5천만 원</strong>이 됐을 것이다. 그동안 월급이 그만큼 올랐는가? 그렇지 않다.</p>
+    <p>개인의 월급이 조직의 생산성을 따라잡지 못하는 이유는 명확하다. 수천~수만 명이 새로운 기술로 생산성을 끌어올리는 기업의 성장 속도를, 개인이 노동만으로 따라갈 수는 없다. <span class="sub-em">그래서 직접 그 조직에 몸담거나, 간접투자(주식)로 올라타는 수밖에 없다 — 특히 AI 시대에는 더욱.</span></p>
+
+    <div class="chart-card">
+      <div class="ttl">10년 후, 5천만 원의 운명</div>
+      <div class="cap">방송 논리에 따른 구매력 비교 — 가만히 둔 현금 vs 시장 평균 상승</div>
+      <div class="chart-container fade-in">
+        <canvas id="powerChart" height="230"></canvas>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9. 나눔 -->
+  <section class="fade-in">
+    <div class="sec-num">IX. Pay It Forward</div>
+    <h2>나누어도 줄지 않는 것</h2>
+    <p>마지막 메시지는 '나눔'이다. 주식 정보는 내가 나눠줘도 내 것이 줄지 않는다 — 오히려 새 멤버가 같은 종목을 더 사주면 모두에게 유리하다는 논리. 그래서 가족·친척에게 권하라고 당부한다. 진행자는 이 행위를 <strong>페이 포워드(pay it forward)</strong>, 받은 만큼 다음으로 흘려보내는 것이라 부른다.</p>
+
+    <p class="pull">"자기 자신을 알라. 장점·약점을 파악하고 거기에 맞게 <span>포트폴리오를 짜라.</span> 기준점은 지난 방송에 있다."</p>
+  </section>
+
+  <footer>
+    <div class="fmark">— 오늘은 여기까지 —</div>
+    <p>본 리포트는 영상 자막 내용을 정리·분석한 것이며, 특정 종목의 매수·매도 추천이 아닙니다.<br>모든 수치는 방송에서 언급된 발언 기준이며 투자 판단의 책임은 투자자 본인에게 있습니다.</p>
+  </footer>
+
+</div>
+
+<script>
+/* ===== fade-in observer ===== */
+const fadeObs = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), i * 80);
+      fadeObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.12 });
+document.querySelectorAll('.fade-in').forEach(el => fadeObs.observe(el));
+
+/* ===== chart configs ===== */
+const chartConfigs = {};
+
+chartConfigs['perfChart'] = () => {
+  new Chart(document.getElementById('perfChart'), {
+    type:'bar',
+    data:{
+      labels:['샌디스크','마이크론','마벨','시게이트(YTD)','세수(5일)'],
+      datasets:[{
+        label:'상승률 (%)',
+        data:[134,142,155,274,17],
+        backgroundColor:['#e11d48','#f43f5e','#e11d48','#1a1a1a','#6b7280'],
+        borderRadius:5, maxBarThickness:46
+      }]
+    },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{display:false},
+        tooltip:{callbacks:{label:(c)=>' +'+c.parsed.y+'%'}}
+      },
+      scales:{
+        y:{beginAtZero:true, ticks:{callback:(v)=>v+'%', color:'#777', font:{size:11}}, grid:{color:'#eee'}},
+        x:{ticks:{color:'#1a1a1a', font:{size:11, weight:'500'}}, grid:{display:false}}
+      }
+    }
+  });
+};
+
+chartConfigs['powerChart'] = () => {
+  new Chart(document.getElementById('powerChart'), {
+    type:'bar',
+    data:{
+      labels:['오늘 5천만원','현금으로 보관\n(10년 후)','시장 평균 +500%\n(10년 후)'],
+      datasets:[{
+        label:'금액 (만원)',
+        data:[5000,5000,25000],
+        backgroundColor:['#6b7280','#1a1a1a','#e11d48'],
+        borderRadius:5, maxBarThickness:70
+      }]
+    },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{display:false},
+        tooltip:{callbacks:{label:(c)=> ' ' + c.parsed.y.toLocaleString() + '만원'}}
+      },
+      scales:{
+        y:{beginAtZero:true, ticks:{callback:(v)=>(v/10000)+'억', color:'#777', font:{size:11}}, grid:{color:'#eee'}},
+        x:{ticks:{color:'#1a1a1a', font:{size:10.5, weight:'500'}}, grid:{display:false}}
+      }
+    }
+  });
+};
+
+const chartObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const canvas = e.target.querySelector('canvas');
+      if (canvas && chartConfigs[canvas.id]) {
+        chartConfigs[canvas.id]();
+        e.target.classList.add('chart-ready');
+        chartObs.unobserve(e.target);
+      }
+    }
+  });
+}, { threshold: 0.15 });
+document.querySelectorAll('.chart-container').forEach(el => chartObs.observe(el));
+
+/* ===== Compound calculator ===== */
+const seed = document.getElementById('seed');
+const rate = document.getElementById('rate');
+const years = document.getElementById('years');
+const seedVal = document.getElementById('seedVal');
+const rateVal = document.getElementById('rateVal');
+const yearVal = document.getElementById('yearVal');
+const outSeed = document.getElementById('outSeed');
+const outFinal = document.getElementById('outFinal');
+const outMult = document.getElementById('outMult');
+
+function fmtMan(v){
+  // v in 만원
+  if(v >= 10000){
+    const eok = v/10000;
+    return (Math.round(eok*100)/100) + '억';
+  }
+  return Math.round(v).toLocaleString() + '만원';
+}
+function calc(){
+  const s = +seed.value, r = +rate.value/100, y = +years.value;
+  seedVal.textContent = s.toLocaleString()+'만원';
+  rateVal.textContent = (+rate.value)+'%';
+  yearVal.textContent = y+'년';
+  const final = s * Math.pow(1+r, y);
+  outSeed.textContent = fmtMan(s);
+  outFinal.textContent = fmtMan(final);
+  outMult.textContent = (Math.round((final/s)*10)/10) + '배';
+}
+[seed,rate,years].forEach(el=>el.addEventListener('input', calc));
+document.getElementById('calcReset').addEventListener('click', ()=>{
+  seed.value=500; rate.value=20; years.value=10; calc();
+});
+calc();
+
+/* ===== Risk self-check ===== */
+const riskAns = [null,null,null];
+document.querySelectorAll('.rq').forEach(q=>{
+  const qi = +q.dataset.q;
+  q.querySelectorAll('.opt').forEach(opt=>{
+    opt.addEventListener('click', ()=>{
+      q.querySelectorAll('.opt').forEach(o=>o.classList.remove('sel'));
+      opt.classList.add('sel');
+      riskAns[qi] = +opt.dataset.v;
+      renderRisk();
+    });
+  });
+});
+function renderRisk(){
+  if(riskAns.includes(null)) return;
+  const total = riskAns.reduce((a,b)=>a+b,0);
+  const res = document.getElementById('riskResult');
+  let type, desc;
+  // weak spots
+  const types = ['귀가 얇은 형','리스크 과다 형','행동 지연 형'];
+  const maxIdx = riskAns.indexOf(Math.max(...riskAns));
+  if(total <= 1){
+    type = '균형 잡힌 형';
+    desc = '기준이 비교적 분명한 편입니다. 그래도 시장 앞에서는 늘 겸손하게.';
+  } else {
+    type = types[maxIdx];
+    if(maxIdx===0) desc='남의 말에 흔들리기 쉬운 약점. 과거 방송 패턴으로 내 기준을 세우세요.';
+    if(maxIdx===1) desc='리스크를 과하게 지는 약점. 밤에 잠 못 잘 비중이면 줄여야 합니다.';
+    if(maxIdx===2) desc='"장고 끝에 악수" 유형. 판단했다면 행동으로 옮기는 연습이 필요합니다.';
+  }
+  res.innerHTML = '<div class="rtype">'+type+'</div><div class="rdesc">'+desc+'</div>';
+}
+</script>
+
+</body>
+</html>
