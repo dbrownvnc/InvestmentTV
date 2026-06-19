@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>투자는인생TV — 6월 18일 멤버 방송 분석</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #ffffff;
+    --bg2: #fafafa;
+    --text: #1a1a1a;
+    --text2: #777777;
+    --red: #e11d48;
+    --red2: #f43f5e;
+    --border: #e5e5e5;
+    --c1: #e11d48;
+    --c2: #1a1a1a;
+    --c3: #6b7280;
+    --c4: #2563eb;
+  }
+
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 15px;
+    line-height: 1.7;
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 0 16px 60px;
+  }
+
+  /* HEADER */
+  .masthead {
+    border-bottom: 3px solid var(--red);
+    padding: 32px 0 20px;
+    margin-bottom: 8px;
+  }
+  .masthead-label {
+    font-size: 11px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--red);
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  .masthead h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(26px, 6vw, 38px);
+    font-weight: 900;
+    line-height: 1.15;
+    color: var(--text);
+    margin-bottom: 12px;
+  }
+  .masthead-meta {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    font-size: 12px;
+    color: var(--text2);
+    border-top: 1px solid var(--border);
+    padding-top: 12px;
+    margin-top: 12px;
+  }
+  .masthead-meta span { display: flex; align-items: center; gap: 5px; }
+
+  /* LEAD */
+  .lead {
+    background: var(--bg2);
+    border-left: 4px solid var(--red);
+    padding: 18px 20px;
+    margin: 24px 0;
+    border-radius: 0 6px 6px 0;
+    font-size: 15px;
+    line-height: 1.8;
+    color: var(--text);
+  }
+
+  /* SECTION */
+  .section {
+    margin: 36px 0;
+  }
+  .section-eyebrow {
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--red);
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .section h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(20px, 4.5vw, 26px);
+    font-weight: 700;
+    color: var(--text);
+    border-bottom: 2px solid var(--border);
+    padding-bottom: 10px;
+    margin-bottom: 18px;
+  }
+  .section h3 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+    margin: 20px 0 8px;
+  }
+  .section p {
+    color: var(--text);
+    margin-bottom: 14px;
+    font-size: 14.5px;
+    line-height: 1.8;
+  }
+
+  /* TAG CHIPS */
+  .tag {
+    display: inline-block;
+    background: var(--red);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 3px;
+    margin-right: 6px;
+    margin-bottom: 4px;
+    letter-spacing: 0.5px;
+  }
+  .tag.gray { background: var(--c3); }
+  .tag.blue { background: var(--c4); }
+  .tag.black { background: var(--c2); }
+
+  /* STOCK CARDS */
+  .stock-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin: 16px 0;
+  }
+  @media (max-width: 400px) { .stock-grid { grid-template-columns: 1fr; } }
+  .stock-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px;
+    position: relative;
+    overflow: hidden;
+  }
+  .stock-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--red);
+  }
+  .stock-card.down::before { background: var(--c3); }
+  .stock-card .ticker {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .stock-card .change {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--red);
+    margin: 4px 0;
+  }
+  .stock-card .change.down { color: var(--c3); }
+  .stock-card .desc { font-size: 12px; color: var(--text2); }
+
+  /* INFO BOX */
+  .info-box {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 18px 20px;
+    margin: 16px 0;
+  }
+  .info-box.alert {
+    background: #fff1f3;
+    border-color: var(--red2);
+  }
+  .info-box.blue-bg {
+    background: #eff6ff;
+    border-color: var(--c4);
+  }
+  .info-box .box-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--red);
+    margin-bottom: 8px;
+    letter-spacing: 0.5px;
+  }
+  .info-box.blue-bg .box-title { color: var(--c4); }
+  .info-box ul { padding-left: 18px; }
+  .info-box li { font-size: 13.5px; line-height: 1.75; margin-bottom: 4px; }
+
+  /* DIVIDER */
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 28px 0;
+  }
+
+  /* CHART CONTAINERS */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .chart-container {
+    position: relative;
+    max-height: 340px;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    margin: 16px 0;
+  }
+  .chart-container canvas {
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    max-height: 300px;
+  }
+  .chart-container.chart-ready canvas {
+    opacity: 1;
+  }
+  .chart-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text2);
+    margin-bottom: 10px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  /* SIMULATOR */
+  .simulator {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+    margin: 20px 0;
+  }
+  .simulator h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    color: var(--text);
+  }
+  .sim-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+  }
+  .sim-label {
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--text2);
+    min-width: 100px;
+  }
+  .sim-slider {
+    flex: 1;
+    min-width: 120px;
+    -webkit-appearance: none;
+    height: 5px;
+    border-radius: 3px;
+    background: var(--border);
+    outline: none;
+    cursor: pointer;
+  }
+  .sim-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--red);
+    cursor: pointer;
+    box-shadow: 0 0 0 3px rgba(225,29,72,0.15);
+  }
+  .sim-val {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--red);
+    min-width: 50px;
+    text-align: right;
+  }
+  .sim-result {
+    background: var(--text);
+    color: #fff;
+    border-radius: 8px;
+    padding: 16px;
+    margin-top: 16px;
+    text-align: center;
+  }
+  .sim-result .result-main {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: #fff;
+  }
+  .sim-result .result-sub {
+    font-size: 12px;
+    color: rgba(255,255,255,0.6);
+    margin-top: 4px;
+  }
+  .sim-result .result-gain {
+    font-size: 20px;
+    font-weight: 700;
+    color: #4ade80;
+    margin-top: 6px;
+  }
+  .btn-reset {
+    display: inline-block;
+    margin-top: 14px;
+    padding: 7px 16px;
+    background: transparent;
+    border: 1.5px solid var(--border);
+    border-radius: 5px;
+    font-size: 12px;
+    cursor: pointer;
+    color: var(--text2);
+    font-family: 'Noto Sans KR', sans-serif;
+    transition: all 0.2s;
+  }
+  .btn-reset:hover { border-color: var(--red); color: var(--red); }
+
+  /* EXPELLED LIST */
+  .expelled-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin: 14px 0;
+  }
+  @media (max-width: 360px) { .expelled-grid { grid-template-columns: repeat(2, 1fr); } }
+  .expelled-chip {
+    background: var(--c3);
+    color: #fff;
+    text-align: center;
+    padding: 12px 6px;
+    border-radius: 6px;
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: 1px;
+  }
+
+  /* WITCHING EXPLAINER */
+  .witching-steps {
+    counter-reset: step;
+    margin: 14px 0;
+  }
+  .witching-step {
+    display: flex;
+    gap: 14px;
+    margin-bottom: 14px;
+    align-items: flex-start;
+  }
+  .witching-step-num {
+    counter-increment: step;
+    background: var(--red);
+    color: #fff;
+    min-width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 3px;
+  }
+  .witching-step-text {
+    font-size: 13.5px;
+    line-height: 1.75;
+    color: var(--text);
+  }
+  .witching-step-text strong { color: var(--red); }
+
+  /* TOGGLE SECTION */
+  .toggle-btn {
+    background: none;
+    border: 1.5px solid var(--border);
+    border-radius: 6px;
+    padding: 9px 16px;
+    font-size: 13px;
+    cursor: pointer;
+    color: var(--text2);
+    font-family: 'Noto Sans KR', sans-serif;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+    transition: all 0.2s;
+  }
+  .toggle-btn:hover { border-color: var(--red); color: var(--red); }
+  .toggle-content { display: none; }
+  .toggle-content.open { display: block; }
+  .arrow { transition: transform 0.25s; }
+  .open-arrow { transform: rotate(90deg); }
+
+  /* SPACEX TABLE */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.5px;
+    margin: 12px 0;
+  }
+  th {
+    background: var(--red);
+    color: #fff;
+    padding: 9px 12px;
+    text-align: left;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+    font-weight: 700;
+  }
+  td {
+    padding: 9px 12px;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg2);
+  }
+  tr:last-child td { border-bottom: none; }
+  td:last-child { font-weight: 700; color: var(--red); }
+
+  /* FOOTER */
+  .footer {
+    margin-top: 48px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+    font-size: 11.5px;
+    color: var(--text2);
+    line-height: 1.7;
+  }
+  .footer strong { color: var(--text); }
+
+  /* QUOTE */
+  .quote {
+    border-left: 3px solid var(--red);
+    padding: 10px 18px;
+    margin: 16px 0;
+    font-style: italic;
+    color: var(--text2);
+    font-size: 14px;
+    line-height: 1.8;
+  }
+</style>
+</head>
+<body>
+
+<!-- MASTHEAD -->
+<header class="masthead fade-in">
+  <div class="masthead-label">📊 투자는인생TV · 멤버 전용 방송</div>
+  <h1>Triple Witching Day<br>30대 그룹 6개사 탈락한 날</h1>
+  <div class="masthead-meta">
+    <span>📅 2026년 6월 18일 (수)</span>
+    <span>🎙 David Lee (테일러투자그룹 CIO)</span>
+    <span>🔒 Members Only</span>
+  </div>
+</header>
+
+<!-- LEAD -->
+<div class="lead fade-in">
+  트리플 위칭 데이 + 연준(Fed) FOMC 이후 변동성 극대화 속에서, 반도체·칩 섹터 중심의 폭등이 연출됐다. 동시에 소프트웨어·커뮤니케이션 섹터는 약세를 보였고, 30대 그룹에서 6개 종목이 탈락(전량매각 또는 대량 비중 축소) 처리됐다.
+</div>
+
+<!-- ① 시장 상황 -->
+<div class="section">
+  <div class="section-eyebrow">Section 01</div>
+  <h2>시장 상황 정리</h2>
+  <p>장 전에는 주요 지수가 소폭 상승에 그쳤으나, 장 중 반도체·칩 섹터를 중심으로 급등이 발생했다. 전날 Fed FOMC 결과로 전체 11개 섹터가 하락한 뒤였기 때문에, 일부 회복 성격의 반등이기도 했다.</p>
+
+  <div class="info-box">
+    <div class="box-title">📌 당일 핵심 이벤트 3가지</div>
+    <ul>
+      <li><strong>인텔(INTC) +10.7%</strong> — 트럼프 대통령이 "인텔·애플이 미국 내 칩 설계·생산"을 발표</li>
+      <li><strong>트리플 위칭 데이</strong> — 내일(6/19)이 공휴일이어서 오늘로 만기 앞당겨짐</li>
+      <li><strong>연준(FOMC) 결과 소화</strong> — 금리 동결, 올해 인하 없음·한 차례 인상 가능 시사</li>
+    </ul>
+  </div>
+
+  <h3>전날 마감 vs. 당일 상황</h3>
+  <p>전날 다우존스가 500포인트 이상 하락, S&P 500 -1.2%로 11개 섹터 전부 하락한 상태에서 개장했다. 실질적으로 전체 시장이 크게 오른 건 아니었고, <strong>데이빗 형님 30대 그룹</strong> 위주의 종목들만 폭등한 구조였다.</p>
+
+  <div class="quote">"실질적으로 전체 11개 섹터를 보면 올랐다고 할 수 없어요. 한쪽만 얘기하는 것 같아요. 우리만 올라간 겁니다. 축하드리는 겁니다."</div>
+</div>
+
+<!-- ② 오늘 TOP 상승 종목 차트 -->
+<div class="section">
+  <div class="section-eyebrow">Section 02</div>
+  <h2>당일 주요 상승 종목</h2>
+  <p>30대 그룹 내 핵심 종목들의 당일 상승률이다. 칩·반도체 섹터가 주도했으며, 마벨(MRVL)과 인텔(INTC)이 10% 이상 급등했다.</p>
+
+  <div class="chart-container fade-in">
+    <div class="chart-title">당일 주요 종목 상승률 (%)</div>
+    <canvas id="stockChart" height="220"></canvas>
+  </div>
+
+  <div class="stock-grid">
+    <div class="stock-card fade-in">
+      <div class="ticker">INTC</div>
+      <div class="change">+10.7%</div>
+      <div class="desc">트럼프 발표 수혜. 칩 설계·생산 계획</div>
+    </div>
+    <div class="stock-card fade-in">
+      <div class="ticker">MRVL</div>
+      <div class="change">+12%↑</div>
+      <div class="desc">마벨. 목표가 상향 조정됨</div>
+    </div>
+    <div class="stock-card fade-in">
+      <div class="ticker">SNDK</div>
+      <div class="change">+10.6%</div>
+      <div class="desc">샌디스크 (SanDisk)</div>
+    </div>
+    <div class="stock-card fade-in">
+      <div class="ticker">SEZL</div>
+      <div class="change">~+30%</div>
+      <div class="desc">2주 전 소개 후 약 30% 상승</div>
+    </div>
+  </div>
+</div>
+
+<!-- ③ 트리플 위칭 데이 설명 -->
+<div class="section">
+  <div class="section-eyebrow">Section 03</div>
+  <h2>트리플 위칭 데이란?</h2>
+  <p>분기마다 한 번, 주식 옵션·주가지수 옵션·주가지수 선물이 동시에 만기되는 날이다. 수조 달러 규모의 계약이 만기되며, 헤지펀드와 마켓 메이커들이 포지션을 정리·조정해야 한다.</p>
+
+  <div class="witching-steps">
+    <div class="witching-step fade-in">
+      <div class="witching-step-num">1</div>
+      <div class="witching-step-text"><strong>방향성을 만들지 않는다</strong> — 트리플 위칭 자체가 시장 방향을 결정하는 게 아니다. 변동성을 극대화하는 촉매(Catalyst) 역할이다.</div>
+    </div>
+    <div class="witching-step fade-in">
+      <div class="witching-step-num">2</div>
+      <div class="witching-step-text"><strong>콜 옵션이 많이 걸린 날</strong> — 마켓 메이커들이 델타 헤지를 위해 주식을 매수. 주가 상승 압력 발생.</div>
+    </div>
+    <div class="witching-step fade-in">
+      <div class="witching-step-num">3</div>
+      <div class="witching-step-text"><strong>마지막 1~2시간 집중 주의</strong> — 긴 주말 앞두고 포지션 정리 욕구가 강해지며, 마감 직전 큰 움직임이 나타날 수 있다.</div>
+    </div>
+    <div class="witching-step fade-in">
+      <div class="witching-step-num">4</div>
+      <div class="witching-step-text"><strong>이번엔 연준 이벤트 직후</strong> — FOMC 결과 + 트리플 위칭 + 호르무즈 해협 개방 기대까지 겹쳐 변동성이 더 컸다.</div>
+    </div>
+  </div>
+
+  <!-- 델타·감마 토글 설명 -->
+  <button class="toggle-btn" onclick="toggleSection('dgExplain', this)">
+    <span class="arrow">▶</span> 델타(Delta)·감마(Gamma)란? (클릭해서 펼치기)
+  </button>
+  <div class="toggle-content" id="dgExplain">
+    <div class="info-box blue-bg">
+      <div class="box-title">📐 옵션 용어 설명</div>
+      <ul>
+        <li><strong>델타(Δ)</strong> — 기초자산(주가) 가격이 1 변할 때 옵션 가격이 얼마나 변하는지 나타내는 민감도</li>
+        <li><strong>감마(Γ)</strong> — 기초자산 가격이 1 변할 때 델타가 얼마나 변하는지. 감마 헤지를 통해 델타에서 발생하는 손실을 최소화한다.</li>
+        <li><strong>감마 헤지 → 주식 매수</strong> — 콜 옵션을 많이 건 날, 마켓 메이커가 음(-)의 감마 포지션을 헤지하기 위해 주식을 매수하면서 주가 상승이 가속된다.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ④ 연준(FOMC) 회의 요약 -->
+<div class="section">
+  <div class="section-eyebrow">Section 04</div>
+  <h2>연준(FOMC) 회의 요약</h2>
+  <p>케빈 워시(Kevin Warsh) 신임 의장 체제 하에서 첫 번째 주요 FOMC 발표가 있었다. 결과는 만장일치 금리 동결이었고, 점도표(Dot Plot)는 2개로 나왔다.</p>
+
+  <div class="info-box">
+    <div class="box-title">📋 주요 결론</div>
+    <ul>
+      <li>기준금리 <strong>동결</strong> (만장일치)</li>
+      <li>올해 금리 인하는 없음. 한 차례 <strong>인상 가능성</strong> 시사</li>
+      <li>완화적 언급(이지 피봇 문구) 삭제 → 매우 확기(긴축 스탠스) 유지</li>
+      <li>시장 반응: 유가 하락 + 종전 기대 → 긍정적으로 해석</li>
+      <li>1994년 이후 최악의 첫 FOMC 성적표로 평가</li>
+    </ul>
+  </div>
+
+  <h3>커뮤니케이션 서비스 섹터 하락 이유</h3>
+  <p>금리 인상 기대감이 부각되면서 광고 수익에 의존하는 하이퍼스케일러(구글·메타 등)가 타격을 받았다. 높은 금리 환경 → 현금 흐름의 현재가치 하락 → 주가 압박 구조다.</p>
+
+  <div class="info-box alert">
+    <div class="box-title">⚠️ 이미 매도 권고했던 종목들</div>
+    <ul>
+      <li>구글, 메타 — 며칠 전 비중 줄이라고 언급</li>
+      <li>마이크로소프트 — 올해 초 매도 권고</li>
+      <li>아마존 — 올해 투자 대상 아님으로 분류</li>
+      <li>※ 위 종목 계속 보유 시 -20% 전후 손실 구간 형성</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ⑤ 30대 탈락 종목 -->
+<div class="section">
+  <div class="section-eyebrow">Section 05</div>
+  <h2>30대 그룹 — 6월 18일 탈락 6개사</h2>
+  <p>전량매각 또는 대량 비중 축소 결정된 종목들이다. 각기 다른 이유로 30대 그룹에서 제외됐다.</p>
+
+  <div class="expelled-grid">
+    <div class="expelled-chip">CRGY</div>
+    <div class="expelled-chip">MRK</div>
+    <div class="expelled-chip">GD</div>
+    <div class="expelled-chip">FANG</div>
+    <div class="expelled-chip">FICO</div>
+    <div class="expelled-chip">PAA</div>
+    <div class="expelled-chip" style="background:#1a1a1a;">PLTR</div>
+  </div>
+  <p style="font-size:12px; color:var(--text2);">※ PLTR(팔란티어)는 전쟁 종전 기대로 모멘텀 소멸. 총 7개 티커가 슬라이드에 표시됐으나 방송에서는 6개사 탈락으로 언급.</p>
+
+  <h3>탈락 이유별 분류</h3>
+  <div class="info-box">
+    <div class="box-title">📌 섹터/이유별 탈락 배경</div>
+    <ul>
+      <li><strong>CRGY, FANG, PAA (에너지)</strong> — 호르무즈 해협 개방 기대로 유가 하락 전망. 연말까지 유가 72달러 선 예상. 에너지 모멘텀 소멸.</li>
+      <li><strong>MRK (헬스케어)</strong> — 비만약(체중감소제)의 가치가 이미 주가에 충분히 반영됨. 더 이상 기대치 없음.</li>
+      <li><strong>GD (방위산업)</strong> — 종전 합의 기대. 전쟁이 끝나면 방위산업 수혜 모멘텀 급감.</li>
+      <li><strong>FICO (파이낸스)</strong> — 구체적 사유보다는 섹터 로테이션 가능성 감지.</li>
+      <li><strong>PLTR (소프트웨어)</strong> — 소프트웨어 전반 탈락 기조. 후반기 엔트로픽·오픈AI IPO로 캐시 분산 우려.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ⑥ 소프트웨어 섹터 경고 -->
+<div class="section">
+  <div class="section-eyebrow">Section 06</div>
+  <h2>소프트웨어 섹터 전면 탈락 선언</h2>
+  <p>오늘부로 소프트웨어 종목 전체를 포트폴리오에서 제외한다고 선언했다. 주요 이유는 다음과 같다.</p>
+
+  <div class="info-box alert">
+    <div class="box-title">🚨 소프트웨어 전량 매도 근거</div>
+    <ul>
+      <li>에이전틱(Agentic) AI가 기존 소프트웨어 비즈니스 모델을 대체할 가능성 높음</li>
+      <li>연말에 <strong>오픈AI·엔트로픽 IPO</strong> 예정 → 투자 캐시가 그쪽으로 집중됨</li>
+      <li>스페이스X가 이미 모든 캐시를 흡수하고 있는 상황에서 소프트웨어까지 살 여력 없음</li>
+      <li>CRM, APP 등 CRM 계열 즉시 축소/매도 권고</li>
+    </ul>
+  </div>
+
+  <p>7·8·9월부터 소프트웨어 투자 리스크가 더 높아질 것으로 전망. NOW도 30대 그룹 제외.</p>
+</div>
+
+<!-- ⑦ SpaceX 목표가 -->
+<div class="section">
+  <div class="section-eyebrow">Section 07</div>
+  <h2>SpaceX 기관 목표가 현황</h2>
+  <p>기관들의 목표가 산정이 본격적으로 시작됐다. 150달러에 진입한 멤버 기준으로 최고 목표가인 401달러 도달 시 약 2.7배 수익에 해당한다.</p>
+
+  <table>
+    <thead>
+      <tr><th>기관</th><th>기존 목표가</th><th>신규 목표가</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Oppenheimer</td><td>$190</td><td>$250</td></tr>
+      <tr><td>Arete</td><td>신규</td><td>$401</td></tr>
+      <tr><td>기타 기관 최저</td><td>—</td><td>$118</td></tr>
+      <tr><td>기관 평균</td><td>—</td><td>$235</td></tr>
+    </tbody>
+  </table>
+
+  <div class="chart-container fade-in">
+    <div class="chart-title">SpaceX 기관 목표가 비교</div>
+    <canvas id="spacexChart" height="220"></canvas>
+  </div>
+
+  <!-- SpaceX 수익률 시뮬레이터 -->
+  <div class="simulator fade-in">
+    <h4>🚀 SpaceX 수익률 시뮬레이터</h4>
+    <div class="sim-row">
+      <span class="sim-label">매입 단가($)</span>
+      <input type="range" class="sim-slider" id="buyPrice" min="100" max="250" value="150" step="5"
+        oninput="updateSimulator()">
+      <span class="sim-val" id="buyPriceVal">$150</span>
+    </div>
+    <div class="sim-row">
+      <span class="sim-label">목표가($)</span>
+      <input type="range" class="sim-slider" id="targetPrice" min="150" max="450" value="235" step="5"
+        oninput="updateSimulator()">
+      <span class="sim-val" id="targetPriceVal">$235</span>
+    </div>
+    <div class="sim-row">
+      <span class="sim-label">투자금(만원)</span>
+      <input type="range" class="sim-slider" id="investAmt" min="100" max="5000" value="1000" step="100"
+        oninput="updateSimulator()">
+      <span class="sim-val" id="investAmtVal">1,000만</span>
+    </div>
+    <div class="sim-result">
+      <div class="result-sub">예상 수익률</div>
+      <div class="result-main" id="simReturn">+56.7%</div>
+      <div class="result-gain" id="simGain">+567만원 수익</div>
+      <div class="result-sub" style="margin-top:8px;" id="simNote">목표가 $235 달성 시</div>
+    </div>
+    <button class="btn-reset" onclick="resetSimulator()">↺ 초기값으로</button>
+  </div>
+</div>
+
+<!-- ⑧ 유가 전망 -->
+<div class="section">
+  <div class="section-eyebrow">Section 08</div>
+  <h2>유가·에너지 섹터 전망</h2>
+  <p>호르무즈 해협 개방 기대로 유가가 심리적으로 안정됐다. 다만 실제 해협 통행 정상화까지는 수개월이 걸릴 것으로 보며, 연말까지 <strong>72달러 선</strong>을 예상한다.</p>
+
+  <div class="info-box">
+    <div class="box-title">🛢 에너지 섹터 포인트</div>
+    <ul>
+      <li>재고가 줄어 있는 상태 → 해업 재개 정상화에 수개월 소요 예상</li>
+      <li>유가 하락 → 항공·크루즈 섹터 수혜 (단기 반등 후 비중 축소)</li>
+      <li>에너지 종목 30대 그룹에서 탈락 (모멘텀 소멸)</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ⑨ 마이크론 일정 -->
+<div class="section">
+  <div class="section-eyebrow">Section 09</div>
+  <h2>마이크론(MU) 실적 발표 예고</h2>
+  <p>6월 24일(화) 마이크론 분기 실적 발표가 예정돼 있다. 목표가가 900달러에서 1,500달러로 상향 조정됐으며, 당일 1,100달러까지 상승했다.</p>
+
+  <div class="info-box blue-bg">
+    <div class="box-title">📅 대응 전략</div>
+    <ul>
+      <li>실적 발표 전 추가 매수 고려 (목표가 상향 근거)</li>
+      <li>발표 후 하락 시 → 못 산 사람들의 추가 매수 기회</li>
+      <li>상승 시 → 기존 보유자는 유지</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ⑩ 포트폴리오 관리 원칙 -->
+<div class="section">
+  <div class="section-eyebrow">Section 10</div>
+  <h2>포트폴리오 관리 원칙</h2>
+
+  <h3>트리플 위칭 데이의 포트폴리오 스탠스</h3>
+  <div class="info-box">
+    <div class="box-title">📌 결론</div>
+    <ul>
+      <li>트리플 위칭 자체가 강한 방향성을 만들지 않음 → 변동성을 키우는 촉매 역할</li>
+      <li>30대 그룹 멤버: 유동성 높지만 리스크도 큰 날 → 큰 포지션 조정은 피할 것</li>
+      <li>비중 조정이 안 된 멤버: 평균 수익률이 과하게 높거나 과하게 잃는 날</li>
+      <li>이미 줄여놓은 포지션은 추가 조정 불필요</li>
+    </ul>
+  </div>
+
+  <h3>30대 그룹 편입 기준</h3>
+  <p>30대 그룹은 구색맞추기식으로 편입되는 게 아니다. 방대한 데이터 분석을 통해 선정되고, 탈락할 때도 기관 포지션 변화·섹터 로테이션·주가 모멘텀 소멸 등의 명확한 분석 결과를 바탕으로 빠진다.</p>
+
+  <div class="quote">"여러분들 할 수 없으니까 그런가 보다 하고 따라오시면 됩니다. 트리플 위칭 자체가 강한 방향성을 만들지는 않지만 변동성을 크게 키우는 촉매제 역할을 합니다."</div>
+</div>
+
+<!-- ⑪ TIC 데이터 / 달러·국채 -->
+<div class="section">
+  <div class="section-eyebrow">Section 11</div>
+  <h2>달러·미국 국채 수요 (TIC 데이터)</h2>
+  <p>TIC(Treasury International Capital) 데이터는 국제 사회에서 미국 국채가 얼마나 인기 있는지를 보여주는 지표다. 현재까지는 안정적이다.</p>
+
+  <div class="info-box">
+    <div class="box-title">📊 현황</div>
+    <ul>
+      <li>달러와 미국 국채(트레저리)에 대한 수요: <strong>현재 안정적</strong></li>
+      <li>일본 금리 인상 시 → 해외 자금이 일본으로 유출될 위험 존재</li>
+      <li>아직 데이터상으로는 큰 문제 없음</li>
+    </ul>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- FOOTER -->
+<div class="footer">
+  <p><strong>⚠️ 투자 면책 공지</strong><br>
+  Investment Products/Are Not FDIC Insured/Are Not Bank Guaranteed/May Lose Value.<br>
+  본 분석은 투자는인생TV 방송 내용을 요약한 것으로, 특정 종목 매수·매도를 권유하지 않습니다. 모든 투자 결정은 본인 책임 하에 이루어져야 합니다.</p>
+  <p style="margin-top:10px;">출처: 투자는인생TV 멤버 전용 방송 (2026.06.18) | David Lee (테일러투자그룹 CIO)</p>
+</div>
+
+<script>
+// ── fade-in observer ──
+const fadeObs = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), i * 80);
+      fadeObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.12 });
+document.querySelectorAll('.fade-in').forEach(el => fadeObs.observe(el));
+
+// ── chart configs ──
+const chartConfigs = {};
+
+chartConfigs['stockChart'] = () => {
+  const ctx = document.getElementById('stockChart');
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['INTC', 'MRVL', 'SNDK', 'SEZL', 'CLSK', 'SPX-등락'],
+      datasets: [{
+        label: '당일 상승률 (%)',
+        data: [10.7, 12.0, 10.63, 29.0, 8.81, -1.2],
+        backgroundColor: [
+          '#e11d48','#e11d48','#e11d48','#e11d48','#e11d48','#6b7280'
+        ],
+        borderRadius: 5,
+        borderSkipped: false,
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: { label: ctx => ` ${ctx.raw > 0 ? '+' : ''}${ctx.raw}%` }
+        }
+      },
+      scales: {
+        y: {
+          grid: { color: '#e5e5e5' },
+          ticks: { callback: v => v + '%', font: { size: 11 } }
+        },
+        x: { ticks: { font: { size: 11 } } }
+      }
+    }
+  });
+};
+
+chartConfigs['spacexChart'] = () => {
+  const ctx = document.getElementById('spacexChart');
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['Oppenheimer\n기존', 'Oppenheimer\n신규', 'Arete\n신규', '기관 최저', '기관 평균'],
+      datasets: [{
+        label: '목표가 ($)',
+        data: [190, 250, 401, 118, 235],
+        backgroundColor: ['#6b7280','#e11d48','#e11d48','#6b7280','#2563eb'],
+        borderRadius: 5,
+        borderSkipped: false,
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: { label: ctx => ` $${ctx.raw}` }
+        }
+      },
+      scales: {
+        y: {
+          beginAtZero: false,
+          min: 50,
+          grid: { color: '#e5e5e5' },
+          ticks: { callback: v => '$' + v, font: { size: 11 } }
+        },
+        x: { ticks: { font: { size: 10 }, maxRotation: 0 } }
+      }
+    }
+  });
+};
+
+// ── chart observer ──
+const chartObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const canvas = e.target.querySelector('canvas');
+      if (canvas && chartConfigs[canvas.id]) {
+        chartConfigs[canvas.id]();
+        e.target.classList.add('chart-ready');
+        chartObs.unobserve(e.target);
+      }
+    }
+  });
+}, { threshold: 0.15 });
+document.querySelectorAll('.chart-container').forEach(el => chartObs.observe(el));
+
+// ── toggle ──
+function toggleSection(id, btn) {
+  const el = document.getElementById(id);
+  const arrow = btn.querySelector('.arrow');
+  el.classList.toggle('open');
+  arrow.classList.toggle('open-arrow');
+}
+
+// ── SpaceX simulator ──
+function updateSimulator() {
+  const buy = parseInt(document.getElementById('buyPrice').value);
+  const target = parseInt(document.getElementById('targetPrice').value);
+  const amt = parseInt(document.getElementById('investAmt').value);
+
+  document.getElementById('buyPriceVal').textContent = '$' + buy;
+  document.getElementById('targetPriceVal').textContent = '$' + target;
+  document.getElementById('investAmtVal').textContent = amt.toLocaleString() + '만';
+
+  const returnPct = ((target - buy) / buy * 100).toFixed(1);
+  const gainAmt = Math.round(amt * (target - buy) / buy);
+
+  document.getElementById('simReturn').textContent = (returnPct > 0 ? '+' : '') + returnPct + '%';
+  document.getElementById('simGain').textContent = (gainAmt > 0 ? '+' : '') + gainAmt.toLocaleString() + '만원 수익';
+  document.getElementById('simNote').textContent = `목표가 $${target} 달성 시 (매입 $${buy} 기준)`;
+}
+
+function resetSimulator() {
+  document.getElementById('buyPrice').value = 150;
+  document.getElementById('targetPrice').value = 235;
+  document.getElementById('investAmt').value = 1000;
+  updateSimulator();
+}
+
+updateSimulator();
+</script>
+</body>
+</html>
