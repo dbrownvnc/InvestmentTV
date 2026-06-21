@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SpaceX, 망고에서 바나나로 — 분석 리포트</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;0,900;1,500&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+:root{
+  --bg:#ffffff; --bg2:#fafafa; --text:#1a1a1a; --text2:#777777;
+  --accent:#e11d48; --accent2:#f43f5e;
+  --c1:#e11d48; --c2:#1a1a1a; --c3:#6b7280; --c4:#2563eb;
+  --line:#e5e5e5;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  background:var(--bg); color:var(--text);
+  font-family:'Noto Sans KR',sans-serif; font-weight:400;
+  line-height:1.75; -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:680px; margin:0 auto; padding:0 22px;}
+
+/* ===== Header ===== */
+.masthead{padding:54px 0 30px; border-bottom:3px solid var(--text);}
+.kicker{
+  font-family:'Noto Sans KR'; font-size:12px; font-weight:700;
+  letter-spacing:3px; text-transform:uppercase; color:var(--accent);
+}
+.masthead h1{
+  font-family:'Playfair Display',serif; font-weight:900;
+  font-size:42px; line-height:1.12; margin:14px 0 8px; letter-spacing:-.5px;
+}
+.masthead h1 em{font-style:italic; color:var(--accent);}
+.subtitle{font-size:15px; color:var(--text2); font-weight:300; margin-top:10px;}
+.meta-row{
+  display:flex; flex-wrap:wrap; gap:8px 18px; margin-top:20px;
+  font-size:12px; color:var(--text2); letter-spacing:.5px;
+}
+.meta-row span b{color:var(--text); font-weight:500;}
+
+/* ===== Section ===== */
+section{padding:42px 0; border-bottom:1px solid var(--line);}
+.sec-num{
+  font-family:'Playfair Display',serif; font-style:italic;
+  font-size:15px; color:var(--accent); font-weight:700; letter-spacing:1px;
+}
+h2{
+  font-family:'Playfair Display',serif; font-weight:700;
+  font-size:27px; line-height:1.25; margin:6px 0 18px; letter-spacing:-.3px;
+}
+h3{
+  font-size:17px; font-weight:700; margin:26px 0 12px;
+  padding-left:13px; border-left:4px solid var(--accent);
+}
+p{margin:14px 0; font-size:15.5px; color:#2a2a2a;}
+strong{font-weight:700; color:var(--text);}
+.hl{background:linear-gradient(transparent 58%, #fde2e8 58%); font-weight:700;}
+
+/* ===== Lead / pullquote ===== */
+.lead{
+  font-family:'Playfair Display',serif; font-size:20px; line-height:1.6;
+  font-weight:500; color:var(--text); font-style:italic; margin:0 0 6px;
+}
+.pull{
+  margin:30px 0; padding:22px 26px; background:var(--bg2);
+  border-left:4px solid var(--accent); font-family:'Playfair Display',serif;
+  font-style:italic; font-size:18px; line-height:1.55; color:var(--text);
+}
+
+/* ===== Summary box ===== */
+.summary{background:var(--bg2); border:1px solid var(--line); border-radius:4px; padding:24px 22px; margin-top:24px;}
+.summary .stag{font-size:11px; font-weight:700; letter-spacing:2px; color:var(--accent); text-transform:uppercase;}
+.summary ul{list-style:none; margin-top:14px;}
+.summary li{position:relative; padding:9px 0 9px 26px; font-size:14.5px; border-bottom:1px dashed var(--line);}
+.summary li:last-child{border-bottom:none;}
+.summary li::before{content:"▸"; position:absolute; left:4px; color:var(--accent); font-weight:700;}
+
+/* ===== Cards / Tables ===== */
+table{width:100%; border-collapse:collapse; margin:20px 0; font-size:14px; background:var(--bg2); border:1px solid var(--line);}
+th{background:var(--accent); color:#fff; padding:11px 12px; text-align:left; font-weight:700; font-size:13px;}
+td{padding:11px 12px; border-bottom:1px solid var(--line); color:#333;}
+tr:last-child td{border-bottom:none;}
+td.num{font-weight:700; color:var(--accent);}
+
+/* ===== Chart ===== */
+.chart-wrap{background:var(--bg2); border:1px solid var(--line); border-radius:4px; padding:20px 16px 14px; margin:24px 0;}
+.chart-title{font-size:14px; font-weight:700; margin-bottom:4px;}
+.chart-cap{font-size:12px; color:var(--text2); margin-bottom:14px;}
+.chart-container{position:relative; max-height:340px;}
+.chart-container canvas{opacity:0; transition:opacity .4s ease; max-height:300px;}
+.chart-container.chart-ready canvas{opacity:1;}
+
+/* ===== fade-in ===== */
+.fade-in{opacity:0; transform:translateY(18px); transition:opacity .7s ease, transform .7s ease;}
+.fade-in.visible{opacity:1; transform:translateY(0);}
+
+/* ===== Timeline (naming) ===== */
+.evo{display:flex; flex-direction:column; gap:10px; margin:22px 0;}
+.evo-item{
+  display:flex; align-items:center; gap:14px; padding:14px 16px;
+  background:var(--bg2); border:1px solid var(--line); border-radius:6px;
+  cursor:pointer; transition:all .25s ease;
+}
+.evo-item:hover{border-color:var(--accent); transform:translateX(4px);}
+.evo-item.active{background:#fff; border-color:var(--accent); box-shadow:0 4px 16px rgba(225,29,72,.12);}
+.evo-yr{font-family:'Playfair Display',serif; font-weight:900; font-size:15px; color:var(--accent); min-width:62px;}
+.evo-name{font-weight:700; font-size:18px; flex:1;}
+.evo-arrow{color:var(--text2); font-size:13px;}
+.evo-detail{
+  max-height:0; overflow:hidden; transition:max-height .35s ease, padding .35s ease;
+  font-size:14px; color:#444; padding:0 16px;
+}
+.evo-detail.open{max-height:200px; padding:6px 16px 16px;}
+.evo-tip{font-size:12px; color:var(--text2); margin-bottom:14px; text-align:center;}
+
+/* ===== BANANA cards ===== */
+.banana-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin:20px 0;}
+.bcard{
+  perspective:900px; height:104px; cursor:pointer;
+}
+.bcard-inner{position:relative; width:100%; height:100%; transition:transform .55s; transform-style:preserve-3d;}
+.bcard.flipped .bcard-inner{transform:rotateY(180deg);}
+.bface{position:absolute; width:100%; height:100%; backface-visibility:hidden; border-radius:8px; display:flex; flex-direction:column; align-items:center; justify-content:center; border:1px solid var(--line);}
+.bfront{background:var(--accent); color:#fff;}
+.bfront .letter{font-family:'Playfair Display',serif; font-weight:900; font-size:30px;}
+.bfront .qm{font-size:11px; opacity:.85; margin-top:2px;}
+.bback{background:#fff; transform:rotateY(180deg); padding:8px; text-align:center; border:1px solid var(--accent);}
+.bback .bname{font-weight:700; font-size:14px; color:var(--accent);}
+.bback .bdesc{font-size:11px; color:var(--text2); margin-top:3px; line-height:1.4;}
+.banana-tip{font-size:12px; color:var(--text2); text-align:center; margin-bottom:6px;}
+
+/* ===== Synergy diagram ===== */
+.synergy{margin:22px 0;}
+.syn-hub{text-align:center; margin:14px 0;}
+.syn-hub .core{
+  display:inline-block; padding:14px 28px; background:var(--text); color:#fff;
+  border-radius:50px; font-weight:700; font-size:16px;
+}
+.syn-nodes{display:grid; grid-template-columns:repeat(2,1fr); gap:12px; margin-top:8px;}
+.syn-node{
+  background:var(--bg2); border:1px solid var(--line); border-top:3px solid var(--accent);
+  border-radius:6px; padding:14px;
+}
+.syn-node h4{font-size:14px; font-weight:700; margin-bottom:5px; color:var(--accent);}
+.syn-node p{font-size:13px; margin:0; color:#444;}
+
+/* ===== Calculator ===== */
+.calc{background:var(--bg2); border:1px solid var(--line); border-radius:6px; padding:22px 18px; margin:22px 0;}
+.calc-label{font-size:13px; font-weight:700; margin-bottom:6px;}
+.calc-row{margin:16px 0;}
+.calc input[type=range]{width:100%; accent-color:var(--accent); height:6px; cursor:pointer;}
+.calc input[type=number]{width:100%; padding:9px 11px; border:1px solid var(--line); border-radius:5px; font-size:14px; font-family:inherit;}
+.calc-val{font-family:'Playfair Display',serif; font-weight:900; color:var(--accent); font-size:18px;}
+.calc-out{margin-top:18px; padding:18px; background:#fff; border:1px solid var(--accent); border-radius:6px; text-align:center;}
+.calc-out .big{font-family:'Playfair Display',serif; font-weight:900; font-size:34px; color:var(--accent); line-height:1;}
+.calc-out .lbl{font-size:12px; color:var(--text2); margin-top:6px;}
+.calc-reset{margin-top:14px; width:100%; padding:11px; background:var(--text); color:#fff; border:none; border-radius:5px; font-size:13px; font-weight:700; cursor:pointer; font-family:inherit;}
+.calc-reset:hover{background:var(--accent);}
+.calc-note{font-size:11.5px; color:var(--text2); margin-top:10px; line-height:1.5;}
+
+/* ===== Lockup timeline ===== */
+.lock{margin:22px 0;}
+.lock-item{display:flex; gap:14px; padding:16px 0; border-bottom:1px solid var(--line);}
+.lock-item:last-child{border-bottom:none;}
+.lock-dot{min-width:14px; height:14px; border-radius:50%; background:var(--accent); margin-top:5px; position:relative;}
+.lock-dot::after{content:""; position:absolute; left:6px; top:14px; width:2px; height:46px; background:var(--line);}
+.lock-item:last-child .lock-dot::after{display:none;}
+.lock-when{font-weight:700; font-size:14px;}
+.lock-pct{display:inline-block; margin-left:8px; background:#fde2e8; color:var(--accent); font-size:12px; font-weight:700; padding:2px 9px; border-radius:20px;}
+.lock-desc{font-size:13.5px; color:#444; margin-top:4px;}
+
+/* ===== Glossary ===== */
+.gloss{background:var(--bg2); border:1px solid var(--line); border-radius:4px; padding:18px 20px; margin-top:20px;}
+.gloss dt{font-weight:700; font-size:14px; color:var(--accent); margin-top:12px;}
+.gloss dt:first-child{margin-top:0;}
+.gloss dd{font-size:13.5px; color:#444; margin:3px 0 0;}
+
+/* ===== Disclaimer ===== */
+.disc{background:#fff7f9; border:1px solid #f9c9d6; border-radius:6px; padding:18px 20px; margin:30px 0; font-size:13px; color:#8a3a52; line-height:1.6;}
+.disc b{color:var(--accent);}
+
+/* ===== Footer ===== */
+footer{padding:34px 0 56px; text-align:center; color:var(--text2); font-size:12px;}
+footer .fp{font-family:'Playfair Display',serif; font-style:italic; font-size:15px; color:var(--text); margin-bottom:8px;}
+
+@media(max-width:480px){
+  .masthead h1{font-size:33px;}
+  h2{font-size:23px;}
+  .banana-grid{grid-template-columns:repeat(3,1fr); gap:7px;}
+  .bcard{height:92px;}
+  .bfront .letter{font-size:24px;}
+  .syn-nodes{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+<!-- ===== MASTHEAD ===== -->
+<header class="masthead fade-in">
+  <div class="kicker">Investment Briefing · 2026.06.21</div>
+  <h1>SpaceX,<br><em>망고</em>에서 <em>바나나</em>로</h1>
+  <p class="subtitle">스페이스X의 테슬라 인수합병 소문과 'BANANAS' 시대 — 그리고 2027년에 날아올 청구서</p>
+  <div class="meta-row">
+    <span>출처 <b>YouTube 방송</b></span>
+    <span>분류 <b>경제 · 미국주식</b></span>
+    <span>성격 <b>소문 기반 분석</b></span>
+  </div>
+</header>
+
+<!-- ===== SUMMARY ===== -->
+<section class="fade-in">
+  <p class="lead">"소문이기 때문에 될지 안 될지는 모릅니다. 하지만 여러 정황상 안 할 수가 없지 않느냐 — 저는 그렇게 보고 있습니다."</p>
+  <div class="summary">
+    <div class="stag">한눈에 보는 핵심</div>
+    <ul>
+      <li><strong>스페이스X가 테슬라를 인수합병</strong>할 가능성이 크다는 소문 — 아직 공식화 전, 1대1 면담 멤버에게는 1~2주 전 선공유</li>
+      <li>합병 이유는 실적 부진이 아니라 <strong>에너지 저장·배터리·로봇택시·옵티머스</strong>의 시너지</li>
+      <li>xAI 데이터센터의 에너지 패키지를 테슬라가 공급 → <strong>통합 관리</strong> 시 비용 저감</li>
+      <li>엔지니어 호환으로 <strong>인건비·비용 30~40% 이상 절감</strong> 기대</li>
+      <li>네이밍 진화: <strong>팡(FAANG, 2024) → M7(2025) → 망고(2026 초) → 바나나스(BANANAS)</strong></li>
+      <li>2027년, 하이퍼스케일러들이 <strong>"그래서 얼마 벌었어?"</strong> 성적표를 받는 해 → 주가 반토막 경고</li>
+      <li>SpaceX 락업: 8월 실적 후 ~4%, 연말 실적 때 10~15% 해제 → <strong>내년 초 합병 가능성</strong></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ===== SEC 1 ===== -->
+<section class="fade-in">
+  <div class="sec-num">01 — The Rumor</div>
+  <h2>"우리 방송에서 제일 먼저 얘기한 겁니다"</h2>
+  <p>이번 방송의 출발점은 하나의 소문입니다. <span class="hl">스페이스X(SpaceX)가 테슬라(Tesla)를 인수합병할 가능성이 크다</span>는 것. 아직 공식화되기 전이지만, 시장에서 소문이 본격적으로 돌기 시작했다고 진행자는 전합니다.</p>
+  <p>진행자는 이 정보를 <strong>1대1 포트폴리오 면담 레벨</strong>의 멤버들에게는 약 1~2주 전 미리 귀띔했다고 밝힙니다. 펀드 규모가 큰 분들이 주로 1대1 면담을 하기 때문에, 소문 단계에서는 조심스럽게 먼저 정보를 전달했다는 설명입니다.</p>
+  <div class="pull">"테슬라의 실적이 나빠서가 아닙니다. 테슬라가 가진 기술들 — 에너지 저장, 배터리, 로봇택시, 옵티머스 — 이게 스페이스X와 합쳐졌을 때의 시너지 때문입니다."</div>
+</section>
+
+<!-- ===== SEC 2 ===== -->
+<section class="fade-in">
+  <div class="sec-num">02 — Synergy</div>
+  <h2>왜 합병인가: 한 지붕 아래의 시너지</h2>
+  <p>진행자가 보는 합병의 본질은 <strong>'통합 관리'</strong>입니다. 스페이스X는 우주항공 기업이지만, 그 안에 <strong>xAI</strong>가 있고 xAI는 막대한 <strong>데이터센터</strong>를 필요로 합니다. 그 데이터센터에 들어가는 에너지 패키지를 이미 테슬라가 공급하고 있다는 점이 핵심 연결고리입니다.</p>
+
+  <div class="synergy">
+    <div class="syn-hub">
+      <span class="core">SpaceX + Tesla + Starlink + xAI</span>
+    </div>
+    <div class="syn-nodes">
+      <div class="syn-node">
+        <h4>에너지 패키지</h4>
+        <p>xAI 데이터센터용 에너지 저장 설비를 테슬라가 공급 → 내부 조달로 통합 관리</p>
+      </div>
+      <div class="syn-node">
+        <h4>로봇택시 · 자율주행</h4>
+        <p>스타링크 연결 + 자율주행 로봇택시 → 매출 큰 폭 증가 기대</p>
+      </div>
+      <div class="syn-node">
+        <h4>광고 매출</h4>
+        <p>플랫폼·트래픽 증가에 따른 광고 부과 매출 — "광고만으론 부족하지만 분명한 증대 효과"</p>
+      </div>
+      <div class="syn-node">
+        <h4>자체 보유의 힘</h4>
+        <p>구글·MS는 오픈AI·앤스로픽에 '투자'만 했지 자기 회사가 아님. 테슬라+스타링크는 내부 역량</p>
+      </div>
+    </div>
+  </div>
+
+  <p>진행자는 테슬라가 xAI에 공급한 에너지 매출과 관련해 <span class="hl">"10억불인가, 혹은 1밀리언·2밀리언 수준"</span>의 매출이 발생해 왔다고 언급합니다(수치는 방송에서 언급된 그대로). 합병이 성사되면 이런 거래가 내부화되어 통합 관리가 가능해진다는 것입니다.</p>
+
+  <div class="disc">
+    <b>※ 참고</b> — 본 리포트는 방송에서 언급된 <b>소문과 진행자의 견해</b>를 정리한 것입니다. 인수합병은 공식 발표 전 단계이며, 등장하는 수치는 진행자가 구두로 언급한 값을 그대로 옮긴 것으로 정확성이 검증된 공식 수치가 아닙니다. 투자 판단의 근거로 삼기 전 반드시 별도 확인이 필요합니다.
+  </div>
+</section>
+
+<!-- ===== SEC 3 ===== -->
+<section class="fade-in">
+  <div class="sec-num">03 — Cost Cut</div>
+  <h2>엔지니어 호환성: 비용 30~40% 절감</h2>
+  <p>두 번째 강점으로 진행자가 꼽은 것은 <strong>엔지니어의 호환성</strong>입니다. 우주항공은 별개라 해도, AI 데이터센터 관련 에너지 패키지·배터리 영역에서는 <span class="hl">xAI에서 일하던 인력이 테슬라로 이동</span>할 수 있습니다. 자율주행과 로봇택시가 있어 기술이 호환되기 때문입니다.</p>
+  <p>그 결과 <strong>인건비를 포함한 비용이 30~40% 이상 절감</strong>될 것으로 본다는 게 진행자의 추정입니다. 아래에서 절감률을 직접 움직여보세요.</p>
+
+  <div class="calc">
+    <div class="calc-row">
+      <div class="calc-label">연간 통합 비용 가정 (단위: 억 달러)</div>
+      <input type="number" id="baseCost" value="100" min="1" max="100000">
+    </div>
+    <div class="calc-row">
+      <div class="calc-label">예상 비용 절감률 — <span class="calc-val" id="rateVal">35%</span></div>
+      <input type="range" id="rate" min="0" max="60" value="35" step="1">
+    </div>
+    <div class="calc-out">
+      <div class="big" id="saveOut">35억 달러</div>
+      <div class="lbl">연간 절감액 (절감 후 비용 <span id="afterOut">65억 달러</span>)</div>
+    </div>
+    <button class="calc-reset" id="calcReset">초기값으로 리셋 (35%)</button>
+    <div class="calc-note">※ 방송에서 언급된 "30~40% 이상" 절감 범위를 기준으로 한 가상 시뮬레이터입니다. 통합 비용 수치는 임의 가정값이며 실제 재무 수치가 아닙니다.</div>
+  </div>
+</section>
+
+<!-- ===== SEC 4 ===== -->
+<section class="fade-in">
+  <div class="sec-num">04 — Valuation</div>
+  <h2>매출 전망: 기관 vs 머스크</h2>
+  <p>가치 평가에 대해 진행자는 두 갈래의 시각을 전합니다. <strong>기관들</strong>은 800밀리언 달러 수준으로 평가하는 반면, <strong>일론 머스크</strong>는 2030년까지 <span class="hl">1조 달러(1 trillion) 규모의 매출</span>을 예상한다는 것입니다. 최소치로 보더라도 500밀리언 수준은 된다고 언급합니다.</p>
+
+  <div class="chart-wrap">
+    <div class="chart-title">언급된 매출/평가 전망 (방송 구두 수치)</div>
+    <div class="chart-cap">단위가 혼재되어 있어(밀리언·트릴리언) 상대적 크기 비교용으로만 참고하세요.</div>
+    <div class="chart-container fade-in">
+      <canvas id="revChart" height="230"></canvas>
+    </div>
+  </div>
+  <p>진행자는 "최소 500밀리언은 되니 지금보다 가격이나 가치가 높아질 것"이라며, 합병이 가치 상승의 촉매가 될 수 있다고 봅니다. 다만 이는 어디까지나 전망이며, 단위가 들쭉날쭉해 정밀한 수치 비교보다는 '방향성'으로 받아들이는 게 안전합니다.</p>
+</section>
+
+<!-- ===== SEC 5 ===== -->
+<section class="fade-in">
+  <div class="sec-num">05 — Naming</div>
+  <h2>팡(FAANG) · M7 · 망고 · 바나나</h2>
+  <p>이 방송의 제목이기도 한 핵심 프레임입니다. 진행자는 미국 시장의 주도주를 부르는 별칭이 해마다 진화해 왔다고 설명합니다. 아래 단계를 눌러 펼쳐보세요.</p>
+
+  <div class="evo-tip">▼ 항목을 클릭하면 설명이 펼쳐집니다</div>
+  <div class="evo">
+    <div>
+      <div class="evo-item" data-evo="0">
+        <span class="evo-yr">2024</span><span class="evo-name">팡 (FAANG)</span><span class="evo-arrow">자세히 ▾</span>
+      </div>
+      <div class="evo-detail" id="evo0">미국 투자 초기에 등장한 첫 별칭 '팡(FAANG)'. 페이스북·아마존·애플·넷플릭스·구글을 묶어 부르던, 빅테크 주도주의 원조 격 표현입니다.</div>
+    </div>
+    <div>
+      <div class="evo-item" data-evo="1">
+        <span class="evo-yr">2025</span><span class="evo-name">M7 (맥세븐)</span><span class="evo-arrow">자세히 ▾</span>
+      </div>
+      <div class="evo-detail" id="evo1">매그니피센트 세븐(Magnificent 7). 빅테크 7종목을 묶어 부른, 누구나 아는 대표 별칭입니다.</div>
+    </div>
+    <div>
+      <div class="evo-item" data-evo="2">
+        <span class="evo-yr">2026 초</span><span class="evo-name">망고 (MANGO)</span><span class="evo-arrow">자세히 ▾</span>
+      </div>
+      <div class="evo-detail" id="evo2">올해 초 등장한 별칭. 진행자는 "이게 돈을 벌어다 줄 거다"라는 식의 추천을 방송에서 한 번도 하지 않았다고 강조합니다. 포트폴리오는 한두 종목 빼고는 그렇게 늘지 않는다는 경계의 의미입니다.</div>
+    </div>
+    <div>
+      <div class="evo-item active" data-evo="3">
+        <span class="evo-yr">지금</span><span class="evo-name" style="color:var(--accent)">바나나스 (BANANAS)</span><span class="evo-arrow">자세히 ▾</span>
+      </div>
+      <div class="evo-detail open" id="evo3">현재의 별칭 '바나나(BANANA)'. 진행자는 여기에 스페이스X의 'S'를 붙여 'BANANAS'로 부르기도 합니다. 아래에서 각 알파벳이 어떤 기업인지 확인하세요.</div>
+    </div>
+  </div>
+
+  <h3>BANANAS, 한 글자씩 뒤집어보기</h3>
+  <p class="banana-tip">▼ 카드를 클릭하면 어떤 기업인지 뒤집혀 보입니다</p>
+  <div class="banana-grid" id="bananaGrid"></div>
+  <p>진행자는 이 종목들을 묶어 'BANANA'로 부르며, 여기에 <strong>스페이스X의 'S'</strong>를 붙여 <strong>'BANANAS'</strong> 라인업을 구성하는 식의 표현을 사용합니다. 연말~내년에는 <strong>앤스로픽·오픈AI의 상장</strong>이 더해지며 각각 별개 회사로 시장에 등장합니다.</p>
+  <p>다만 진행자의 결론은 분명합니다. 별개로 흩어진 회사들보다, <span class="hl">테슬라·스타링크·xAI가 한 회사로 통합</span>될 때의 시너지가 훨씬 뛰어날 가능성이 있다는 것.</p>
+</section>
+
+<!-- ===== SEC 6 ===== -->
+<section class="fade-in">
+  <div class="sec-num">06 — The Bill (2027)</div>
+  <h2>2027년, 청구서가 날아온다</h2>
+  <p>가장 강한 경고가 담긴 대목입니다. 지금 <strong>하이퍼스케일러(Hyperscaler)</strong>들은 은행에서 돈을 빌려 데이터센터를 짓고 있습니다. 비용은 계속 확대되는 중입니다. 그렇다면 시장이 묻는 순간이 옵니다.</p>
+  <div class="pull">"야, 그렇게 트릴리언 달러 이상을 썼는데 — 2027년, 너 얼마 벌었어?"</div>
+  <p>진행자는 이 '성적표를 받는 단계'가 <span class="hl">2027년</span>이라고 못 박습니다. 그런데 실제로 매출이 회수되기까지는 <strong>2~3년이 더 걸린다</strong>는 것. 그 간극에서 주가가 흔들립니다.</p>
+  <table>
+    <tr><th>시점</th><th>국면</th></tr>
+    <tr><td class="num">2024</td><td>'팡(FAANG)' — 미국 투자 초기 별칭 등장</td></tr>
+    <tr><td class="num">2025</td><td>'M7' — 빅테크 주도주 랠리</td></tr>
+    <tr><td class="num">2026</td><td>'망고 → 바나나스(BANANAS)' — 주도주 압축, 데이터센터 투자 확대</td></tr>
+    <tr><td class="num">2027</td><td><strong>성적표의 해</strong> — "얼마 벌었어?" 검증, 회수까지 2~3년 더</td></tr>
+  </table>
+  <p>그래서 진행자의 당부는 단호합니다. <strong>"내년엔 정신 똑바로 차려야 합니다."</strong> 올해 좋았던 종목, 올해 죽 쒔던 종목이 더 죽 쑤거나 <span class="hl">반토막 날 가능성</span>이 크다고 봅니다.</p>
+</section>
+
+<!-- ===== SEC 7 ===== -->
+<section class="fade-in">
+  <div class="sec-num">07 — Lock-up & Advice</div>
+  <h2>락업 해제 일정과 투자 조언</h2>
+  <p>합병 시점을 추정하는 단서로 진행자는 <strong>SpaceX 락업(보호예수) 해제 일정</strong>을 제시합니다. 진행자 본인은 프리IPO·스톡스플릿·상장 첫날 매수를 합쳐 상당 물량을 보유 중이라고 밝힙니다.</p>
+
+  <div class="lock">
+    <div class="lock-item">
+      <div class="lock-dot"></div>
+      <div>
+        <span class="lock-when">8월 실적 발표 후</span><span class="lock-pct">~4% 해제</span>
+        <div class="lock-desc">실적 발표일 + 영업일 2일(plus 2 business days) 뒤, 3일째부터 매도 가능. 멤버 보유분 기준 약 4% 남짓.</div>
+      </div>
+    </div>
+    <div class="lock-item">
+      <div class="lock-dot"></div>
+      <div>
+        <span class="lock-when">연말 (11월~12월 초)</span><span class="lock-pct">10~15% 해제</span>
+        <div class="lock-desc">연말 실적 발표 시점에 10~15%가 추가로 풀림. 변동성은 크겠지만 이 시점 이후 동향이 관건.</div>
+      </div>
+    </div>
+    <div class="lock-item">
+      <div class="lock-dot"></div>
+      <div>
+        <span class="lock-when">내년 초</span><span class="lock-pct">합병 가능성</span>
+        <div class="lock-desc">락업이 풀리고 주가·동향이 정리된 뒤, 내년 초쯤 인수합병이 이뤄질 가능성이 있다고 진행자는 전망.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>테슬라 · 앤스로픽에 대한 조언</h3>
+  <p>인수합병 시 누가 캐시를 다 쓰겠느냐며, 진행자는 현금에 더해 <strong>스타링크 지분 + 프리미엄</strong>을 얹는 형태의 거래 가능성을 시사합니다. 일론 머스크의 의결권이 80%(실제 지분과는 다름)라는 점, 최대주주라는 점도 합병 추진의 배경으로 봅니다.</p>
+  <p>그래서 <span class="hl">"테슬라를 올해 말 전에는 조금 담아두는 게 좋지 않을까"</span>라는 조언을 내놓습니다. 합병 시 프리미엄이 붙을 수 있기 때문입니다. 단, 진행자는 강하게 경계합니다 — 이 얘기를 보고 <strong>혹해서 왕창 들어가는 것</strong>, 특히 최근 합류한 분이나 '뜨내기'들이 포트폴리오 관점 없이 몰빵하는 것을 가장 우려합니다.</p>
+  <p>연말 상장이 예상되는 <strong>오픈AI는 투자하기 부담스럽다</strong>고 보는 반면, <strong>앤스로픽(Anthropic)</strong>에 대해서는 멤버들이 매수하는 것을 반대하지 않으며 본인도 관심이 있다고 밝힙니다.</p>
+</section>
+
+<!-- ===== GLOSSARY ===== -->
+<section class="fade-in">
+  <div class="sec-num">08 — Glossary</div>
+  <h2>용어 풀이</h2>
+  <dl class="gloss">
+    <dt>하이퍼스케일러 (Hyperscaler)</dt>
+    <dd>초대형 데이터센터·클라우드 인프라를 운영하는 빅테크 기업군. 현재 은행 차입으로 데이터센터를 대규모 증설 중.</dd>
+    <dt>락업 (Lock-up, 보호예수)</dt>
+    <dd>상장 후 일정 기간 주식을 팔지 못하도록 묶어두는 제도. 해제 시점에 매도 물량이 풀리며 주가 변동 요인이 됨.</dd>
+    <dt>의결권 (Voting Rights)</dt>
+    <dd>주주총회에서 행사하는 표결권. 실제 보유 지분과 별개로, 차등의결권 구조에서는 지분보다 큰 의결권을 가질 수 있음.</dd>
+    <dt>프리IPO (Pre-IPO)</dt>
+    <dd>기업 상장 이전 단계에서 비공개로 지분을 매입하는 것.</dd>
+    <dt>옵티머스 (Optimus)</dt>
+    <dd>테슬라가 개발 중인 휴머노이드 로봇.</dd>
+  </dl>
+</section>
+
+<footer>
+  <div class="fp">"내년에는 정신 똑바로 차려야 합니다."</div>
+  <div>본 문서는 방송 자막 내용을 정리한 분석 리포트이며, 투자 권유가 아닙니다.<br>등장하는 인수합병·수치·전망은 모두 '소문 및 진행자 견해' 단계입니다.</div>
+</footer>
+
+</div>
+
+<script>
+/* ===== fade-in observer ===== */
+const fadeObs = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), i * 80);
+      fadeObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.12 });
+document.querySelectorAll('.fade-in').forEach(el => fadeObs.observe(el));
+
+/* ===== chart configs ===== */
+const chartConfigs = {};
+chartConfigs['revChart'] = () => {
+  new Chart(document.getElementById('revChart'), {
+    type: 'bar',
+    data: {
+      labels: ['최소치 (500M)', '기관 평가 (800M)', '머스크 2030 (1조달러)'],
+      datasets: [{
+        label: '언급된 규모',
+        data: [500, 800, 1000000],
+        backgroundColor: ['#6b7280', '#1a1a1a', '#e11d48'],
+        borderRadius: 5,
+        barThickness: 44
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: (c) => {
+              const v = c.parsed.y;
+              if (v >= 1000000) return ' 약 1조 달러 (1 trillion)';
+              return ' ' + v + ' 밀리언 달러';
+            }
+          }
+        }
+      },
+      scales: {
+        y: {
+          type: 'logarithmic',
+          grid: { color: '#eee' },
+          ticks: { color: '#777', font:{size:11} }
+        },
+        x: { grid: { display:false }, ticks: { color:'#444', font:{size:11} } }
+      }
+    }
+  });
+};
+
+const chartObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const canvas = e.target.querySelector('canvas');
+      if (canvas && chartConfigs[canvas.id]) {
+        chartConfigs[canvas.id]();
+        e.target.classList.add('chart-ready');
+        chartObs.unobserve(e.target);
+      }
+    }
+  });
+}, { threshold: 0.15 });
+document.querySelectorAll('.chart-container').forEach(el => chartObs.observe(el));
+
+/* ===== cost calculator ===== */
+const baseCost = document.getElementById('baseCost');
+const rate = document.getElementById('rate');
+const rateVal = document.getElementById('rateVal');
+const saveOut = document.getElementById('saveOut');
+const afterOut = document.getElementById('afterOut');
+function calcUpdate(){
+  let base = parseFloat(baseCost.value);
+  if(isNaN(base) || base < 0) base = 0;
+  const r = parseInt(rate.value);
+  rateVal.textContent = r + '%';
+  const save = base * r / 100;
+  const after = base - save;
+  saveOut.textContent = save.toLocaleString('ko-KR',{maximumFractionDigits:1}) + '억 달러';
+  afterOut.textContent = after.toLocaleString('ko-KR',{maximumFractionDigits:1}) + '억 달러';
+}
+baseCost.addEventListener('input', calcUpdate);
+rate.addEventListener('input', calcUpdate);
+document.getElementById('calcReset').addEventListener('click', () => {
+  baseCost.value = 100; rate.value = 35; calcUpdate();
+});
+calcUpdate();
+
+/* ===== naming evolution accordion ===== */
+document.querySelectorAll('.evo-item').forEach(item => {
+  item.addEventListener('click', () => {
+    const idx = item.dataset.evo;
+    const detail = document.getElementById('evo' + idx);
+    const isOpen = detail.classList.contains('open');
+    document.querySelectorAll('.evo-detail').forEach(d => d.classList.remove('open'));
+    document.querySelectorAll('.evo-item').forEach(i => i.classList.remove('active'));
+    if(!isOpen){ detail.classList.add('open'); item.classList.add('active'); }
+  });
+});
+
+/* ===== BANANA flip cards ===== */
+const bananaData = [
+  {l:'B', name:'브로드컴', desc:'Broadcom'},
+  {l:'A', name:'앤스로픽', desc:'Anthropic'},
+  {l:'N', name:'엔비디아', desc:'Nvidia'},
+  {l:'A', name:'아마존', desc:'Amazon'},
+  {l:'N', name:'뉴럴링크', desc:'Neuralink'},
+  {l:'A', name:'알파벳/애플', desc:'Alphabet / Apple'},
+  {l:'S', name:'스페이스X', desc:'SpaceX'}
+];
+const grid = document.getElementById('bananaGrid');
+bananaData.forEach(b => {
+  const card = document.createElement('div');
+  card.className = 'bcard';
+  card.innerHTML = `
+    <div class="bcard-inner">
+      <div class="bface bfront"><span class="letter">${b.l}</span><span class="qm">탭하여 확인</span></div>
+      <div class="bface bback"><div class="bname">${b.name}</div><div class="bdesc">${b.desc}</div></div>
+    </div>`;
+  card.addEventListener('click', () => card.classList.toggle('flipped'));
+  grid.appendChild(card);
+});
+</script>
+</body>
+</html>

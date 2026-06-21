@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SpaceX, 망고에서 바나나로 — 이해도 점검 퀴즈</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,500&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#ffffff; --bg2:#fafafa; --text:#1a1a1a; --text2:#777777;
+  --accent:#e11d48; --accent2:#f43f5e; --line:#e5e5e5;
+  --green:#16a34a; --greenbg:#e8f6ee; --redbg:#fdeaef;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg); color:var(--text); font-family:'Noto Sans KR',sans-serif; line-height:1.7; -webkit-font-smoothing:antialiased;}
+.wrap{max-width:680px; margin:0 auto; padding:0 18px 60px;}
+
+/* ===== Sticky scoreboard ===== */
+.score-bar{position:sticky; top:0; z-index:50; background:rgba(255,255,255,.96); backdrop-filter:blur(6px); border-bottom:1px solid var(--line); padding:12px 18px; margin:0 -18px 0;}
+.score-inner{max-width:680px; margin:0 auto;}
+.score-stats{display:flex; justify-content:space-between; align-items:center; font-size:12.5px; font-weight:700; margin-bottom:8px;}
+.score-stats .stat{display:flex; flex-direction:column; align-items:center; gap:1px;}
+.score-stats .stat b{font-family:'Playfair Display',serif; font-size:19px; color:var(--accent);}
+.score-stats .stat span{font-size:10.5px; color:var(--text2); font-weight:500; letter-spacing:.5px;}
+.pbar-track{height:7px; background:#eee; border-radius:10px; overflow:hidden;}
+.pbar-fill{height:100%; width:0%; background:var(--accent); border-radius:10px; transition:width .5s ease, background .4s ease;}
+
+/* ===== Header ===== */
+header.head{padding:42px 0 26px; text-align:center; border-bottom:3px solid var(--text); margin-bottom:8px;}
+.head .kick{font-size:11px; font-weight:700; letter-spacing:3px; color:var(--accent); text-transform:uppercase;}
+.head h1{font-family:'Playfair Display',serif; font-weight:900; font-size:30px; line-height:1.2; margin:12px 0 6px;}
+.head p{font-size:13px; color:var(--text2);}
+
+/* ===== Question card ===== */
+.q-card{background:var(--bg2); border:1px solid var(--line); border-radius:10px; padding:22px 20px; margin:22px 0;}
+.q-top{display:flex; align-items:center; gap:10px; margin-bottom:14px;}
+.q-no{font-family:'Playfair Display',serif; font-weight:900; font-size:22px; color:var(--accent); min-width:30px;}
+.q-badges{display:flex; gap:6px; flex-wrap:wrap;}
+.badge{font-size:10.5px; font-weight:700; padding:3px 9px; border-radius:20px; letter-spacing:.5px;}
+.badge.type{background:#1a1a1a; color:#fff;}
+.badge.diff-e{background:#e8f6ee; color:#16a34a;}
+.badge.diff-m{background:#fef3c7; color:#b45309;}
+.badge.diff-h{background:#fde2e8; color:#e11d48;}
+.q-text{font-size:16px; font-weight:500; line-height:1.6; margin-bottom:16px; color:var(--text);}
+
+/* ===== Options ===== */
+.opts{display:flex; flex-direction:column; gap:9px;}
+.opt{display:flex; align-items:flex-start; gap:10px; padding:13px 15px; background:#fff; border:1.5px solid var(--line); border-radius:8px; cursor:pointer; font-size:14.5px; transition:all .18s ease;}
+.opt:hover:not(.disabled){border-color:var(--accent); background:#fff7f9;}
+.opt .mark{font-weight:700; color:var(--accent); min-width:18px;}
+.opt.disabled{cursor:default;}
+.opt.correct{background:var(--greenbg); border-color:var(--green);}
+.opt.wrong{background:var(--redbg); border-color:var(--accent);}
+.opt .resbadge{margin-left:auto; font-size:12px; font-weight:700; padding:2px 8px; border-radius:12px; white-space:nowrap;}
+.opt.correct .resbadge{background:var(--green); color:#fff;}
+.opt.wrong .resbadge{background:var(--accent); color:#fff;}
+
+/* ===== OX buttons ===== */
+.ox-row{display:flex; gap:12px;}
+.ox-btn{flex:1; padding:18px; font-family:'Playfair Display',serif; font-weight:900; font-size:26px; background:#fff; border:1.5px solid var(--line); border-radius:10px; cursor:pointer; transition:all .18s ease;}
+.ox-btn:hover:not(.disabled){border-color:var(--accent); background:#fff7f9;}
+.ox-btn.disabled{cursor:default;}
+.ox-btn.correct{background:var(--greenbg); border-color:var(--green); color:var(--green);}
+.ox-btn.wrong{background:var(--redbg); border-color:var(--accent); color:var(--accent);}
+
+/* ===== Short answer ===== */
+.sa-row{display:flex; gap:8px;}
+.sa-input{flex:1; padding:13px 15px; border:1.5px solid var(--line); border-radius:8px; font-size:15px; font-family:inherit;}
+.sa-input:focus{outline:none; border-color:var(--accent);}
+.sa-input.correct{background:var(--greenbg); border-color:var(--green);}
+.sa-input.wrong{background:var(--redbg); border-color:var(--accent);}
+.sa-btn{padding:0 22px; background:var(--accent); color:#fff; border:none; border-radius:8px; font-size:14px; font-weight:700; cursor:pointer; font-family:inherit;}
+.sa-btn:hover{background:var(--accent2);}
+.sa-btn:disabled{background:#ccc; cursor:default;}
+.sa-hint{font-size:11.5px; color:var(--text2); margin-top:7px;}
+
+/* ===== Explanation ===== */
+.expl{max-height:0; overflow:hidden; transition:max-height .4s ease; margin-top:0;}
+.expl.open{max-height:600px; margin-top:14px;}
+.expl-inner{background:#fff; border:1px solid var(--line); border-left:4px solid var(--accent); border-radius:6px; padding:15px 16px;}
+.expl-tag{font-size:11px; font-weight:700; letter-spacing:1px; color:var(--accent); text-transform:uppercase; margin-bottom:6px;}
+.expl-ans{font-size:14px; font-weight:700; margin-bottom:7px;}
+.expl-ans .ok{color:var(--green);}
+.expl-body{font-size:13.5px; color:#444; line-height:1.65;}
+
+/* ===== Final modal ===== */
+.modal-bg{position:fixed; inset:0; background:rgba(26,26,26,.6); display:none; align-items:center; justify-content:center; z-index:100; padding:20px;}
+.modal-bg.show{display:flex;}
+.modal{background:#fff; border-radius:14px; padding:34px 28px; max-width:380px; width:100%; text-align:center; box-shadow:0 20px 60px rgba(0,0,0,.3);}
+.modal .grade{font-family:'Playfair Display',serif; font-weight:900; font-size:60px; line-height:1; color:var(--accent);}
+.modal .gscore{font-size:15px; color:var(--text2); margin:10px 0 4px;}
+.modal .gscore b{color:var(--text); font-size:22px; font-family:'Playfair Display',serif;}
+.modal .gmsg{font-size:14.5px; margin:16px 0 22px; line-height:1.6; color:#333;}
+.modal .retry{width:100%; padding:14px; background:var(--accent); color:#fff; border:none; border-radius:8px; font-size:15px; font-weight:700; cursor:pointer; font-family:inherit;}
+.modal .retry:hover{background:var(--accent2);}
+
+footer{text-align:center; font-size:11.5px; color:var(--text2); padding-top:30px; line-height:1.6;}
+</style>
+</head>
+<body>
+
+<!-- ===== Sticky scoreboard ===== -->
+<div class="score-bar">
+  <div class="score-inner">
+    <div class="score-stats">
+      <div class="stat"><b id="sSolved">0 / 10</b><span>푼 문제</span></div>
+      <div class="stat"><b id="sCorrect">0</b><span>맞힌 문제</span></div>
+      <div class="stat"><b id="sRate">0%</b><span>정답률</span></div>
+    </div>
+    <div class="pbar-track"><div class="pbar-fill" id="pbar"></div></div>
+  </div>
+</div>
+
+<div class="wrap">
+  <header class="head">
+    <div class="kick">Comprehension Check</div>
+    <h1>SpaceX, 망고에서 바나나로</h1>
+    <p>이해도 점검 퀴즈 · 총 10문제 · 클릭 즉시 채점</p>
+  </header>
+
+  <div id="quizRoot"></div>
+
+  <footer>
+    각 문제는 한 번 선택하면 자동 채점되며 해설이 펼쳐집니다.<br>
+    본 퀴즈는 방송 자막 내용에 근거해 출제되었습니다.
+  </footer>
+</div>
+
+<!-- ===== Final modal ===== -->
+<div class="modal-bg" id="modalBg">
+  <div class="modal">
+    <div class="grade" id="mGrade">A</div>
+    <div class="gscore">10문제 중 <b id="mScore">0</b>문제 정답</div>
+    <div class="gmsg" id="mMsg"></div>
+    <button class="retry" id="mRetry">다시 풀기</button>
+  </div>
+</div>
+
+<script>
+const QUIZ_DATA = [
+  {
+    id:1, type:'mc', difficulty:'easy',
+    question:"이번 방송이 다룬 핵심 소문은 무엇인가?",
+    options:[
+      "테슬라가 스페이스X를 인수한다",
+      "스페이스X가 테슬라를 인수합병한다",
+      "xAI가 오픈AI를 인수한다",
+      "아마존이 앤스로픽을 인수한다"
+    ],
+    answer:1,
+    explanation:"방송의 핵심은 '스페이스X가 테슬라를 인수합병할 가능성이 크다'는 소문입니다. 진행자는 이 정보를 1대1 포트폴리오 면담 레벨 멤버들에게 1~2주 전 미리 귀띔했다고 밝혔습니다."
+  },
+  {
+    id:2, type:'ox', difficulty:'easy',
+    question:"진행자는 이 인수합병이 이미 공식적으로 발표·확정되었다고 말했다.",
+    answer:'X',
+    explanation:"진행자는 '소문이기 때문에', '공식화되기 전이니까', '될지 안 될지는 모른다'고 반복적으로 강조했습니다. 어디까지나 소문 단계임을 분명히 했습니다."
+  },
+  {
+    id:3, type:'mc', difficulty:'easy',
+    question:"진행자가 합병의 이유로 강조한 것이 아닌 것은?",
+    options:[
+      "에너지 저장·배터리 기술",
+      "로봇택시 상용화",
+      "테슬라의 실적 부진",
+      "옵티머스 로봇"
+    ],
+    answer:2,
+    explanation:"진행자는 '테슬라가 실적 부진 때문이 아니라'라고 명시했습니다. 합병 이유로는 에너지 저장·배터리 기술, 로봇택시 상용화, 옵티머스 등이 스페이스X와 만들어낼 시너지를 들었습니다."
+  },
+  {
+    id:4, type:'sa', difficulty:'medium',
+    question:"엔지니어 호환으로 인건비 등 비용이 약 몇 % 이상 절감될 것으로 진행자는 봤는가? (예: 30~40)",
+    answer:["30~40","30-40","30 40","3040","30~40%","30-40%","40"],
+    acceptHint:"숫자 범위 또는 상한값으로 입력 (예: 30~40)",
+    explanation:"자율주행과 로봇택시가 있어 xAI 인력이 테슬라로 호환 이동할 수 있고, 그 결과 인건비를 포함한 비용이 '30~40% 이상' 절감될 것으로 진행자는 전망했습니다."
+  },
+  {
+    id:5, type:'mc', difficulty:'medium',
+    question:"진행자가 설명한 미국 주도주 별칭의 진화 순서로 올바른 것은?",
+    options:[
+      "M7 → 팡(FAANG) → 바나나 → 망고",
+      "팡(FAANG) → M7 → 망고 → 바나나",
+      "망고 → 팡(FAANG) → M7 → 바나나",
+      "바나나 → 망고 → M7 → 팡(FAANG)"
+    ],
+    answer:1,
+    explanation:"2024년 '팡(FAANG)' → 2025년 'M7(맥세븐)' → 2026년 초 '망고' → 현재 '바나나(BANANA)' 순으로 별칭이 진화했다고 진행자는 설명했습니다."
+  },
+  {
+    id:6, type:'mc', difficulty:'medium',
+    question:"'BANANAS' 구성 종목으로 진행자가 직접 언급하지 않은 것은?",
+    options:[
+      "브로드컴",
+      "앤스로픽",
+      "엔비디아",
+      "마이크로소프트"
+    ],
+    answer:3,
+    explanation:"'BANANAS'는 B-브로드컴, A-앤스로픽, N-엔비디아, A-아마존, N-뉴럴링크, A-알파벳/애플, S-스페이스X로 구성됩니다. 마이크로소프트는 오히려 '오픈AI·앤스로픽에 투자만 했지 자기 회사는 아닌' 비교 대상으로 등장했습니다."
+  },
+  {
+    id:7, type:'mc', difficulty:'medium',
+    question:"일론 머스크가 2030년까지 발생할 것으로 예상한 매출 규모는?",
+    options:[
+      "500밀리언 달러",
+      "800밀리언 달러",
+      "1조 달러(1 trillion)",
+      "100억 달러"
+    ],
+    answer:2,
+    explanation:"기관들은 800밀리언 달러로 평가하는 반면, 일론 머스크는 2030년까지 1조 달러(1 trillion) 규모의 매출을 예상한다고 진행자는 전했습니다. 최소치로도 500밀리언 수준은 된다고 언급했습니다."
+  },
+  {
+    id:8, type:'mc', difficulty:'medium',
+    question:"진행자가 하이퍼스케일러들이 '그래서 얼마 벌었어?' 성적표를 받는 해로 지목한 연도는?",
+    options:[
+      "2025년",
+      "2026년",
+      "2027년",
+      "2030년"
+    ],
+    answer:2,
+    explanation:"진행자는 하이퍼스케일러들이 차입으로 데이터센터를 짓고 있어, 2027년에 매출을 검증받는 단계가 온다고 봤습니다. 실제 회수까지는 거기서 2~3년이 더 걸린다고 경고했습니다."
+  },
+  {
+    id:9, type:'sa', difficulty:'hard',
+    question:"8월 SpaceX 실적 발표 이후 진행자가 언급한 1차 락업 해제 비율은 약 몇 %인가? (숫자만, 예: 4)",
+    answer:["4","4%","약 4%","약4%"],
+    acceptHint:"숫자만 입력 (예: 4)",
+    explanation:"실적 발표일 + 영업일 2일(plus 2 business days) 뒤, 3일째부터 매도가 가능하며 약 4% 물량이 해제된다고 했습니다. 연말 실적 때는 10~15%가 추가로 풀립니다."
+  },
+  {
+    id:10, type:'ox', difficulty:'hard',
+    question:"진행자는 멤버들이 '오픈AI'를 매수하는 것에 대해 반대하지 않는다고 말했다.",
+    answer:'X',
+    explanation:"진행자는 오픈AI는 투자하기 좀 더 부담스럽다고 봤습니다. 반대로 '앤스로픽'에 대해서는 멤버들이 매수하는 것을 반대하지 않으며, 본인도 관심이 있다고 밝혔습니다."
+  }
+];
+
+let state = { solved:0, correct:0, answered:{} };
+const root = document.getElementById('quizRoot');
+
+const diffMap = { easy:{cls:'diff-e',txt:'쉬움'}, medium:{cls:'diff-m',txt:'보통'}, hard:{cls:'diff-h',txt:'어려움'} };
+const typeMap = { mc:'객관식', ox:'O / X', sa:'단답형' };
+
+function normalize(s){ return (s||'').toString().trim().toLowerCase().replace(/\s+/g,'').replace(/[%]/g,''); }
+
+function render(){
+  root.innerHTML = '';
+  QUIZ_DATA.forEach((q, idx) => {
+    const card = document.createElement('div');
+    card.className = 'q-card';
+    card.id = 'card'+q.id;
+    const d = diffMap[q.difficulty];
+    let inner = `
+      <div class="q-top">
+        <span class="q-no">${String(idx+1).padStart(2,'0')}</span>
+        <div class="q-badges">
+          <span class="badge type">${typeMap[q.type]}</span>
+          <span class="badge ${d.cls}">${d.txt}</span>
+        </div>
+      </div>
+      <div class="q-text">${q.question}</div>`;
+
+    if(q.type==='mc'){
+      inner += `<div class="opts" id="opts${q.id}">`;
+      const marks=['A','B','C','D'];
+      q.options.forEach((opt,i)=>{
+        inner += `<div class="opt" data-q="${q.id}" data-i="${i}"><span class="mark">${marks[i]}</span><span>${opt}</span></div>`;
+      });
+      inner += `</div>`;
+    } else if(q.type==='ox'){
+      inner += `<div class="ox-row" id="opts${q.id}">
+        <button class="ox-btn" data-q="${q.id}" data-v="O">O</button>
+        <button class="ox-btn" data-q="${q.id}" data-v="X">X</button>
+      </div>`;
+    } else if(q.type==='sa'){
+      inner += `<div class="sa-row">
+        <input type="text" class="sa-input" id="sa${q.id}" placeholder="정답 입력">
+        <button class="sa-btn" data-q="${q.id}">제출</button>
+      </div><div class="sa-hint">${q.acceptHint||''}</div>`;
+    }
+
+    inner += `<div class="expl" id="expl${q.id}"><div class="expl-inner">
+        <div class="expl-tag">해설</div>
+        <div class="expl-ans" id="ans${q.id}"></div>
+        <div class="expl-body">${q.explanation}</div>
+      </div></div>`;
+    card.innerHTML = inner;
+    root.appendChild(card);
+  });
+  attach();
+}
+
+function attach(){
+  document.querySelectorAll('.opt').forEach(el=>{
+    el.addEventListener('click', ()=>{
+      const qid=+el.dataset.q;
+      if(state.answered[qid]) return;
+      gradeMC(qid, +el.dataset.i);
+    });
+  });
+  document.querySelectorAll('.ox-btn').forEach(el=>{
+    el.addEventListener('click', ()=>{
+      const qid=+el.dataset.q;
+      if(state.answered[qid]) return;
+      gradeOX(qid, el.dataset.v);
+    });
+  });
+  document.querySelectorAll('.sa-btn').forEach(el=>{
+    el.addEventListener('click', ()=>{
+      const qid=+el.dataset.q;
+      if(state.answered[qid]) return;
+      gradeSA(qid);
+    });
+  });
+  document.querySelectorAll('.sa-input').forEach(el=>{
+    el.addEventListener('keydown', e=>{
+      if(e.key==='Enter'){
+        const qid=+el.id.replace('sa','');
+        if(!state.answered[qid]) gradeSA(qid);
+      }
+    });
+  });
+}
+
+function gradeMC(qid, choice){
+  const q = QUIZ_DATA.find(x=>x.id===qid);
+  const isCorrect = choice===q.answer;
+  const opts = document.querySelectorAll(`#opts${qid} .opt`);
+  opts.forEach((o,i)=>{
+    o.classList.add('disabled');
+    if(i===q.answer){ o.classList.add('correct'); o.insertAdjacentHTML('beforeend','<span class="resbadge">✓ 정답</span>'); }
+    if(i===choice && !isCorrect){ o.classList.add('wrong'); o.insertAdjacentHTML('beforeend','<span class="resbadge">✗ 오답</span>'); }
+  });
+  finalize(qid, isCorrect, q);
+}
+
+function gradeOX(qid, val){
+  const q = QUIZ_DATA.find(x=>x.id===qid);
+  const isCorrect = val===q.answer;
+  const btns = document.querySelectorAll(`#opts${qid} .ox-btn`);
+  btns.forEach(b=>{
+    b.classList.add('disabled');
+    if(b.dataset.v===q.answer) b.classList.add('correct');
+    if(b.dataset.v===val && !isCorrect) b.classList.add('wrong');
+  });
+  finalize(qid, isCorrect, q);
+}
+
+function gradeSA(qid){
+  const q = QUIZ_DATA.find(x=>x.id===qid);
+  const input = document.getElementById('sa'+qid);
+  const val = normalize(input.value);
+  if(val==='') return;
+  const isCorrect = q.answer.some(a=>normalize(a)===val);
+  input.classList.add(isCorrect?'correct':'wrong');
+  input.disabled = true;
+  document.querySelector(`.sa-btn[data-q="${qid}"]`).disabled = true;
+  finalize(qid, isCorrect, q);
+}
+
+function finalize(qid, isCorrect, q){
+  state.answered[qid]=true;
+  state.solved++;
+  if(isCorrect) state.correct++;
+
+  // explanation answer line
+  let ansTxt='';
+  if(q.type==='mc'){ ansTxt = `정답: <span class="ok">${['A','B','C','D'][q.answer]}. ${q.options[q.answer]}</span>`; }
+  else if(q.type==='ox'){ ansTxt = `정답: <span class="ok">${q.answer}</span>`; }
+  else { ansTxt = `정답 예시: <span class="ok">${q.answer[0]}</span>`; }
+  document.getElementById('ans'+qid).innerHTML = (isCorrect?'✅ 맞았습니다 · ':'❌ 틀렸습니다 · ')+ansTxt;
+
+  document.getElementById('expl'+qid).classList.add('open');
+  updateScore();
+  if(state.solved===QUIZ_DATA.length) setTimeout(showModal, 600);
+}
+
+function updateScore(){
+  document.getElementById('sSolved').textContent = `${state.solved} / ${QUIZ_DATA.length}`;
+  document.getElementById('sCorrect').textContent = state.correct;
+  const rate = state.solved? Math.round(state.correct/state.solved*100):0;
+  document.getElementById('sRate').textContent = rate+'%';
+  const bar = document.getElementById('pbar');
+  bar.style.width = (state.solved/QUIZ_DATA.length*100)+'%';
+  let color = '#e11d48';
+  if(rate>=70) color='#16a34a'; else if(rate>=40) color='#f59e0b';
+  bar.style.background = color;
+}
+
+function showModal(){
+  const total = QUIZ_DATA.length;
+  const c = state.correct;
+  let grade, msg;
+  const pct = c/total*100;
+  if(pct>=90){ grade='A'; msg='완벽에 가깝습니다! 방송 내용을 거의 모두 정확히 이해하셨습니다.'; }
+  else if(pct>=70){ grade='B'; msg='훌륭합니다! 핵심 흐름을 잘 잡으셨네요. 틀린 문제의 해설만 다시 확인해보세요.'; }
+  else if(pct>=50){ grade='C'; msg='기본기는 갖추셨습니다. 해설을 다시 읽고 한 번 더 도전해보세요.'; }
+  else { grade='D'; msg='괜찮습니다. 해설을 천천히 읽으며 핵심 개념을 다시 정리해보세요.'; }
+  document.getElementById('mGrade').textContent = grade;
+  document.getElementById('mScore').textContent = c;
+  document.getElementById('mMsg').textContent = msg;
+  document.getElementById('modalBg').classList.add('show');
+}
+
+document.getElementById('mRetry').addEventListener('click', ()=>{
+  state = { solved:0, correct:0, answered:{} };
+  document.getElementById('modalBg').classList.remove('show');
+  updateScore();
+  render();
+  window.scrollTo({top:0, behavior:'smooth'});
+});
+
+render();
+updateScore();
+</script>
+</body>
+</html>
