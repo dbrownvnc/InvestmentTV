@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>시험문제 — 6월22일 시장포커스 (기관들 리밸런싱 시작)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,500&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#ffffff; --bg2:#fafafa; --text:#1a1a1a; --text2:#777777;
+    --accent:#e11d48; --accent2:#f43f5e; --border:#e5e5e5;
+    --green:#15803d; --green-bg:#dcfce7; --red:#b91c1c; --red-bg:#fee2e2;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--bg2); color:var(--text); font-family:'Noto Sans KR',sans-serif; line-height:1.7; -webkit-font-smoothing:antialiased}
+  .wrap{max-width:680px; margin:0 auto; padding:0 18px}
+
+  /* Scoreboard */
+  .scorebar{position:sticky; top:0; z-index:50; background:#fff; border-bottom:1px solid var(--border); box-shadow:0 2px 12px rgba(0,0,0,.05)}
+  .scorebar .inner{max-width:680px; margin:0 auto; padding:12px 18px}
+  .sb-top{display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap}
+  .sb-stats{display:flex; gap:16px; font-size:13px}
+  .sb-stats div{display:flex; flex-direction:column; line-height:1.2}
+  .sb-stats .k{font-size:10.5px; color:var(--text2); letter-spacing:.03em}
+  .sb-stats .v{font-family:'Playfair Display',serif; font-weight:700; font-size:18px}
+  .sb-stats .v.accent{color:var(--accent)}
+  .sb-title{font-family:'Playfair Display',serif; font-weight:700; font-size:14px}
+  .prog{height:7px; background:var(--bg2); border-radius:7px; margin-top:10px; overflow:hidden}
+  .prog-fill{height:100%; width:0; border-radius:7px; background:var(--red); transition:width .5s ease, background .4s ease}
+
+  /* Header */
+  header{padding:44px 0 26px; text-align:center}
+  .eyebrow{font-size:11px; letter-spacing:.3em; text-transform:uppercase; color:var(--accent); font-weight:700; margin-bottom:14px}
+  header h1{font-family:'Playfair Display',serif; font-weight:900; font-size:clamp(26px,7vw,38px); line-height:1.1; margin-bottom:12px}
+  header p{font-size:13.5px; color:var(--text2)}
+
+  /* Card */
+  .card{background:#fff; border:1px solid var(--border); border-radius:8px; padding:24px 22px; margin-bottom:20px}
+  .q-head{display:flex; align-items:center; gap:10px; margin-bottom:16px; flex-wrap:wrap}
+  .q-no{font-family:'Playfair Display',serif; font-weight:900; font-size:22px; color:var(--accent); line-height:1}
+  .q-type{font-size:10.5px; padding:3px 10px; border-radius:20px; background:var(--bg2); border:1px solid var(--border); color:var(--text2); font-weight:500}
+  .q-diff{font-size:10.5px; padding:3px 10px; border-radius:20px; font-weight:500}
+  .d-easy{background:#dcfce7; color:#15803d}
+  .d-mid{background:#fef9c3; color:#a16207}
+  .d-hard{background:#fee2e2; color:#b91c1c}
+  .q-text{font-size:16px; font-weight:500; margin-bottom:18px; line-height:1.55}
+
+  /* Options */
+  .opts{display:flex; flex-direction:column; gap:9px}
+  .opt{
+    text-align:left; padding:13px 15px; border:1.5px solid var(--border); border-radius:6px;
+    background:#fff; font-family:inherit; font-size:14.5px; color:var(--text); cursor:pointer;
+    transition:all .15s; display:flex; align-items:center; gap:11px; line-height:1.4;
+  }
+  .opt:hover:not(:disabled){border-color:var(--accent); background:rgba(225,29,72,.03)}
+  .opt:disabled{cursor:default}
+  .opt .mk{width:24px; height:24px; flex-shrink:0; border-radius:50%; border:1.5px solid var(--border); display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; color:var(--text2)}
+  .opt.correct{border-color:var(--green); background:var(--green-bg)}
+  .opt.correct .mk{background:var(--green); border-color:var(--green); color:#fff}
+  .opt.wrong{border-color:var(--red); background:var(--red-bg)}
+  .opt.wrong .mk{background:var(--red); border-color:var(--red); color:#fff}
+  .badge{margin-left:auto; font-size:11.5px; font-weight:700; padding:2px 9px; border-radius:20px; flex-shrink:0}
+  .badge.ok{background:var(--green); color:#fff}
+  .badge.no{background:var(--red); color:#fff}
+
+  /* OX */
+  .ox{display:flex; gap:12px}
+  .ox .opt{flex:1; justify-content:center; font-size:20px; font-weight:700; padding:18px}
+
+  /* Short answer */
+  .sa{display:flex; gap:9px}
+  .sa input{flex:1; padding:13px 15px; border:1.5px solid var(--border); border-radius:6px; font-family:inherit; font-size:15px; outline:none}
+  .sa input:focus{border-color:var(--accent)}
+  .sa input:disabled{background:var(--bg2)}
+  .sa button{padding:0 22px; border:none; border-radius:6px; background:var(--accent); color:#fff; font-family:inherit; font-weight:700; font-size:14px; cursor:pointer; transition:background .2s}
+  .sa button:hover:not(:disabled){background:#be123c}
+  .sa button:disabled{background:var(--text2); cursor:default}
+  .sa-hint{font-size:11.5px; color:var(--text2); margin-top:8px}
+
+  /* Explanation */
+  .expl{max-height:0; overflow:hidden; transition:max-height .45s ease, margin .45s ease; margin-top:0}
+  .expl.show{max-height:600px; margin-top:16px}
+  .expl-inner{background:var(--bg2); border-left:3px solid var(--accent); border-radius:0 6px 6px 0; padding:15px 17px}
+  .expl-inner .et{font-size:12px; font-weight:700; color:var(--accent); letter-spacing:.04em; margin-bottom:7px; display:flex; align-items:center; gap:7px}
+  .expl-inner p{font-size:13.5px; line-height:1.65; color:#333}
+  .expl-inner .ans-line{font-weight:700; color:var(--text); margin-bottom:6px}
+
+  /* Final modal */
+  .modal{position:fixed; inset:0; background:rgba(26,26,26,.55); display:none; align-items:center; justify-content:center; z-index:100; padding:20px; backdrop-filter:blur(3px)}
+  .modal.show{display:flex; animation:fade .3s ease}
+  @keyframes fade{from{opacity:0}to{opacity:1}}
+  .modal-box{background:#fff; border-radius:14px; max-width:380px; width:100%; padding:38px 30px; text-align:center; animation:pop .35s cubic-bezier(.2,.8,.3,1)}
+  @keyframes pop{from{transform:scale(.9);opacity:0}to{transform:scale(1);opacity:1}}
+  .grade{font-family:'Playfair Display',serif; font-weight:900; font-size:72px; line-height:1; margin-bottom:8px}
+  .grade.A{color:#15803d}.grade.B{color:var(--accent)}.grade.C{color:#a16207}.grade.D{color:var(--red)}
+  .modal-box .mscore{font-size:15px; color:var(--text2); margin-bottom:6px}
+  .modal-box .mscore b{font-family:'Playfair Display',serif; font-size:30px; color:var(--text)}
+  .modal-box .mmsg{font-size:14.5px; margin:16px 0 24px; line-height:1.6}
+  .modal-box button{padding:13px 30px; border:none; border-radius:24px; background:var(--accent); color:#fff; font-family:inherit; font-weight:700; font-size:14px; cursor:pointer}
+  .modal-box button:hover{background:#be123c}
+
+  footer{text-align:center; padding:30px 0 50px; font-size:11.5px; color:var(--text2); line-height:1.7}
+
+  @media(max-width:380px){ .sb-stats{gap:11px} .sa button{padding:0 16px} }
+</style>
+</head>
+<body>
+
+<div class="scorebar">
+  <div class="inner">
+    <div class="sb-top">
+      <div class="sb-title">시장포커스 퀴즈</div>
+      <div class="sb-stats">
+        <div><span class="k">푼 문제</span><span class="v"><span id="sbSolved">0</span> / 10</span></div>
+        <div><span class="k">맞힌 문제</span><span class="v accent" id="sbCorrect">0</span></div>
+        <div><span class="k">정답률</span><span class="v" id="sbRate">0%</span></div>
+      </div>
+    </div>
+    <div class="prog"><div class="prog-fill" id="progFill"></div></div>
+  </div>
+</div>
+
+<header>
+  <div class="wrap">
+    <div class="eyebrow">6월 22일 · 투자는인생TV</div>
+    <h1>기관들 리밸런싱 시작<br>이해도 점검 10문항</h1>
+    <p>각 문제를 풀면 즉시 채점되고 해설이 자동으로 펼쳐집니다.</p>
+  </div>
+</header>
+
+<main class="wrap" id="quiz"></main>
+
+<div class="modal" id="modal">
+  <div class="modal-box">
+    <div class="grade" id="mGrade">A</div>
+    <div class="mscore">10문제 중 <b id="mScore">0</b>문제 정답</div>
+    <div class="mmsg" id="mMsg"></div>
+    <button id="retryBtn">다시 풀기</button>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    교육용 자료 · 투자는인생TV 시장포커스 6월 22일 방송 기반<br>
+    Investment Products: Not FDIC Insured · May Lose Value
+  </div>
+</footer>
+
+<script>
+const QUIZ_DATA = [
+  {
+    id:1, type:'mc', difficulty:'easy',
+    question:'이번 방송에서 진단한 기관들의 핵심 움직임은 무엇인가?',
+    options:['신규 IPO 종목 대량 매수','7월 휴가 전 리밸런싱 시작','국제 주식 비중 확대','암호화폐로 자금 이동'],
+    answer:1,
+    explanation:'기관들은 7월 휴가철을 앞두고 이미 리밸런싱(현금화·비중 조정)을 시작했습니다. "휴가 가기 전에 리밸런싱을 많이 한다 — 현금으로 빼놓는다든지"라는 설명이 그 근거입니다.'
+  },
+  {
+    id:2, type:'mc', difficulty:'easy',
+    question:'섹터 로테이션의 방향으로 제시된 흐름은?',
+    options:['Financials → Tech','Tech → Financials/Industrials','Energy → Utilities','Health Care → Real Estate'],
+    answer:1,
+    explanation:'IT(Tech)가 시장을 이끌고 있지만, 금리 인상 가능성으로 인해 파이낸셜·인더스트리얼로 비중이 이동하는 섹터 로테이션 조짐이 보인다고 했습니다. 금리 인상기엔 IT·유틸리티가 불리하고 파이낸셜·인더스트리얼이 유리합니다.'
+  },
+  {
+    id:3, type:'mc', difficulty:'mid',
+    question:'YTD 수익률이 가장 높았던 항목은? (지수·자산 중)',
+    options:['NASDAQ Composite (+14.09%)','Russell 2000 (+20.06%)','Oil (+32.13%)','S&P 500 (+9.57%)'],
+    answer:2,
+    explanation:'슬라이드 기준 Oil이 +32.13%로 가장 높았습니다. 지수 중에서는 Russell 2000(+20.06%)이 가장 높았지만, 전체 항목 중 최고는 유가입니다. 반면 Gold -2.00%, Bitcoin -29.00%로 하락했습니다.'
+  },
+  {
+    id:4, type:'ox', difficulty:'mid',
+    question:'10년 국채금리가 4.5%를 넘으면 미국 경제에 좋다고 진단했다.',
+    answer:'X',
+    explanation:'반대입니다. 10년물이 4.5%를 넘으면 미국 경제에 "치명적으로 안 좋다"고 명시했습니다. 방송 당시 4.45% 수준으로 여전히 높은(elevated) 상태라고 경계했습니다.'
+  },
+  {
+    id:5, type:'mc', difficulty:'mid',
+    question:'금리 0.5% 상승 시 가장 취약한 기업으로 "높음" 등급을 받은 두 곳은?',
+    options:['Microsoft, Alphabet','Amazon, Meta','Apple, Tesla','Nvidia, Broadcom'],
+    answer:1,
+    explanation:'Amazon(높음)과 Meta(높음)가 가장 취약합니다. Amazon은 $200B Capex 중 상당 부분 외부 조달, Meta는 부채 $84B 수준입니다. 반면 Microsoft는 "중간"(Azure 현금흐름 강함)으로 상대적으로 방어적입니다.'
+  },
+  {
+    id:6, type:'mc', difficulty:'easy',
+    question:'케빈 월시(Kevin Warsh) 연준 체제의 변화로 언급되지 않은 것은?',
+    options:['Forward Guidance 폐지','Dot Plot 미제출','기준금리 1% 즉시 인하','물가 안정에 더 무게'],
+    answer:2,
+    explanation:'금리는 3.50~3.75%로 "동결"됐고, 오히려 18명 중 9명이 최소 1회 인상을 전망(매파적)했습니다. Forward Guidance 폐지, Dot Plot 미제출, 물가 안정 우선은 모두 실제 언급된 변화입니다.'
+  },
+  {
+    id:7, type:'short', difficulty:'hard',
+    question:'수요일 실적을 발표하는 메모리 반도체 기업의 티커(Symbol)는? (영문 대문자)',
+    answer:['MU'],
+    accept:['mu','MU'],
+    explanation:'정답은 MU(Micron Technology)입니다. 컨센서스 EPS $20.81, 작년 EPS $1.73로 약 +1,102% 성장이 기대되며, HBM 메모리 슈퍼사이클 진입 + 2026년 생산 완판이 핵심입니다.'
+  },
+  {
+    id:8, type:'short', difficulty:'hard',
+    question:'SpaceX·xAI가 비용을 크게 낮추는 전략으로 강조된 영어 용어는? (두 단어)',
+    answer:['Vertical Integration'],
+    accept:['vertical integration','수직통합','수직 통합','vertical intergration'],
+    explanation:'정답은 Vertical Integration(수직 통합)입니다. 남의 것을 마진 붙여 쓰는 대신 자기 것으로 비용을 50% 이상 낮추는 구조로, 트위터 슈퍼컴퓨터 2대를 1대로 통합해 비용을 80% 낮춘 사례가 모델로 제시됐습니다.'
+  },
+  {
+    id:9, type:'mc', difficulty:'mid',
+    question:'오펜하이머의 SpaceX 분석에서 제시한 Falcon 9의 강점은?',
+    options:['100회 1회용 발사','300회 이상 재사용으로 비용 1/10','연료 무상 공급','정부 보조금 의존'],
+    answer:1,
+    explanation:'Falcon 9은 300회 이상 재사용에 성공해 비용을 1/10 수준으로 낮췄습니다. 외부 의존 없는 재사용 구조가 Lockheed Martin이 따라올 수 없는 핵심 경쟁력으로 제시됐습니다.'
+  },
+  {
+    id:10, type:'mc', difficulty:'hard',
+    question:'시장 주도 테마가 "망고"에서 바뀌었다고 한 새 약어와, 시장이 Capex보다 더 중요하게 본다고 한 지표를 바르게 묶은 것은?',
+    options:['BANANAS / 실제 수익화(ROI) 증거','FAANG / 시가총액','MAGNIFICENT / 배당수익률','BRICS / 환율'],
+    answer:0,
+    explanation:'새 약어는 BANANAS(Broadcom, Anthropic(앤스로픽), Nvidia, Amazon, Neuralink, Alphabet/Apple, SpaceX)입니다. 또한 시장은 Capex 규모 자체보다 실제 수익화(ROI) 증거 — Azure 성장률, 광고 매출 기여 등 — 에 더 민감하게 반응한다고 진단했습니다.'
+  }
+];
+
+let state = { solved:0, correct:0, done:new Set() };
+const quizEl = document.getElementById('quiz');
+
+function diffMeta(d){
+  if(d==='easy') return ['쉬움','d-easy'];
+  if(d==='mid') return ['보통','d-mid'];
+  return ['어려움','d-hard'];
+}
+function typeLabel(t){
+  return t==='mc'?'객관식':t==='ox'?'O / X':'단답형';
+}
+
+QUIZ_DATA.forEach(q=>{
+  const [dLabel,dClass] = diffMeta(q.difficulty);
+  const card = document.createElement('div');
+  card.className='card'; card.id='card-'+q.id;
+
+  let body='';
+  if(q.type==='mc'){
+    body='<div class="opts">'+q.options.map((o,i)=>
+      `<button class="opt" data-i="${i}"><span class="mk">${String.fromCharCode(65+i)}</span><span>${o}</span></button>`
+    ).join('')+'</div>';
+  } else if(q.type==='ox'){
+    body='<div class="ox">'+
+      `<button class="opt" data-ox="O"><span>O</span></button>`+
+      `<button class="opt" data-ox="X"><span>X</span></button>`+
+      '</div>';
+  } else {
+    body=`<div class="sa"><input type="text" placeholder="정답 입력 후 제출"><button>제출</button></div>
+          <div class="sa-hint">정답을 입력하고 제출 버튼을 누르세요.</div>`;
+  }
+
+  card.innerHTML=`
+    <div class="q-head">
+      <span class="q-no">${String(q.id).padStart(2,'0')}</span>
+      <span class="q-type">${typeLabel(q.type)}</span>
+      <span class="q-diff ${dClass}">${dLabel}</span>
+    </div>
+    <div class="q-text">${q.question}</div>
+    ${body}
+    <div class="expl" id="expl-${q.id}">
+      <div class="expl-inner">
+        <div class="et">✦ 해설</div>
+        <p class="ans-line" id="ansline-${q.id}"></p>
+        <p>${q.explanation}</p>
+      </div>
+    </div>`;
+  quizEl.appendChild(card);
+
+  if(q.type==='mc'){
+    card.querySelectorAll('.opt').forEach(btn=>{
+      btn.addEventListener('click',()=>handleMC(q,card,btn));
+    });
+  } else if(q.type==='ox'){
+    card.querySelectorAll('.opt').forEach(btn=>{
+      btn.addEventListener('click',()=>handleOX(q,card,btn));
+    });
+  } else {
+    const input=card.querySelector('input'), sub=card.querySelector('button');
+    const go=()=>handleShort(q,card,input,sub);
+    sub.addEventListener('click',go);
+    input.addEventListener('keydown',e=>{ if(e.key==='Enter') go(); });
+  }
+});
+
+function lock(card){ card.querySelectorAll('.opt,input,button').forEach(el=>el.disabled=true); }
+function showExpl(q, ok, correctText){
+  document.getElementById('ansline-'+q.id).textContent =
+    (ok?'✓ 정답입니다. ':'✗ 오답입니다. ') + (correctText?('정답: '+correctText):'');
+  document.getElementById('expl-'+q.id).classList.add('show');
+}
+function record(q, ok){
+  if(state.done.has(q.id)) return;
+  state.done.add(q.id);
+  state.solved++; if(ok) state.correct++;
+  updateBoard();
+}
+
+function handleMC(q,card,btn){
+  if(state.done.has(q.id)) return;
+  const pick=+btn.dataset.i, ok=pick===q.answer;
+  const opts=card.querySelectorAll('.opt');
+  lock(card);
+  if(ok){
+    btn.classList.add('correct');
+    btn.insertAdjacentHTML('beforeend','<span class="badge ok">✓ 정답!</span>');
+  } else {
+    btn.classList.add('wrong');
+    btn.insertAdjacentHTML('beforeend','<span class="badge no">✗ 오답</span>');
+    opts[q.answer].classList.add('correct');
+    opts[q.answer].insertAdjacentHTML('beforeend','<span class="badge ok">정답</span>');
+  }
+  showExpl(q, ok, q.options[q.answer]);
+  record(q, ok);
+}
+
+function handleOX(q,card,btn){
+  if(state.done.has(q.id)) return;
+  const pick=btn.dataset.ox, ok=pick===q.answer;
+  const opts=card.querySelectorAll('.opt');
+  lock(card);
+  if(ok){
+    btn.classList.add('correct');
+    btn.insertAdjacentHTML('beforeend','<span class="badge ok">✓ 정답!</span>');
+  } else {
+    btn.classList.add('wrong');
+    btn.insertAdjacentHTML('beforeend','<span class="badge no">✗ 오답</span>');
+    opts.forEach(o=>{ if(o.dataset.ox===q.answer){ o.classList.add('correct'); o.insertAdjacentHTML('beforeend','<span class="badge ok">정답</span>'); }});
+  }
+  showExpl(q, ok, q.answer);
+  record(q, ok);
+}
+
+function handleShort(q,card,input,sub){
+  if(state.done.has(q.id)) return;
+  const val=input.value.trim();
+  if(!val){ input.focus(); return; }
+  const pool=(q.accept||q.answer).map(s=>s.toLowerCase().replace(/\s+/g,' ').trim());
+  const ok=pool.includes(val.toLowerCase().replace(/\s+/g,' ').trim());
+  input.disabled=true; sub.disabled=true;
+  input.style.borderColor = ok?'var(--green)':'var(--red)';
+  input.style.background = ok?'var(--green-bg)':'var(--red-bg)';
+  sub.textContent = ok?'✓ 정답':'✗ 오답';
+  sub.style.background = ok?'var(--green)':'var(--red)';
+  showExpl(q, ok, q.answer[0]);
+  record(q, ok);
+}
+
+function updateBoard(){
+  document.getElementById('sbSolved').textContent=state.solved;
+  document.getElementById('sbCorrect').textContent=state.correct;
+  const rate = state.solved? Math.round(state.correct/state.solved*100):0;
+  document.getElementById('sbRate').textContent=rate+'%';
+  const fill=document.getElementById('progFill');
+  fill.style.width=(state.solved/10*100)+'%';
+  if(rate<40) fill.style.background='var(--red)';
+  else if(rate<70) fill.style.background='#f97316';
+  else fill.style.background='var(--green)';
+  if(state.solved===10) setTimeout(showFinal,500);
+}
+
+function showFinal(){
+  const c=state.correct;
+  let g,msg;
+  if(c>=9){g='A'; msg='탁월합니다! 시장포커스의 핵심 논리를 거의 완벽히 이해했습니다.';}
+  else if(c>=7){g='B'; msg='훌륭합니다. 큰 흐름을 잘 잡았어요. 틀린 문항의 해설을 한 번 더 확인해보세요.';}
+  else if(c>=5){g='C'; msg='기본은 잡혔습니다. 섹터 로테이션과 금리 취약도 부분을 복습하면 좋겠습니다.';}
+  else {g='D'; msg='해설과 함께 리포트를 다시 읽어보세요. 반복하면 분명히 좋아집니다.';}
+  document.getElementById('mGrade').textContent=g;
+  document.getElementById('mGrade').className='grade '+g;
+  document.getElementById('mScore').textContent=c;
+  document.getElementById('mMsg').textContent=msg;
+  document.getElementById('modal').classList.add('show');
+}
+
+document.getElementById('retryBtn').addEventListener('click',()=>location.reload());
+document.getElementById('modal').addEventListener('click',e=>{
+  if(e.target.id==='modal') e.currentTarget.classList.remove('show');
+});
+</script>
+</body>
+</html>
