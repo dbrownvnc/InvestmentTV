@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>마이크론과 샌디스크 데이 — 6월 25일 멤버온리 분석</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;0,900;1,500&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+:root{
+  --bg:#ffffff; --bg2:#fafafa; --ink:#1a1a1a; --sub:#777777;
+  --accent:#e11d48; --accent2:#f43f5e; --line:#e5e5e5;
+  --c1:#e11d48; --c2:#1a1a1a; --c3:#6b7280; --c4:#2563eb;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  background:var(--bg); color:var(--ink);
+  font-family:'Noto Sans KR',sans-serif; font-weight:400;
+  line-height:1.75; -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:680px; margin:0 auto; padding:0 22px;}
+
+/* ---------- Masthead ---------- */
+.masthead{padding:54px 0 0;}
+.kicker{
+  font-size:12px; letter-spacing:.22em; text-transform:uppercase;
+  color:var(--accent); font-weight:700; margin-bottom:22px;
+  display:flex; align-items:center; gap:10px;
+}
+.kicker::after{content:""; flex:1; height:1px; background:var(--line);}
+.eyebrow-meta{font-size:12.5px; color:var(--sub); letter-spacing:.04em; margin-bottom:18px;}
+h1.title{
+  font-family:'Playfair Display',serif; font-weight:900;
+  font-size:clamp(34px,9vw,52px); line-height:1.08; letter-spacing:-.01em;
+  margin-bottom:20px;
+}
+h1.title em{font-style:italic; color:var(--accent);}
+.standfirst{
+  font-size:17px; color:#3a3a3a; line-height:1.78;
+  border-left:3px solid var(--accent); padding-left:18px; margin:24px 0 8px;
+}
+.byline{
+  font-size:13px; color:var(--sub); margin:30px 0 0;
+  padding:16px 0; border-top:1px solid var(--line); border-bottom:1px solid var(--line);
+  display:flex; flex-wrap:wrap; gap:6px 18px;
+}
+.byline b{color:var(--ink); font-weight:700;}
+
+/* ---------- Sections ---------- */
+section{padding:46px 0; border-bottom:1px solid var(--line);}
+.sec-num{
+  font-family:'Playfair Display',serif; font-style:italic;
+  font-size:14px; color:var(--accent); font-weight:700; letter-spacing:.05em;
+  margin-bottom:8px; display:block;
+}
+h2{
+  font-family:'Playfair Display',serif; font-weight:700;
+  font-size:clamp(25px,6.4vw,33px); line-height:1.18; letter-spacing:-.01em;
+  margin-bottom:8px;
+}
+h2 .ko{font-family:'Noto Sans KR',sans-serif; font-weight:700; display:block; font-size:.62em; color:var(--sub); margin-top:8px; letter-spacing:0;}
+h3{
+  font-family:'Noto Sans KR',sans-serif; font-weight:700; font-size:18px;
+  margin:28px 0 10px; padding-left:13px; border-left:4px solid var(--accent);
+}
+p{margin:14px 0; font-size:15.5px; color:#2a2a2a;}
+p.lead{font-size:16.5px;}
+strong{font-weight:700; color:var(--ink);}
+.hl{background:linear-gradient(transparent 60%, #fde2e8 60%); font-weight:700; padding:0 1px;}
+.accent-txt{color:var(--accent); font-weight:700;}
+
+/* ---------- TL;DR ---------- */
+.tldr{background:var(--bg2); border:1px solid var(--line); border-radius:14px; padding:26px 24px; margin:6px 0;}
+.tldr h4{font-size:12px; letter-spacing:.18em; text-transform:uppercase; color:var(--accent); font-weight:700; margin-bottom:18px;}
+.tldr ul{list-style:none;}
+.tldr li{position:relative; padding-left:28px; margin:13px 0; font-size:15px; line-height:1.65;}
+.tldr li::before{content:"›"; position:absolute; left:6px; top:-1px; color:var(--accent); font-weight:900; font-size:18px;}
+
+/* ---------- Pull quote ---------- */
+.pull{
+  font-family:'Playfair Display',serif; font-style:italic; font-weight:500;
+  font-size:clamp(21px,5.4vw,27px); line-height:1.4; color:var(--ink);
+  text-align:center; padding:34px 8px; margin:30px 0;
+  border-top:2px solid var(--ink); border-bottom:2px solid var(--ink);
+}
+.pull span{color:var(--accent);}
+.pull cite{display:block; font-family:'Noto Sans KR',sans-serif; font-style:normal; font-size:13px; color:var(--sub); margin-top:16px; letter-spacing:.04em;}
+
+/* ---------- Table ---------- */
+.tbl-wrap{overflow-x:auto; margin:22px 0; border:1px solid var(--line); border-radius:12px;}
+table{width:100%; border-collapse:collapse; font-size:14px; min-width:430px;}
+thead th{background:var(--accent); color:#fff; font-weight:700; padding:12px 14px; text-align:left; font-size:13px; letter-spacing:.02em;}
+tbody td{padding:11px 14px; border-top:1px solid var(--line); background:#fff;}
+tbody tr:nth-child(even) td{background:var(--bg2);}
+.up{color:#16a34a; font-weight:700;}
+.down{color:var(--accent); font-weight:700;}
+.mono{font-variant-numeric:tabular-nums; font-feature-settings:"tnum";}
+
+/* ---------- Chart ---------- */
+.fade-in{opacity:0; transform:translateY(18px); transition:opacity .7s ease, transform .7s ease;}
+.fade-in.visible{opacity:1; transform:translateY(0);}
+.chart-card{background:var(--bg2); border:1px solid var(--line); border-radius:14px; padding:22px 18px 18px; margin:24px 0;}
+.chart-card .cap{font-size:12px; color:var(--sub); letter-spacing:.04em; margin-bottom:14px; font-weight:500;}
+.chart-card .cap b{color:var(--accent);}
+.chart-container{position:relative; max-height:340px;}
+.chart-container canvas{opacity:0; transition:opacity .4s ease; max-height:300px;}
+.chart-container.chart-ready canvas{opacity:1;}
+
+/* ---------- Interactive ---------- */
+.sim{background:#fff; border:2px solid var(--ink); border-radius:16px; padding:26px 22px; margin:26px 0;}
+.sim h4{font-family:'Playfair Display',serif; font-size:20px; font-weight:700; margin-bottom:4px;}
+.sim .sim-sub{font-size:13px; color:var(--sub); margin-bottom:20px;}
+.slider-row{margin:18px 0;}
+.slider-row .lab{display:flex; justify-content:space-between; align-items:baseline; margin-bottom:7px;}
+.slider-row .lab .name{font-weight:700; font-size:14.5px;}
+.slider-row .lab .name small{font-weight:400; color:var(--sub); font-size:12px; margin-left:4px;}
+.slider-row .lab .val{font-variant-numeric:tabular-nums; font-weight:700; color:var(--accent); font-size:15px;}
+input[type=range]{-webkit-appearance:none; appearance:none; width:100%; height:6px; border-radius:6px; background:var(--line); outline:none; cursor:pointer;}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none; appearance:none; width:20px; height:20px; border-radius:50%; background:var(--accent); border:3px solid #fff; box-shadow:0 1px 5px rgba(225,29,72,.45); cursor:pointer;}
+input[type=range]::-moz-range-thumb{width:20px; height:20px; border-radius:50%; background:var(--accent); border:3px solid #fff; cursor:pointer;}
+.sim-out{margin-top:22px; padding-top:20px; border-top:1px solid var(--line);}
+.sim-total{display:flex; justify-content:space-between; align-items:center; font-size:15px; margin-bottom:12px;}
+.sim-total .big{font-family:'Playfair Display',serif; font-size:30px; font-weight:900;}
+.bar-track{height:26px; border-radius:8px; background:var(--bg2); overflow:hidden; display:flex; border:1px solid var(--line);}
+.bar-seg{height:100%; transition:width .3s ease; min-width:0;}
+.legend{display:flex; flex-wrap:wrap; gap:8px 14px; margin-top:14px; font-size:11.5px; color:var(--sub);}
+.legend span{display:flex; align-items:center; gap:5px;}
+.legend i{width:11px; height:11px; border-radius:3px; display:inline-block;}
+.warn{margin-top:14px; padding:11px 14px; border-radius:10px; font-size:13px; font-weight:500; display:none;}
+.warn.show{display:block;}
+.warn.ok{background:#dcfce7; color:#15803d;}
+.warn.bad{background:#fee2e2; color:var(--accent);}
+.btn-reset{margin-top:16px; width:100%; padding:11px; border:1px solid var(--ink); background:#fff; color:var(--ink); border-radius:10px; font-family:'Noto Sans KR'; font-weight:700; font-size:13.5px; cursor:pointer; transition:all .2s;}
+.btn-reset:hover{background:var(--ink); color:#fff;}
+.val-out{display:flex; gap:12px; flex-wrap:wrap; margin-top:18px;}
+.val-card{flex:1; min-width:120px; background:var(--bg2); border:1px solid var(--line); border-radius:12px; padding:16px 14px; text-align:center;}
+.val-card .t{font-size:11px; color:var(--sub); letter-spacing:.04em; margin-bottom:6px;}
+.val-card .n{font-family:'Playfair Display',serif; font-size:23px; font-weight:900; font-variant-numeric:tabular-nums;}
+.val-card .n.green{color:#16a34a;}
+.val-card .n.red{color:var(--accent);}
+
+/* ---------- Glossary ---------- */
+.gloss{background:var(--ink); color:#eee; border-radius:16px; padding:28px 24px; margin:8px 0;}
+.gloss h4{color:var(--accent2); font-size:12px; letter-spacing:.18em; text-transform:uppercase; margin-bottom:18px; font-weight:700;}
+.gloss dl{display:grid; gap:16px;}
+.gloss dt{font-weight:700; font-size:14.5px; color:#fff; margin-bottom:3px;}
+.gloss dd{font-size:13.5px; color:#bbb; line-height:1.6;}
+
+/* ---------- Callout ---------- */
+.callout{background:#fff5f7; border:1px solid #fbcfe0; border-left:4px solid var(--accent); border-radius:0 12px 12px 0; padding:20px 22px; margin:24px 0;}
+.callout .tag{font-size:11px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); margin-bottom:8px;}
+.callout p{margin:6px 0; font-size:14.5px;}
+
+/* ---------- Stock chips ---------- */
+.chips{display:flex; flex-wrap:wrap; gap:9px; margin:18px 0;}
+.chip{border:1px solid var(--line); border-radius:10px; padding:10px 14px; font-size:13px; background:#fff; flex:1; min-width:140px;}
+.chip .tk{font-weight:900; font-size:14px; margin-right:6px;}
+.chip .st{font-size:11.5px; color:var(--sub); display:block; margin-top:3px;}
+.chip.sell{border-color:#fbcfe0; background:#fff5f7;}
+.chip.hold{border-color:#bfdbfe; background:#eff6ff;}
+.chip.buy{border-color:#bbf7d0; background:#f0fdf4;}
+
+/* ---------- Footer ---------- */
+footer{padding:40px 0 64px;}
+.disc{font-size:11.5px; color:var(--sub); line-height:1.7; background:var(--bg2); border:1px solid var(--line); border-radius:12px; padding:20px;}
+.endmark{text-align:center; font-family:'Playfair Display',serif; font-size:22px; color:var(--accent); margin:30px 0 24px;}
+
+@media(max-width:520px){
+  .wrap{padding:0 18px;}
+  section{padding:38px 0;}
+  .val-card{min-width:100%;}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== MASTHEAD ===== -->
+  <header class="masthead">
+    <div class="kicker">투자는인생TV · 멤버온리 라이브</div>
+    <div class="eyebrow-meta">2026년 6월 25일 방송 · David Lee (테일러투자그룹 CIO) · 마이크론 &amp; 샌디스크 데이</div>
+    <h1 class="title">말한 대로 행동했다면, <em>대박</em></h1>
+    <p class="standfirst">
+      마이크론이 시장 예상을 “넘사벽”으로 뛰어넘는 실적을 내며 칩 섹터 전반을 끌어올렸다.
+      그러나 호실적 하나로 AI 과열 우려가 사라진 건 아니다. 핵심은 여전히 <strong>섹터 로테이션</strong>이다.
+      이번 방송에서는 30대 그룹에 <strong>SNX(TD SYNNEX)</strong>가 새로 편입되고 <strong>NP(넵튠 인슈어런스)</strong>가 탈락했다.
+    </p>
+    <div class="byline">
+      <span>분석 관점 · <b>미국 주식 / 거시경제</b></span>
+      <span>종목 · <b>MU · SNDK · SNX · IBM · INTC</b></span>
+      <span>읽는 시간 · <b>약 9분</b></span>
+    </div>
+  </header>
+
+  <!-- ===== TL;DR ===== -->
+  <section>
+    <div class="tldr">
+      <h4>오늘의 핵심 5</h4>
+      <ul>
+        <li><strong>마이크론(MU) 호실적</strong> — 매출이 예상 <span class="mono">350억 달러</span>를 뚫고 <span class="mono">410억 달러</span> 돌파, 주가 10주 동안 급등.</li>
+        <li><strong>칩 섹터 동반 강세</strong> — 샌디스크 급등, 웨스턴디지털 동반 상승. 반면 시장 전체의 약 70%는 하락.</li>
+        <li><strong>섹터 로테이션 지속</strong> — 하루 변동성 2~3% 넘으면 리밸런싱·로테이션을 강하게. AI 비중을 “왕창”이 아니라 “조금씩”.</li>
+        <li><strong>30대 신규 편입: SNX</strong> — DCF·내재가치 기준 저평가 구간. 변동성 낮은 라지캡 밸류.</li>
+        <li><strong>30대 탈락: NP(넵튠)</strong> — 변동성 과다로 제거. 즉시 매도 권고.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ===== 01 마이크론 ===== -->
+  <section>
+    <span class="sec-num">01 — Earnings</span>
+    <h2>마이크론, 예상을 “넘사벽”으로<span class="ko">한 번의 실적이 만든 칩주 랠리</span></h2>
+    <p class="lead">
+      마이크론(MU)이 <span class="hl">호실적으로 10주 동안 급등</span>했다. 핵심은 매출 서프라이즈다.
+      시장은 <strong>350억 달러</strong>대 매출을 “엄청나게 힘든” 수준으로 봤는데, 실제는 <strong>410억 달러</strong>를 넘겼다.
+      36억·37억 수준이 아니라 아예 기대치를 압도한 어닝이다.
+    </p>
+
+    <div class="chart-card fade-in">
+      <div class="cap">마이크론 분기 매출 — <b>예상 vs 실제</b> (단위: 십억 달러)</div>
+      <div class="chart-container">
+        <canvas id="muChart" height="230"></canvas>
+      </div>
+    </div>
+
+    <p>
+      마이크론과 함께 <strong>가이던스 칩(Guidance 칩)</strong> 종목이 18% 급등하는 등 전체 반도체 섹터가 성공적으로 상승했다.
+      방송에서는 “줄여놓은 마이크론 비중을 다시 늘려놓은” 판단이 적중했다는 점을 강조했다.
+    </p>
+
+    <div class="callout">
+      <div class="tag">왜 줄였다 늘렸나</div>
+      <p>마이크론은 한때 <strong>20% 넘게 빠졌던</strong> 구간이 있었다. 그 변동성을 “대부분 못 견딘다”는 것이 요지다.
+      미리 비중을 줄이고 인텔·마벨 등 다른 칩으로 갈아탄 덕분에 <strong>덜 잃고 더 오른</strong> 결과가 됐다는 설명이다.</p>
+    </div>
+
+    <p>
+      다만 경계도 분명히 했다. <span class="accent-txt">한 번의 실적으로 AI 과열 우려를 완전히 해소하긴 어렵다.</span>
+      관건은 ① AI 투자 수익률, ② 투자 집중도, ③ 수요 둔화 가능성 — 이 세 가지다.
+      “AI가 커졌다고 왕창 늘리면 안 되고, 조금씩 조금씩” 가야 한다는 원칙이 반복됐다.
+    </p>
+  </section>
+
+  <!-- ===== 02 Stocks on the move ===== -->
+  <section>
+    <span class="sec-num">02 — Market Breadth</span>
+    <h2>우리만 올라간다<span class="ko">시장 70%는 약세, 거래량 브레스(Breadth)도 낮아</span></h2>
+    <p class="lead">
+      칩 몇 종목을 빼면 미국 시장은 전반적으로 약하다. 다우존스를 포함한 시장의 약 <strong>70%가 부진</strong>하다는 진단이다.
+      그래서 “선택과 집중”을 잘했다는 것이 이번 방송의 축하 포인트다.
+    </p>
+
+    <div class="chart-card fade-in">
+      <div class="cap">Stocks on the Move — <b>주요 대형주 당일 변동률(%)</b></div>
+      <div class="chart-container">
+        <canvas id="movChart" height="250"></canvas>
+      </div>
+    </div>
+
+    <div class="tbl-wrap">
+      <table class="mono">
+        <thead><tr><th>심볼</th><th>거래량</th><th>가격변동($)</th><th>변동률</th></tr></thead>
+        <tbody>
+          <tr><td><b>NVDA</b></td><td>103.2M</td><td>-4.83</td><td class="down">-2.44%</td></tr>
+          <tr><td><b>AAPL</b></td><td>69.5M</td><td>-16.13</td><td class="down">-5.50%</td></tr>
+          <tr><td><b>AMZN</b></td><td>45.7M</td><td>-6.43</td><td class="down">-2.32%</td></tr>
+          <tr><td><b>MSFT</b></td><td>45.0M</td><td>-10.76</td><td class="down">-2.94%</td></tr>
+          <tr><td><b>NKE</b></td><td>16.1M</td><td>-1.29</td><td class="down">-3.08%</td></tr>
+          <tr><td><b>CSCO</b></td><td>12.1M</td><td>-0.81</td><td class="down">-0.68%</td></tr>
+          <tr><td><b>WMT</b></td><td>11.9M</td><td>-2.54</td><td class="down">-2.17%</td></tr>
+          <tr><td><b>VZ</b></td><td>10.3M</td><td>+0.51</td><td class="up">+1.11%</td></tr>
+          <tr><td><b>KO</b></td><td>8.9M</td><td>-0.13</td><td class="down">-0.16%</td></tr>
+          <tr><td><b>MRK</b></td><td>7.2M</td><td>+5.03</td><td class="up">+4.17%</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>
+      엔비디아 -2.44%, 애플 -5.5%, 아마존·마이크로소프트도 2~3% 하락. 좋은 회사들조차 거래량이 낮은 상태에서 빠졌다는 건
+      <strong>거래량 브레스가 낮다는 증거</strong>로, 일부 칩주를 빼면 대부분 내리는 장세라는 해석이다.
+    </p>
+
+    <h3>그 외 무빙 종목</h3>
+    <div class="chips">
+      <div class="chip"><span class="tk">SNDK</span>샌디스크<span class="st">실적·수요 기대로 급등 (+15~20%)</span></div>
+      <div class="chip"><span class="tk">WDC</span>웨스턴디지털<span class="st">+12%, 변동성 동반</span></div>
+      <div class="chip sell"><span class="tk">CBRS</span>세레브라스<span class="st">-19%, 매출 호조에도 마진 우려로 IPO 후 최저가</span></div>
+      <div class="chip"><span class="tk">SPCX</span>스페이스X<span class="st">+3% 반등(전일 -1%), 숏셀러 증가</span></div>
+      <div class="chip"><span class="tk">FCX</span>프리포트맥모란<span class="st">+2%, 구리 가격 상승·칩 수요 기대</span></div>
+      <div class="chip sell"><span class="tk">PLTR</span>팔란티어<span class="st">30대 제외 후 한 달간 -45%</span></div>
+    </div>
+    <p>
+      팔란티어는 한두 달 전 이미 30대 그룹에서 제외됐고 이후 <strong>45% 하락</strong>했다.
+      “많이 떨어진 걸 안 가지고 있는 것도 축하할 일”이라는 관점 — 올라가는 것만 보지 말라는 메시지다.
+    </p>
+  </section>
+
+  <!-- ===== 03 섹터 로테이션 + 시뮬레이터 ===== -->
+  <section>
+    <span class="sec-num">03 — Strategy</span>
+    <h2>섹터 로테이션은 멈추지 않는다<span class="ko">6월 23일 포스트 — 현금 매입 포트폴리오</span></h2>
+    <p class="lead">
+      방송 이틀 전(6월 23일) 포스트로 “현금으로 매입해야 하는 시점”을 공지했다.
+      하루 변동성이 2~3%를 넘으면 <strong>리밸런싱과 섹터 로테이션을 강하게</strong> 밀어붙여야 한다는 원칙에 따른 매수 리스트다.
+    </p>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>종목</th><th>제안 비중</th><th>비고</th></tr></thead>
+        <tbody>
+          <tr><td><b>MU</b> 마이크론</td><td class="mono">총 12% 이하</td><td>비중 상한 관리</td></tr>
+          <tr><td><b>VRT</b> 버티브</td><td class="mono">1–2%</td><td>—</td></tr>
+          <tr><td><b>SNDK</b> 샌디스크</td><td class="mono">2–3%</td><td>—</td></tr>
+          <tr><td><b>INTC</b> 인텔</td><td class="mono">3–5%</td><td>반드시 보유</td></tr>
+          <tr><td><b>IBM</b></td><td class="mono">3–5%</td><td>반드시 보유 · 다음 실적까지</td></tr>
+          <tr><td><b>SNX</b> TD시넥스</td><td class="mono">2%</td><td>30대 신규 편입</td></tr>
+          <tr><td><b>SPCX</b> 스페이스X</td><td class="mono">멤버온리</td><td>무보유 기준(개인 판단)</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>
+      현금이 부족하면 <span class="hl">헬스케어 섹터를 20% 매각</span>해 자금을 마련하라는 가이드다.
+      단, 무리하지 말 것 — 마이크론은 특별한 소식이 없으면 부정적 뉴스에 과민반응하므로, 너무 오르면 비중을 조정하라는 단서가 붙는다.
+    </p>
+
+    <!-- 포트폴리오 시뮬레이터 -->
+    <div class="sim">
+      <h4>포트폴리오 비중 시뮬레이터</h4>
+      <p class="sim-sub">슬라이더로 각 종목 비중을 조절해 보세요. 방송에서 제시한 권장 범위를 벗어나면 경고가 표시됩니다.</p>
+
+      <div class="slider-row" data-tk="MU">
+        <div class="lab"><span class="name">MU <small>권장 ≤12%</small></span><span class="val">8%</span></div>
+        <input type="range" min="0" max="20" value="8" step="1">
+      </div>
+      <div class="slider-row" data-tk="INTC">
+        <div class="lab"><span class="name">INTC <small>권장 3–5%</small></span><span class="val">4%</span></div>
+        <input type="range" min="0" max="10" value="4" step="1">
+      </div>
+      <div class="slider-row" data-tk="IBM">
+        <div class="lab"><span class="name">IBM <small>권장 3–5%</small></span><span class="val">4%</span></div>
+        <input type="range" min="0" max="10" value="4" step="1">
+      </div>
+      <div class="slider-row" data-tk="SNDK">
+        <div class="lab"><span class="name">SNDK <small>권장 2–3%</small></span><span class="val">3%</span></div>
+        <input type="range" min="0" max="8" value="3" step="1">
+      </div>
+      <div class="slider-row" data-tk="SNX">
+        <div class="lab"><span class="name">SNX <small>권장 2%</small></span><span class="val">2%</span></div>
+        <input type="range" min="0" max="6" value="2" step="1">
+      </div>
+      <div class="slider-row" data-tk="VRT">
+        <div class="lab"><span class="name">VRT <small>권장 1–2%</small></span><span class="val">2%</span></div>
+        <input type="range" min="0" max="6" value="2" step="1">
+      </div>
+
+      <div class="sim-out">
+        <div class="sim-total"><span>칩·코어 합계 비중</span><span class="big" id="pTotal">23%</span></div>
+        <div class="bar-track" id="pBar"></div>
+        <div class="legend" id="pLegend"></div>
+        <div class="warn" id="pWarn"></div>
+        <button class="btn-reset" id="pReset">권장값으로 초기화</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 04 SNX ===== -->
+  <section>
+    <span class="sec-num">04 — New Pick</span>
+    <h2>30대 신규 편입: SNX<span class="ko">TD SYNNEX — 라지캡 밸류, 저평가 구간</span></h2>
+    <p class="lead">
+      이번 30대 그룹에 새로 들어온 종목은 <strong>TD SYNNEX(SNX:NYSE)</strong>다.
+      섹터는 IT지만 서브 인더스트리는 <strong>테크놀로지 디스트리뷰터(유통)</strong> — 델·HP·레노버·시스코·애플 등과
+      최종 고객(기업·중소기업·리셀러)을 잇는 중간 유통 플랫폼이다.
+    </p>
+
+    <div class="tbl-wrap">
+      <table class="mono">
+        <thead><tr><th>지표</th><th>값</th><th>의미</th></tr></thead>
+        <tbody>
+          <tr><td>EPS (’26.3.31)</td><td><b>$12.0366</b></td><td>주당순이익</td></tr>
+          <tr><td>P/E</td><td>23.53</td><td>현재 PER</td></tr>
+          <tr><td>Forward P/E</td><td><b>16.56</b></td><td>선행 PER — 낮을수록 상승 여력</td></tr>
+          <tr><td>PEG</td><td>1.55</td><td>성장 대비 밸류</td></tr>
+          <tr><td>배당률(IAD)</td><td>$1.92 / 0.68%</td><td>잉여현금흐름 양호 신호</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>
+      포워드 P/E가 16.56이라는 건 향후 이익 기준으로 <span class="hl">주가 상승 여력이 더 크다</span>는 뜻이다.
+      배당을 준다는 것 자체가 <strong>프리캐시플로우가 좋다</strong>는 방증으로 해석됐다. B2B 유통 구조라 변동성이 상대적으로 덜하다.
+    </p>
+
+    <div class="chart-card fade-in">
+      <div class="cap">SNX 밸류에이션 — <b>현재가 vs DCF vs 내재가치</b> (USD)</div>
+      <div class="chart-container">
+        <canvas id="snxChart" height="230"></canvas>
+      </div>
+    </div>
+
+    <p>
+      <strong>DCF 392.96달러</strong>는 현재가(약 280달러) 대비 <span class="accent-txt">29% 저평가</span>,
+      <strong>내재가치 453.87달러</strong> 기준으로는 <span class="accent-txt">38% 저평가</span>다.
+      GDP가 성장하는 한 “계속 가지고 있어야 하는” 안정적 종목이라는 평가다.
+    </p>
+
+    <!-- SNX 밸류 계산기 -->
+    <div class="sim">
+      <h4>SNX 진입가 업사이드 계산기</h4>
+      <p class="sim-sub">매수 가격을 조절하면 DCF·내재가치 대비 상승 여력이 실시간으로 계산됩니다.</p>
+      <div class="slider-row" id="snxRow">
+        <div class="lab"><span class="name">내 매수가</span><span class="val" id="snxPriceVal">$280</span></div>
+        <input type="range" id="snxPrice" min="200" max="460" value="280" step="1">
+      </div>
+      <div class="val-out">
+        <div class="val-card"><div class="t">DCF $392.96 대비</div><div class="n green" id="snxDcf">+40.3%</div></div>
+        <div class="val-card"><div class="t">내재가치 $453.87 대비</div><div class="n green" id="snxIntr">+62.1%</div></div>
+      </div>
+      <button class="btn-reset" id="snxReset">현재가($280)로 초기화</button>
+    </div>
+  </section>
+
+  <!-- ===== 05 탈락 + 정리 ===== -->
+  <section>
+    <span class="sec-num">05 — Out &amp; Trim</span>
+    <h2>탈락과 비중 축소<span class="ko">NP 제거, 하이퍼스케일러·애플 정리</span></h2>
+
+    <h3>30대 탈락: NP (Neptune Insurance)</h3>
+    <p>
+      <strong>오늘부터 제거</strong> 대상이다. 올라갈 때 확 오르고 떨어질 때 확 빠지는 <span class="hl">변동성을 감당하기 어렵다</span>는 이유다.
+      “열 몇 번을 그렇게 했으니 더는 안 되겠다”는 판단으로, 보유 중이면 매도 권고.
+    </p>
+
+    <h3>줄이거나 없앨 종목</h3>
+    <div class="chips">
+      <div class="chip sell"><span class="tk">AAPL</span>애플<span class="st">투자 대상 아님 · 기관 비중↓ · 레이팅 하락</span></div>
+      <div class="chip sell"><span class="tk">GOOGL</span>구글<span class="st">“팔라”보다 “줄여라” · 전체 10% 미만</span></div>
+      <div class="chip sell"><span class="tk">META</span>메타<span class="st">비중 축소 권고</span></div>
+      <div class="chip sell"><span class="tk">AMZN/MSFT</span>하이퍼스케일러<span class="st">기관 비중 감소 중</span></div>
+      <div class="chip hold"><span class="tk">MRK/LLY</span>머크·릴리<span class="st">하반기 M&amp;A 리스크 · 비중 축소</span></div>
+    </div>
+    <p>
+      구글·메타는 단기성인지 중장기성인지 판단이 어려워 <strong>전체 비중 합쳐 10% 미만 보유 또는 매각</strong>,
+      당분간 연말까지는 힘들 수 있다는 전망이다. 머크·릴리는 자체 성장 한계로 파이프라인을 계속 사들이는 구조라
+      “지금은 굿뉴스지만 나중에 안 좋은 소식”이 나올 수 있는 리스크로 봤다.
+    </p>
+
+    <h3>보유 유지</h3>
+    <div class="chips">
+      <div class="chip hold"><span class="tk">IBM</span><span class="st">다음 실적까지 보유 · 2–3% · 레이팅 상향</span></div>
+      <div class="chip buy"><span class="tk">금/은</span><span class="st">소외됐으나 보유 유지 · 장기 관점</span></div>
+      <div class="chip hold"><span class="tk">SPCX</span><span class="st">숏 두려워 않음 · 다만 최근 과열</span></div>
+    </div>
+  </section>
+
+  <!-- ===== 06 거시 ===== -->
+  <section>
+    <span class="sec-num">06 — Macro</span>
+    <h2>거시지표는 “예상보다 탄력적”<span class="ko">1Q GDP · 투자 지표 · 향후 전망</span></h2>
+    <p class="lead">
+      1분기 GDP는 12월 예상치 <strong>2.2%</strong>보다는 낮았지만, 이란 전쟁발 유가 급등이라는 외부 충격을 고려하면
+      <span class="hl">소비자·경제가 예상보다 탄력적</span>이었다는 평가다.
+    </p>
+
+    <div class="chart-card fade-in">
+      <div class="cap">투자(Gross Domestic Investment) 구성 — <b>예상 대비 상회</b> (%)</div>
+      <div class="chart-container">
+        <canvas id="gdpChart" height="230"></canvas>
+      </div>
+    </div>
+
+    <p>
+      투자가 예상 2.9%를 크게 웃돈 <strong>+7%</strong>를 기록했고, 그중 설비투자(Equipment)가 <strong>+17.2%</strong>,
+      지식재산(IP)이 <strong>+11.6%</strong>로 강력한 성장을 보였다. <strong>AI 설비투자</strong>가 큰 비중을 차지하며,
+      직업이 없어지는 게 아니라 새로운 직업군이 늘어나는 성장 동력이라는 해석이다.
+    </p>
+
+    <div class="tbl-wrap">
+      <table class="mono">
+        <thead><tr><th>구간</th><th>전망</th><th>직전 대비</th></tr></thead>
+        <tbody>
+          <tr><td>2026년 전체 GDP</td><td><b>+2.3%</b></td><td class="up">↑ (이전 +2.1%)</td></tr>
+          <tr><td>2026년 2분기</td><td><b>+2.5%</b></td><td class="up">↑ (이전 +2.2%)</td></tr>
+          <tr><td>2027년</td><td><b>+2.4%</b></td><td class="up">↑ (이전 +2.0%)</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>GDP 성장률이 안정적이라는 건 <strong>한 차례 정도 금리가 인상돼도 문제가 없다</strong>는 신호로 받아들여졌다.</p>
+  </section>
+
+  <!-- ===== 07 적응 메타포 ===== -->
+  <section>
+    <span class="sec-num">07 — Mindset</span>
+    <h2>“과거의 아집을 버려라”<span class="ko">축구 전술에서 빌려온 투자 원칙</span></h2>
+    <p class="lead">
+      방송의 상당 부분은 한국 축구(전술·적응)에 대한 비유로 채워졌다. 핵심 메시지는 투자에 그대로 적용된다 —
+      <span class="hl">과거에 알던 경험과 아집에 갇히지 말고, 새로운 전술·전략에 적응하라.</span>
+    </p>
+    <div class="pull">
+      시장이 미쳐 돌아가 <span>없던 것을 만들어내야</span> 하는 시대.<br>네가 아는 것도 내가 아는 것이고, 적응할 필요가 있다.
+      <cite>— 시장의 평균화, 그리고 유연한 전술의 필요성</cite>
+    </div>
+    <p>
+      상대(시장)의 전술이 바뀌면 우리 포메이션도 바꿔야 한다. “3백만 고집하다 뒷공간이 뚫리는” 실수처럼,
+      한 가지 포지셔닝에 갇히면 변화에 당한다. 이번 마이크론 비중을 줄였다 늘린 판단, 섹터 로테이션의 강조가 모두 같은 맥락이다.
+    </p>
+  </section>
+
+  <!-- ===== 08 형님생각 ===== -->
+  <section>
+    <span class="sec-num">08 — Closing Thought</span>
+    <h2>형님생각: 근본으로 돌아가라<span class="ko">고난을 받아들이는 법, 그리고 진짜 가치</span></h2>
+    <p>
+      “왜 나한테만 이런 일이 생길까”라는 원망은, 하늘이 당신을 특별히 선택한 기회로 받아들이라는 조언이다.
+      고난은 <strong>받아들이는 방법</strong>이 중요하다.
+    </p>
+    <div class="pull">
+      자연과 가까워지면 작은 것에 감사하고, 동물과 지내면 공감 능력이 생기고,<br>
+      밤하늘 별을 보면 <span>겸손함</span>을 배운다.
+      <cite>— AI 시대일수록 근본으로</cite>
+    </div>
+    <p>
+      스마트폰 속 쇼츠를 보며 시간을 낭비하면 욕심·질투·과다망상·불면증·정서불안·학습장애가 따라온다는 경고와 함께,
+      인간이 진짜 사고 싶어 하는 가치는 콘텐츠가 아니라 <strong>자연·동물·밤하늘·스포츠·사랑</strong>에 있다는 마무리.
+      자산 증식이 목적이 되는 “바보 같은 짓”을 경계하라는 당부다.
+    </p>
+    <div class="callout">
+      <div class="tag">공지</div>
+      <p>다음 주(월요일 포함) <strong>2주간 정규 방송 휴방</strong> — 진행자는 하와이 가족 여행. 문제 발생 시에만 폰으로 짧게 등장.
+      신규 멤버는 그동안 지난 방송과 투자 아카데미(45편), 30대 그룹 기준을 복습할 것.</p>
+    </div>
+  </section>
+
+  <!-- ===== 용어 ===== -->
+  <section>
+    <div class="gloss">
+      <h4>용어 풀이</h4>
+      <dl>
+        <div><dt>섹터 로테이션 (Sector Rotation)</dt><dd>경기·시장 국면에 따라 자금을 한 업종에서 다른 업종으로 옮기는 전략. 변동성이 커질 때 비중을 재조정한다.</dd></div>
+        <div><dt>DCF (현금흐름할인법)</dt><dd>기업이 미래에 벌어들일 현금흐름을 현재 가치로 환산해 적정 주가를 추정하는 방법.</dd></div>
+        <div><dt>내재가치 (Intrinsic Value)</dt><dd>시장 가격과 무관하게 산출한 기업의 “진짜 가치”. 현재가보다 높으면 저평가로 본다.</dd></div>
+        <div><dt>Forward P/E (선행 PER)</dt><dd>향후 예상 이익을 기준으로 한 주가수익비율. 낮을수록 이익 대비 주가가 싸다는 의미.</dd></div>
+        <div><dt>거래량 브레스 (Breadth)</dt><dd>상승·하락 종목의 폭. 소수 종목만 오르고 거래량이 낮으면 상승의 “체력”이 약하다는 신호.</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <div class="endmark">— 마이크론 &amp; 샌디스크 데이 —</div>
+
+  <footer>
+    <div class="disc">
+      <strong>투자 유의 안내</strong><br>
+      본 자료는 2026년 6월 25일 ‘투자는인생TV’ 멤버온리 라이브 방송 내용을 정리·요약한 것으로, 특정 종목의 매수·매도를 권유하지 않습니다.
+      방송에서 언급된 수치·전망·종목 의견은 발언자(David Lee)의 개인적 견해이며, 투자 결과에 대한 책임은 투자자 본인에게 있습니다.
+      Investment Products / Are Not FDIC Insured / Are Not Bank Guaranteed / May Lose Value.
+    </div>
+  </footer>
+
+</div>
+
+<script>
+/* ============ Fade-in observer ============ */
+const fadeObs = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), i * 80);
+      fadeObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.12 });
+document.querySelectorAll('.fade-in').forEach(el => fadeObs.observe(el));
+
+/* ============ Chart configs ============ */
+const FONT = "'Noto Sans KR', sans-serif";
+Chart.defaults.font.family = FONT;
+Chart.defaults.color = '#777777';
+const C = {accent:'#e11d48', ink:'#1a1a1a', gray:'#6b7280', blue:'#2563eb'};
+
+const chartConfigs = {};
+
+chartConfigs['muChart'] = () => {
+  new Chart(document.getElementById('muChart'), {
+    type:'bar',
+    data:{ labels:['예상 매출','실제 매출'],
+      datasets:[{ data:[35,41], backgroundColor:[C.gray, C.accent], borderRadius:8, barThickness:74 }]},
+    options:{ responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{display:false},
+        tooltip:{callbacks:{label:c=>c.parsed.y+' B 달러'}} },
+      scales:{ y:{beginAtZero:true, grid:{color:'#eee'}, ticks:{callback:v=>v+'B'}},
+               x:{grid:{display:false}, ticks:{font:{size:13,weight:'700'}}} } }
+  });
+};
+
+chartConfigs['movChart'] = () => {
+  const labels=['NVDA','AAPL','AMZN','MSFT','NKE','CSCO','WMT','VZ','KO','MRK'];
+  const vals=[-2.44,-5.50,-2.32,-2.94,-3.08,-0.68,-2.17,1.11,-0.16,4.17];
+  new Chart(document.getElementById('movChart'), {
+    type:'bar',
+    data:{ labels, datasets:[{ data:vals,
+      backgroundColor:vals.map(v=>v>=0?C.blue:C.accent), borderRadius:5 }]},
+    options:{ responsive:true, maintainAspectRatio:false, indexAxis:'y',
+      plugins:{legend:{display:false}, tooltip:{callbacks:{label:c=>c.parsed.x+'%'}}},
+      scales:{ x:{grid:{color:'#eee'}, ticks:{callback:v=>v+'%'}},
+               y:{grid:{display:false}, ticks:{font:{size:12,weight:'700'}}} } }
+  });
+};
+
+chartConfigs['snxChart'] = () => {
+  new Chart(document.getElementById('snxChart'), {
+    type:'bar',
+    data:{ labels:['현재가','DCF','내재가치'],
+      datasets:[{ data:[280,392.96,453.87],
+        backgroundColor:[C.ink, C.blue, C.accent], borderRadius:8, barThickness:64 }]},
+    options:{ responsive:true, maintainAspectRatio:false,
+      plugins:{legend:{display:false}, tooltip:{callbacks:{label:c=>'$'+c.parsed.y}}},
+      scales:{ y:{beginAtZero:true, grid:{color:'#eee'}, ticks:{callback:v=>'$'+v}},
+               x:{grid:{display:false}, ticks:{font:{size:13,weight:'700'}}} } }
+  });
+};
+
+chartConfigs['gdpChart'] = () => {
+  new Chart(document.getElementById('gdpChart'), {
+    type:'bar',
+    data:{ labels:['투자 전체','설비투자','지식재산(IP)','(예상치)'],
+      datasets:[{ data:[7,17.2,11.6,2.9],
+        backgroundColor:[C.accent, C.blue, C.gray, '#cbd5e1'], borderRadius:7 }]},
+    options:{ responsive:true, maintainAspectRatio:false,
+      plugins:{legend:{display:false}, tooltip:{callbacks:{label:c=>'+'+c.parsed.y+'%'}}},
+      scales:{ y:{beginAtZero:true, grid:{color:'#eee'}, ticks:{callback:v=>v+'%'}},
+               x:{grid:{display:false}, ticks:{font:{size:11.5,weight:'700'}}} } }
+  });
+};
+
+const chartObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const canvas = e.target.querySelector('canvas');
+      if (canvas && chartConfigs[canvas.id]) {
+        chartConfigs[canvas.id]();
+        e.target.classList.add('chart-ready');
+        chartObs.unobserve(e.target);
+      }
+    }
+  });
+}, { threshold: 0.15 });
+document.querySelectorAll('.chart-container').forEach(el => chartObs.observe(el));
+
+/* ============ Portfolio simulator ============ */
+(function(){
+  const rows = Array.from(document.querySelectorAll('.sim .slider-row[data-tk]'));
+  const colors = {MU:'#e11d48', INTC:'#2563eb', IBM:'#1a1a1a', SNDK:'#f43f5e', SNX:'#6b7280', VRT:'#fb923c'};
+  const defaults = {MU:8, INTC:4, IBM:4, SNDK:3, SNX:2, VRT:2};
+  const ranges = {MU:[0,12], INTC:[3,5], IBM:[3,5], SNDK:[2,3], SNX:[2,2], VRT:[1,2]};
+  const bar=document.getElementById('pBar'), legend=document.getElementById('pLegend');
+  const totalEl=document.getElementById('pTotal'), warnEl=document.getElementById('pWarn');
+
+  function update(){
+    let total=0, breaches=[];
+    legend.innerHTML=''; bar.innerHTML='';
+    rows.forEach(r=>{
+      const tk=r.dataset.tk, inp=r.querySelector('input'), v=+inp.value;
+      r.querySelector('.val').textContent=v+'%';
+      total+=v;
+      const seg=document.createElement('div');
+      seg.className='bar-seg'; seg.style.background=colors[tk];
+      bar.appendChild(seg); seg._v=v;
+      const lg=document.createElement('span');
+      lg.innerHTML='<i style="background:'+colors[tk]+'"></i>'+tk+' '+v+'%';
+      legend.appendChild(lg);
+      const [lo,hi]=ranges[tk];
+      if(v<lo||v>hi) breaches.push(tk+'('+v+'%)');
+    });
+    Array.from(bar.children).forEach(seg=>{
+      seg.style.width=(total? (seg._v/total*100):0)+'%';
+    });
+    totalEl.textContent=total+'%';
+    if(breaches.length){
+      warnEl.className='warn bad show';
+      warnEl.textContent='⚠ 권장 범위를 벗어남: '+breaches.join(', ');
+    } else {
+      warnEl.className='warn ok show';
+      warnEl.textContent='✓ 모든 종목이 방송 권장 범위 안에 있습니다.';
+    }
+  }
+  rows.forEach(r=>r.querySelector('input').addEventListener('input',update));
+  document.getElementById('pReset').addEventListener('click',()=>{
+    rows.forEach(r=>{ r.querySelector('input').value=defaults[r.dataset.tk]; });
+    update();
+  });
+  update();
+})();
+
+/* ============ SNX valuation calculator ============ */
+(function(){
+  const price=document.getElementById('snxPrice');
+  const pv=document.getElementById('snxPriceVal');
+  const dcfEl=document.getElementById('snxDcf'), intrEl=document.getElementById('snxIntr');
+  const DCF=392.96, INTR=453.87;
+  function fmt(el, target, p){
+    const up=((target-p)/p*100);
+    el.textContent=(up>=0?'+':'')+up.toFixed(1)+'%';
+    el.className='n '+(up>=0?'green':'red');
+  }
+  function update(){
+    const p=+price.value; pv.textContent='$'+p;
+    fmt(dcfEl, DCF, p); fmt(intrEl, INTR, p);
+  }
+  price.addEventListener('input',update);
+  document.getElementById('snxReset').addEventListener('click',()=>{price.value=280; update();});
+  update();
+})();
+</script>
+</body>
+</html>

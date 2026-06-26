@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>마이크론 &amp; 샌디스크 데이 — 이해도 점검 퀴즈</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,500&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#ffffff; --bg2:#fafafa; --ink:#1a1a1a; --sub:#777777;
+  --accent:#e11d48; --accent2:#f43f5e; --line:#e5e5e5;
+  --green:#16a34a; --green-bg:#dcfce7; --red:#e11d48; --red-bg:#fee2e2;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg2); color:var(--ink); font-family:'Noto Sans KR',sans-serif; line-height:1.7; -webkit-font-smoothing:antialiased;}
+.wrap{max-width:680px; margin:0 auto; padding:0 18px 80px; background:var(--bg);}
+
+/* ---- Header ---- */
+header{padding:46px 6px 24px; text-align:center;}
+.eyebrow{font-size:11.5px; letter-spacing:.2em; text-transform:uppercase; color:var(--accent); font-weight:700; margin-bottom:14px;}
+h1{font-family:'Playfair Display',serif; font-weight:900; font-size:clamp(28px,7vw,40px); line-height:1.1; margin-bottom:10px;}
+h1 em{font-style:italic; color:var(--accent);}
+.sub{font-size:13.5px; color:var(--sub);}
+
+/* ---- Sticky scoreboard ---- */
+.score{position:sticky; top:0; z-index:50; background:rgba(255,255,255,.96); backdrop-filter:blur(8px); border-bottom:1px solid var(--line); padding:14px 18px; margin:0 -18px 8px;}
+.score-row{display:flex; justify-content:space-between; align-items:center; max-width:644px; margin:0 auto; gap:12px;}
+.score-stats{display:flex; gap:18px; font-size:12.5px; font-variant-numeric:tabular-nums;}
+.score-stats b{font-size:16px; font-weight:900; display:block; line-height:1.1; font-family:'Playfair Display',serif;}
+.score-stats .lab{color:var(--sub); font-size:10.5px; letter-spacing:.04em;}
+.score-stats .acc b{color:var(--accent);}
+.prog{height:7px; border-radius:5px; background:var(--line); overflow:hidden; margin-top:10px; max-width:644px; margin-left:auto; margin-right:auto;}
+.prog-fill{height:100%; width:0%; background:var(--accent); transition:width .4s ease, background .4s ease; border-radius:5px;}
+
+/* ---- Question card ---- */
+.q-card{background:#fff; border:1px solid var(--line); border-radius:16px; padding:24px 22px; margin:20px 0; box-shadow:0 1px 3px rgba(0,0,0,.03);}
+.q-head{display:flex; align-items:center; gap:10px; margin-bottom:16px; flex-wrap:wrap;}
+.q-num{font-family:'Playfair Display',serif; font-weight:900; font-size:22px; color:var(--accent);}
+.badge{font-size:10.5px; font-weight:700; letter-spacing:.05em; padding:4px 9px; border-radius:20px; text-transform:uppercase;}
+.badge.t{background:#eff6ff; color:#2563eb;}
+.badge.d-easy{background:#dcfce7; color:#15803d;}
+.badge.d-mid{background:#fef9c3; color:#a16207;}
+.badge.d-hard{background:#fee2e2; color:#be123c;}
+.q-text{font-size:16.5px; font-weight:500; line-height:1.6; margin-bottom:18px;}
+
+/* ---- Options ---- */
+.opts{display:flex; flex-direction:column; gap:10px;}
+.opt{display:flex; align-items:center; gap:12px; padding:14px 16px; border:1.5px solid var(--line); border-radius:11px; cursor:pointer; font-size:15px; transition:all .15s; background:#fff; text-align:left; width:100%; font-family:inherit; color:var(--ink);}
+.opt:hover:not(:disabled){border-color:var(--accent); background:#fff5f7;}
+.opt:disabled{cursor:default;}
+.opt .mk{flex-shrink:0; width:26px; height:26px; border-radius:50%; border:1.5px solid var(--line); display:flex; align-items:center; justify-content:center; font-weight:700; font-size:13px; color:var(--sub);}
+.opt.correct{border-color:var(--green); background:var(--green-bg);}
+.opt.correct .mk{background:var(--green); border-color:var(--green); color:#fff;}
+.opt.wrong{border-color:var(--red); background:var(--red-bg);}
+.opt.wrong .mk{background:var(--red); border-color:var(--red); color:#fff;}
+.opt .res-badge{margin-left:auto; font-size:12px; font-weight:700; padding:3px 9px; border-radius:20px; flex-shrink:0;}
+.opt.correct .res-badge{background:var(--green); color:#fff;}
+.opt.wrong .res-badge{background:var(--red); color:#fff;}
+
+/* ---- OX ---- */
+.ox{display:flex; gap:12px;}
+.ox .opt{justify-content:center; font-size:22px; font-weight:900; font-family:'Playfair Display',serif; padding:18px;}
+
+/* ---- Short answer ---- */
+.short{display:flex; gap:10px;}
+.short input{flex:1; padding:13px 16px; border:1.5px solid var(--line); border-radius:11px; font-size:15px; font-family:inherit; outline:none;}
+.short input:focus{border-color:var(--accent);}
+.short input:disabled{background:var(--bg2);}
+.short button{padding:13px 22px; background:var(--ink); color:#fff; border:none; border-radius:11px; font-family:inherit; font-weight:700; font-size:14px; cursor:pointer; transition:background .2s;}
+.short button:hover:not(:disabled){background:var(--accent);}
+.short button:disabled{opacity:.5; cursor:default;}
+.short .hint{font-size:12px; color:var(--sub); margin-top:8px;}
+
+/* ---- Explanation ---- */
+.expl{max-height:0; overflow:hidden; transition:max-height .45s ease, margin .45s ease, padding .45s ease; background:var(--bg2); border-radius:12px; margin-top:0; padding:0 18px;}
+.expl.open{max-height:520px; margin-top:16px; padding:18px;}
+.expl .res-line{font-weight:700; font-size:14px; margin-bottom:8px; display:flex; align-items:center; gap:7px;}
+.expl .res-line.ok{color:var(--green);}
+.expl .res-line.no{color:var(--red);}
+.expl .ans{font-size:14px; margin-bottom:8px;}
+.expl .ans b{color:var(--accent);}
+.expl .why{font-size:13.5px; color:#444; line-height:1.65;}
+.expl .src{font-size:12px; color:var(--sub); margin-top:10px; padding-top:10px; border-top:1px dashed var(--line); font-style:italic;}
+
+/* ---- Result modal ---- */
+.modal-bg{position:fixed; inset:0; background:rgba(26,26,26,.6); backdrop-filter:blur(4px); display:none; align-items:center; justify-content:center; z-index:100; padding:20px;}
+.modal-bg.show{display:flex;}
+.modal{background:#fff; border-radius:22px; padding:40px 32px; max-width:400px; width:100%; text-align:center; animation:pop .4s ease;}
+@keyframes pop{from{transform:scale(.9); opacity:0;} to{transform:scale(1); opacity:1;}}
+.modal .grade{font-family:'Playfair Display',serif; font-size:80px; font-weight:900; line-height:1; color:var(--accent);}
+.modal .gt{font-size:13px; letter-spacing:.15em; text-transform:uppercase; color:var(--sub); margin:8px 0 20px;}
+.modal .sc{font-size:18px; margin-bottom:6px;}
+.modal .sc b{font-family:'Playfair Display',serif; font-size:28px; color:var(--ink);}
+.modal .msg{font-size:14.5px; color:#444; margin:16px 0 26px; line-height:1.6;}
+.modal button{width:100%; padding:14px; background:var(--accent); color:#fff; border:none; border-radius:12px; font-family:inherit; font-weight:700; font-size:15px; cursor:pointer; transition:background .2s;}
+.modal button:hover{background:var(--accent2);}
+
+footer{text-align:center; padding:30px 0 0; font-size:11.5px; color:var(--sub); line-height:1.6;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="eyebrow">투자는인생TV · 6월 25일 멤버온리</div>
+    <h1>마이크론 &amp; 샌디스크 데이<br><em>이해도 점검</em></h1>
+    <p class="sub">총 10문항 · 객관식 6 · 단답형 2 · OX 2 · 클릭하면 즉시 채점됩니다</p>
+  </header>
+
+  <div class="score">
+    <div class="score-row">
+      <div class="score-stats">
+        <div><span class="lab">푼 문제</span><b id="sSolved">0 / 10</b></div>
+        <div><span class="lab">맞힌 문제</span><b id="sCorrect">0</b></div>
+        <div class="acc"><span class="lab">정답률</span><b id="sAcc">0%</b></div>
+      </div>
+    </div>
+    <div class="prog"><div class="prog-fill" id="progFill"></div></div>
+  </div>
+
+  <div id="quiz"></div>
+
+  <footer>
+    본 퀴즈는 방송 자막·슬라이드의 실제 내용만을 근거로 출제되었습니다.<br>
+    투자 권유가 아니며, 모든 판단의 책임은 투자자 본인에게 있습니다.
+  </footer>
+</div>
+
+<div class="modal-bg" id="modalBg">
+  <div class="modal">
+    <div class="grade" id="mGrade">A</div>
+    <div class="gt">최종 등급</div>
+    <div class="sc">10문항 중 <b id="mScore">0</b>문항 정답</div>
+    <div class="msg" id="mMsg"></div>
+    <button id="mRetry">다시 풀기</button>
+  </div>
+</div>
+
+<script>
+const QUIZ_DATA = [
+  {
+    id:1, type:'mc', difficulty:'easy',
+    question:'마이크론(MU)의 이번 실적에서 핵심이 된 매출 서프라이즈로 옳은 것은?',
+    options:[
+      '예상 350억 달러 → 실제 410억 달러 돌파',
+      '예상 410억 달러 → 실제 350억 달러로 하회',
+      '예상과 동일한 350억 달러 기록',
+      '예상 360억 달러 → 실제 370억 달러'
+    ],
+    answer:0,
+    explanation:'시장은 350억 달러대 매출을 “엄청나게 힘든” 수준으로 봤지만, 실제는 410억 달러를 넘기며 36·37억이 아니라 기대치를 압도했습니다.',
+    src:'자막: “매출이 35빌리언 달러에서 예상했는데 41빌리언 달러가 넘었어요… 아예 그냥 넘사벽으로 넘겨버렸습니다.”'
+  },
+  {
+    id:2, type:'mc', difficulty:'easy',
+    question:'이번 방송에서 30대 그룹에 새로 편입된 종목은?',
+    options:['NP (넵튠 인슈어런스)','SNX (TD SYNNEX)','PLTR (팔란티어)','CBRS (세레브라스)'],
+    answer:1,
+    explanation:'SNX(TD SYNNEX)가 30대 그룹에 신규 편입됐습니다. IT 섹터지만 서브 인더스트리는 테크놀로지 디스트리뷰터(유통)입니다.',
+    src:'자막: “이게 30대에요. 30대로 넣은 거에요.” / 슬라이드: “30대 포함 SNX (LARGE CAP VALUE)”'
+  },
+  {
+    id:3, type:'ox', difficulty:'easy',
+    question:'NP(넵튠 인슈어런스)는 이번에 30대 그룹에 새로 편입되었다.',
+    answer:'X',
+    explanation:'정반대입니다. NP는 변동성을 감당하기 어렵다는 이유로 30대 그룹에서 “탈락”했고, 오늘부터 제거 대상입니다.',
+    src:'자막: “30대 기업 탈락. NP. Neptune Insurance 탈락했습니다. 오늘부터 제거하시기 바랍니다.”'
+  },
+  {
+    id:4, type:'mc', difficulty:'mid',
+    question:'SNX의 DCF(현금흐름할인법) 기준 저평가율은 약 얼마인가?',
+    options:['약 12% 저평가','약 29% 저평가','약 38% 저평가','약 55% 저평가'],
+    answer:1,
+    explanation:'DCF는 392.96달러로, 현재가(약 280달러) 대비 약 29% 저평가입니다. 내재가치 기준(453.87달러)으로는 38% 저평가입니다.',
+    src:'슬라이드: “DCF: 392.963 USD … Undervalued by 29%.”'
+  },
+  {
+    id:5, type:'mc', difficulty:'mid',
+    question:'6월 23일 포스트에서 “반드시 보유”로 제시한 IBM의 권장 비중은?',
+    options:['1–2%','2–3%','3–5%','10% 이상'],
+    answer:2,
+    explanation:'IBM은 INTC와 함께 3–5%로 “반드시 보유”가 권장됐습니다. 다음 실적 발표 때까지 보유하라는 단서도 붙었습니다.',
+    src:'슬라이드: “4. INTC (3-5%) 반드시 보유 / 5. IBM (3-5%) 반드시 보유”'
+  },
+  {
+    id:6, type:'mc', difficulty:'hard',
+    question:'팔란티어(PLTR)는 30대 그룹에서 제외된 후 한 달간 몇 % 하락했나?',
+    options:['약 -19%','약 -29%','약 -45%','약 -12%'],
+    answer:2,
+    explanation:'팔란티어는 한두 달 전 이미 30대에서 빠졌고 이후 약 45% 하락했습니다. “많이 떨어진 걸 안 가지고 있는 것도 축하할 일”이라는 관점입니다.',
+    src:'슬라이드: “Palantir: 형님 30대 빠지고 나서 한달간 -45%”'
+  },
+  {
+    id:7, type:'ox', difficulty:'mid',
+    question:'다우존스를 포함한 미국 시장 전체의 약 70%가 부진한, “우리만 올라가는” 장세라고 진단했다.',
+    answer:'O',
+    explanation:'맞습니다. 칩 몇 종목을 빼면 시장 약 70%가 부진하며, 거래량 브레스(Breadth)가 낮다는 점을 “선택과 집중”의 근거로 들었습니다.',
+    src:'자막: “전체적인 미국 시장은 한 70% 정도는 안 좋아요. 우리만 올라가는 겁니다.”'
+  },
+  {
+    id:8, type:'mc', difficulty:'mid',
+    question:'현금이 부족할 경우 어떤 섹터를 매각해 매수 자금을 마련하라고 했나?',
+    options:['헬스케어 섹터 20% 매각','반도체 섹터 20% 매각','금·은 전량 매각','하이퍼스케일러 전량 매각'],
+    answer:0,
+    explanation:'현금이 부족하면 헬스케어 섹터를 20% 매각해 자금을 마련하라는 가이드입니다. 단, 무리는 하지 말라는 단서가 붙었습니다.',
+    src:'슬라이드/자막: “현금 부족할 경우 헬스케어 섹터 20% 매각.”'
+  },
+  {
+    id:9, type:'short', difficulty:'hard',
+    question:'1분기 투자(Gross Domestic Investment) 증가율은 몇 %였나? (숫자만, 예: 7)',
+    answer:['7','7%','+7','+7%'],
+    explanation:'투자는 예상 2.9%를 크게 웃돈 +7%를 기록했습니다. 이 중 설비투자(Equipment)는 +17.2%, 지식재산(IP)은 +11.6%로 AI 설비투자가 큰 비중을 차지했습니다.',
+    src:'슬라이드: “투자(Gross Domestic Investment): +7% (예상 2.9% 대폭 상회).”'
+  },
+  {
+    id:10, type:'short', difficulty:'mid',
+    question:'SNX의 내재가치(Intrinsic Value) 기준 저평가율은 몇 %인가? (숫자만, 예: 38)',
+    answer:['38','38%'],
+    explanation:'내재가치 453.87달러는 현재가(약 279달러) 대비 약 38% 저평가입니다. DCF 기준(29%)보다 상승 여력을 더 크게 봅니다.',
+    src:'슬라이드: “Intrinsic Value: 453.87 USD … Undervalued by 38%.”'
+  }
+];
+
+let state = { solved:0, correct:0 };
+const TOTAL = QUIZ_DATA.length;
+const quizEl = document.getElementById('quiz');
+const dMap = {easy:['d-easy','쉬움'], mid:['d-mid','보통'], hard:['d-hard','어려움']};
+const tMap = {mc:'객관식', ox:'OX', short:'단답형'};
+
+QUIZ_DATA.forEach(q=>{
+  const card = document.createElement('div');
+  card.className='q-card'; card.id='q'+q.id;
+  const [dCls,dLab]=dMap[q.difficulty];
+
+  let body='';
+  if(q.type==='mc'){
+    body='<div class="opts">'+q.options.map((o,i)=>
+      `<button class="opt" data-i="${i}"><span class="mk">${String.fromCharCode(65+i)}</span><span>${o}</span></button>`
+    ).join('')+'</div>';
+  } else if(q.type==='ox'){
+    body='<div class="ox">'+['O','X'].map(o=>
+      `<button class="opt" data-i="${o}"><span>${o}</span></button>`
+    ).join('')+'</div>';
+  } else {
+    body=`<div class="short">
+      <input type="text" placeholder="답을 입력하세요" />
+      <button>제출</button>
+    </div><div class="hint">힌트: 숫자만 입력해도 됩니다.</div>`;
+  }
+
+  card.innerHTML=`
+    <div class="q-head">
+      <span class="q-num">Q${q.id}</span>
+      <span class="badge t">${tMap[q.type]}</span>
+      <span class="badge ${dCls}">${dLab}</span>
+    </div>
+    <div class="q-text">${q.question}</div>
+    ${body}
+    <div class="expl" id="expl${q.id}"></div>`;
+  quizEl.appendChild(card);
+
+  const expl=card.querySelector('#expl'+q.id);
+
+  function reveal(isCorrect, userVal){
+    state.solved++; if(isCorrect) state.correct++;
+    updateScore();
+    let correctText='';
+    if(q.type==='mc') correctText='정답: '+String.fromCharCode(65+q.answer)+'. '+q.options[q.answer];
+    else if(q.type==='ox') correctText='정답: '+q.answer;
+    else correctText='정답: '+(Array.isArray(q.answer)?q.answer[0]:q.answer);
+    expl.innerHTML=`
+      <div class="res-line ${isCorrect?'ok':'no'}">${isCorrect?'✓ 정답입니다':'✗ 오답입니다'}</div>
+      <div class="ans"><b>${correctText}</b></div>
+      <div class="why">${q.explanation}</div>
+      <div class="src">${q.src}</div>`;
+    expl.classList.add('open');
+    if(state.solved===TOTAL) setTimeout(showModal,500);
+  }
+
+  if(q.type==='mc' || q.type==='ox'){
+    const opts=card.querySelectorAll('.opt');
+    opts.forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        const i=q.type==='mc'?+btn.dataset.i:btn.dataset.i;
+        const correct=(i===q.answer);
+        opts.forEach(b=>b.disabled=true);
+        if(correct){
+          btn.classList.add('correct');
+          btn.insertAdjacentHTML('beforeend','<span class="res-badge">✓ 정답!</span>');
+        } else {
+          btn.classList.add('wrong');
+          btn.insertAdjacentHTML('beforeend','<span class="res-badge">✗ 오답</span>');
+          opts.forEach(b=>{
+            const bi=q.type==='mc'?+b.dataset.i:b.dataset.i;
+            if(bi===q.answer){
+              b.classList.add('correct');
+              b.insertAdjacentHTML('beforeend','<span class="res-badge">정답</span>');
+            }
+          });
+        }
+        reveal(correct);
+      });
+    });
+  } else {
+    const inp=card.querySelector('input'), btn=card.querySelector('.short button');
+    function submit(){
+      const val=inp.value.trim().toLowerCase().replace(/\s/g,'');
+      if(!val) return;
+      const accepts=(Array.isArray(q.answer)?q.answer:[q.answer]).map(a=>String(a).toLowerCase().replace(/\s/g,''));
+      const correct=accepts.includes(val);
+      inp.disabled=true; btn.disabled=true;
+      inp.style.borderColor=correct?'var(--green)':'var(--red)';
+      inp.style.background=correct?'var(--green-bg)':'var(--red-bg)';
+      reveal(correct);
+    }
+    btn.addEventListener('click',submit);
+    inp.addEventListener('keydown',e=>{if(e.key==='Enter')submit();});
+  }
+});
+
+function updateScore(){
+  document.getElementById('sSolved').textContent=state.solved+' / '+TOTAL;
+  document.getElementById('sCorrect').textContent=state.correct;
+  const acc=state.solved?Math.round(state.correct/state.solved*100):0;
+  document.getElementById('sAcc').textContent=acc+'%';
+  const fill=document.getElementById('progFill');
+  fill.style.width=(state.solved/TOTAL*100)+'%';
+  if(acc>=70) fill.style.background='var(--green)';
+  else if(acc>=40) fill.style.background='#f59e0b';
+  else fill.style.background='var(--accent)';
+}
+
+function showModal(){
+  const n=state.correct;
+  let grade,msg;
+  if(n>=9){grade='A'; msg='탁월합니다! 방송의 핵심 전략과 수치를 거의 완벽하게 파악하셨습니다.';}
+  else if(n>=7){grade='B'; msg='훌륭합니다. 큰 흐름은 잡으셨고, 틀린 부분만 다시 확인하면 완벽합니다.';}
+  else if(n>=5){grade='C'; msg='기본은 갖췄습니다. 섹터 로테이션과 SNX 밸류에이션을 한 번 더 복습해 보세요.';}
+  else{grade='D'; msg='지난 방송과 투자 아카데미를 다시 듣고 도전해 보세요. 공부한 만큼 보입니다.';}
+  document.getElementById('mGrade').textContent=grade;
+  document.getElementById('mScore').textContent=n;
+  document.getElementById('mMsg').textContent=msg;
+  document.getElementById('modalBg').classList.add('show');
+}
+
+document.getElementById('mRetry').addEventListener('click',()=>location.reload());
+</script>
+</body>
+</html>
