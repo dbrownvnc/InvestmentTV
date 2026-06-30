@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>2026 상반기 결산 & 하반기 전망 — 투자는 인생tv</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;0,900;1,500&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+  :root{
+    --bg:#ffffff; --bg2:#fafafa; --ink:#1a1a1a; --sub:#777777;
+    --rose:#e11d48; --rose2:#f43f5e; --blue:#2563eb; --gray:#6b7280;
+    --line:#e5e5e5;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:var(--bg); color:var(--ink);
+    font-family:'Noto Sans KR',sans-serif; font-weight:400;
+    line-height:1.75; -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:680px;margin:0 auto;padding:0 22px}
+
+  /* ===== HERO ===== */
+  .hero{padding:54px 0 30px;border-bottom:1px solid var(--line)}
+  .eyebrow{
+    font-size:12px;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--rose);font-weight:700;margin-bottom:18px;
+  }
+  .hero h1{
+    font-family:'Playfair Display',serif;font-weight:900;
+    font-size:40px;line-height:1.12;letter-spacing:-.01em;margin-bottom:16px;
+  }
+  .hero h1 em{font-style:italic;color:var(--rose)}
+  .hero .lede{font-size:16px;color:var(--sub);font-weight:300;max-width:90%}
+  .meta-row{
+    display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:24px;
+    font-size:12.5px;color:var(--sub);
+  }
+  .meta-row span{display:inline-flex;align-items:center;gap:6px}
+  .dot{width:5px;height:5px;border-radius:50%;background:var(--rose);display:inline-block}
+
+  .vac{
+    margin-top:22px;background:var(--bg2);border:1px solid var(--line);
+    border-left:3px solid var(--rose);border-radius:4px;
+    padding:13px 16px;font-size:13.5px;color:var(--ink);
+  }
+  .vac b{color:var(--rose)}
+
+  /* ===== STAT STRIP ===== */
+  .stats{
+    display:grid;grid-template-columns:repeat(2,1fr);gap:1px;
+    background:var(--line);border:1px solid var(--line);border-radius:6px;
+    overflow:hidden;margin:34px 0;
+  }
+  .stat{background:var(--bg);padding:20px 16px}
+  .stat .num{font-family:'Playfair Display',serif;font-weight:700;font-size:30px;line-height:1;color:var(--rose)}
+  .stat .num.dark{color:var(--ink)}
+  .stat .lbl{font-size:12px;color:var(--sub);margin-top:8px;line-height:1.45}
+
+  /* ===== SECTION ===== */
+  section{padding:38px 0;border-bottom:1px solid var(--line)}
+  .kicker{
+    font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--rose);font-weight:700;margin-bottom:10px;
+  }
+  h2{font-family:'Playfair Display',serif;font-weight:700;font-size:26px;line-height:1.2;margin-bottom:8px;letter-spacing:-.01em}
+  h2 .qmark{color:var(--rose)}
+  .sec-sub{font-size:14px;color:var(--sub);margin-bottom:22px;font-weight:300}
+  p{font-size:15px;margin:14px 0}
+  p .hl{background:linear-gradient(transparent 60%,#fde4ea 60%);font-weight:500;color:var(--ink)}
+  strong{font-weight:700;color:var(--ink)}
+  .rose{color:var(--rose);font-weight:700}
+
+  /* quarter cards */
+  .q-grid{display:flex;flex-direction:column;gap:12px;margin:20px 0}
+  .q-card{
+    background:var(--bg2);border:1px solid var(--line);border-radius:6px;
+    padding:16px 18px;position:relative;
+  }
+  .q-tag{font-family:'Playfair Display',serif;font-weight:700;font-size:15px;color:var(--rose);margin-bottom:4px}
+  .q-card p{margin:4px 0;font-size:14px}
+
+  /* chart */
+  .fade-in{opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease}
+  .fade-in.visible{opacity:1;transform:translateY(0)}
+  .chart-wrap{margin:26px 0 8px}
+  .chart-title{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:3px}
+  .chart-note{font-size:11.5px;color:var(--sub);margin-bottom:12px}
+  .chart-container{position:relative;max-height:340px}
+  .chart-container canvas{opacity:0;transition:opacity .4s ease;max-height:300px}
+  .chart-container.chart-ready canvas{opacity:1}
+
+  /* table */
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:13.5px}
+  th,td{border:1px solid var(--line);padding:10px 12px;text-align:left}
+  th{background:var(--rose);color:#fff;font-weight:500;font-size:12.5px}
+  tbody tr:nth-child(odd){background:var(--bg2)}
+  td.r{color:var(--rose);font-weight:700;text-align:right;font-variant-numeric:tabular-nums}
+  td.num{text-align:right;font-variant-numeric:tabular-nums}
+
+  /* callout */
+  .callout{
+    background:#1a1a1a;color:#f5f5f5;border-radius:8px;padding:22px 20px;margin:24px 0;
+  }
+  .callout .ct{font-family:'Playfair Display',serif;font-style:italic;font-size:19px;line-height:1.4;color:#fff}
+  .callout .cs{font-size:13px;color:#bbb;margin-top:10px}
+  .callout .cs b{color:var(--rose2)}
+
+  /* ===== SIMULATOR: FED TOGGLE ===== */
+  .sim{
+    background:var(--bg2);border:1px solid var(--line);border-radius:10px;
+    padding:22px 20px;margin:26px 0;
+  }
+  .sim-h{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:3px;display:flex;align-items:center;gap:8px}
+  .sim-h::before{content:"▶";color:var(--rose);font-size:10px}
+  .sim-d{font-size:12px;color:var(--sub);margin-bottom:18px}
+  .toggle{display:flex;gap:8px;margin-bottom:18px}
+  .toggle button{
+    flex:1;border:1px solid var(--line);background:var(--bg);color:var(--sub);
+    padding:12px 8px;border-radius:7px;font-family:inherit;font-size:13.5px;font-weight:700;
+    cursor:pointer;transition:all .2s ease;
+  }
+  .toggle button.active{background:var(--rose);color:#fff;border-color:var(--rose);box-shadow:0 4px 14px rgba(225,29,72,.25)}
+  .sim-out{
+    background:var(--bg);border:1px solid var(--line);border-radius:7px;padding:16px 16px 18px;
+  }
+  .sim-badge{display:inline-block;font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;margin-bottom:10px}
+  .sim-badge.bull{background:#e7f4ec;color:#15803d}
+  .sim-badge.bear{background:#fde4ea;color:var(--rose)}
+  .sim-out h4{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;margin-bottom:8px}
+  .sim-out p{font-size:13px;margin:8px 0;color:var(--ink)}
+  .sim-range{font-family:'Playfair Display',serif;font-size:24px;font-weight:900;color:var(--rose);margin-top:6px}
+  .sim-range span{font-size:13px;color:var(--sub);font-family:'Noto Sans KR';font-weight:400}
+
+  /* ===== SIMULATOR: SLIDER ===== */
+  .slider-box{background:var(--bg);border:1px solid var(--line);border-radius:7px;padding:18px 16px}
+  .slider-val{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px}
+  .slider-val .pct{font-family:'Playfair Display',serif;font-size:22px;font-weight:900;color:var(--rose)}
+  .slider-val .pct.neg{color:var(--blue)}
+  .slider-val .cap{font-size:12px;color:var(--sub)}
+  input[type=range]{width:100%;-webkit-appearance:none;appearance:none;height:6px;border-radius:6px;
+    background:linear-gradient(90deg,var(--blue),#cbd5e1 50%,var(--rose));outline:none;margin:14px 0 10px}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:22px;height:22px;border-radius:50%;
+    background:#fff;border:3px solid var(--rose);cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.18)}
+  input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:#fff;border:3px solid var(--rose);cursor:pointer}
+  .result-level{text-align:center;margin:14px 0 6px}
+  .result-level .lv{font-family:'Playfair Display',serif;font-size:40px;font-weight:900;line-height:1;color:var(--ink)}
+  .result-level .lc{font-size:12px;color:var(--sub);margin-top:6px}
+  .markers{display:flex;justify-content:space-between;font-size:11px;color:var(--sub);margin-top:14px;border-top:1px dashed var(--line);padding-top:12px}
+  .markers b{display:block;color:var(--ink);font-size:12.5px;font-weight:700}
+  .mk-rose b{color:var(--rose)}
+  .mk-blue b{color:var(--blue)}
+
+  /* takeaways */
+  .take{display:flex;flex-direction:column;gap:10px;margin:20px 0}
+  .take-item{display:flex;gap:13px;align-items:flex-start;background:var(--bg2);border:1px solid var(--line);border-radius:6px;padding:14px 16px}
+  .take-n{font-family:'Playfair Display',serif;font-weight:700;font-size:18px;color:var(--rose);line-height:1.3;flex-shrink:0}
+  .take-item p{margin:0;font-size:13.5px}
+  .take-item b{color:var(--ink)}
+
+  /* schedule */
+  .timeline{margin:18px 0;border-left:2px solid var(--line);padding-left:18px}
+  .tl-item{position:relative;padding:0 0 16px}
+  .tl-item::before{content:"";position:absolute;left:-25px;top:4px;width:11px;height:11px;border-radius:50%;background:var(--rose);border:2px solid #fff;box-shadow:0 0 0 1px var(--line)}
+  .tl-d{font-size:12px;font-weight:700;color:var(--rose)}
+  .tl-t{font-size:13.5px;color:var(--ink);margin-top:2px}
+
+  footer{padding:34px 0 50px}
+  .disc{font-size:11.5px;color:var(--sub);line-height:1.7;background:var(--bg2);border:1px solid var(--line);border-radius:6px;padding:16px 18px}
+  .disc b{color:var(--ink)}
+  .sig{font-family:'Playfair Display',serif;font-style:italic;font-size:15px;color:var(--ink);margin-top:20px;text-align:center}
+  .sig small{display:block;font-family:'Noto Sans KR';font-style:normal;font-size:11.5px;color:var(--sub);margin-top:4px}
+
+  @media (max-width:420px){
+    .hero h1{font-size:32px}
+    .stats{grid-template-columns:1fr 1fr}
+    .stat .num{font-size:25px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .fade-in{opacity:1;transform:none;transition:none}
+    .chart-container canvas{opacity:1}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="eyebrow">2026 Mid-Year Review · 미국 증시 분석</div>
+    <h1>상반기는 <em>버텼고,</em><br>하반기는 <em>역사가</em> 편이다</h1>
+    <p class="lede">3월의 9% 조정을 딛고 24번의 사상 최고치로 끝낸 상반기. 데이빗형님이 짚은 하반기 시나리오와 가장 큰 변수 'Fed 인상'을 시각화·시뮬레이션으로 풀었습니다.</p>
+    <div class="meta-row">
+      <span><i class="dot"></i>투자는 인생tv (데이빗형님)</span>
+      <span><i class="dot"></i>2026년 6월 30일</span>
+      <span><i class="dot"></i>美 증시 / 거시 관점</span>
+    </div>
+    <div class="vac">📌 <b>휴방 안내</b> — 7월 13일까지 '시장 포커스' 휴식. 본 리포트는 그 사이를 채우는 <b>상반기 결산 & 하반기 전망</b> 요약입니다.</div>
+  </header>
+
+  <!-- STAT STRIP -->
+  <div class="stats fade-in">
+    <div class="stat"><div class="num">+7.5%</div><div class="lbl">S&amp;P 500 연초 대비<br>(6/25 기준)</div></div>
+    <div class="stat"><div class="num">24회</div><div class="lbl">상반기 사상 최고치<br>(ATH) 경신</div></div>
+    <div class="stat"><div class="num dark">−9%</div><div class="lbl">3월 말 최대 조정폭<br>(美·이란 긴장)</div></div>
+    <div class="stat"><div class="num">7,760</div><div class="lbl">데이빗 12개월<br>S&amp;P 목표가</div></div>
+  </div>
+
+  <!-- SECTION 1: H1 REVIEW -->
+  <section>
+    <div class="kicker">01 — 상반기 복기</div>
+    <h2>롤러코스터였던 6개월</h2>
+    <p class="sec-sub">한 번 크게 꺾였다가 더 강하게 되돌아온 전형적인 'V자' 반기</p>
+
+    <div class="q-grid">
+      <div class="q-card fade-in">
+        <div class="q-tag">Q1 · 1~3월</div>
+        <p><strong>美–이란 긴장 고조</strong>로 연초 상승분이 증발. <span class="hl">3월 말 기준 약 9% 조정</span>을 받으며 분기를 마감했습니다.</p>
+      </div>
+      <div class="q-card fade-in">
+        <div class="q-tag">Q2 · 4~6월</div>
+        <p><strong>강한 반등</strong>으로 전열 재정비. 6월 25일 기준 <span class="rose">연초 대비 +7.5%</span>까지 회복하며 상반기에만 <strong>24차례 사상 최고치</strong>를 새로 썼습니다.</p>
+      </div>
+    </div>
+    <p>표면상 +7.5%라는 숫자는 평탄해 보이지만, 그 안에는 <span class="hl">두 자릿수에 가까운 조정과 그것을 모두 메운 반등</span>이 압축돼 있습니다. 변동성을 견딘 투자자에게 보상이 돌아간 반기였던 셈입니다.</p>
+  </section>
+
+  <!-- SECTION 2: HISTORY ODDS -->
+  <section>
+    <div class="kicker">02 — 역사적 확률</div>
+    <h2>"좋은 상반기 뒤엔, <span class="qmark">대체로</span> 좋은 하반기"</h2>
+    <p class="sec-sub">2차 대전 이후 데이터가 말하는 하반기 상승 확률</p>
+
+    <p>데이빗형님이 제시한 핵심 논거는 <strong>'계절성·통계'</strong>입니다. 상반기 성과가 좋았던 해는 하반기도 우호적이었다는 것. 단, 마지막 막대가 보여주듯 <span class="rose">올해는 중간선거 해</span>라는 단서가 붙습니다.</p>
+
+    <div class="chart-wrap fade-in">
+      <div class="chart-title">하반기 시장 방향 — 조건별 확률 (%)</div>
+      <div class="chart-note">앞의 3개: 하반기 상승 확률 · 맨 오른쪽: 중간선거 해의 5%+ 하락 발생 비율</div>
+      <div class="chart-container fade-in">
+        <canvas id="oddsChart" height="240"></canvas>
+      </div>
+    </div>
+
+    <table>
+      <thead><tr><th>조건</th><th style="text-align:right">하반기 시사점</th></tr></thead>
+      <tbody>
+        <tr><td>상반기 플러스 수익률</td><td class="r">↑ 77%</td></tr>
+        <tr><td>상반기 +5% 초과 상승</td><td class="r">↑ 81%</td></tr>
+        <tr><td>상반기 ATH 경신 역대 Top 20</td><td class="r">↑ 80%</td></tr>
+        <tr><td>(평균 하반기 상승폭)</td><td class="num">약 +6%</td></tr>
+        <tr><td>중간선거 해 · 5%+ 하락 사례</td><td class="num" style="color:var(--gray);font-weight:700">45%</td></tr>
+      </tbody>
+    </table>
+    <p>요약하면 <span class="hl">방향은 위쪽에 베팅하되, 가는 길에 한 번쯤 5% 이상의 출렁임은 각오</span>하라는 메시지입니다.</p>
+  </section>
+
+  <!-- SECTION 3: DAVID OUTLOOK -->
+  <section>
+    <div class="kicker">03 — 데이빗 전망</div>
+    <h2>목표가 7,760, 그리고 이익의 힘</h2>
+    <p class="sec-sub">밸류에이션이 아니라 '이익 성장'이 떠받치는 강세론</p>
+
+    <p>12개월 목표가 <span class="rose">7,760</span>의 근거는 결국 기업 이익입니다. 데이빗형님은 <strong>2026년 EPS 성장률을 +22.6%</strong>로, 2027년도 두 자릿수(+17.7%)로 보고 있습니다. 경제는 <strong>GDP +2.1%</strong>, 인플레이션 둔화, 아직 견조한 노동시장으로 요약됩니다.</p>
+
+    <div class="chart-wrap fade-in">
+      <div class="chart-title">S&amp;P 500 EPS 성장률 전망 (%)</div>
+      <div class="chart-note">2년 연속 두 자릿수 이익 성장이 강세 논리의 토대</div>
+      <div class="chart-container fade-in">
+        <canvas id="epsChart" height="220"></canvas>
+      </div>
+    </div>
+
+    <div class="callout">
+      <div class="ct">"가장 큰 변수는 금리 인상. 인상 발표 후 테크주 폭락을 예상한다."</div>
+      <div class="cs">데이빗형님은 <b>올해 1차례 금리 '인상'</b> 가능성을 높게 봤습니다. 시장 다수가 '인하'를 기대하는 흐름과는 결이 다른, <b>역발상 시나리오</b>라는 점이 핵심입니다. 반대로 인상이 없으면 테크는 연말까지 상승세를 이어갈 것으로 봤습니다.</div>
+    </div>
+
+    <!-- FED TOGGLE SIMULATOR -->
+    <div class="sim">
+      <div class="sim-h">Fed 시나리오 시뮬레이터</div>
+      <div class="sim-d">버튼을 눌러 두 갈림길의 시장 반응을 비교해 보세요</div>
+      <div class="toggle">
+        <button id="btnHold" class="active" onclick="setFed('hold')">금리 동결 (인상 없음)</button>
+        <button id="btnHike" onclick="setFed('hike')">금리 1차례 인상</button>
+      </div>
+      <div class="sim-out" id="fedOut"></div>
+    </div>
+  </section>
+
+  <!-- SECTION 4: THIS WEEK -->
+  <section>
+    <div class="kicker">04 — 이번 주 시장</div>
+    <h2>초점이 테크에서 '경제 지표'로</h2>
+    <p class="sec-sub">분기 말 리밸런싱이 만든 기술주 매물, 그리고 고용 데이터의 주간</p>
+
+    <p>6월은 힘들었지만 S&amp;P 500은 <strong>사상 최고치에서 불과 3% 아래</strong>에 있습니다. 최근의 기술주 매도는 펀더멘털 악화라기보다 <span class="hl">연기금·국부펀드의 분기 말 리밸런싱</span> 영향으로 해석됩니다. 금요일 나스닥은 <span class="rose">5거래일 연속 하락</span>, VIX는 20 부근까지 올라왔습니다. 다만 중동 휴전 소식으로 유가와 국채 금리가 안정되며 분위기는 초반 진정세입니다.</p>
+
+    <p>이번 주 시선은 종목이 아니라 <strong>매크로 데이터</strong>로 이동합니다. 특히 목요일 고용보고서의 둔화 여부가 관건입니다.</p>
+
+    <div class="chart-wrap fade-in">
+      <div class="chart-title">비농업 고용(NFP) — 5월 실제 vs 6월 예상 (천 명)</div>
+      <div class="chart-note">예상치 둔화(+11만)가 'Fed 인하 기대'를 자극할지가 포인트</div>
+      <div class="chart-container fade-in">
+        <canvas id="nfpChart" height="220"></canvas>
+      </div>
+    </div>
+
+    <table>
+      <thead><tr><th>일정</th><th>지표</th><th style="text-align:right">메모</th></tr></thead>
+      <tbody>
+        <tr><td>수요일</td><td>ISM 제조업 · JOLTS</td><td class="num" style="font-weight:700">변동성 큰 날</td></tr>
+        <tr><td>목요일 (7/3)</td><td>6월 고용보고서</td><td class="r">예상 +11.0만</td></tr>
+        <tr><td>(참고)</td><td>5월 NFP 실제</td><td class="num">+17.2만</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- SECTION 5: TECHNICALS -->
+  <section>
+    <div class="kicker">05 — 기술적 관전 포인트</div>
+    <h2>이동평균선이 가른다</h2>
+    <p class="sec-sub">단기 방향성은 주요 평균선의 지지·이탈 여부에 달려 있다</p>
+
+    <table>
+      <thead><tr><th>지수</th><th>관찰 레벨</th><th style="text-align:right">시나리오</th></tr></thead>
+      <tbody>
+        <tr><td>S&amp;P 500</td><td>50일선 <b>7,363</b> 근처</td><td class="num">이탈 시 추가 조정</td></tr>
+        <tr><td>나스닥100 · SOX</td><td>50일 · 21일선 부근</td><td class="num">방향 결정 구간</td></tr>
+      </tbody>
+    </table>
+    <p>멤버 대다수는 <span class="hl">이미 테크 비중을 줄여둔 상태</span>이며, 이후 <strong>마이크론(Micron)</strong> 등 일부를 추가 매입했습니다. 즉 포지션은 '공격'보다 '방어 후 선별 매수'에 가깝습니다. 단기 기술주 압력은 있어도, 금리·유가가 안정되면 <span class="rose">비(非)테크 랠리</span>로 자금이 돌 여지가 있다는 판단입니다.</p>
+
+    <!-- S&P SLIDER SIMULATOR -->
+    <div class="sim">
+      <div class="sim-h">S&amp;P 500 연말 시뮬레이터</div>
+      <div class="sim-d">하반기 예상 수익률을 움직여 연말 지수 레벨을 가늠해 보세요</div>
+      <div class="slider-box">
+        <div class="slider-val">
+          <span class="pct" id="pctLabel">+5.4%</span>
+          <span class="cap">하반기 가정 수익률</span>
+        </div>
+        <input type="range" id="h2slider" min="-10" max="12" step="0.5" value="5.4">
+        <div class="result-level">
+          <div class="lv" id="lvLabel">7,760</div>
+          <div class="lc">기준점 7,363 (S&amp;P 50일 이동평균) 대비 추정 연말 레벨</div>
+        </div>
+        <div class="markers">
+          <div class="mk-blue">중간선거 리스크<b id="bearMk">6,995</b><span style="font-size:10px">−5% 시</span></div>
+          <div class="mk-rose">데이빗 목표<b>7,760</b><span style="font-size:10px">+5.4%</span></div>
+        </div>
+      </div>
+      <div class="sim-d" style="margin:12px 0 0;font-size:11px">※ 자막에 당일 종가가 없어 <b>50일선(7,363)</b>을 계산 기준점으로 사용했습니다. 실제 지수와는 차이가 있을 수 있습니다.</div>
+    </div>
+  </section>
+
+  <!-- SECTION 6: TAKEAWAYS -->
+  <section>
+    <div class="kicker">06 — 투자 시사점</div>
+    <h2>정리: 위쪽에 무게, 손엔 안전벨트</h2>
+    <p class="sec-sub">데이빗형님의 메시지를 행동 관점으로 압축하면</p>
+
+    <div class="take">
+      <div class="take-item fade-in"><div class="take-n">①</div><p><b>방향은 상방.</b> 역사적 확률(77~81%)과 +22.6% 이익 성장이 하반기 강세론의 토대.</p></div>
+      <div class="take-item fade-in"><div class="take-n">②</div><p><b>변동성은 상수.</b> 중간선거 해 5%+ 하락 사례 45% — 8월 SpaceX 첫 실적 후, 그리고 9월 풀백 가능성을 경계.</p></div>
+      <div class="take-item fade-in"><div class="take-n">③</div><p><b>최대 변수는 Fed.</b> '인상'이 현실화되면 테크 급락 → 비테크·가치주로의 <b>로테이션</b>이 방어막.</p></div>
+      <div class="take-item fade-in"><div class="take-n">④</div><p><b>포지션은 선별 매수.</b> 테크 비중 축소 후 마이크론 등 일부 추가 — 무리한 추격보다 레벨 확인.</p></div>
+    </div>
+
+    <div class="chart-title" style="margin-top:26px">하반기 핵심 일정</div>
+    <div class="timeline">
+      <div class="tl-item"><div class="tl-d">7월 3일 (목)</div><div class="tl-t">6월 고용보고서 — 둔화 여부가 단기 분위기 결정</div></div>
+      <div class="tl-item"><div class="tl-d">7월 13일</div><div class="tl-t">'시장 포커스' 휴방 종료</div></div>
+      <div class="tl-item"><div class="tl-d">8월</div><div class="tl-t">SpaceX 첫 실적 발표 — 이후 풀백 경계</div></div>
+      <div class="tl-item"><div class="tl-d">9월</div><div class="tl-t">계절적 약세 · 폭락/풀백 가능성 지목</div></div>
+      <div class="tl-item"><div class="tl-d">하반기 내</div><div class="tl-t">Fed 금리 결정 — 시나리오의 분기점</div></div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="disc">
+      <b>면책 고지</b> — 본 문서는 '투자는 인생tv (데이빗형님)' 2026년 6월 30일 방송 자막을 미국 증시·거시경제 관점에서 정리·시각화한 교육용 자료입니다. 모든 수치(수익률, 확률, 목표가, EPS, 고용 등)는 원본 자막을 그대로 인용했으며, 시뮬레이터의 추정 레벨은 자막 수치에 기반한 <b>예시 계산</b>일 뿐 미래 수익을 보장하지 않습니다. 본 자료는 정보 제공 목적이며 투자 권유나 매매 추천이 아닙니다. 투자 판단과 책임은 투자자 본인에게 있습니다.
+    </div>
+    <div class="sig">투자는 인생tv<small>2026 상반기 결산 &amp; 하반기 전망 · 데이빗형님</small></div>
+  </footer>
+
+</div>
+
+<script>
+/* ===== Fade-in observer ===== */
+const fadeObs = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), i * 80);
+      fadeObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.12 });
+document.querySelectorAll('.fade-in').forEach(el => fadeObs.observe(el));
+
+/* ===== Chart configs ===== */
+Chart.defaults.font.family = "'Noto Sans KR', sans-serif";
+Chart.defaults.color = '#777777';
+const ROSE='#e11d48', INK='#1a1a1a', GRAY='#6b7280', BLUE='#2563eb';
+const chartConfigs = {};
+
+chartConfigs['oddsChart'] = () => {
+  new Chart(document.getElementById('oddsChart'), {
+    type: 'bar',
+    data: {
+      labels: ['상반기\n플러스','상반기\n+5%↑','ATH\nTop20','중간선거\n5%+하락'],
+      datasets: [{
+        data: [77, 81, 80, 45],
+        backgroundColor: [ROSE, ROSE, ROSE, GRAY],
+        borderRadius: 6, maxBarThickness: 54
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend:{display:false},
+        tooltip:{callbacks:{label:(c)=> c.parsed.y + '%'}} },
+      scales: { y:{ beginAtZero:true, max:100, ticks:{callback:v=>v+'%'}, grid:{color:'#eee'} },
+                x:{ grid:{display:false}, ticks:{font:{size:11}} } },
+      animation: { duration: 1500, easing: 'easeInOutQuart', delay: (ctx) => ctx.dataIndex * 150 },
+      animations: { y: { from: 0 } }
+    }
+  });
+};
+
+chartConfigs['epsChart'] = () => {
+  new Chart(document.getElementById('epsChart'), {
+    type: 'bar',
+    data: {
+      labels: ['2026E','2027E'],
+      datasets: [{
+        data: [22.6, 17.7],
+        backgroundColor: [ROSE, '#f43f5e'],
+        borderRadius: 6, maxBarThickness: 90
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      indexAxis: 'y',
+      plugins: { legend:{display:false},
+        tooltip:{callbacks:{label:(c)=> '+' + c.parsed.x + '%'}} },
+      scales: { x:{ beginAtZero:true, max:25, ticks:{callback:v=>v+'%'}, grid:{color:'#eee'} },
+                y:{ grid:{display:false} } },
+      animation: { duration: 1500, easing: 'easeInOutQuart', delay: (ctx) => ctx.dataIndex * 150 },
+      animations: { x: { from: 0 } }
+    }
+  });
+};
+
+chartConfigs['nfpChart'] = () => {
+  new Chart(document.getElementById('nfpChart'), {
+    type: 'bar',
+    data: {
+      labels: ['5월 실제','6월 예상'],
+      datasets: [{
+        data: [172, 110],
+        backgroundColor: [GRAY, ROSE],
+        borderRadius: 6, maxBarThickness: 80
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend:{display:false},
+        tooltip:{callbacks:{label:(c)=> '+' + c.parsed.y + '천 명'}} },
+      scales: { y:{ beginAtZero:true, ticks:{callback:v=>v+'k'}, grid:{color:'#eee'} },
+                x:{ grid:{display:false} } },
+      animation: { duration: 1500, easing: 'easeInOutQuart', delay: (ctx) => ctx.dataIndex * 150 },
+      animations: { y: { from: 0 } }
+    }
+  });
+};
+
+/* ===== Chart observer ===== */
+const chartObs = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const canvas = entry.target.querySelector('canvas');
+      if (canvas && chartConfigs[canvas.id]) {
+        setTimeout(() => {
+          chartConfigs[canvas.id]();
+          entry.target.classList.add('chart-ready');
+          delete chartConfigs[canvas.id];
+        }, 200);
+      }
+      chartObs.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.25 });
+document.querySelectorAll('.chart-container').forEach(el => chartObs.observe(el));
+
+/* ===== Fed toggle simulator ===== */
+const fedData = {
+  hold: {
+    cls:'bull', badge:'시나리오 A · 동결',
+    title:'테크, 연말까지 상승 연장',
+    body:'금리 인상이 없으면 데이빗형님은 테크 강세가 연말까지 이어질 것으로 봤습니다. 역사적 확률(81%)과 +22.6% 이익 성장이 그대로 추진력으로 작동하는 구간.',
+    range:'7,760 +', sub:'데이빗 목표가(7,760) 도달 또는 그 이상 시도'
+  },
+  hike: {
+    cls:'bear', badge:'시나리오 B · 인상',
+    title:'발표 직후 테크주 급락 예상',
+    body:'데이빗형님이 더 높게 본 쪽. 인상 발표 직후 테크 폭락을 예상했습니다. 다만 멤버 다수가 테크 비중을 미리 줄이고 마이크론 등으로 옮겨둔 만큼, 비테크 로테이션이 충격을 일부 흡수.',
+    range:'풀백 경계', sub:'중간선거 해 5%+ 하락 사례 45% 구간과 겹침'
+  }
+};
+function setFed(k){
+  const d = fedData[k];
+  document.getElementById('btnHold').classList.toggle('active', k==='hold');
+  document.getElementById('btnHike').classList.toggle('active', k==='hike');
+  document.getElementById('fedOut').innerHTML =
+    '<span class="sim-badge '+d.cls+'">'+d.badge+'</span>'+
+    '<h4>'+d.title+'</h4>'+
+    '<p>'+d.body+'</p>'+
+    '<div class="sim-range">'+d.range+' <span>'+d.sub+'</span></div>';
+}
+setFed('hold');
+
+/* ===== S&P slider simulator ===== */
+const BASE = 7363;
+const slider = document.getElementById('h2slider');
+const pctLabel = document.getElementById('pctLabel');
+const lvLabel = document.getElementById('lvLabel');
+function fmt(n){ return n.toLocaleString('en-US'); }
+function updateSlider(){
+  const p = parseFloat(slider.value);
+  const lvl = Math.round(BASE * (1 + p/100));
+  pctLabel.textContent = (p>=0?'+':'') + p.toFixed(1) + '%';
+  pctLabel.classList.toggle('neg', p<0);
+  lvLabel.textContent = fmt(lvl);
+  lvLabel.style.color = p>=0 ? ROSE : BLUE;
+}
+slider.addEventListener('input', updateSlider);
+document.getElementById('bearMk').textContent = fmt(Math.round(BASE*0.95));
+updateSlider();
+</script>
+</body>
+</html>
