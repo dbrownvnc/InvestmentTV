@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>2026년 하반기, M&A의 계절 — 투자 브리핑</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,500;1,600&family=Noto+Sans+KR:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #ffffff;
+    --bg-alt: #fafafa;
+    --text: #1a1a1a;
+    --text-sub: #777777;
+    --accent: #e11d48;
+    --accent-2: #f43f5e;
+    --border: #e5e5e5;
+    --blue: #2563eb;
+    --gray: #6b7280;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Noto Sans KR', sans-serif;
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+  }
+  .page {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 0 22px 80px;
+  }
+  /* ---------- Hero ---------- */
+  .hero {
+    padding: 56px 0 40px;
+    border-bottom: 1px solid var(--border);
+  }
+  .eyebrow {
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    font-weight: 700;
+    color: var(--accent);
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .eyebrow::before {
+    content: '';
+    width: 24px;
+    height: 1px;
+    background: var(--accent);
+    display: inline-block;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 40px;
+    line-height: 1.22;
+    letter-spacing: -0.01em;
+    margin: 20px 0 18px;
+  }
+  .hero h1 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+  .hero .lede {
+    font-size: 16.5px;
+    color: #3a3a3a;
+    line-height: 1.7;
+    max-width: 58ch;
+  }
+  .meta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 18px;
+    margin-top: 26px;
+    font-size: 12.5px;
+    color: var(--text-sub);
+  }
+  .meta-row span { white-space: nowrap; }
+  .meta-row b { color: var(--text); font-weight: 600; }
+
+  /* ---------- Sections ---------- */
+  section { padding: 44px 0; border-bottom: 1px solid var(--border); }
+  section:last-of-type { border-bottom: none; }
+  .section-label {
+    font-size: 11.5px;
+    letter-spacing: 0.14em;
+    color: var(--accent);
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  h2 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 600;
+    font-size: 26px;
+    line-height: 1.35;
+    margin-bottom: 16px;
+    letter-spacing: -0.005em;
+  }
+  h3 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 600;
+    font-size: 19px;
+    margin: 22px 0 10px;
+  }
+  p { font-size: 15.5px; color: #2b2b2b; margin-bottom: 14px; }
+  p.small { font-size: 13.5px; color: var(--text-sub); }
+  strong { font-weight: 700; color: var(--text); }
+  ul.plain { margin: 12px 0 12px 0; padding-left: 0; list-style: none; }
+  ul.plain li {
+    font-size: 15px;
+    color: #2b2b2b;
+    padding: 10px 0 10px 22px;
+    position: relative;
+    border-bottom: 1px dashed var(--border);
+  }
+  ul.plain li:last-child { border-bottom: none; }
+  ul.plain li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  /* ---------- Fade-in ---------- */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+  /* ---------- Pull quote ---------- */
+  .pullquote {
+    margin: 24px 0;
+    padding: 22px 24px;
+    background: var(--bg-alt);
+    border-left: 3px solid var(--accent);
+  }
+  .pullquote p {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 18px;
+    color: var(--text);
+    line-height: 1.55;
+    margin: 0;
+  }
+  .pullquote cite {
+    display: block;
+    margin-top: 10px;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-style: normal;
+    font-size: 12px;
+    color: var(--text-sub);
+  }
+
+  /* ---------- Stat cards ---------- */
+  .stat-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 18px 0;
+  }
+  .stat-card {
+    background: var(--bg-alt);
+    border: 1px solid var(--border);
+    padding: 18px 16px;
+  }
+  .stat-card .num {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1.1;
+  }
+  .stat-card .label {
+    font-size: 12px;
+    color: var(--text-sub);
+    margin-top: 6px;
+    line-height: 1.4;
+  }
+
+  /* ---------- Ticker badge ---------- */
+  .ticker-block {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: var(--text);
+    color: #fff;
+    padding: 20px 22px;
+    margin: 20px 0;
+  }
+  .ticker-badge {
+    font-family: 'Playfair Display', serif;
+    font-weight: 800;
+    font-size: 22px;
+    letter-spacing: 0.02em;
+    background: var(--accent);
+    color: #fff;
+    padding: 6px 14px;
+    flex-shrink: 0;
+  }
+  .ticker-info .name { font-size: 14.5px; font-weight: 600; }
+  .ticker-info .sub { font-size: 12px; color: #bbb; margin-top: 2px; }
+
+  /* ---------- Comparison cards ---------- */
+  .compare-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 18px 0;
+  }
+  .compare-card {
+    border: 1px solid var(--border);
+    padding: 18px 18px 16px;
+    position: relative;
+  }
+  .compare-card.accent-left { border-left: 3px solid var(--gray); }
+  .compare-card.accent-right { border-left: 3px solid var(--accent); }
+  .compare-card .co-name {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 17px;
+    margin-bottom: 8px;
+  }
+  .compare-card ul.plain li { font-size: 13.8px; padding: 7px 0 7px 20px; }
+
+  /* ---------- Simulator ---------- */
+  .sim-box {
+    background: var(--bg-alt);
+    border: 1px solid var(--border);
+    padding: 24px 20px;
+    margin: 20px 0;
+  }
+  .sim-title {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 17px;
+    margin-bottom: 4px;
+  }
+  .sim-sub { font-size: 12.5px; color: var(--text-sub); margin-bottom: 20px; }
+  .sim-row { margin-bottom: 22px; }
+  .sim-row label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13.5px;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  .sim-row label span.val { color: var(--accent); font-family: 'Playfair Display', serif; font-size: 16px; }
+  input[type="range"] {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 4px;
+    background: var(--border);
+    outline: none;
+    border-radius: 2px;
+  }
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    background: var(--accent);
+    cursor: pointer;
+    border: 3px solid #fff;
+    box-shadow: 0 0 0 1px var(--accent);
+  }
+  input[type="range"]::-moz-range-thumb {
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    background: var(--accent);
+    cursor: pointer;
+    border: 3px solid #fff;
+    box-shadow: 0 0 0 1px var(--accent);
+  }
+  .toggle-row { display: flex; gap: 8px; }
+  .toggle-btn {
+    flex: 1;
+    padding: 12px 8px;
+    text-align: center;
+    font-size: 13.5px;
+    font-weight: 600;
+    border: 1px solid var(--border);
+    background: #fff;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .toggle-btn.active {
+    background: var(--text);
+    color: #fff;
+    border-color: var(--text);
+  }
+  .sim-result {
+    margin-top: 20px;
+    padding: 16px 18px;
+    border-left: 3px solid var(--accent);
+    background: #fff;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  .sim-result .verdict {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 16px;
+    margin-bottom: 6px;
+    display: block;
+  }
+  .reset-btn {
+    margin-top: 14px;
+    font-size: 12px;
+    color: var(--text-sub);
+    background: none;
+    border: none;
+    text-decoration: underline;
+    cursor: pointer;
+    padding: 0;
+  }
+
+  /* ---------- Quadrant diagram ---------- */
+  .quad-wrap { margin: 20px 0; }
+  .quad-caption { font-size: 11.5px; color: var(--text-sub); text-align: center; margin-top: 8px; }
+  svg.quad text { font-family: 'Noto Sans KR', sans-serif; }
+
+  /* ---------- Disclaimer ---------- */
+  .disclaimer {
+    background: var(--bg-alt);
+    border: 1px solid var(--border);
+    padding: 20px;
+    font-size: 13px;
+    color: var(--text-sub);
+    line-height: 1.7;
+    margin-top: 20px;
+  }
+  .disclaimer b { color: var(--text); }
+
+  footer {
+    padding: 40px 0 20px;
+    text-align: center;
+    font-size: 11.5px;
+    color: #b0b0b0;
+    letter-spacing: 0.04em;
+  }
+
+  @media (max-width: 400px) {
+    .hero h1 { font-size: 32px; }
+    .stat-grid { grid-template-columns: 1fr 1fr; }
+    h2 { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="hero fade-in">
+    <div class="eyebrow">투자는인생TV MEMBER BRIEFING</div>
+    <h1>2026년 하반기,<br><em>M&A의 계절</em>이 온다</h1>
+    <p class="lede">2주 만에 재개된 멤버 방송에서 진행자는 하반기 인수합병(M&A) 급증을 전망했다. 매출은 늘지만 이익이 뒤따르지 못하는 기업들이 우선 타겟이 될 것이라는 진단과 함께, 우주항공·드론 분야의 다크호스 종목 하나를 구체적으로 짚었다.</p>
+    <div class="meta-row">
+      <span><b>제목</b> 하반기 인수합병</span>
+      <span><b>일자</b> 2026.07.05</span>
+      <span><b>구분</b> 멤버 방송 · 경제/투자 분석</span>
+    </div>
+  </div>
+
+  <section class="fade-in">
+    <div class="section-label">01 · Context</div>
+    <h2>왜 지금, 이 이야기를 하는가</h2>
+    <p>진행자는 2주간의 공백 기간 동안 신규 멤버가 크게 늘었다는 점을 언급하며 방송을 시작했다. 미국 시장에 익숙하지 않은 신규 투자자일수록 변동성에 쉽게 불안해지는데, 그 불안의 근원은 <strong>정보 부족</strong>이라는 것이 진행자의 진단이다. 이번 방송은 3세대 그룹(포트폴리오 편입 종목군)의 선정 기준을 짚는 동시에, 6월을 지나 7월로 넘어가는 시점에서 수집한 정보와 첩보를 바탕으로 <strong>하반기 인수합병 급증 가능성</strong>을 공식적으로 공유하는 자리로 구성됐다.</p>
+  </section>
+
+  <section class="fade-in">
+    <div class="section-label">02 · Thesis</div>
+    <h2>M&A 타겟이 되는 기업의 조건</h2>
+    <p>진행자가 제시한 논리는 비교적 단순하다. <strong>금리를 추가로 인상하지 않는 국면</strong>에서는 성장 한계에 도달했거나, 매출(revenue)은 계속 늘어나는데 <strong>EPS(주당순이익)가 여전히 마이너스이거나 부진한 기업</strong>들이 늘어난다. 기술적 발전 속도는 빠르지만 수익성으로 이어지지 못하는 이런 회사들이 상당수 M&A 대상이 될 것이라는 전망이다.</p>
+    <div class="pullquote">
+      <p>"매출은 올라가는데 EPS는 여전히 마이너스인 회사, 기술적 발전 속도는 빠른데 프로핏은 그렇게 늘지 않는 회사들이 M&A 대상이 많이 될 것 같습니다."</p>
+      <cite>— 방송 원문 중</cite>
+    </div>
+
+    <div class="sim-box">
+      <div class="sim-title">M&A 타겟 신호 진단기</div>
+      <div class="sim-sub">진행자가 제시한 기준(매출 성장률 · EPS 상태)을 직접 조정해 논리를 체감해보세요</div>
+
+      <div class="sim-row">
+        <label>매출 성장률 (YoY) <span class="val" id="revVal">80%</span></label>
+        <input type="range" id="revSlider" min="0" max="200" value="80" step="5">
+      </div>
+
+      <div class="sim-row">
+        <label style="margin-bottom:10px;">EPS 상태</label>
+        <div class="toggle-row">
+          <button class="toggle-btn active" data-eps="negative">적자 지속</button>
+          <button class="toggle-btn" data-eps="improving">개선 중</button>
+          <button class="toggle-btn" data-eps="positive">흑자 안정</button>
+        </div>
+      </div>
+
+      <div class="sim-result" id="simResult">
+        <span class="verdict">—</span>
+        <span id="simText"></span>
+      </div>
+      <button class="reset-btn" id="simReset">초기값으로 재설정</button>
+    </div>
+    <p class="small">※ 위 진단기는 방송에서 언급된 논리 구조를 체험하기 위한 참고용 도구이며, 실제 M&A 성사 여부를 예측하는 도구가 아닙니다.</p>
+  </section>
+
+  <section class="fade-in">
+    <div class="section-label">03 · Aerospace</div>
+    <h2>테슬라·스페이스X, 우주항공 재편의 축</h2>
+    <p>진행자는 테슬라 자체의 향방은 단정하지 않으면서도, <strong>스페이스X의 자산 규모와 시가총액이 커질수록 테슬라 관련 사업구조가 인수합병의 대상이 될 가능성</strong>이 있다고 짚었다. 특히 우주 전쟁을 대비한 드론 테크놀로지, 첩보·통신 목적의 우주 레이저 통신 등이 언급됐다. 드론은 전쟁 무기로서의 용도를 넘어 첩보 활동과 통신 인프라로도 쓰이며, 이 영역에서 기존 방산업체 외에 여러 다크호스 기업이 존재한다는 것이 핵심 요지다.</p>
+  </section>
+
+  <section class="fade-in">
+    <div class="section-label">04 · Defense Spend</div>
+    <h2>국방비 증가와 드론의 부상</h2>
+    <p>우크라이나 전쟁을 계기로 드론의 전략적 중요성이 언론과 전문가들 사이에서 크게 부각됐다는 설명이 이어졌다. 이런 흐름 속에 미국 국방부는 드론 테크놀로지에 높은 관심을 보이고 있다.</p>
+    <div class="stat-grid">
+      <div class="stat-card">
+        <div class="num">50%+</div>
+        <div class="label">작년 대비 미국 국방비 증가율 (언급 기준)</div>
+      </div>
+      <div class="stat-card">
+        <div class="num">2026</div>
+        <div class="label">하반기 M&A 급증이 예상되는 시점</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="fade-in">
+    <div class="section-label">05 · Case Study</div>
+    <h2>다크호스: AeroVironment (AVAV)</h2>
+    <p>진행자가 구체적으로 짚은 종목은 드론 테크놀로지·소프트웨어·레이저 커뮤니케이션 기업인 <strong>AeroVironment(에어로 인바이런먼트)</strong>다. 스페이스X와 상호 보완적인 사업 구조를 갖췄다는 점을 이유로 들었다.</p>
+
+    <div class="ticker-block">
+      <div class="ticker-badge">AVAV</div>
+      <div class="ticker-info">
+        <div class="name">AeroVironment</div>
+        <div class="sub">드론 테크놀로지 · 소프트웨어 · 우주 레이저 통신</div>
+      </div>
+    </div>
+
+    <div class="stat-grid">
+      <div class="stat-card">
+        <div class="num">140~150%</div>
+        <div class="label">최근 1년 매출 성장률 (언급 수치)</div>
+      </div>
+      <div class="stat-card">
+        <div class="num">6/30</div>
+        <div class="label">실적 발표일, 가이던스 상향 발표</div>
+      </div>
+      <div class="stat-card" style="grid-column: 1 / -1;">
+        <div class="num">$5억</div>
+        <div class="label">정부 계약(government contract) 규모로 언급된 수치 — 락히드마틴 등 대형 방산업체 대비 상대적으로 작은 비중이나, 민간·우주 영역까지 사업이 확장되어 있다는 점이 진행자가 강조한 차별점</div>
+      </div>
+    </div>
+
+    <p>진행자는 "이건 제 센스, 제 느낌"이라고 스스로 전제를 달면서도, 매출 성장은 가파른데 EPS는 아직 완전히 개선되지 않은 AVAV의 구조가 여러 기업의 눈독을 들일 만한 조건에 부합한다고 평가했다. 가격이 한때 높았다가 최근 조정을 받은 뒤 다시 반등하는 흐름을 보였다는 점도 언급됐다.</p>
+
+    <h3>락히드마틴과의 대조</h3>
+    <div class="compare-wrap">
+      <div class="compare-card accent-left">
+        <div class="co-name">Lockheed Martin</div>
+        <ul class="plain">
+          <li>매출 대부분이 government contract에 의존</li>
+          <li>계약 구조상 성장 속도가 상대적으로 더딤</li>
+        </ul>
+      </div>
+      <div class="compare-card accent-right">
+        <div class="co-name">AeroVironment (AVAV)</div>
+        <ul class="plain">
+          <li>정부 계약(약 5억불)과 민간·우주 영역을 함께 보유</li>
+          <li>상대적으로 대중적·상업적 확장 여지가 있다는 평가</li>
+        </ul>
+      </div>
+    </div>
+    <p class="small">※ 위 비교는 방송에서 언급된 정성적 설명을 정리한 것으로, 두 기업의 재무 지표를 직접 비교한 수치는 원본에 제시되지 않았습니다.</p>
+  </section>
+
+  <section class="fade-in">
+    <div class="section-label">06 · Risk</div>
+    <h2>투자 유의사항</h2>
+    <p>진행자는 이 발언이 투자 리스크가 크다는 이유로 공개할지 여러 차례 고민했다고 밝혔다. 이미 가까운 지인들에게는 언급했던 내용이라 공식적으로 공유하게 됐다는 설명이다.</p>
+    <div class="disclaimer">
+      <p style="margin-bottom:8px;"><b>진행자의 명시적 당부</b></p>
+      <p style="margin-bottom:0;">"투자 리스크는 크기 때문에 소액 투자자는 투자를 안 했으면 좋겠고, 그래도 몇 억씩 가지고 계신 분들 중 일부만 조금 투자를 해보자는 생각"이라는 조건부 의견이며, 이는 진행자 개인의 관점(느낌·센스)임을 스스로 강조했다.</p>
+    </div>
+  </section>
+
+  <footer>
+    투자는인생TV MEMBER BRIEFING · 본 자료는 원본 방송 내용을 요약·정리한 것이며 투자 판단의 책임은 투자자 본인에게 있습니다.
+  </footer>
+
+</div>
+
+<script>
+  // Scroll-triggered fade-ins
+  const fadeObs = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 60);
+        fadeObs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-in').forEach(el => fadeObs.observe(el));
+
+  // M&A signal simulator
+  const revSlider = document.getElementById('revSlider');
+  const revVal = document.getElementById('revVal');
+  const epsButtons = document.querySelectorAll('.toggle-btn');
+  const simResult = document.getElementById('simResult');
+  const simVerdict = simResult.querySelector('.verdict');
+  const simText = document.getElementById('simText');
+  let epsState = 'negative';
+
+  function updateSim() {
+    const rev = parseInt(revSlider.value, 10);
+    revVal.textContent = rev + '%';
+
+    let verdict = '';
+    let text = '';
+
+    const highGrowth = rev >= 60;
+    const midGrowth = rev >= 25 && rev < 60;
+
+    if (highGrowth && epsState === 'negative') {
+      verdict = '⚠️ 방송에서 언급한 전형적 M&A 타겟 조건';
+      text = '매출은 빠르게 늘지만 EPS가 적자인 구조로, 진행자가 설명한 "M&A 대상이 많이 될 것 같은" 기업군에 정확히 해당합니다.';
+      simResult.style.borderLeftColor = 'var(--accent)';
+    } else if (highGrowth && epsState === 'improving') {
+      verdict = '🔎 잠재적 M&A 후보군';
+      text = '매출 성장은 가파르고 EPS가 개선되는 중인 구조로, 방송에서 예시로 든 AVAV와 유사한 패턴에 가깝습니다.';
+      simResult.style.borderLeftColor = 'var(--accent-2)';
+    } else if (highGrowth && epsState === 'positive') {
+      verdict = '✅ 이미 수익성을 갖춘 성장 기업';
+      text = '매출과 이익이 함께 성장하는 구조는 진행자가 언급한 "M&A 대상"의 논리와는 다소 거리가 있습니다.';
+      simResult.style.borderLeftColor = 'var(--gray)';
+    } else if (midGrowth && epsState !== 'positive') {
+      verdict = '🔎 관찰이 필요한 중간 지대';
+      text = '성장률과 수익성 모두 뚜렷하지 않은 구간으로, 방송 논리상 M&A 타겟 여부를 단정하기 어렵습니다.';
+      simResult.style.borderLeftColor = 'var(--gray)';
+    } else {
+      verdict = '— 성장 한계 도달형';
+      text = '진행자가 언급한 "성장의 한계에 도달한" 기업군에 가까우며, 별도의 접근이 필요한 케이스로 볼 수 있습니다.';
+      simResult.style.borderLeftColor = 'var(--gray)';
+    }
+
+    simVerdict.textContent = verdict;
+    simText.textContent = text;
+  }
+
+  revSlider.addEventListener('input', updateSim);
+  epsButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      epsButtons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      epsState = btn.dataset.eps;
+      updateSim();
+    });
+  });
+  document.getElementById('simReset').addEventListener('click', () => {
+    revSlider.value = 80;
+    epsButtons.forEach(b => b.classList.remove('active'));
+    epsButtons[0].classList.add('active');
+    epsState = 'negative';
+    updateSim();
+  });
+
+  updateSim();
+</script>
+</body>
+</html>
