@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>7월 6일 (월) 장 초반 시장 정리 — 미국 증시 분석</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root{
+    --bg:#ffffff; --bg-sub:#fafafa;
+    --txt:#1a1a1a; --txt-sub:#777777;
+    --accent:#e11d48; --accent2:#f43f5e;
+    --border:#e5e5e5; --blue:#2563eb; --gray:#6b7280;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:'Noto Sans KR',sans-serif;
+    background:var(--bg); color:var(--txt);
+    line-height:1.75; font-size:16px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:680px;margin:0 auto;padding:0 20px;}
+
+  /* ===== Header ===== */
+  header{padding:56px 0 36px;border-bottom:3px solid var(--txt);}
+  .eyebrow{
+    display:inline-block;font-size:12px;font-weight:700;letter-spacing:.16em;
+    color:var(--accent);text-transform:uppercase;margin-bottom:14px;
+    border:1px solid var(--accent);padding:4px 12px;border-radius:2px;
+  }
+  h1{
+    font-family:'Playfair Display','Noto Sans KR',serif;
+    font-size:clamp(28px,6vw,40px);font-weight:800;line-height:1.25;
+    letter-spacing:-0.01em;margin-bottom:16px;
+  }
+  h1 .red{color:var(--accent);}
+  .standfirst{font-size:16px;color:var(--txt-sub);font-weight:400;line-height:1.7;}
+  .meta{margin-top:20px;font-size:13px;color:var(--txt-sub);display:flex;gap:14px;flex-wrap:wrap;}
+  .meta b{color:var(--txt);font-weight:700;}
+
+  /* ===== Key stat strip ===== */
+  .stat-strip{
+    display:grid;grid-template-columns:repeat(2,1fr);gap:1px;
+    background:var(--border);border:1px solid var(--border);margin:36px 0;
+  }
+  .stat-cell{background:var(--bg-sub);padding:18px 16px;}
+  .stat-cell .n{
+    font-family:'Playfair Display',serif;font-size:26px;font-weight:800;
+    color:var(--accent);line-height:1.15;
+  }
+  .stat-cell .n.dark{color:var(--txt);}
+  .stat-cell .l{font-size:12px;color:var(--txt-sub);margin-top:4px;line-height:1.5;}
+
+  /* ===== Sections ===== */
+  section{padding:34px 0 6px;}
+  .sec-head{display:flex;align-items:baseline;gap:12px;margin-bottom:20px;}
+  .sec-no{
+    font-family:'Playfair Display',serif;font-size:15px;font-weight:700;
+    color:var(--accent);letter-spacing:.06em;white-space:nowrap;
+  }
+  h2{
+    font-family:'Playfair Display','Noto Sans KR',serif;
+    font-size:24px;font-weight:800;line-height:1.35;letter-spacing:-0.01em;
+  }
+  h3{font-size:17px;font-weight:900;margin:26px 0 10px;padding-left:12px;border-left:4px solid var(--accent);}
+  p{margin-bottom:14px;}
+  p.sub{color:var(--txt-sub);font-size:14.5px;}
+  strong{font-weight:700;}
+  .hl{background:linear-gradient(transparent 62%, rgba(225,29,72,.16) 62%);font-weight:700;}
+  .red-txt{color:var(--accent);font-weight:700;}
+
+  /* Pull quote */
+  .pull{
+    margin:26px 0;padding:22px 24px;background:var(--bg-sub);
+    border-left:4px solid var(--accent);
+  }
+  .pull .q{
+    font-family:'Playfair Display','Noto Sans KR',serif;
+    font-size:18px;font-weight:700;line-height:1.55;
+  }
+  .pull .who{margin-top:8px;font-size:12.5px;color:var(--txt-sub);}
+
+  /* Callout */
+  .note{
+    margin:20px 0;padding:16px 18px;background:#fff5f6;
+    border:1px solid #fbd3db;border-radius:6px;font-size:14.5px;line-height:1.7;
+  }
+  .note .tt{color:var(--accent);font-weight:900;font-size:13px;letter-spacing:.05em;display:block;margin-bottom:6px;}
+
+  /* Tables */
+  table{width:100%;border-collapse:collapse;margin:18px 0 24px;font-size:14px;background:var(--bg-sub);}
+  th{background:var(--accent);color:#fff;padding:10px 12px;text-align:left;font-weight:700;font-size:13px;}
+  td{padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.6;}
+  tr:last-child td{border-bottom:none;}
+  td.k{font-weight:700;white-space:nowrap;}
+  .up{color:var(--accent);font-weight:700;}
+  .down{color:var(--blue);font-weight:700;}
+
+  /* Charts */
+  .fade-in{opacity:0;transform:translateY(18px);transition:opacity .7s ease, transform .7s ease;}
+  .fade-in.visible{opacity:1;transform:translateY(0);}
+  .chart-container{position:relative;max-height:340px;margin:22px 0 8px;background:var(--bg-sub);border:1px solid var(--border);border-radius:8px;padding:16px 12px;}
+  .chart-container canvas{opacity:0;transition:opacity .4s ease;max-height:300px;}
+  .chart-container.chart-ready canvas{opacity:1;}
+  .chart-cap{font-size:12.5px;color:var(--txt-sub);text-align:center;margin:6px 0 22px;}
+
+  /* Simulator */
+  .sim{
+    margin:24px 0;border:2px solid var(--txt);border-radius:10px;overflow:hidden;background:var(--bg);
+  }
+  .sim-head{background:var(--txt);color:#fff;padding:14px 18px;}
+  .sim-head .t{font-weight:900;font-size:15px;}
+  .sim-head .d{font-size:12px;color:#cfcfcf;margin-top:2px;}
+  .sim-body{padding:18px;}
+  .sim-btns{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px;}
+  .sim-btn{
+    padding:12px 6px;border:1.5px solid var(--border);border-radius:8px;background:var(--bg-sub);
+    font-family:'Noto Sans KR',sans-serif;font-size:13px;font-weight:700;color:var(--txt);
+    cursor:pointer;transition:all .2s;line-height:1.4;
+  }
+  .sim-btn:hover{border-color:var(--accent2);}
+  .sim-btn.on{background:var(--accent);border-color:var(--accent);color:#fff;}
+  .sim-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+  .sim-cell{background:var(--bg-sub);border:1px solid var(--border);border-radius:8px;padding:14px 8px;text-align:center;}
+  .sim-cell .lab{font-size:11.5px;color:var(--txt-sub);font-weight:700;}
+  .sim-cell .arrow{font-size:26px;font-weight:900;margin:6px 0 2px;transition:all .3s;}
+  .sim-cell .desc{font-size:11.5px;line-height:1.45;color:var(--txt-sub);}
+  .a-up{color:var(--accent);}
+  .a-down{color:var(--blue);}
+  .a-flat{color:var(--gray);}
+  .sim-note{margin-top:14px;font-size:13px;background:var(--bg-sub);border-left:3px solid var(--accent);padding:10px 14px;line-height:1.65;}
+
+  /* Checklist */
+  .check{list-style:none;margin:14px 0 22px;}
+  .check li{padding:10px 0 10px 30px;position:relative;border-bottom:1px dashed var(--border);font-size:14.5px;line-height:1.65;}
+  .check li::before{content:"✓";position:absolute;left:4px;top:9px;color:var(--accent);font-weight:900;}
+
+  /* Footer */
+  footer{margin-top:44px;padding:28px 0 56px;border-top:3px solid var(--txt);font-size:12.5px;color:var(--txt-sub);line-height:1.8;}
+  footer b{color:var(--txt);}
+  .divider{height:1px;background:var(--border);margin:34px 0 0;}
+
+  @media (prefers-reduced-motion: reduce){
+    .fade-in{opacity:1;transform:none;transition:none;}
+    .chart-container canvas{transition:none;}
+  }
+  @media (max-width:420px){
+    .stat-strip{grid-template-columns:1fr 1fr;}
+    .sim-btns{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+
+<header class="wrap">
+  <span class="eyebrow">Market Briefing · 투자는인생TV</span>
+  <h1>고용 부진이 열어준 숨통,<br><span class="red">로테이션</span>은 계속된다</h1>
+  <p class="standfirst">7월 6일(월) 장 초반 — 반도체 조정 지속 여부가 최대 관심사인 가운데 칩주가 반등하며 주요 지수가 상승 출발했다. S&amp;P 500은 사상 최고치 근처, 소형주는 1991년 이후 최고의 상반기를 보냈다.</p>
+  <div class="meta">
+    <span>출처 <b>투자는인생TV (데이빗형님)</b></span>
+    <span>방송일 <b>2026년 7월 6일 (월)</b></span>
+    <span>정리 <b>2026년 7월 7일</b></span>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <!-- 핵심 수치 -->
+  <div class="stat-strip fade-in">
+    <div class="stat-cell"><div class="n">−3%</div><div class="l">지난주 반도체 섹터 조정폭</div></div>
+    <div class="stat-cell"><div class="n dark">1991년 이후 최고</div><div class="l">Russell 2000 상반기 성과</div></div>
+    <div class="stat-cell"><div class="n">+23.3%</div><div class="l">2분기 S&amp;P 500 EPS 성장률 전망</div></div>
+    <div class="stat-cell"><div class="n dark">11.1만 명</div><div class="l">최근 3개월 평균 신규 고용</div></div>
+  </div>
+
+  <!-- 1. 장 초반 상황 -->
+  <section>
+    <div class="sec-head"><span class="sec-no">No.1</span><h2>장 초반 상황 — 칩주 반등으로 상승 출발</h2></div>
+    <p>월요일 장 초반의 최대 관심사는 <span class="hl">반도체 섹터 조정이 지속될 것인가</span>였다. 지난주 반도체 섹터는 <strong class="red-txt">약 3% 하락</strong>하며 조정을 겪었지만, 이날 장 초반에는 칩주가 반등하면서 주요 지수가 상승 출발했다. <strong>S&amp;P 500은 사상 최고치 근처</strong>에서 거래되고 있으며, 원유 가격은 약세를 보였다.</p>
+    <p>주목할 부분은 소형주다. <span class="hl">Russell 2000은 상반기 기준 1991년 이후 최고 성과</span>를 기록했다. AI 메가캡 중심의 장세에서 시장의 폭이 넓어지고 있다는 신호다.</p>
+
+    <div class="pull">
+      <div class="q">"AI 트레이드 심리는 다소 악화됐지만, 최근 조정은 과열 해소 과정으로 볼 수 있다. AI 테마 외 시장 확대(로테이션)는 여전히 진행 중이다."</div>
+      <div class="who">— 투자는인생TV, 시장 전망</div>
+    </div>
+
+    <p>실적 측면의 뒷받침도 견고하다. <strong>2분기 S&amp;P 500 EPS 성장률 전망은 +23.3%</strong>로, 조정을 '건강한 숨 고르기'로 해석할 수 있는 근거가 된다.</p>
+  </section>
+
+  <!-- 2. 지난 목요일 마감 리뷰 -->
+  <section>
+    <div class="sec-head"><span class="sec-no">No.2</span><h2>지난 목요일 마감 — 로테이션 본격화</h2></div>
+    <p>지난 목요일 시장은 혼조세였지만 내용은 뚜렷했다. <strong class="red-txt">다우존스는 +600포인트 급등하며 사상 최고치</strong>를 기록했고, 약한 고용 지표가 연준(Fed)의 <strong>금리 인상 압력을 완화</strong>시켰다.</p>
+    <p>동시에 로테이션이 본격화됐다. <span class="hl">반도체·테크가 대폭 하락한 반면 헬스케어, 필수소비재, 유틸리티가 강세</span>를 보였다. S&amp;P 500 11개 섹터 중 7개가 상승했지만 지수 자체는 보합으로 마감 — 메가캡 테크의 하락을 나머지 섹터가 흡수한 전형적인 로테이션 장세였다.</p>
+
+    <div class="chart-container fade-in">
+      <canvas id="sectorChart" height="230"></canvas>
+    </div>
+    <p class="chart-cap">지난 목요일 S&amp;P 500 — 11개 섹터 중 7개 상승, 지수는 보합 마감</p>
+
+    <table>
+      <thead><tr><th>구분</th><th>흐름</th><th>해석</th></tr></thead>
+      <tbody>
+        <tr><td class="k">다우존스</td><td class="up">+600pt, 사상 최고치</td><td>구경제·가치주로 자금 유입</td></tr>
+        <tr><td class="k">반도체·테크</td><td class="down">대폭 하락</td><td>AI 과열 해소 과정</td></tr>
+        <tr><td class="k">헬스케어·필수소비재·유틸리티</td><td class="up">강세</td><td>방어주 로테이션 수혜</td></tr>
+        <tr><td class="k">S&amp;P 500</td><td>보합</td><td>섹터 간 자금 이동으로 상쇄</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 3. 주목 포인트 -->
+  <section>
+    <div class="sec-head"><span class="sec-no">No.3</span><h2>이번 주 3가지 주목 포인트</h2></div>
+
+    <h3>① 고용 시장 부진 — 세부 지표가 말하는 것</h3>
+    <p>헤드라인보다 세부 지표가 더 어둡다. 최근 3개월 신규 고용 평균은 <strong class="red-txt">11.1만 명</strong>에 그쳤고, <span class="hl">노동참여율은 5년 최저, 25~34세 참여율은 50년 최저 수준</span>이다. 장기실업자는 증가하고 있으며, 시간당 임금 상승률은 <strong>3.5%로 인플레이션을 하회</strong>한다. 실질임금이 깎이고 있다는 뜻이며, 이것이 소비자 심리 악화의 주요 원인으로 지목된다.</p>
+
+    <table>
+      <thead><tr><th>고용 지표</th><th>수치/수준</th><th>시사점</th></tr></thead>
+      <tbody>
+        <tr><td class="k">3개월 평균 신규 고용</td><td>11.1만 명</td><td>고용 창출 동력 약화</td></tr>
+        <tr><td class="k">노동참여율</td><td class="down">5년 최저</td><td>구직 포기 증가</td></tr>
+        <tr><td class="k">25~34세 참여율</td><td class="down">50년 최저 수준</td><td>핵심 노동층 이탈</td></tr>
+        <tr><td class="k">시간당 임금 상승률</td><td>3.5% (인플레 하회)</td><td>실질구매력 감소 → 소비심리 악화</td></tr>
+        <tr><td class="k">장기실업자</td><td class="up">증가</td><td>재취업 난이도 상승</td></tr>
+      </tbody>
+    </table>
+
+    <div class="note"><span class="tt">POINT</span>고용 부진은 역설적으로 시장에 우호적이다. 연준의 <strong>금리 인상 부담을 완화</strong>시키는 재료로 작용하기 때문이다. 다만 임금이 인플레이션을 하회하는 구간이 길어지면 소비 둔화로 실적에 부메랑이 될 수 있다.</div>
+
+    <h3>② Fed 6월 의사록 — 케빈 워시 의장의 첫 회의</h3>
+    <p>수요일 공개되는 6월 FOMC 의사록은 <span class="hl">새 의장 케빈 워시(Kevin Warsh)의 첫 회의</span> 기록이라는 점에서 무게가 다르다. 금리 전망이 <strong class="red-txt">'인하'에서 '인상 가능'으로 급변</strong>한 배경, 인플레이션·노동시장 평가, 관세 영향, 그리고 연준 운영 방식 검토까지 — 시장이 확인해야 할 항목이 많다.</p>
+
+    <h3>③ 미국 백만장자 44만 명 증가</h3>
+    <p>지난해 미국 백만장자는 <strong>+44만 명 늘어 총 5,800만 명</strong>이 됐다. 미국 성인의 <strong class="red-txt">약 9% 수준</strong>이다. 다만 <span class="hl">주택 자산이 큰 역할</span>을 했고, 주택을 제외하면 증가율은 1.4% 이하로 뚝 떨어진다. 반면 일본은 엔화 약세 영향으로 백만장자 수가 감소했다 — 자산 인플레이션과 통화 가치가 부의 지도를 다시 그리고 있다.</p>
+
+    <div class="chart-container fade-in">
+      <canvas id="millionaireChart" height="220"></canvas>
+    </div>
+    <p class="chart-cap">미국 성인 중 백만장자 비중 약 9% (총 5,800만 명, 전년 대비 +44만 명)</p>
+  </section>
+
+  <!-- 4. 달러-SPX 상관관계 + 시뮬레이터 -->
+  <section>
+    <div class="sec-head"><span class="sec-no">No.4</span><h2>달러화 가치와 S&amp;P 500의 역상관</h2></div>
+    <p>역사적으로 <span class="hl">S&amp;P 500과 달러는 반대로 움직이는 경우가 많았다</span>. 올해 차트도 이를 보여준다. <strong>1월 말~3월 말</strong> 달러가 급등할 때 SPX는 하락했고, <strong>4월~5월 중순</strong>에는 단기적으로 정반대 패턴이 나타났다. <strong>6월부터</strong> SPX는 대칭삼각형 패턴으로 횡보하다가, 지난주 목요일 약간의 상승 돌파와 함께 달러가 떨어지면서 다시 상승 추세를 이어가고 있다.</p>
+
+    <div class="chart-container fade-in">
+      <canvas id="dollarSpxChart" height="240"></canvas>
+    </div>
+    <p class="chart-cap">2026년 상반기 달러지수 vs S&amp;P 500 흐름 <strong>개념 모식도</strong> — 방송에서 설명한 구간별 패턴을 도식화한 것으로 실제 지수 값이 아님</p>
+
+    <p>메커니즘은 단순하다. <strong>금리가 오르거나 금리 인상 기대가 커지면 달러가 강세</strong>를 보인다. 따라서 현재 추세라면 연준의장이 금리 인상을 미리 경고하거나 한 차례 인상을 검토한다는 뉴스가 나올 경우, <span class="hl">달러 가치는 상승하고 테크주를 포함한 S&amp;P 500은 하락하는 현상이 단기적으로라도 나타날 수 있다</span>.</p>
+
+    <!-- 시뮬레이터 -->
+    <div class="sim fade-in">
+      <div class="sim-head">
+        <div class="t">⚙ 금리 시나리오 시뮬레이터</div>
+        <div class="d">시나리오를 선택하면 방송 논리에 따른 달러·증시의 단기 방향을 보여줍니다</div>
+      </div>
+      <div class="sim-body">
+        <div class="sim-btns">
+          <button class="sim-btn" data-s="cut" type="button">금리 인하<br>기대 유지</button>
+          <button class="sim-btn on" data-s="hold" type="button">동결 +<br>매파 발언 없음</button>
+          <button class="sim-btn" data-s="hike" type="button">인상 경고 /<br>1회 인상 검토</button>
+        </div>
+        <div class="sim-grid">
+          <div class="sim-cell"><div class="lab">달러화 (DXY)</div><div class="arrow a-flat" id="simDollar">→</div><div class="desc" id="simDollarD">방향성 제한</div></div>
+          <div class="sim-cell"><div class="lab">S&amp;P 500 · 테크</div><div class="arrow a-flat" id="simSpx">→</div><div class="desc" id="simSpxD">추세 유지</div></div>
+          <div class="sim-cell"><div class="lab">유리한 포지션</div><div class="arrow a-flat" id="simPos" style="font-size:15px;line-height:1.4;padding-top:6px;">로테이션 유지</div><div class="desc" id="simPosD">종형 포트폴리오</div></div>
+        </div>
+        <div class="sim-note" id="simNote">현재 기본 시나리오: 약한 고용 지표가 인상 압력을 완화한 상태. 달러 하락 속에 SPX가 삼각형 상단 돌파 후 상승 추세를 이어가는 국면입니다.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. 투자 시사점 -->
+  <section>
+    <div class="sec-head"><span class="sec-no">No.5</span><h2>투자 시사점 — 종형 포트폴리오와 로테이션</h2></div>
+    <p>전반적인 분위기를 한 줄로 정리하면 이렇다. <span class="hl">고용 부진으로 연준의 부담이 완화되고, 시장 로테이션이 지속되는 가운데, AI·반도체 과열 해소 과정 속에서 소형주와 방어 섹터가 주목받는 장세</span>다.</p>
+    <ul class="check">
+      <li><strong>반도체 조정 = 과열 해소.</strong> AI 트레이드 심리 악화에도 2분기 EPS +23.3% 전망이 펀더멘털을 받치고 있다.</li>
+      <li><strong>로테이션에 올라타라.</strong> 헬스케어·필수소비재·유틸리티 강세와 소형주(Russell 2000)의 역사적 상반기 성과가 시장 확대를 증명한다.</li>
+      <li><strong>수요일 의사록이 변곡점.</strong> 워시 의장 체제에서 '인상 가능' 시그널이 강화되면 달러 강세 → 테크·SPX 단기 조정 시나리오를 대비해야 한다.</li>
+      <li><strong>종형 포트폴리오와 섹터 로테이션의 완성도</strong>를 높게 가져가는 것이 방송의 핵심 조언이다.</li>
+    </ul>
+    <div class="pull">
+      <div class="q">"멤버 방송 열심히 보고 따라 했다면 아무 문제 없다. 종형 포트폴리오와 섹터 로테이션, 완성도 높게 가져가세요."</div>
+      <div class="who">— 투자는인생TV (데이빗형님)</div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+  <footer>
+    <b>출처:</b> 투자는인생TV (by 데이빗형님) — 「7월 6일 (월) 장 초반 시장 정리」 (2026.7.6)<br>
+    본 문서는 방송 자막 내용을 기반으로 한 정리·분석 자료이며, 특정 종목의 매수·매도 추천이 아닙니다. 달러-SPX 차트는 방송 설명을 도식화한 개념 모식도입니다. 투자의 최종 판단과 책임은 투자자 본인에게 있습니다.
+  </footer>
+</div>
+
+<script>
+// ===== Observer 1: 일반 섹션 fade-in =====
+const fadeObs = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), i * 80);
+      fadeObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.12 });
+document.querySelectorAll('.fade-in').forEach(el => fadeObs.observe(el));
+
+// ===== 차트 생성 함수 딕셔너리 (직접 호출 금지) =====
+const chartConfigs = {};
+
+Chart.defaults.font.family = "'Noto Sans KR', sans-serif";
+Chart.defaults.color = '#777777';
+
+// 도넛: 섹터 상승/하락
+chartConfigs['sectorChart'] = () => {
+  new Chart(document.getElementById('sectorChart'), {
+    type: 'doughnut',
+    data: {
+      labels: ['상승 섹터 (7개)', '하락·보합 섹터 (4개)'],
+      datasets: [{
+        data: [7, 4],
+        backgroundColor: ['#e11d48', '#6b7280'],
+        borderColor: '#ffffff',
+        borderWidth: 3
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      cutout: '58%',
+      plugins: {
+        legend: { position: 'bottom', labels: { padding: 14, font: { size: 12, weight: 700 } } },
+        title: { display: true, text: '목요일 S&P 500 섹터 등락 (총 11개)', color: '#1a1a1a', font: { size: 13, weight: 700 }, padding: { bottom: 8 } }
+      },
+      animation: { animateRotate: true, animateScale: true, duration: 2000, easing: 'easeInOutQuart' }
+    }
+  });
+};
+
+// 도넛: 미국 성인 백만장자 비중
+chartConfigs['millionaireChart'] = () => {
+  new Chart(document.getElementById('millionaireChart'), {
+    type: 'doughnut',
+    data: {
+      labels: ['백만장자 (약 9% · 5,800만 명)', '그 외 성인 (약 91%)'],
+      datasets: [{
+        data: [9, 91],
+        backgroundColor: ['#e11d48', '#e5e5e5'],
+        borderColor: '#ffffff',
+        borderWidth: 3
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      cutout: '58%',
+      plugins: {
+        legend: { position: 'bottom', labels: { padding: 14, font: { size: 12, weight: 700 } } },
+        title: { display: true, text: '미국 성인 중 백만장자 비중 (지난해 +44만 명)', color: '#1a1a1a', font: { size: 13, weight: 700 }, padding: { bottom: 8 } }
+      },
+      animation: { animateRotate: true, animateScale: true, duration: 2000, easing: 'easeInOutQuart' }
+    }
+  });
+};
+
+// 라인: 달러 vs SPX 개념 모식도
+chartConfigs['dollarSpxChart'] = () => {
+  new Chart(document.getElementById('dollarSpxChart'), {
+    type: 'line',
+    data: {
+      labels: ['1월 말', '2월', '3월 말', '4월', '5월 중순', '6월', '6월 말', '7월 초(목 돌파)'],
+      datasets: [
+        {
+          label: '달러지수 (패턴)',
+          data: [50, 68, 82, 74, 60, 55, 52, 44],
+          borderColor: '#2563eb',
+          backgroundColor: 'rgba(37,99,235,0.08)',
+          borderWidth: 2.5,
+          pointRadius: 3,
+          tension: 0.4,
+          fill: false
+        },
+        {
+          label: 'S&P 500 (패턴)',
+          data: [62, 48, 38, 52, 66, 64, 65, 78],
+          borderColor: '#e11d48',
+          backgroundColor: 'rgba(225,29,72,0.08)',
+          borderWidth: 2.5,
+          pointRadius: 3,
+          tension: 0.4,
+          fill: false
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: { position: 'bottom', labels: { padding: 12, font: { size: 12, weight: 700 } } },
+        title: { display: true, text: '달러 급등 → SPX 하락 / 달러 하락 → SPX 돌파 (개념 모식도)', color: '#1a1a1a', font: { size: 13, weight: 700 }, padding: { bottom: 8 } },
+        tooltip: { callbacks: { label: (c) => c.dataset.label + ' — 상대적 흐름 (실제 값 아님)' } }
+      },
+      scales: {
+        y: { display: false, min: 25, max: 95 },
+        x: { grid: { display: false }, ticks: { font: { size: 10.5 } } }
+      },
+      animation: { duration: 1800, easing: 'easeInOutQuart' }
+    }
+  });
+};
+
+// ===== Observer 2: 차트 전용 =====
+const chartObs = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const canvas = entry.target.querySelector('canvas');
+      if (canvas && chartConfigs[canvas.id]) {
+        setTimeout(() => {
+          chartConfigs[canvas.id]();
+          entry.target.classList.add('chart-ready');
+          delete chartConfigs[canvas.id];
+        }, 200);
+      }
+      chartObs.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.25 });
+document.querySelectorAll('.chart-container').forEach(el => chartObs.observe(el));
+
+// ===== 금리 시나리오 시뮬레이터 =====
+const simData = {
+  cut: {
+    dollar: ['↓', 'a-down', '금리 인하 기대 → 달러 약세'],
+    spx: ['↑', 'a-up', '유동성 기대 → 상승 우호'],
+    pos: ['테크 + 성장주', '반도체 반등 탄력 강화'],
+    note: '인하 기대 시나리오: 달러 약세가 심화되며 테크주 반등에 힘이 실립니다. 다만 방송 기준으로 현재 전망은 "인하 → 인상 가능"으로 이미 급변한 상태라는 점에 유의하세요.'
+  },
+  hold: {
+    dollar: ['→', 'a-flat', '방향성 제한'],
+    spx: ['→', 'a-flat', '추세 유지'],
+    pos: ['로테이션 유지', '종형 포트폴리오'],
+    note: '기본 시나리오: 약한 고용 지표가 인상 압력을 완화한 상태. 달러 하락 속에 SPX가 삼각형 상단 돌파 후 상승 추세를 이어가는 국면입니다.'
+  },
+  hike: {
+    dollar: ['↑', 'a-up', '인상 기대 → 달러 강세'],
+    spx: ['↓', 'a-down', '테크 중심 단기 하락 가능'],
+    pos: ['방어 섹터', '헬스케어·필수소비재·유틸리티'],
+    note: '인상 경고 시나리오: 워시 의장이 인상을 시사하면 달러 상승 + 테크주 포함 S&P 500 하락이 단기적으로 나타날 수 있다는 것이 방송의 핵심 경고입니다.'
+  }
+};
+document.querySelectorAll('.sim-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.sim-btn').forEach(b => b.classList.remove('on'));
+    btn.classList.add('on');
+    const d = simData[btn.dataset.s];
+    const setCell = (arrowId, descId, arr) => {
+      const a = document.getElementById(arrowId);
+      a.textContent = arr[0];
+      a.className = 'arrow ' + arr[1];
+      document.getElementById(descId).textContent = arr[2];
+    };
+    setCell('simDollar', 'simDollarD', d.dollar);
+    setCell('simSpx', 'simSpxD', d.spx);
+    const pos = document.getElementById('simPos');
+    pos.textContent = d.pos[0];
+    pos.className = 'arrow a-flat';
+    document.getElementById('simPosD').textContent = d.pos[1];
+    document.getElementById('simNote').textContent = d.note;
+  });
+});
+</script>
+</body>
+</html>

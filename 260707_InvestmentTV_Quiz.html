@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>7월 6일 (월) 장 초반 시장 정리 — 시험문제</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#ffffff; --bg-sub:#fafafa;
+    --txt:#1a1a1a; --txt-sub:#777777;
+    --accent:#e11d48; --accent2:#f43f5e;
+    --border:#e5e5e5; --blue:#2563eb;
+    --ok:#16a34a; --bad:#dc2626;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--txt);
+    line-height:1.7;font-size:16px;-webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:680px;margin:0 auto;padding:0 18px 80px;}
+
+  header{padding:52px 0 30px;border-bottom:3px solid var(--txt);margin-bottom:8px;}
+  .eyebrow{
+    display:inline-block;font-size:12px;font-weight:700;letter-spacing:.16em;color:var(--accent);
+    border:1px solid var(--accent);padding:4px 12px;border-radius:2px;margin-bottom:14px;
+  }
+  h1{
+    font-family:'Playfair Display','Noto Sans KR',serif;
+    font-size:clamp(26px,6vw,36px);font-weight:800;line-height:1.3;margin-bottom:10px;
+  }
+  h1 .red{color:var(--accent);}
+  .sub{font-size:14px;color:var(--txt-sub);}
+
+  /* Scoreboard */
+  .board{
+    position:sticky;top:0;z-index:50;background:rgba(255,255,255,.96);
+    backdrop-filter:blur(6px);border-bottom:2px solid var(--accent);
+    padding:12px 0;margin:0 -18px 26px;
+  }
+  .board-in{max-width:680px;margin:0 auto;padding:0 18px;display:flex;align-items:center;justify-content:space-between;gap:12px;}
+  .board .score{font-weight:900;font-size:15px;}
+  .board .score b{color:var(--accent);font-size:20px;font-family:'Playfair Display',serif;}
+  .bar{flex:1;height:8px;background:var(--border);border-radius:99px;overflow:hidden;}
+  .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:99px;transition:width .5s ease;}
+  .board .done{font-size:12px;color:var(--txt-sub);white-space:nowrap;font-weight:700;}
+
+  .rule-box{
+    background:var(--bg-sub);border:1px solid var(--border);border-radius:10px;
+    padding:16px 18px;font-size:13.5px;color:var(--txt-sub);margin-bottom:30px;line-height:1.75;
+  }
+  .rule-box b{color:var(--txt);}
+
+  /* Question card */
+  .q{
+    background:var(--bg);border:1px solid var(--border);border-radius:12px;
+    padding:22px 20px;margin-bottom:22px;box-shadow:0 1px 4px rgba(0,0,0,.04);
+  }
+  .q-top{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:12px;}
+  .q-no{
+    font-family:'Playfair Display',serif;font-weight:800;font-size:18px;color:var(--accent);
+  }
+  .tag{font-size:11px;font-weight:900;padding:3px 10px;border-radius:99px;letter-spacing:.03em;}
+  .tag.lv1{background:#ecfdf5;color:#059669;}
+  .tag.lv2{background:#fff7ed;color:#d97706;}
+  .tag.lv3{background:#fef2f2;color:var(--accent);}
+  .tag.type{background:var(--bg-sub);color:var(--txt-sub);border:1px solid var(--border);}
+  .q-text{font-weight:700;font-size:16.5px;margin-bottom:16px;line-height:1.65;}
+
+  .opts{display:grid;gap:9px;}
+  .opt{
+    border:1.5px solid var(--border);border-radius:9px;padding:12px 14px;
+    background:var(--bg-sub);cursor:pointer;font-size:15px;line-height:1.55;
+    transition:all .18s;display:flex;gap:10px;align-items:flex-start;
+    font-family:'Noto Sans KR',sans-serif;text-align:left;width:100%;color:var(--txt);
+  }
+  .opt .mk{font-weight:900;color:var(--accent);flex-shrink:0;}
+  .opt:hover{border-color:var(--accent2);background:#fff;}
+  .opt.sel-ok{border-color:var(--ok);background:#f0fdf4;font-weight:700;}
+  .opt.sel-bad{border-color:var(--bad);background:#fef2f2;}
+  .opt.reveal-ok{border-color:var(--ok);background:#f0fdf4;}
+  .opt:disabled{cursor:default;opacity:.85;}
+
+  .ox-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .ox-row .opt{justify-content:center;font-size:24px;font-weight:900;padding:16px;}
+
+  .short-area{display:flex;gap:8px;}
+  .short-area input{
+    flex:1;border:1.5px solid var(--border);border-radius:9px;padding:12px 14px;
+    font-size:15px;font-family:'Noto Sans KR',sans-serif;background:var(--bg-sub);color:var(--txt);
+  }
+  .short-area input:focus{outline:2px solid var(--accent2);border-color:var(--accent2);}
+  .short-area button{
+    border:none;border-radius:9px;background:var(--accent);color:#fff;font-weight:900;
+    padding:0 20px;font-size:14px;cursor:pointer;font-family:'Noto Sans KR',sans-serif;transition:background .2s;
+  }
+  .short-area button:hover{background:var(--accent2);}
+  .short-area button:disabled{background:var(--border);cursor:default;}
+
+  .fb{display:none;margin-top:14px;border-radius:9px;padding:13px 15px;font-size:14px;line-height:1.7;}
+  .fb.show{display:block;animation:pop .3s ease;}
+  .fb.ok{background:#f0fdf4;border:1px solid #bbf7d0;}
+  .fb.bad{background:#fef2f2;border:1px solid #fecaca;}
+  .fb .head{font-weight:900;margin-bottom:4px;}
+  .fb.ok .head{color:var(--ok);}
+  .fb.bad .head{color:var(--bad);}
+  @keyframes pop{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
+
+  /* Modal */
+  .modal-bg{
+    display:none;position:fixed;inset:0;background:rgba(26,26,26,.55);z-index:100;
+    align-items:center;justify-content:center;padding:24px;
+  }
+  .modal-bg.show{display:flex;}
+  .modal{
+    background:#fff;border-radius:16px;max-width:380px;width:100%;padding:34px 28px;
+    text-align:center;animation:pop .35s ease;border-top:6px solid var(--accent);
+  }
+  .modal .grade{
+    font-family:'Playfair Display',serif;font-size:64px;font-weight:800;color:var(--accent);line-height:1;
+  }
+  .modal .g-title{font-weight:900;font-size:19px;margin:12px 0 6px;}
+  .modal .g-score{font-size:15px;color:var(--txt-sub);margin-bottom:6px;}
+  .modal .g-msg{font-size:14px;color:var(--txt-sub);line-height:1.7;margin-bottom:20px;}
+  .modal button{
+    border:none;background:var(--txt);color:#fff;font-weight:900;border-radius:9px;
+    padding:12px 28px;font-size:14px;cursor:pointer;font-family:'Noto Sans KR',sans-serif;
+  }
+  footer{margin-top:36px;font-size:12.5px;color:var(--txt-sub);border-top:3px solid var(--txt);padding-top:20px;line-height:1.8;}
+</style>
+</head>
+<body>
+
+<div class="board">
+  <div class="board-in">
+    <div class="score">SCORE <b id="score">0</b> / 100</div>
+    <div class="bar"><i id="barFill"></i></div>
+    <div class="done"><span id="doneCnt">0</span>/10 풀이</div>
+  </div>
+</div>
+
+<div class="wrap">
+  <header>
+    <span class="eyebrow">Exam · 투자는인생TV</span>
+    <h1>7월 6일 (월) 장 초반 시장 정리<br><span class="red">이해도 점검 시험</span></h1>
+    <p class="sub">총 10문제 · 문항당 10점 · 객관식 6 / 단답형 2 / OX 2 — 출처: 투자는인생TV (데이빗형님), 2026.7.6</p>
+  </header>
+
+  <div class="rule-box">
+    <b>응시 방법</b> — 보기를 클릭하면 즉시 채점됩니다. 단답형은 답을 입력한 뒤 <b>[채점]</b> 버튼을 누르세요. 난이도: <b>⭐ 쉬움 3문제 · ⭐⭐ 보통 5문제 · ⭐⭐⭐ 어려움 2문제</b>. 10문제를 모두 풀면 등급이 발표됩니다.
+  </div>
+
+  <!-- Q1 -->
+  <div class="q" id="q1">
+    <div class="q-top"><span class="q-no">Q1</span><span class="tag lv1">⭐ 쉬움</span><span class="tag type">객관식</span></div>
+    <p class="q-text">지난주 반도체 섹터의 등락률로 방송에서 언급된 수치는?</p>
+    <div class="opts">
+      <button class="opt" data-q="1" data-i="0"><span class="mk">①</span>+3%</button>
+      <button class="opt" data-q="1" data-i="1"><span class="mk">②</span>−3%</button>
+      <button class="opt" data-q="1" data-i="2"><span class="mk">③</span>−10%</button>
+      <button class="opt" data-q="1" data-i="3"><span class="mk">④</span>−0.5%</button>
+    </div>
+    <div class="fb" id="fb1"></div>
+  </div>
+
+  <!-- Q2 -->
+  <div class="q" id="q2">
+    <div class="q-top"><span class="q-no">Q2</span><span class="tag lv1">⭐ 쉬움</span><span class="tag type">OX</span></div>
+    <p class="q-text">월요일 장 초반 기준, S&amp;P 500은 사상 최고치 근처에서 거래되고 있었다.</p>
+    <div class="ox-row">
+      <button class="opt" data-q="2" data-i="0">O</button>
+      <button class="opt" data-q="2" data-i="1">X</button>
+    </div>
+    <div class="fb" id="fb2"></div>
+  </div>
+
+  <!-- Q3 -->
+  <div class="q" id="q3">
+    <div class="q-top"><span class="q-no">Q3</span><span class="tag lv1">⭐ 쉬움</span><span class="tag type">객관식</span></div>
+    <p class="q-text">상반기 기준 1991년 이후 최고 성과를 기록한 지수는?</p>
+    <div class="opts">
+      <button class="opt" data-q="3" data-i="0"><span class="mk">①</span>나스닥 100</button>
+      <button class="opt" data-q="3" data-i="1"><span class="mk">②</span>다우존스</button>
+      <button class="opt" data-q="3" data-i="2"><span class="mk">③</span>Russell 2000 (소형주)</button>
+      <button class="opt" data-q="3" data-i="3"><span class="mk">④</span>필라델피아 반도체지수</button>
+    </div>
+    <div class="fb" id="fb3"></div>
+  </div>
+
+  <!-- Q4 -->
+  <div class="q" id="q4">
+    <div class="q-top"><span class="q-no">Q4</span><span class="tag lv2">⭐⭐ 보통</span><span class="tag type">객관식</span></div>
+    <p class="q-text">방송에서 제시한 2분기 S&amp;P 500 EPS 성장률 전망치는?</p>
+    <div class="opts">
+      <button class="opt" data-q="4" data-i="0"><span class="mk">①</span>+9.5%</button>
+      <button class="opt" data-q="4" data-i="1"><span class="mk">②</span>+13.3%</button>
+      <button class="opt" data-q="4" data-i="2"><span class="mk">③</span>+23.3%</button>
+      <button class="opt" data-q="4" data-i="3"><span class="mk">④</span>+33.3%</button>
+    </div>
+    <div class="fb" id="fb4"></div>
+  </div>
+
+  <!-- Q5 -->
+  <div class="q" id="q5">
+    <div class="q-top"><span class="q-no">Q5</span><span class="tag lv2">⭐⭐ 보통</span><span class="tag type">객관식</span></div>
+    <p class="q-text">지난 목요일 로테이션 장세에서 <b>강세를 보인 섹터가 아닌 것</b>은?</p>
+    <div class="opts">
+      <button class="opt" data-q="5" data-i="0"><span class="mk">①</span>헬스케어</button>
+      <button class="opt" data-q="5" data-i="1"><span class="mk">②</span>필수소비재</button>
+      <button class="opt" data-q="5" data-i="2"><span class="mk">③</span>유틸리티</button>
+      <button class="opt" data-q="5" data-i="3"><span class="mk">④</span>반도체·테크</button>
+    </div>
+    <div class="fb" id="fb5"></div>
+  </div>
+
+  <!-- Q6 -->
+  <div class="q" id="q6">
+    <div class="q-top"><span class="q-no">Q6</span><span class="tag lv2">⭐⭐ 보통</span><span class="tag type">단답형</span></div>
+    <p class="q-text">수요일 공개되는 6월 FOMC 의사록은 새 연준 의장의 첫 회의 기록입니다. 이 새 의장의 이름은? (한글 또는 영문)</p>
+    <div class="short-area">
+      <input type="text" id="in6" placeholder="예: 홍길동 / Gil-dong Hong" autocomplete="off">
+      <button id="btn6" type="button">채점</button>
+    </div>
+    <div class="fb" id="fb6"></div>
+  </div>
+
+  <!-- Q7 -->
+  <div class="q" id="q7">
+    <div class="q-top"><span class="q-no">Q7</span><span class="tag lv2">⭐⭐ 보통</span><span class="tag type">객관식</span></div>
+    <p class="q-text">최근 3개월 신규 고용의 월평균 수치로 언급된 것은?</p>
+    <div class="opts">
+      <button class="opt" data-q="7" data-i="0"><span class="mk">①</span>5.1만 명</button>
+      <button class="opt" data-q="7" data-i="1"><span class="mk">②</span>11.1만 명</button>
+      <button class="opt" data-q="7" data-i="2"><span class="mk">③</span>21.1만 명</button>
+      <button class="opt" data-q="7" data-i="3"><span class="mk">④</span>31.1만 명</button>
+    </div>
+    <div class="fb" id="fb7"></div>
+  </div>
+
+  <!-- Q8 -->
+  <div class="q" id="q8">
+    <div class="q-top"><span class="q-no">Q8</span><span class="tag lv2">⭐⭐ 보통</span><span class="tag type">OX</span></div>
+    <p class="q-text">시간당 임금 상승률 3.5%는 현재 인플레이션을 <b>상회</b>하여 실질구매력이 늘어나고 있다.</p>
+    <div class="ox-row">
+      <button class="opt" data-q="8" data-i="0">O</button>
+      <button class="opt" data-q="8" data-i="1">X</button>
+    </div>
+    <div class="fb" id="fb8"></div>
+  </div>
+
+  <!-- Q9 -->
+  <div class="q" id="q9">
+    <div class="q-top"><span class="q-no">Q9</span><span class="tag lv3">⭐⭐⭐ 어려움</span><span class="tag type">객관식</span></div>
+    <p class="q-text">달러-S&amp;P 500 역상관 논리에 따를 때, 연준의장이 <b>금리 인상을 미리 경고</b>할 경우 단기적으로 예상되는 반응은?</p>
+    <div class="opts">
+      <button class="opt" data-q="9" data-i="0"><span class="mk">①</span>달러 하락, S&amp;P 500 상승</button>
+      <button class="opt" data-q="9" data-i="1"><span class="mk">②</span>달러 상승, S&amp;P 500(테크 포함) 하락</button>
+      <button class="opt" data-q="9" data-i="2"><span class="mk">③</span>달러 상승, S&amp;P 500 상승</button>
+      <button class="opt" data-q="9" data-i="3"><span class="mk">④</span>달러 하락, S&amp;P 500 하락</button>
+      <button class="opt" data-q="9" data-i="4"><span class="mk">⑤</span>둘 다 영향 없음</button>
+    </div>
+    <div class="fb" id="fb9"></div>
+  </div>
+
+  <!-- Q10 -->
+  <div class="q" id="q10">
+    <div class="q-top"><span class="q-no">Q10</span><span class="tag lv3">⭐⭐⭐ 어려움</span><span class="tag type">단답형</span></div>
+    <p class="q-text">지난해 미국 백만장자가 44만 명 증가(총 5,800만 명)하는 데 큰 역할을 한 자산은? 이 자산을 제외하면 증가율은 1.4% 이하로 떨어집니다.</p>
+    <div class="short-area">
+      <input type="text" id="in10" placeholder="자산 종류를 입력하세요" autocomplete="off">
+      <button id="btn10" type="button">채점</button>
+    </div>
+    <div class="fb" id="fb10"></div>
+  </div>
+
+  <footer>
+    <b style="color:#1a1a1a">출처:</b> 투자는인생TV (by 데이빗형님) — 「7월 6일 (월) 장 초반 시장 정리」 (2026.7.6)<br>
+    본 시험은 방송 내용 이해도 점검용 학습 자료이며, 투자 권유가 아닙니다.
+  </footer>
+</div>
+
+<!-- Grade modal -->
+<div class="modal-bg" id="modalBg">
+  <div class="modal">
+    <div class="grade" id="gLetter">A</div>
+    <div class="g-title" id="gTitle">시험 완료!</div>
+    <div class="g-score" id="gScore">100점 / 100점</div>
+    <div class="g-msg" id="gMsg"></div>
+    <button type="button" onclick="document.getElementById('modalBg').classList.remove('show')">닫기</button>
+  </div>
+</div>
+
+<script>
+// 정답 및 해설
+const ANSWERS = {
+  1:{correct:1, exp:'지난주 반도체 섹터는 약 3% 하락(−3%)하며 조정을 겪었습니다. 이 조정의 지속 여부가 월요일 최대 관심사였습니다.'},
+  2:{correct:0, exp:'맞습니다(O). 칩주 반등과 함께 주요 지수가 상승 출발했고, S&P 500은 사상 최고치 근처에서 거래됐습니다.'},
+  3:{correct:2, exp:'소형주 지수인 Russell 2000이 상반기 기준 1991년 이후 최고 성과를 기록했습니다. AI 테마 외 시장 확대(로테이션)의 증거입니다.'},
+  5:{correct:3, exp:'반도체·테크는 대폭 하락했습니다. 강세 섹터는 헬스케어, 필수소비재, 유틸리티였으며, 11개 섹터 중 7개가 상승했지만 지수는 보합 마감했습니다.'},
+  4:{correct:2, exp:'2분기 S&P 500 EPS 성장률 전망은 +23.3%입니다. 최근 조정을 "과열 해소"로 해석할 수 있는 펀더멘털 근거입니다.'},
+  7:{correct:1, exp:'최근 3개월 신규 고용 평균은 11.1만 명입니다. 노동참여율 5년 최저, 25~34세 참여율 50년 최저와 함께 고용 부진을 보여주는 수치입니다.'},
+  8:{correct:1, exp:'틀린 설명입니다(X). 임금 상승률 3.5%는 인플레이션을 "하회"합니다. 실질구매력이 줄어드는 것이 소비자 심리 악화의 주요 원인입니다.'},
+  9:{correct:1, exp:'금리 인상 기대가 커지면 달러가 강세를 보이고, 역상관 관계에 따라 테크주를 포함한 S&P 500은 단기적으로 하락할 수 있다는 것이 방송의 경고입니다.'}
+};
+const SHORT = {
+  6:{keys:['워시','warsh','케빈','kevin'], answer:'케빈 워시 (Kevin Warsh)', exp:'6월 FOMC는 새 의장 케빈 워시의 첫 회의였으며, 금리 전망이 "인하"에서 "인상 가능"으로 급변한 배경이 의사록의 핵심 관전 포인트입니다.'},
+  10:{keys:['주택','집','부동산','house','housing','home'], answer:'주택 자산 (부동산)', exp:'주택 자산이 백만장자 증가에 큰 역할을 했으며, 주택을 제외하면 증가율은 1.4% 이하입니다. 반면 일본은 엔화 약세로 백만장자가 감소했습니다.'}
+};
+
+let score = 0, done = 0;
+const doneSet = new Set();
+
+function updateBoard(){
+  document.getElementById('score').textContent = score;
+  document.getElementById('doneCnt').textContent = done;
+  document.getElementById('barFill').style.width = (done*10) + '%';
+  if(done === 10) setTimeout(showGrade, 600);
+}
+
+function showFb(qn, ok, exp, answerLabel){
+  const fb = document.getElementById('fb'+qn);
+  fb.className = 'fb show ' + (ok ? 'ok' : 'bad');
+  fb.innerHTML = '<div class="head">' + (ok ? '⭕ 정답입니다! (+10점)' : '❌ 오답 — 정답: ' + answerLabel) + '</div><div>' + exp + '</div>';
+}
+
+function finish(qn, ok){
+  if(doneSet.has(qn)) return;
+  doneSet.add(qn);
+  done++;
+  if(ok) score += 10;
+  updateBoard();
+}
+
+// 객관식 & OX
+document.querySelectorAll('.opt').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const qn = parseInt(btn.dataset.q, 10);
+    if(doneSet.has(qn)) return;
+    const info = ANSWERS[qn];
+    const chosen = parseInt(btn.dataset.i, 10);
+    const ok = chosen === info.correct;
+    const opts = document.querySelectorAll('.opt[data-q="'+qn+'"]');
+    opts.forEach(o => {
+      o.disabled = true;
+      if(parseInt(o.dataset.i,10) === info.correct) o.classList.add(ok && o===btn ? 'sel-ok' : 'reveal-ok');
+    });
+    if(!ok) btn.classList.add('sel-bad');
+    const labels = ['①','②','③','④','⑤'];
+    const isOX = opts.length === 2 && opts[0].textContent.trim() === 'O';
+    const ansLabel = isOX ? (info.correct === 0 ? 'O' : 'X') : labels[info.correct];
+    showFb(qn, ok, info.exp, ansLabel);
+    finish(qn, ok);
+  });
+});
+
+// 단답형
+function gradeShort(qn){
+  if(doneSet.has(qn)) return;
+  const input = document.getElementById('in'+qn);
+  const val = input.value.trim().toLowerCase();
+  if(!val){ input.focus(); return; }
+  const info = SHORT[qn];
+  const ok = info.keys.some(k => val.includes(k));
+  input.disabled = true;
+  document.getElementById('btn'+qn).disabled = true;
+  showFb(qn, ok, info.exp, info.answer);
+  finish(qn, ok);
+}
+document.getElementById('btn6').addEventListener('click', () => gradeShort(6));
+document.getElementById('btn10').addEventListener('click', () => gradeShort(10));
+document.getElementById('in6').addEventListener('keydown', e => { if(e.key==='Enter') gradeShort(6); });
+document.getElementById('in10').addEventListener('keydown', e => { if(e.key==='Enter') gradeShort(10); });
+
+// 등급 모달
+function showGrade(){
+  let letter, title, msg;
+  if(score >= 90){ letter='A+'; title='시장의 눈, 완벽 장착'; msg='로테이션·고용·연준 시나리오까지 완벽하게 이해했습니다. 종형 포트폴리오의 완성도를 높게 가져갈 준비가 됐습니다.'; }
+  else if(score >= 80){ letter='A'; title='우수한 이해도'; msg='핵심 흐름을 정확히 파악했습니다. 달러-SPX 역상관 메커니즘 부분만 한 번 더 복습하면 완벽합니다.'; }
+  else if(score >= 70){ letter='B'; title='탄탄한 기본기'; msg='큰 그림은 잡았습니다. 고용 세부 지표와 워시 의장 의사록 포인트를 다시 확인해 보세요.'; }
+  else if(score >= 50){ letter='C'; title='복습 필요'; msg='주요 수치(−3%, +23.3%, 11.1만 명)를 중심으로 분석 문서를 다시 읽어 보시길 권합니다.'; }
+  else { letter='D'; title='처음부터 다시!'; msg='분석 문서를 정독한 뒤 재도전하세요. 로테이션과 달러-SPX 역상관이 이번 방송의 두 기둥입니다.'; }
+  document.getElementById('gLetter').textContent = letter;
+  document.getElementById('gTitle').textContent = title;
+  document.getElementById('gScore').textContent = score + '점 / 100점';
+  document.getElementById('gMsg').textContent = msg;
+  document.getElementById('modalBg').classList.add('show');
+}
+</script>
+</body>
+</html>
