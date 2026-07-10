@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>투자는인생TV 멤버온리 분석 리포트 — 2026.07.09</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700;900&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family:'Noto Sans KR', sans-serif;
+    background:#ffffff; color:#1a1a1a;
+    line-height:1.75; font-size:16px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap { max-width:680px; margin:0 auto; padding:0 20px 80px; }
+
+  /* ── 헤더 ── */
+  .masthead { padding:48px 0 28px; border-bottom:3px solid #1a1a1a; }
+  .kicker {
+    font-size:12px; letter-spacing:0.22em; font-weight:700;
+    color:#e11d48; text-transform:uppercase; margin-bottom:14px;
+  }
+  h1 {
+    font-family:'Playfair Display','Noto Sans KR',serif;
+    font-size:clamp(28px,6vw,40px); font-weight:900; line-height:1.28;
+    letter-spacing:-0.01em;
+  }
+  .deck { margin-top:14px; color:#777777; font-size:15px; }
+  .byline {
+    margin-top:18px; font-size:13px; color:#777777;
+    display:flex; gap:14px; flex-wrap:wrap;
+  }
+  .byline b { color:#1a1a1a; font-weight:700; }
+
+  /* ── 섹션 공통 ── */
+  section { margin-top:56px; }
+  .sec-label {
+    display:flex; align-items:baseline; gap:12px;
+    border-bottom:1px solid #e5e5e5; padding-bottom:10px; margin-bottom:22px;
+  }
+  .sec-num {
+    font-family:'Playfair Display',serif; font-size:30px; font-weight:900;
+    color:#e11d48; line-height:1;
+  }
+  h2 {
+    font-size:21px; font-weight:900; letter-spacing:-0.01em; line-height:1.4;
+  }
+  h3 { font-size:16.5px; font-weight:700; margin:26px 0 10px; }
+  h3 .tick { color:#e11d48; margin-right:6px; }
+  p { margin-bottom:14px; }
+  p.small, .small { font-size:13.5px; color:#777777; }
+  strong { font-weight:700; }
+  em.rose { font-style:normal; color:#e11d48; font-weight:700; }
+
+  .lead {
+    font-size:17.5px; font-weight:500; line-height:1.85;
+  }
+  .lead::first-letter {
+    font-family:'Playfair Display',serif; font-size:52px; font-weight:900;
+    float:left; line-height:0.85; margin:6px 10px 0 0; color:#e11d48;
+  }
+
+  /* 인용/포인트 박스 */
+  .pull {
+    margin:26px 0; padding:20px 22px; background:#fafafa;
+    border-left:4px solid #e11d48; font-size:15.5px;
+  }
+  .pull .who { font-size:12px; color:#777777; margin-top:8px; letter-spacing:0.05em; }
+  .note {
+    margin:18px 0; padding:14px 18px; background:#fafafa;
+    border:1px solid #e5e5e5; border-radius:8px; font-size:14px; color:#555;
+  }
+  .note b { color:#e11d48; }
+
+  /* 태그/배지 */
+  .chips { display:flex; gap:8px; flex-wrap:wrap; margin:12px 0 4px; }
+  .chip {
+    font-size:12.5px; font-weight:700; padding:5px 12px; border-radius:999px;
+    background:#fafafa; border:1px solid #e5e5e5;
+  }
+  .chip.rose { background:#e11d48; color:#fff; border-color:#e11d48; }
+  .chip.dark { background:#1a1a1a; color:#fff; border-color:#1a1a1a; }
+
+  /* 테이블 */
+  table { width:100%; border-collapse:collapse; font-size:13.5px; margin:16px 0; }
+  th {
+    background:#e11d48; color:#fff; font-weight:700; padding:10px 8px;
+    text-align:left; white-space:nowrap;
+  }
+  td { padding:10px 8px; border-bottom:1px solid #e5e5e5; background:#fafafa; }
+  td.up { color:#e11d48; font-weight:700; }
+  td.dn { color:#2563eb; font-weight:700; }
+  .tbl-scroll { overflow-x:auto; -webkit-overflow-scrolling:touch; }
+
+  /* fade-in + 차트 (지정 패턴) */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .chart-container {
+    position: relative;
+    max-height: 340px;
+  }
+  .chart-container canvas {
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    max-height: 300px;
+  }
+  .chart-container.chart-ready canvas {
+    opacity: 1;
+  }
+  .chart-cap { font-size:12.5px; color:#777777; text-align:center; margin-top:8px; }
+
+  /* ── 인터랙티브 공통 ── */
+  .widget {
+    margin:24px 0; padding:22px 20px; background:#fafafa;
+    border:1px solid #e5e5e5; border-radius:14px;
+  }
+  .widget h4 {
+    font-size:15px; font-weight:900; margin-bottom:4px;
+    display:flex; align-items:center; gap:8px;
+  }
+  .widget h4 .dot { width:8px; height:8px; border-radius:50%; background:#e11d48; }
+  .widget .sub { font-size:12.5px; color:#777777; margin-bottom:16px; }
+  .ctrl-row { margin:14px 0; }
+  .ctrl-row label {
+    display:flex; justify-content:space-between; font-size:13.5px;
+    font-weight:700; margin-bottom:6px;
+  }
+  .ctrl-row label output { color:#e11d48; font-weight:900; }
+  input[type=range] {
+    width:100%; accent-color:#e11d48; height:28px; cursor:pointer;
+  }
+  input[type=number] {
+    width:100%; padding:10px 12px; font-size:15px; font-family:inherit;
+    border:1px solid #e5e5e5; border-radius:8px; background:#fff;
+  }
+  .btn {
+    display:inline-block; padding:9px 18px; font-size:13.5px; font-weight:700;
+    font-family:inherit; border:1px solid #1a1a1a; background:#1a1a1a; color:#fff;
+    border-radius:999px; cursor:pointer; transition:all .2s;
+  }
+  .btn:hover { background:#e11d48; border-color:#e11d48; }
+  .btn.ghost { background:#fff; color:#1a1a1a; }
+  .btn.ghost:hover { color:#e11d48; border-color:#e11d48; background:#fff; }
+  .result-card {
+    margin-top:16px; padding:16px 18px; background:#fff; border-radius:10px;
+    border:1px solid #e5e5e5;
+  }
+  .result-big {
+    font-family:'Playfair Display',serif; font-size:34px; font-weight:900;
+    line-height:1.1;
+  }
+  .result-big.pos { color:#e11d48; }
+  .result-big.neg { color:#2563eb; }
+  .result-desc { font-size:13px; color:#777777; margin-top:6px; }
+
+  /* WTI 신호등 */
+  .signal {
+    margin-top:14px; padding:14px 16px; border-radius:10px; font-size:14px;
+    font-weight:700; background:#fff; border:1px solid #e5e5e5;
+    display:flex; align-items:center; gap:12px; transition:all .3s;
+  }
+  .signal .lamp { width:14px; height:14px; border-radius:50%; flex-shrink:0; }
+  .signal.watch { border-color:#6b7280; } .signal.watch .lamp { background:#6b7280; }
+  .signal.ready { border-color:#f59e0b; } .signal.ready .lamp { background:#f59e0b; }
+  .signal.buy   { border-color:#e11d48; background:#fff1f2; } .signal.buy .lamp { background:#e11d48; }
+
+  /* 섹터 로테이션 토글 */
+  .rot-tabs { display:flex; gap:8px; margin-bottom:14px; }
+  .rot-tab {
+    flex:1; padding:11px 6px; text-align:center; font-size:13.5px; font-weight:700;
+    font-family:inherit; border:1px solid #e5e5e5; background:#fff; color:#777;
+    border-radius:10px; cursor:pointer; transition:all .2s;
+  }
+  .rot-tab.on { background:#e11d48; color:#fff; border-color:#e11d48; }
+  .rot-panel { display:none; }
+  .rot-panel.on { display:block; animation:pop .35s ease; }
+  @keyframes pop { from { opacity:0; transform:translateY(8px);} to {opacity:1; transform:none;} }
+  .sector-item {
+    display:flex; align-items:center; gap:12px; padding:12px 14px;
+    background:#fff; border:1px solid #e5e5e5; border-radius:10px; margin-bottom:8px;
+    font-size:14px;
+  }
+  .sector-item .pct {
+    margin-left:auto; font-weight:900; font-size:13px; white-space:nowrap;
+  }
+  .sector-item.grow { border-left:4px solid #e11d48; }
+  .sector-item.grow .pct { color:#e11d48; }
+  .sector-item.trim { border-left:4px solid #6b7280; }
+  .sector-item.trim .pct { color:#6b7280; }
+
+  /* 일정 타임라인 */
+  .tl { position:relative; margin:20px 0 6px; padding-left:26px; }
+  .tl::before {
+    content:''; position:absolute; left:8px; top:6px; bottom:6px;
+    width:2px; background:#e5e5e5;
+  }
+  .tl-item { position:relative; padding-bottom:22px; cursor:pointer; }
+  .tl-item::before {
+    content:''; position:absolute; left:-24px; top:7px; width:12px; height:12px;
+    border-radius:50%; background:#fff; border:3px solid #6b7280; transition:all .2s;
+  }
+  .tl-item.hot::before { border-color:#e11d48; }
+  .tl-item.open::before { background:#e11d48; border-color:#e11d48; }
+  .tl-date { font-size:13px; font-weight:900; letter-spacing:0.03em; }
+  .tl-date .flag {
+    font-size:11px; color:#fff; background:#e11d48; border-radius:4px;
+    padding:2px 7px; margin-left:8px; vertical-align:1px;
+  }
+  .tl-head { font-size:14.5px; font-weight:700; margin-top:2px; }
+  .tl-body {
+    max-height:0; overflow:hidden; transition:max-height .35s ease;
+    font-size:13.5px; color:#555;
+  }
+  .tl-item.open .tl-body { max-height:220px; padding-top:6px; }
+  .tl-hint { font-size:12px; color:#777777; }
+
+  /* 오늘의 생각 */
+  .thought {
+    margin-top:26px; padding:34px 26px; background:#1a1a1a; color:#fff;
+    border-radius:16px; text-align:center;
+  }
+  .thought .q {
+    font-family:'Playfair Display','Noto Sans KR',serif;
+    font-size:22px; font-weight:700; line-height:1.6;
+  }
+  .thought .q span { color:#f43f5e; }
+  .thought .a { font-size:13.5px; color:#bbb; margin-top:16px; line-height:1.8; }
+
+  footer {
+    margin-top:70px; padding-top:22px; border-top:3px solid #1a1a1a;
+    font-size:12px; color:#777777; line-height:1.8;
+  }
+  @media (max-width:400px){
+    body { font-size:15px; }
+    .widget { padding:18px 14px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ═══════════ 헤더 ═══════════ -->
+  <header class="masthead">
+    <div class="kicker">Member Only · Market Focus</div>
+    <h1>"큰 문제는 지금이 아니다"<br>진짜 시험대는 7월 말, 메타의 CAPEX</h1>
+    <p class="deck">호르무즈 공습에도 시장은 시큰둥, 반도체는 반등. 그러나 데이비드 리 CIO가 정말 예민하게 보는 것은 7월 29일 메타 실적 — AI 설비투자(CAPEX)의 기준점이다. SK하이닉스 나스닥 상장(SKHY)에 대해서는 "No rating, I won't invest"를 선언했다.</p>
+    <div class="byline">
+      <span><b>투자는인생TV</b> 멤버온리 라이브</span>
+      <span>2026년 7월 9일 (목)</span>
+      <span>David Lee · 테일러투자그룹 CIO</span>
+    </div>
+  </header>
+
+  <!-- ═══════════ 0. 한눈에 보기 ═══════════ -->
+  <section class="fade-in">
+    <p class="lead">방송의 결론부터 말하면 "전체적인 진단은 큰 문제 없다"이다. 반도체가 반등을 이끌고 있고, 호르무즈 해협 공습도 전면전으로 번지지 않을 것이라는 게 시장의 판단이다. 다만 랠리(주가의 연속 상승)를 제한하는 두 가지 — 국제유가와 국채 수익률 상승 — 이 있고, 진짜 승부처는 다음 주(CPI·케빈 워시 청문회·은행주 실적)와 7월 29일 메타 실적이라는 것이 핵심이다.</p>
+    <div class="chips">
+      <span class="chip rose">반도체 반등</span>
+      <span class="chip">유가·국채금리가 랠리 제한</span>
+      <span class="chip">7/14 CPI + 워시 청문회</span>
+      <span class="chip dark">7/29 메타 = CAPEX 기준점</span>
+      <span class="chip">SKHY 상장 — 투자 안 함</span>
+    </div>
+  </section>
+
+  <!-- ═══════════ 1. 시장포커스 ═══════════ -->
+  <section class="fade-in">
+    <div class="sec-label"><span class="sec-num">1</span><h2>시장포커스 — 반등은 왔지만, 랠리는 제한적</h2></div>
+    <p><strong>반도체 주가가 반등을 이끌었다.</strong> 내부적인 환경 요소(기업 실적, 수요)는 전혀 문제가 없고, 전쟁이나 IBM의 AI 플랫폼 실망 같은 외부의 "사소한 문제들"이 잡음을 만들 뿐이라는 진단이다. 그는 이것이 하락 <em class="rose">신호(시그널)가 아니라</em>고 잘라 말한다. "신호가 7월에 나올 수가 없다"는 것.</p>
+    <p>다만 <strong>국제유가와 국채 수익률이 함께 오르면서 강한 랠리를 제한</strong>하고 있다. 호르무즈 해협 양측 공습으로 유가가 다시 올랐지만, "계속 전면전은 안 될 것이 불 보듯 뻔하니" 시장 반응은 시큰둥했다는 설명이다.</p>
+    <h3><span class="tick">▎</span>주간 경제지표</h3>
+    <p>신규 실업수당 청구 건수는 <strong>21만 5,000건</strong>으로 비교적 안정적. 시장에는 지정학적 리스크, 연준(미국 중앙은행) 정책, AI 투자지출, 엔화 약세 등 불확실성이 여전히 많지만, <strong>가장 큰 불확실성은 CAPEX(기업의 설비투자)</strong>라고 강조했다. "CAPEX가 터질 때가 점점 다가오고 있고, 그때 반도체 주가 전체가 폭락할 가능성이 있다."</p>
+    <div class="pull">
+      "미국이 3% 이상 빠지면 한국은 7~8%씩 빠질 수 있어요. 그러니까 조심해야 되는 공간이에요, 그때가."
+      <div class="who">— 7월 말 CAPEX 리스크에 대해</div>
+    </div>
+  </section>
+
+  <!-- ═══════════ 2. 리밸런싱 ═══════════ -->
+  <section class="fade-in">
+    <div class="sec-label"><span class="sec-num">2</span><h2>리밸런싱 — "축구 수비처럼, 이론과 실전은 다르다"</h2></div>
+    <p>방송 서두는 <strong>리밸런싱(포트폴리오 비중 재조정)</strong> 강의였다. 그는 축구 수비의 3원칙 — ① 프레셔(공을 가진 공격수 압박) ② 커버(뚫렸을 때 대비하는 2차 수비) ③ 밸런스(대열이 흩어져 침투 공간이 열리지 않게 유지) — 에 비유했다. 이론은 누구나 알지만, <strong>상대가 어떤 각도·인원·대열로 들어오느냐에 따라 실전 대응은 완전히 달라진다</strong>는 것. 감독이 이걸 모르면 손흥민, 메시를 갖다 놔도 안 되듯, 투자도 리밸런싱의 실전을 모르면 안 된다는 얘기다.</p>
+    <p>실제 지시는 이미 나왔다. <strong>6월 22일 "기관들 리밸런싱 시작"</strong> 방송에서 반도체 비중은 줄이고, 특정 섹터는 3~5% 늘리라고 했다. "이거 안 하고 있으면 그냥 10% 정도 손해 보는 것"이며, 안 한 사람과 한 사람의 차이가 "1억이 아니라 2, 3억씩" 난다고 했다.</p>
+
+    <!-- 인터랙티브: 섹터 로테이션 -->
+    <div class="widget">
+      <h4><span class="dot"></span>섹터 로테이션 한눈에 보기</h4>
+      <div class="sub">버튼을 눌러 '늘릴 섹터'와 '줄일 섹터'를 비교해 보세요 (6/22 지시 기준)</div>
+      <div class="rot-tabs">
+        <button class="rot-tab on" data-panel="grow">➕ 3~5% 늘릴 섹터</button>
+        <button class="rot-tab" data-panel="trim">➖ 비중 줄일 섹터</button>
+      </div>
+      <div class="rot-panel on" id="panel-grow">
+        <div class="sector-item grow">🏭 <div><b>Industrials</b> (산업재)<div class="small">기계·항공·인프라 등</div></div><span class="pct">+3~5%</span></div>
+        <div class="sector-item grow">⛏️ <div><b>Materials</b> (소재)<div class="small">화학·금속·원자재</div></div><span class="pct">+3~5%</span></div>
+        <div class="sector-item grow">🏦 <div><b>Financials</b> (금융)<div class="small">은행·보험 — "지금 계속 강세"</div></div><span class="pct">+3~5%</span></div>
+      </div>
+      <div class="rot-panel" id="panel-trim">
+        <div class="sector-item trim">💾 <div><b>반도체 (칩)</b><div class="small">"다 팔라는 게 아니라 비중만 축소" — 오해 금지</div></div><span class="pct">축소</span></div>
+        <div class="sector-item trim">🔧 <div><b>반도체 장비</b><div class="small">애널리스트 의견이 Buy → Hold로 이동 중</div></div><span class="pct">축소</span></div>
+      </div>
+      <p class="small" style="margin-top:10px;">※ "IT 섹터 다 팔고 나오라는 얘기가 아니다" — 리밸런싱의 오해에 대한 직접 경고. 덕분에 반도체가 오를 때 덜 먹더라도, 떨어질 때 충격도 줄어드는 <b>안정세</b>로 간다는 논리.</p>
+    </div>
+  </section>
+
+  <!-- ═══════════ 3. 주목할 3가지 포인트 ═══════════ -->
+  <section class="fade-in">
+    <div class="sec-label"><span class="sec-num">3</span><h2>주목해야 할 3가지 포인트</h2></div>
+
+    <h3><span class="tick">▎</span>① 케빈 워시 신임 연준 의장 청문회 (7/14 화)</h3>
+    <p>최근 유가 하락에도 <strong>소비자 인플레이션 기대치가 약 3년 만에 최고치</strong>를 기록했다. 기대 심리가 굳어지면 1970년대식 '임금-물가 악순환'으로 이어질 수 있어, 워시 의장이 <strong>매파적(금리 인상 선호)</strong> 태도를 보일수록 시장은 단기적으로 크게 떨어질 수 있다는 경고다. "그때는 화요일이니 제가 조치를 말씀드리겠다"고 예고했다.</p>
+    <div class="note">💬 <b>현장 물가 체감담:</b> 실리콘밸리 산타나로우 지역의 오래된 대형 식당 3곳이 폐업하는데도 메뉴 가격은 오히려 오르고, 테이크아웃 메뉴에 팁 15~25%를 적어 놓는 실정 — "가격은 높아지는데 살 사람은 적어지는" <b>스태그플레이션</b>적 현상을 직접 목격했다고 전했다.</div>
+
+    <h3><span class="tick">▎</span>② AI·반도체 열기 — 그리고 7/29 메타</h3>
+    <p>엔비디아·애플이 반등했다. 디 인포메이션(The Information)에 따르면 중국 정부가 자국 칩 구매를 독려해 왔음에도 공급 부족 때문에 <strong>엔비디아 H200 칩 구매를 제한적으로 허용</strong>할 것이라는 소식이다. 중국은 엔비디아 매출의 약 9%를 차지했던 시장이라, 박스권에 갇힌 엔비디아 주가가 오르려면 "중국이 H200을 많이 사줘야 한다"는 분석.</p>
+    <p>그리고 <strong>이번 분기 가장 중요한 날 = 7월 29일 메타 실적 발표</strong>. 다른 하이퍼스케일러(초대형 데이터센터 기업)는 고객을 위해 투자하지만, <strong>메타는 자기 자신의 AI 시스템을 위해 투자</strong>한다. 그래서 "이렇게 많이 쓰고도 돈이 되나 안 되나"를 보여주는 <em class="rose">CAPEX의 기준점</em>이 된다. 광고 효과가 생각보다 안 나온다는 답이 나오면 "작살나는 것"이고, 그 전에 비중을 더 들고 갈지 줄일지 결정해야 한다고 했다.</p>
+
+    <h3><span class="tick">▎</span>③ 미 국채 입찰 흥행 (수요 견조)</h3>
+    <p>중동 긴장·유가 상승으로 국채 수익률(금리)이 급등했지만, <strong>10년 만기 국채 입찰에서 채권 수요가 견고</strong>하게 나타나 수익률은 <strong>4.53~4.58%</strong> 사이에서 안정됐다. 일본 국채 금리 상승으로 돈이 빠질까 걱정했던 시나리오는 "천만다행으로" 비켜갔다. 다만 그는 이렇게 덧붙였다.</p>
+    <div class="pull">
+      "매번 지나가진 않아요. 모든 사람에게 암세포가 있듯, 리스크는 항상 있다는 걸 알고 있어야 합니다. '나는 안 걸리겠지'라고 생각하면 안 됩니다."
+      <div class="who">— 위기 불감증에 대한 경고. "이 정도까지 오면 안 되겠다 싶으면 30%는 팔라고 말씀드리지 않았나요?"</div>
+    </div>
+  </section>
+
+  <!-- ═══════════ 4. SK하이닉스 ═══════════ -->
+  <section class="fade-in">
+    <div class="sec-label"><span class="sec-num">4</span><h2>SK하이닉스 나스닥 상장 — "No rating, I won't invest"</h2></div>
+    <p>SK하이닉스가 <strong>ADR(미국주식예탁증서 — 외국 기업이 미국 증시에 상장할 때 쓰는 방식)</strong>을 통해 이번 금요일부터 나스닥에서 거래된다. <strong>티커는 SKHY</strong>, 공모 청약은 <strong>예상보다 7배 이상</strong> 몰려 AI·메모리 시장의 열기를 보여줬다. 그런데 그는 투자하지 않겠다고 선을 그었다. 이유는 두 가지다.</p>
+    <h3><span class="tick">▎</span>이유 1 — 기업지배구조 (Corporate Governance)</h3>
+    <p>회사의 주인은 <strong>스톡홀더(주주)</strong>인데, 정부가 부르면 따라가 공장 입지를 결정하는 의사결정 방식은 "판단할 기준점이 전혀 없다"는 것. CEO라면 "주주총회를 거쳐 점진적으로 검토하겠다"고 답해야 한다는 게 그의 상식이다. 전라도 공장 계획에 대해서도 하이퍼스케일러급 시설에 필요한 <strong>전력(4GW급)과 용수</strong> 인프라가 준비돼 있는지 의문을 던졌다 — 다만 시청자 의견("전라도가 재생에너지 최우수 등급, 부지·용수 여건도 상대적으로 양호")을 소개하며 "제가 모르는 부분이 있다, 저도 배워야겠다"고 균형을 잡았고, <strong>"정치가 아니라 제 상식을 말한 것"</strong>이라고 못 박았다.</p>
+    <h3><span class="tick">▎</span>이유 2 — 감당하기 어려운 변동성</h3>
+    <p>"올라가도 많이 올라가고, 떨어져도 엄청나게 떨어질" 종목이라 자신의 투자 철학(술·마리화나·게임·<strong>비(非)미국 기업</strong>에는 투자하지 않음)과 맞지 않는다는 것. 한국 옵션시장의 90%가 투기성이라는 점도 지적하며 "하이닉스가 문제가 아니라, 하이닉스에 투자하는 사람이 문제"라고 표현했다. 개인 투자는 말리지 않겠다는 단서를 달았다.</p>
+    <h3><span class="tick">▎</span>마이크론에 미치는 영향</h3>
+    <p>SKHY 상장으로 <strong>단기적으로 마이크론(MU) 주가에 부정적 영향</strong>이 갈 수 있다고 미리 경고했다. 그러나 장기 전망은 정반대 — <strong>2028년 이후 마이크론이 하이닉스의 시장점유율을 역전</strong>할 것으로 보며, "마이크론은 롱텀(장기)으로 가져가야 한다"고 강조했다.</p>
+  </section>
+
+  <!-- ═══════════ 5. 모닝러쉬 ═══════════ -->
+  <section class="fade-in">
+    <div class="sec-label"><span class="sec-num">5</span><h2>모닝러쉬 — 오늘의 주요 지표</h2></div>
+    <div class="tbl-scroll">
+    <table>
+      <thead><tr><th>지표</th><th>수치</th><th>변화·코멘트</th></tr></thead>
+      <tbody>
+        <tr><td><b>10년물 국채금리</b></td><td class="up">4.595%</td><td>+6bp — "나쁘지 않다, 큰 문제 없다"</td></tr>
+        <tr><td><b>달러인덱스</b></td><td class="dn">100.93</td><td>-0.06 — 달러·주가 상관관계 언급</td></tr>
+        <tr><td><b>WTI 유가 (8월물)</b></td><td class="dn">$72.31</td><td>-1.65% — 선물시장은 추가 하락 예측</td></tr>
+        <tr><td><b>금</b></td><td class="up">$4,136.70/oz</td><td>+1.33% (범위 $4,063~4,147)</td></tr>
+        <tr><td><b>천연가스 (8월물)</b></td><td class="dn">$3.032</td><td>-5.60% — "떨어져서 다행"</td></tr>
+        <tr><td><b>비트코인</b></td><td>$62,952</td><td>+1.15% — 그러나 <b>고점 12만불 대비 반토막</b></td></tr>
+      </tbody>
+    </table>
+    </div>
+    <div class="note">🪙 <b>비트코인 복기:</b> 12만불에서 "빅사이클 온다, 사라"에 동조했다면 지금 반토막. 10만불 넘었을 때 "지금은 안 보는 게 좋겠다"고 말렸던 것을 상기시키며 — <b>"떨어질 걸 피하는 것도 여러분 복이고, 그것도 돈 번 겁니다."</b></div>
+
+    <!-- 인터랙티브: WTI 시뮬레이터 -->
+    <div class="widget">
+      <h4><span class="dot"></span>WTI 유가 매수신호 시뮬레이터</h4>
+      <div class="sub">슬라이더로 유가를 움직여 보세요 — 배럴당 70불 이하가 '수혜주 매수' 길목입니다</div>
+      <div class="ctrl-row">
+        <label>WTI 유가 (배럴당) <output id="oilOut">$72.3</output></label>
+        <input type="range" id="oilRange" min="60" max="85" step="0.1" value="72.3">
+      </div>
+      <div class="signal watch" id="oilSignal">
+        <span class="lamp"></span><span id="oilMsg">현재가 $72.31 — 관망 구간. 선물시장은 추가 하락을 예측 중.</span>
+      </div>
+      <div style="margin-top:14px;"><button class="btn ghost" id="oilReset">↺ 현재가로 초기화</button></div>
+      <p class="small" style="margin-top:12px;">유가 하락의 최대 수혜는 <b>항공주와 여행주</b>. 특히 여행주 중 <b>부킹홀딩스(BKNG)</b>가 "가장 매력적인 가격"(아래 7절 참고). "65~67불대로 떨어지면 이런 것들은 사 놓는 게 좋다."</p>
+    </div>
+  </section>
+
+  <!-- ═══════════ 6. 옵션시장 & 종목 ═══════════ -->
+  <section class="fade-in">
+    <div class="sec-label"><span class="sec-num">6</span><h2>옵션 동향 &amp; Stocks on the Move</h2></div>
+    <h3><span class="tick">▎</span>옵션시장 주요 동향</h3>
+    <div class="tbl-scroll">
+    <table>
+      <thead><tr><th>방향</th><th>종목</th><th>해석</th></tr></thead>
+      <tbody>
+        <tr><td class="up">Bull (상승 베팅)</td><td>ITT, ELV, RVMD, SOLS, LZB</td><td>주가 상승 기대감에 콜옵션 유입</td></tr>
+        <tr><td class="dn">Bear (하락 베팅)</td><td>PEP, AZN, BKE</td><td>펩시는 "보수적인 분들은 가지고 있어도 무방"</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <h3><span class="tick">▎</span>움직인 종목들</h3>
+    <div class="tbl-scroll">
+    <table>
+      <thead><tr><th>종목</th><th>등락</th><th>이유 · 코멘트</th></tr></thead>
+      <tbody>
+        <tr><td><b>브로드컴 (AVGO)</b></td><td class="up">+5%</td><td>애플과 <b>300억 달러 규모 칩 공급 계약</b> 체결</td></tr>
+        <tr><td><b>스페이스X (SPCX)</b></td><td class="up">+2.6%</td><td>나스닥100 편입 직후 -1% → 오늘 반등. 기관 매수 지속, "없는 분들은 폴폴리오에 어느 정도 담는 게 좋다" (팀 평균단가 $250~300)</td></tr>
+        <tr><td><b>펩시코 (PEP)</b></td><td class="dn">-1%</td><td>EPS $2.20으로 예상치 1센트 미달. 미국 식음료 부문 둔화</td></tr>
+        <tr><td><b>세일즈포스 (CRM)</b></td><td class="dn">-4%</td><td>KeyBanc 투자의견 하향 — AgentForce 시장 반응이 강하지 않다는 평가. 투자 대상 아님</td></tr>
+        <tr><td><b>IBM</b></td><td class="dn">-4%</td><td>Agentic AI 플랫폼 업데이트가 기대에 못 미침. 그러나 <b>안정적 현금흐름·배당 매력</b> — "일부 없는 분들은 가지고 계신 것도 나쁘지 않다"</td></tr>
+        <tr><td><b>델타항공 (DAL)</b></td><td class="dn">하락</td><td>실적 발표 앞두고 하락 (예상 EPS $1.48, YoY -30%). 단, 델타는 <b>자체 정유시설(refinery)</b> 보유로 유가발 마진 압박에서 예외</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="small">VIX(변동성지수)는 장 초반 18 위로 급등했다가 17 아래로 하락. "16 이하로 내려오는 것이 좋겠다."</p>
+  </section>
+
+  <!-- ═══════════ 7. 30대 기업 & 포트폴리오 ═══════════ -->
+  <section class="fade-in">
+    <div class="sec-label"><span class="sec-num">7</span><h2>형님 30대 기업 &amp; 포트폴리오 지침</h2></div>
+    <p>이날 30대 주요 기업 중 상승 상위는 <strong>샌디스크(SNDK) +7.59%</strong>를 필두로 SEZL, AMD, VICR, MRVL이 나란히 5% 안팎 올랐다.</p>
+
+    <div class="chart-container fade-in">
+      <canvas id="chartTop30" height="230"></canvas>
+    </div>
+    <p class="chart-cap">형님 30대 기업 — 7/9 상승 상위 5종목 (막대를 터치하면 정확한 수치가 표시됩니다)</p>
+
+    <h3><span class="tick">▎</span>종목별 코멘트</h3>
+    <p><strong>샌디스크(SNDK)</strong>는 장기투자 종목 — 1~2% 추가 매입 무방. <strong>AMD</strong>는 "마세바름(떨어져도 그냥 가져가는 것)", <strong>VICR·MRVL</strong>도 좋은 회사. 신규 멤버는 <strong>333 법칙</strong>(목표 비중을 세 번에 나눠 분할매수)으로 진입하고, 하락한 30대 종목(IBM, HIMS 등)은 "떨어질 때 사는 것" — 단, 무턱대고가 아니라 <strong>자기 목표 비중 안에서 미리 계획한 대로</strong>.</p>
+    <p><strong>메타</strong>는 "다 가지고 있어야 되는 종목. 없으면 지금이라도 조금 사되, 이미 있으면 더 늘릴 때는 아니다." <strong>UNH</strong>는 "너무 싸다, 2% 비중 괜찮다." <strong>항공주는 가을까지 보유.</strong> <strong>부킹홀딩스(BKNG)</strong>는 30대 기업은 아니지만 호르무즈발 유가 급등으로 올해 -18% 빠진 지금이 "가장 매력적인 가격"($210 적정, 올해 매출 +9.3% 전망, "굉장히 안 망하는 회사"). <strong>ASML은 미국 기업이 아니므로 투자하지 않는다.</strong> 추가 매수 타이밍은 <strong>변동성이 커질 7/14~15</strong>로 제시했다.</p>
+
+    <!-- 인터랙티브: 마이크론 계산기 -->
+    <div class="widget">
+      <h4><span class="dot"></span>마이크론(MU) 업사이드 계산기</h4>
+      <div class="sub">방송 중 실제 문답 재현 — 내 평단가를 넣으면 타겟($1,200) 대비 상승 여력이 계산됩니다</div>
+      <div class="ctrl-row">
+        <label for="muAvg">내 평균 매수단가 ($)</label>
+        <input type="number" id="muAvg" value="991" min="1" step="1" inputmode="decimal">
+      </div>
+      <div class="ctrl-row">
+        <label>목표가 (방송 제시 $1,200) <output id="muTgtOut">$1,200</output></label>
+        <input type="range" id="muTgt" min="1000" max="1400" step="10" value="1200">
+      </div>
+      <div class="result-card">
+        <div class="result-big pos" id="muResult">+21.1%</div>
+        <div class="result-desc" id="muDesc">평단 $991 기준 — 방송 평가: "괜찮아요, 20% 앞사이드 있으니 놔두세요." (실제 방송에서 $991·$1,038 평단 모두 '잘 샀다' 판정)</div>
+      </div>
+      <div style="margin-top:14px;"><button class="btn ghost" id="muReset">↺ 초기화</button></div>
+      <p class="small" style="margin-top:12px;">⚠️ 단서: 마이크론이 포트폴리오의 20~30%를 차지하면 안 된다. 이미 목표 비중이라면 <b>더 사지 말 것</b>. 7월 휴가 전 $1,200 부근에서 일부 이익실현도 했다.</p>
+    </div>
+
+    <div class="pull">
+      "주가가 1,200을 쳤다가 900으로 떨어지고 다시 1,000으로 올라왔죠. 언젠가는 1,200 이상 됩니다. 문제는 '언젠가'예요. 그 시간을 <b>버티는</b> 겁니다. 그래서 비중 조절을 해 놓은 거예요."
+      <div class="who">— 노이즈와 시그널을 구분할 수 있느냐는 질문엔 "그건 신의 영역, 불가능에 가깝다. 확률을 높일 뿐"이라고 답했다.</div>
+    </div>
+    <p>예측의 본질에 대해서는 <strong>통발의 비유</strong>를 들었다. 물고기가 보인다고 그물을 던지는 게 아니라, 물길·물색·밀물썰물·달 뜨는 시간까지 종합해 <strong>길목에 통발을 미리 놓아두는 것</strong> — 오르고 나서 쫓아가는 게 아니라 오를 자리를 예상하고 먼저 사 두는 것이 포트폴리오 운용이라는 얘기다.</p>
+  </section>
+
+  <!-- ═══════════ 8. 캘린더 ═══════════ -->
+  <section class="fade-in">
+    <div class="sec-label"><span class="sec-num">8</span><h2>앞으로 3주 — 이벤트 캘린더</h2></div>
+    <p class="tl-hint">각 날짜를 탭하면 상세 내용이 펼쳐집니다 👇</p>
+    <div class="tl" id="timeline">
+      <div class="tl-item">
+        <div class="tl-date">7월 10일 (금)</div>
+        <div class="tl-head">델타항공(DAL) 실적 · SKHY 나스닥 거래 시작</div>
+        <div class="tl-body">이번 주 실적 중 유일하게 볼 만한 것. 예상 EPS $1.48(YoY -30%), 매출 $17.5B(+5.2%). 자체 정유시설 덕에 유가 압박은 예외.</div>
+      </div>
+      <div class="tl-item hot">
+        <div class="tl-date">7월 14일 (화)<span class="flag">최중요</span></div>
+        <div class="tl-head">6월 CPI + 케빈 워시 의회 증언 + 대형은행 실적</div>
+        <div class="tl-body">JPMorgan(목표가 $365)·BofA·Goldman Sachs·Wells Fargo·Citi가 한날 발표. "저날은 변동성이 심하구나 하고 받아들이면 된다." 미국 경제의 기본 상황이 파이낸셜 섹터에서 나오므로 은행주 비중 확대 여부를 판단하는 시간. CPI는 향후 금리 방향의 분수령.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">7월 15일 (수)</div>
+        <div class="tl-head">6월 PPI · ASML, MS, BLK 등 실적</div>
+        <div class="tl-body">14~15일 변동성 구간 = 30대 기업 추가 매입 기회로 제시. "내일 당장 사라는 게 아니라 그때쯤 한 번 더."</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">7월 16일 (목)</div>
+        <div class="tl-head">TSMC · GE · UNH · 넷플릭스 · ISRG 실적</div>
+        <div class="tl-body">7/15 전에 은행주를 어떻게 할 건지 판단 예정.</div>
+      </div>
+      <div class="tl-item hot">
+        <div class="tl-date">7월 29일 (수)<span class="flag">CAPEX 심판일</span></div>
+        <div class="tl-head">메타 실적 발표 — AI 설비투자의 기준점</div>
+        <div class="tl-body">"이번 메타 실적에 CAPEX가 나올 거고, 메타가 가장 중요합니다." 광고 효과 대비 투자 효율이 실망스러우면 반도체 전체 급락 가능. 미국 -3% → 한국 -7~8% 시나리오. 그 전에 비중 유지/축소를 결정한다.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ 9. 오늘의 생각 ═══════════ -->
+  <section class="fade-in">
+    <div class="sec-label"><span class="sec-num">9</span><h2>오늘의 생각 — "인생은 행동의 투자"</h2></div>
+    <p>생각한 대로, 말한 대로, 행동한 대로 걸어온 길이 <strong>지금의 위치</strong>다. 지금이 불만족스럽다면 생각→말→행동 순서로 바꿔야 한다. 인생은 생각과 말만으로는 되지 않고, <strong>행동으로 옮겨졌을 때</strong> 나타난다. 사랑도 마찬가지 — "I love you"를 백날 말해도 행동 없는 사랑은 사랑이 아니다.</p>
+    <p>투자에 적용하면: <strong>"껄껄껄 하지 마세요."</strong> 살 껄, 팔 껄, 마이크론 살 껄 — 우리는 '껄' 하는 사람이 아니라 사야 할 때 사고 팔아야 할 때 파는, <strong>행동에서 끝내는 사람</strong>이어야 한다는 것. 6월 22일 리밸런싱 지시를 듣고도 행동하지 않았다면, 낚싯대를 준비하라고 했는데 맨손으로 배에 오른 것과 같다.</p>
+    <p>인간관계에 대한 조언도 같은 맥락이다. 만날 때마다 찝찝한 사람, 내 성장을 시기하는 사람은 과감히 정리하고 긍정적인 사람으로 갈아타라 — "인생은 긍정적으로 생각해도 짧다." 아이에게는 세상의 어려움을 굳이 집에서 가르칠 필요가 없다. "밖이 힘드니 집에서라도 편해야지, 그게 홈이잖아요."</p>
+    <div class="thought">
+      <div class="q">"행동의 합의 결과가 인생입니다.<br><span>투자도 그렇습니다.</span>"</div>
+      <div class="a">투자 유닛 수가 감당할 수 없이 크면 잠을 못 자고, 그건 투자가 아니라 투기가 된다.<br>자기가 감당할 수 있는 만큼만 — 그래야 장기투자가 되고, 장기투자가 돼야 돈을 번다.</div>
+    </div>
+  </section>
+
+  <footer>
+    본 문서는 2026년 7월 9일 투자는인생TV 멤버온리 라이브 방송 내용을 정리한 학습용 자료입니다. 방송 원문의 수치와 발언을 기반으로 작성되었으며, 특정 종목의 매수·매도 추천이 아닙니다. Investment products are not FDIC insured, not bank guaranteed, and may lose value. 모든 투자의 판단과 책임은 투자자 본인에게 있습니다.
+  </footer>
+</div>
+
+<script>
+/* ── fade-in 옵저버 (지정 패턴) ── */
+const fadeObs = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), i * 80);
+      fadeObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.12 });
+document.querySelectorAll('.fade-in').forEach(el => fadeObs.observe(el));
+
+/* ── 차트 (지정 패턴) ── */
+const chartConfigs = {};
+chartConfigs['chartTop30'] = () => {
+  new Chart(document.getElementById('chartTop30'), {
+    type: 'bar',
+    data: {
+      labels: ['SNDK', 'SEZL', 'AMD', 'VICR', 'MRVL'],
+      datasets: [{
+        label: '7/9 상승률 (%)',
+        data: [7.59, 5.83, 5.67, 5.42, 4.99],
+        backgroundColor: ['#e11d48', '#1a1a1a', '#6b7280', '#2563eb', '#f43f5e'],
+        borderRadius: 6,
+        maxBarThickness: 52
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      animation: { duration: 1100, easing: 'easeOutQuart' },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: '#1a1a1a',
+          callbacks: { label: (c) => ' +' + c.parsed.y.toFixed(2) + '%' }
+        }
+      },
+      scales: {
+        y: {
+          beginAtZero: true, max: 9,
+          ticks: { callback: v => v + '%', font: { family: "'Noto Sans KR'" } },
+          grid: { color: '#e5e5e5' }
+        },
+        x: {
+          ticks: { font: { family: "'Noto Sans KR'", weight: 700 } },
+          grid: { display: false }
+        }
+      }
+    }
+  });
+};
+
+const chartObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const canvas = e.target.querySelector('canvas');
+      if (canvas && chartConfigs[canvas.id]) {
+        chartConfigs[canvas.id]();
+        e.target.classList.add('chart-ready');
+        chartObs.unobserve(e.target);
+      }
+    }
+  });
+}, { threshold: 0.15 });
+document.querySelectorAll('.chart-container').forEach(el => chartObs.observe(el));
+
+/* ── 섹터 로테이션 토글 ── */
+document.querySelectorAll('.rot-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.rot-tab').forEach(t => t.classList.remove('on'));
+    document.querySelectorAll('.rot-panel').forEach(p => p.classList.remove('on'));
+    tab.classList.add('on');
+    document.getElementById('panel-' + tab.dataset.panel).classList.add('on');
+  });
+});
+
+/* ── WTI 시뮬레이터 ── */
+const oilRange = document.getElementById('oilRange');
+const oilOut = document.getElementById('oilOut');
+const oilSignal = document.getElementById('oilSignal');
+const oilMsg = document.getElementById('oilMsg');
+function updateOil() {
+  const v = parseFloat(oilRange.value);
+  if (isNaN(v)) return;
+  oilOut.textContent = '$' + v.toFixed(1);
+  oilSignal.classList.remove('watch', 'ready', 'buy');
+  if (v <= 67) {
+    oilSignal.classList.add('buy');
+    oilMsg.textContent = '🔥 강한 매수 신호 — "65~67불대로 떨어지면 이런 것들(부킹홀딩스·항공주)은 사 놓는 게 좋죠."';
+  } else if (v < 70) {
+    oilSignal.classList.add('buy');
+    oilMsg.textContent = '✅ 매수 길목 진입 — "70불 밑으로 들어가면 뭘 사야 될지 오늘 말씀드립니다." 항공주·여행주 수혜.';
+  } else if (v <= 73) {
+    oilSignal.classList.add('ready');
+    oilMsg.textContent = '👀 준비 구간 — 현재가 부근. "제 생각에는 70불대 이하로 떨어질 가능성이 커요." 미리 계획해 둘 시간.';
+  } else {
+    oilSignal.classList.add('watch');
+    oilMsg.textContent = '⛔ 관망 — 유가가 높으면 항공사 마진 압박(단, 자체 정유시설을 가진 델타는 예외).';
+  }
+}
+oilRange.addEventListener('input', updateOil);
+document.getElementById('oilReset').addEventListener('click', () => { oilRange.value = 72.3; updateOil(); });
+updateOil();
+
+/* ── 마이크론 계산기 ── */
+const muAvg = document.getElementById('muAvg');
+const muTgt = document.getElementById('muTgt');
+const muTgtOut = document.getElementById('muTgtOut');
+const muResult = document.getElementById('muResult');
+const muDesc = document.getElementById('muDesc');
+function updateMu() {
+  const avg = parseFloat(muAvg.value);
+  const tgt = parseFloat(muTgt.value);
+  muTgtOut.textContent = '$' + tgt.toLocaleString();
+  if (isNaN(avg) || avg <= 0) {
+    muResult.textContent = '—';
+    muResult.className = 'result-big';
+    muDesc.textContent = '평균 매수단가를 1 이상의 숫자로 입력해 주세요.';
+    return;
+  }
+  const up = ((tgt - avg) / avg) * 100;
+  muResult.textContent = (up >= 0 ? '+' : '') + up.toFixed(1) + '%';
+  muResult.className = 'result-big ' + (up >= 0 ? 'pos' : 'neg');
+  if (up >= 20) {
+    muDesc.textContent = '평단 $' + avg.toLocaleString() + ' 기준 — 방송 평가: "괜찮아요, 20~25% 앞사이드 있으니 놔두세요." ($991·$1,038 평단 모두 잘 샀다 판정)';
+  } else if (up >= 0) {
+    muDesc.textContent = '평단 $' + avg.toLocaleString() + ' 기준 — 업사이드가 20% 미만. "타겟 이후 더 올라갈 거 없다"는 코멘트를 기억하고 비중 관리에 유의.';
+  } else {
+    muDesc.textContent = '평단이 목표가보다 높습니다. "언젠가는 1,200 이상 됩니다. 그 시간을 버티는 겁니다" — 단, 비중 조절이 전제.';
+  }
+}
+muAvg.addEventListener('input', updateMu);
+muTgt.addEventListener('input', updateMu);
+document.getElementById('muReset').addEventListener('click', () => {
+  muAvg.value = 991; muTgt.value = 1200; updateMu();
+});
+updateMu();
+
+/* ── 타임라인 아코디언 ── */
+document.querySelectorAll('.tl-item').forEach(item => {
+  item.addEventListener('click', () => item.classList.toggle('open'));
+});
+</script>
+</body>
+</html>

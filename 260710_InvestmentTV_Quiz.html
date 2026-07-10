@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>투자는인생TV 7/9 멤버온리 — 복습 시험 (10문제)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family:'Noto Sans KR', sans-serif; background:#fafafa; color:#1a1a1a;
+    font-size:16px; line-height:1.7; -webkit-font-smoothing:antialiased;
+  }
+  .wrap { max-width:680px; margin:0 auto; padding:0 16px 90px; }
+
+  /* ── 스티키 채점판 ── */
+  #scoreboard {
+    position:sticky; top:0; z-index:100; background:#ffffff;
+    border-bottom:2px solid #1a1a1a; padding:12px 16px 10px;
+    margin:0 -16px 0;
+  }
+  .sb-inner { max-width:648px; margin:0 auto; }
+  .sb-row { display:flex; justify-content:space-between; align-items:baseline; gap:8px; flex-wrap:wrap; }
+  .sb-title { font-family:'Playfair Display',serif; font-weight:900; font-size:15px; letter-spacing:0.02em; }
+  .sb-stats { display:flex; gap:14px; font-size:13px; font-weight:700; }
+  .sb-stats b { color:#e11d48; font-size:15px; }
+  .sb-bar-track {
+    margin-top:8px; height:8px; background:#e5e5e5; border-radius:99px; overflow:hidden;
+  }
+  #sbBar {
+    height:100%; width:0%; border-radius:99px;
+    background:#ef4444; transition:width .4s ease, background-color .4s ease;
+  }
+
+  /* ── 헤더 ── */
+  header { padding:34px 4px 6px; }
+  .kicker { font-size:12px; letter-spacing:0.22em; font-weight:700; color:#e11d48; text-transform:uppercase; }
+  h1 {
+    font-family:'Playfair Display','Noto Sans KR',serif;
+    font-size:clamp(24px,5.5vw,32px); font-weight:900; line-height:1.3; margin-top:10px;
+  }
+  .deck { color:#777777; font-size:14px; margin-top:10px; }
+
+  /* ── 문제 카드 ── */
+  .q-card {
+    background:#ffffff; border:1px solid #e5e5e5; border-radius:16px;
+    padding:24px 20px; margin-top:22px;
+  }
+  .q-meta { display:flex; align-items:center; gap:8px; margin-bottom:12px; flex-wrap:wrap; }
+  .q-num {
+    font-family:'Playfair Display',serif; font-weight:900; font-size:22px; color:#e11d48;
+  }
+  .badge {
+    font-size:11px; font-weight:700; padding:3px 10px; border-radius:999px; letter-spacing:0.04em;
+  }
+  .badge.type { background:#1a1a1a; color:#fff; }
+  .badge.d1 { background:#f0fdf4; color:#16a34a; border:1px solid #bbf7d0; }
+  .badge.d2 { background:#fffbeb; color:#d97706; border:1px solid #fde68a; }
+  .badge.d3 { background:#fff1f2; color:#e11d48; border:1px solid #fecdd3; }
+  .q-text { font-size:16.5px; font-weight:700; line-height:1.65; margin-bottom:16px; }
+
+  .opts { display:flex; flex-direction:column; gap:9px; }
+  .opt {
+    display:flex; align-items:center; gap:10px; width:100%; text-align:left;
+    padding:13px 15px; font-size:15px; font-family:inherit; line-height:1.5;
+    background:#fafafa; border:1.5px solid #e5e5e5; border-radius:11px;
+    cursor:pointer; transition:all .18s; color:#1a1a1a;
+  }
+  .opt:hover:not(:disabled) { border-color:#e11d48; background:#fff; }
+  .opt:disabled { cursor:default; opacity:.92; }
+  .opt .letter {
+    flex-shrink:0; width:26px; height:26px; border-radius:50%; background:#fff;
+    border:1.5px solid #d4d4d4; display:flex; align-items:center; justify-content:center;
+    font-size:12.5px; font-weight:900;
+  }
+  .opt.correct {
+    background:#f0fdf4; border-color:#16a34a; font-weight:700;
+  }
+  .opt.correct .letter { background:#16a34a; border-color:#16a34a; color:#fff; }
+  .opt.wrong {
+    background:#fef2f2; border-color:#ef4444;
+  }
+  .opt.wrong .letter { background:#ef4444; border-color:#ef4444; color:#fff; }
+  .flag-badge {
+    margin-left:auto; font-size:12px; font-weight:900; white-space:nowrap;
+  }
+  .flag-badge.ok { color:#16a34a; }
+  .flag-badge.no { color:#ef4444; }
+
+  /* OX */
+  .ox-row { display:flex; gap:10px; }
+  .ox-row .opt { flex:1; justify-content:center; font-size:22px; font-weight:900; padding:16px; }
+
+  /* 단답형 */
+  .short-row { display:flex; gap:8px; }
+  .short-row input {
+    flex:1; min-width:0; padding:12px 14px; font-size:15px; font-family:inherit;
+    border:1.5px solid #e5e5e5; border-radius:11px; background:#fafafa;
+  }
+  .short-row input:focus { outline:none; border-color:#e11d48; background:#fff; }
+  .short-row input:disabled { opacity:.85; }
+  .short-row input.correct { border-color:#16a34a; background:#f0fdf4; font-weight:700; }
+  .short-row input.wrong { border-color:#ef4444; background:#fef2f2; }
+  .submit-btn {
+    flex-shrink:0; padding:12px 20px; font-size:14px; font-weight:700; font-family:inherit;
+    background:#1a1a1a; color:#fff; border:none; border-radius:11px; cursor:pointer;
+    transition:background .2s;
+  }
+  .submit-btn:hover:not(:disabled) { background:#e11d48; }
+  .submit-btn:disabled { opacity:.4; cursor:default; }
+  .short-answer-reveal {
+    margin-top:10px; font-size:13.5px; font-weight:700; color:#16a34a; display:none;
+  }
+  .short-answer-reveal.show { display:block; }
+
+  /* 해설 */
+  .explain {
+    max-height:0; overflow:hidden; transition:max-height .45s ease, margin .45s ease;
+    margin-top:0;
+  }
+  .explain.show { max-height:520px; margin-top:16px; }
+  .explain-inner {
+    background:#fafafa; border-left:4px solid #e11d48; border-radius:0 10px 10px 0;
+    padding:15px 16px; font-size:14px; line-height:1.75;
+  }
+  .explain-inner .ex-label {
+    font-size:11.5px; font-weight:900; letter-spacing:0.14em; color:#e11d48; margin-bottom:6px;
+  }
+  .explain-inner .quote {
+    display:block; margin-top:8px; padding-top:8px; border-top:1px dashed #d4d4d4;
+    color:#777777; font-size:13px;
+  }
+
+  /* ── 결과 모달 ── */
+  #modalOverlay {
+    position:fixed; inset:0; background:rgba(26,26,26,.55); z-index:200;
+    display:none; align-items:center; justify-content:center; padding:20px;
+    backdrop-filter:blur(3px);
+  }
+  #modalOverlay.show { display:flex; animation:fadeIn .3s ease; }
+  @keyframes fadeIn { from{opacity:0;} to{opacity:1;} }
+  .modal {
+    background:#fff; border-radius:20px; max-width:420px; width:100%;
+    padding:36px 28px; text-align:center; animation:rise .4s ease;
+  }
+  @keyframes rise { from{transform:translateY(24px); opacity:0;} to{transform:none; opacity:1;} }
+  .modal .m-kicker { font-size:11px; letter-spacing:0.22em; font-weight:700; color:#e11d48; text-transform:uppercase; }
+  .grade {
+    font-family:'Playfair Display',serif; font-size:84px; font-weight:900; line-height:1;
+    margin:14px 0 4px; color:#e11d48;
+  }
+  .m-score { font-size:17px; font-weight:900; }
+  .m-sub { font-size:13.5px; color:#777777; margin-top:12px; line-height:1.8; }
+  .retry-btn {
+    margin-top:24px; padding:13px 34px; font-size:15px; font-weight:700; font-family:inherit;
+    background:#e11d48; color:#fff; border:none; border-radius:999px; cursor:pointer;
+    transition:transform .15s, background .2s;
+  }
+  .retry-btn:hover { background:#1a1a1a; transform:translateY(-2px); }
+
+  footer { margin-top:56px; font-size:12px; color:#777777; text-align:center; line-height:1.8; }
+  @media (max-width:400px) {
+    .q-card { padding:20px 15px; }
+    .sb-stats { gap:10px; font-size:12px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- 스티키 채점판 -->
+<div id="scoreboard">
+  <div class="sb-inner">
+    <div class="sb-row">
+      <span class="sb-title">📝 실시간 채점판</span>
+      <div class="sb-stats">
+        <span>푼 문제 <b id="sbSolved">0</b> / 10</span>
+        <span>맞힌 문제 <b id="sbCorrect">0</b></span>
+        <span>정답률 <b id="sbRate">0%</b></span>
+      </div>
+    </div>
+    <div class="sb-bar-track"><div id="sbBar"></div></div>
+  </div>
+</div>
+
+<div class="wrap">
+  <header>
+    <div class="kicker">Member Only · Review Quiz</div>
+    <h1>투자는인생TV 7월 9일 방송<br>복습 시험 — 10문제</h1>
+    <p class="deck">객관식 6 · 단답형 3 · OX 1 | 보기를 클릭하면 즉시 채점되고 해설이 자동으로 펼쳐집니다. 한 번 답하면 수정할 수 없습니다.</p>
+  </header>
+
+  <div id="quizArea"></div>
+
+  <footer>
+    2026.07.09 투자는인생TV 멤버온리 라이브 기반 학습용 퀴즈 · 모든 문제는 방송 원문 내용에 근거해 출제되었습니다.
+  </footer>
+</div>
+
+<!-- 결과 모달 -->
+<div id="modalOverlay">
+  <div class="modal">
+    <div class="m-kicker">Final Result</div>
+    <div class="grade" id="mGrade">A</div>
+    <div class="m-score" id="mScore">10문제 중 10문제 정답 (100%)</div>
+    <div class="m-sub" id="mMsg"></div>
+    <button class="retry-btn" id="retryBtn">↺ 다시 풀기</button>
+  </div>
+</div>
+
+<script>
+const QUIZ_DATA = [
+  {
+    id: 1, type: 'short', difficulty: 1,
+    question: 'SK하이닉스가 이번 금요일부터 나스닥에서 거래를 시작합니다. 미국 ADR의 티커(종목코드)는 무엇일까요? (영문 4글자)',
+    answer: ['SKHY', 'skhy'],
+    display: 'SKHY',
+    explanation: 'SK하이닉스는 ADR(미국주식예탁증서)을 통해 이번 금요일부터 나스닥 거래를 시작하며, 티커는 SKHY입니다. 공모 청약은 예상보다 7배 이상 몰렸습니다.',
+    quote: '원문 근거: "이번 금요일날 나스닥 거래 하는데 티커는 SKHY입니다. 예상보다 7배 많구요."'
+  },
+  {
+    id: 2, type: 'mc', difficulty: 2,
+    question: '데이비드 리가 SK하이닉스에 투자하지 않겠다고 밝힌 "첫 번째 이유"는 무엇인가요?',
+    options: ['매출이 곧 떨어질 것 같아서', '기업지배구조(Corporate Governance)가 다르기 때문', '반도체 업황이 꺾였기 때문', '공모가가 너무 높았기 때문'],
+    answer: 1,
+    explanation: '가격 하락 우려가 아니라 기업지배구조가 첫 번째 이유입니다. 회사의 주인은 스톡홀더(주주)인데, 정부 요청에 따라 주요 의사결정이 이뤄지는 방식은 "판단할 기준점이 전혀 없다"고 했습니다. 두 번째 이유는 감당하기 어려운 변동성입니다.',
+    quote: '원문 근거: "이유는 가격이 떨어질 것 같아서 그게 아니라 첫 번째 이유는... corporate governance가 달라요." / "No rating, I won\'t invest."'
+  },
+  {
+    id: 3, type: 'ox', difficulty: 1,
+    question: '델타항공은 자체 정유시설(refinery)을 보유하고 있어서, 유가가 올라도 다른 항공사와 달리 마진 압박을 받지 않는다. (O/X)',
+    answer: 0,
+    explanation: '맞습니다(O). 유가 상승 시 항공사는 보통 연료비 때문에 마진 압박을 받지만, 델타는 항공사 중 유일하게 자체 정유시설을 갖고 있어 예외라고 설명했습니다.',
+    quote: '원문 근거: "델타 같은 경우는 특수한 환경이 있어요. 델타는 자체 refinery를 가지고 있어요. 그러니까 항공사 중에서도 델타는 마진 압박 받지 않습니다."'
+  },
+  {
+    id: 4, type: 'mc', difficulty: 2,
+    question: '7월 29일 실적 발표가 "CAPEX(설비투자) 문제의 기준점"이 될 것이라며 가장 집중 분석하겠다고 한 기업은 어디인가요?',
+    options: ['엔비디아', 'IBM', '메타', 'TSMC'],
+    answer: 2,
+    explanation: '메타입니다. 다른 하이퍼스케일러는 고객을 위해 투자하지만 메타는 자체 AI 시스템을 위해 투자하므로, "이렇게 많이 쓰고도 돈이 되나"를 가장 먼저 보여주는 기준점이 됩니다. 광고 효과가 실망스러우면 반도체 전체가 급락할 수 있다고 경고했습니다.',
+    quote: '원문 근거: "7월 29일 메타 실적에 쫙 갈릴 가능성이 있어요. 이번 메타 실적에 KPEX(CAPEX)가 나올 거고 메타가 가장 중요합니다. KPEX는 그게 기준점입니다."'
+  },
+  {
+    id: 5, type: 'mc', difficulty: 3,
+    question: 'CAPEX 리스크가 현실화되어 미국 시장이 3% 이상 빠질 경우, 한국 시장은 어느 정도 하락할 수 있다고 경고했나요?',
+    options: ['2~3%', '4~5%', '7~8%', '15% 이상'],
+    answer: 2,
+    explanation: '미국이 3% 이상 빠지면 한국은 7~8%씩 빠질 수 있다며, 7월 말이 "조심해야 되는 공간"이라고 했습니다. 한국 시장이 미국보다 변동폭이 크다는 점을 강조한 것입니다.',
+    quote: '원문 근거: "미국이 3% 이상 빠지면 한국은 7, 8%씩 빠질 수 있어요. 그러니까 조심해야 되는 공간이에요, 그때가."'
+  },
+  {
+    id: 6, type: 'mc', difficulty: 1,
+    question: '6월 22일 리밸런싱 지시에서 "포트폴리오 3~5% 늘려야 하는 섹터"로 제시되지 <u>않은</u> 것은?',
+    options: ['Industrials (산업재)', '반도체 (IT/칩)', 'Materials (소재)', 'Financials (금융)'],
+    answer: 1,
+    explanation: '늘릴 섹터는 Industrials, Materials, Financials 세 가지였고, 반도체는 오히려 비중을 줄이라고 한 섹터입니다. 단, "다 팔라는 게 아니라 비중 축소"라는 점을 반복 강조했습니다.',
+    quote: '원문 근거: "S&P500은 테크놀로지가 이끌고 있지만 섹터 로테이션은... 파이낸셜하고 인더스트리 하라고 했잖아요." / 슬라이드: "포트폴리오 3-5% 늘려야 하는 섹터: 1.Industrials, 2.Materials, 3.Financial"'
+  },
+  {
+    id: 7, type: 'short', difficulty: 2,
+    question: 'WTI 유가가 배럴당 "몇 불" 밑으로 떨어지면 수혜주(항공주·여행주, 특히 부킹홀딩스)를 사 두는 게 좋다고 했나요? (숫자만 입력)',
+    answer: ['70', '70불', '$70', '70달러'],
+    display: '70 (배럴당 70불)',
+    explanation: '유가가 70불 밑으로 들어가면 살 것을 알려주겠다고 했고, 65~67불대까지 떨어지면 미리 사 두는 게 좋다고 했습니다. 유가 하락의 최대 수혜는 항공주와 여행주이며, 여행주 중 부킹홀딩스가 가장 매력적인 가격(올해 -18%, 적정가 $210)이라고 평가했습니다.',
+    quote: '원문 근거: "70불 밑으로 들어가면 뭘 사야 될지 오늘 말씀드립니다... 만약에 65불대다 67불대로 떨어지면 이런 것들은 좀 사 놓으시는 게 좋죠."'
+  },
+  {
+    id: 8, type: 'mc', difficulty: 2,
+    question: '"노이즈와 시그널(잡음과 신호)을 스스로 구분할 방법이 없을까요?"라는 멤버 질문에 대한 답변으로 옳은 것은?',
+    options: ['투자 아카데미를 들으면 누구나 구분할 수 있다', '거의 불가능하며, 그것은 신의 영역이다', 'VIX 지수를 보면 정확히 구분된다', '기관 투자자들은 100% 구분한다'],
+    answer: 1,
+    explanation: '"거의 불가능하다, 신의 영역"이라고 답했습니다. 구분이 가능했다면 기관들이 반토막 나는 일도 없었을 것이라며, 자신은 확률을 높여줄 뿐 100% 맞추는 것은 매우 어렵다고 했습니다.',
+    quote: '원문 근거: "이게 거의 불가능하시다고 생각하시면 될 것 같습니다... 노이즈하고 신호를 구별할 수 있다는 것은 신의 영역입니다."'
+  },
+  {
+    id: 9, type: 'mc', difficulty: 3,
+    question: '중동 긴장으로 급등했던 미국 10년물 국채 수익률은 입찰에서 수요가 견고하게 나타나며 어느 범위에서 안정되었나요?',
+    options: ['3.95 ~ 4.10%', '4.20 ~ 4.30%', '4.53 ~ 4.58%', '4.85 ~ 5.00%'],
+    answer: 2,
+    explanation: '10년 만기 국채 입찰에서 채권 수요가 견고해 수익률이 4.53~4.58% 사이에서 안정됐습니다. 일본 국채 금리 상승으로 자금이 빠져나갈 것을 걱정했지만 "천만다행"으로 그 정도 심각한 상황은 아니었다고 평가했습니다.',
+    quote: '원문 근거: "10년 만기 국채 입찰로 채권 수요가 아주 견고하게 나타나서... 4.53에서 4.58 사이로 안정적으로 지금 되고 있습니다."'
+  },
+  {
+    id: 10, type: 'short', difficulty: 2,
+    question: 'SKHY 상장으로 단기적으로는 부정적 영향을 받겠지만, 2028년 이후에는 오히려 하이닉스의 시장점유율을 역전할 것으로 전망된 미국 기업은? (한글 또는 영문)',
+    answer: ['마이크론', 'micron', 'MU', 'mu', '마이크론테크놀로지'],
+    display: '마이크론 (Micron, MU)',
+    explanation: '하이닉스의 미국 상장이 단기적으로 마이크론 주가에 부정적일 수 있지만, 2028년 이후에는 마이크론이 시장점유율에서 하이닉스를 역전할 것으로 전망했습니다. 그래서 "마이크론은 롱텀(장기)으로 가져가야 한다"고 강조했습니다.',
+    quote: '원문 근거: "마이크론이 2027~2028년부터 하이닉스를 앞지를 것으로 판단하고 있어요... 마이크론은 롱텀으로 가져가야 되는 거예요." / 슬라이드: "2028년 이후 시장점유율 마이크론이 하이닉스를 역전할 것으로 전망"'
+  }
+];
+
+const TYPE_LABEL = { mc: '객관식', short: '단답형', ox: 'OX' };
+const DIFF = { 1: ['쉬움', 'd1'], 2: ['보통', 'd2'], 3: ['어려움', 'd3'] };
+const LETTERS = ['A', 'B', 'C', 'D'];
+
+let state = { solved: 0, correct: 0 };
+
+/* ── 렌더링 ── */
+function render() {
+  const area = document.getElementById('quizArea');
+  area.innerHTML = '';
+  QUIZ_DATA.forEach(q => {
+    const card = document.createElement('div');
+    card.className = 'q-card';
+    card.id = 'q' + q.id;
+
+    let bodyHtml = '';
+    if (q.type === 'mc') {
+      bodyHtml = '<div class="opts">' + q.options.map((opt, i) =>
+        `<button class="opt" data-q="${q.id}" data-i="${i}"><span class="letter">${LETTERS[i]}</span><span>${opt}</span></button>`
+      ).join('') + '</div>';
+    } else if (q.type === 'ox') {
+      bodyHtml = `<div class="ox-row">
+        <button class="opt" data-q="${q.id}" data-i="0">O</button>
+        <button class="opt" data-q="${q.id}" data-i="1">X</button>
+      </div>`;
+    } else {
+      bodyHtml = `<div class="short-row">
+        <input type="text" id="input-${q.id}" placeholder="정답 입력" autocomplete="off">
+        <button class="submit-btn" data-q="${q.id}">제출</button>
+      </div>
+      <div class="short-answer-reveal" id="reveal-${q.id}"></div>`;
+    }
+
+    card.innerHTML = `
+      <div class="q-meta">
+        <span class="q-num">Q${q.id}</span>
+        <span class="badge type">${TYPE_LABEL[q.type]}</span>
+        <span class="badge ${DIFF[q.difficulty][1]}">${DIFF[q.difficulty][0]}</span>
+      </div>
+      <div class="q-text">${q.question}</div>
+      ${bodyHtml}
+      <div class="explain" id="explain-${q.id}">
+        <div class="explain-inner">
+          <div class="ex-label">해설</div>
+          ${q.explanation}
+          <span class="quote">${q.quote}</span>
+        </div>
+      </div>`;
+    area.appendChild(card);
+  });
+
+  // 이벤트 바인딩
+  document.querySelectorAll('.opt').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const q = QUIZ_DATA.find(x => x.id === +btn.dataset.q);
+      gradeChoice(q, +btn.dataset.i);
+    });
+  });
+  document.querySelectorAll('.submit-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const q = QUIZ_DATA.find(x => x.id === +btn.dataset.q);
+      gradeShort(q);
+    });
+  });
+  document.querySelectorAll('.short-row input').forEach(inp => {
+    inp.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        const qid = +inp.id.split('-')[1];
+        gradeShort(QUIZ_DATA.find(x => x.id === qid));
+      }
+    });
+  });
+}
+
+/* ── 채점: 객관식/OX ── */
+function gradeChoice(q, picked) {
+  const card = document.getElementById('q' + q.id);
+  if (card.dataset.done) return;
+  card.dataset.done = '1';
+
+  const isCorrect = picked === q.answer;
+  card.querySelectorAll('.opt').forEach(btn => {
+    const i = +btn.dataset.i;
+    btn.disabled = true;
+    if (i === q.answer) {
+      btn.classList.add('correct');
+      btn.insertAdjacentHTML('beforeend', `<span class="flag-badge ok">${isCorrect ? '✓ 정답!' : '✓ 정답'}</span>`);
+    } else if (i === picked) {
+      btn.classList.add('wrong');
+      btn.insertAdjacentHTML('beforeend', '<span class="flag-badge no">✗ 오답</span>');
+    }
+  });
+  finishQuestion(q, isCorrect);
+}
+
+/* ── 채점: 단답형 ── */
+function gradeShort(q) {
+  const card = document.getElementById('q' + q.id);
+  if (card.dataset.done) return;
+  const input = document.getElementById('input-' + q.id);
+  const val = input.value.trim();
+  if (!val) { input.focus(); return; }
+  card.dataset.done = '1';
+
+  const norm = s => s.replace(/[\s\.\,\$]/g, '').toLowerCase();
+  const isCorrect = q.answer.some(a => norm(a) === norm(val));
+
+  input.disabled = true;
+  card.querySelector('.submit-btn').disabled = true;
+  input.classList.add(isCorrect ? 'correct' : 'wrong');
+
+  const reveal = document.getElementById('reveal-' + q.id);
+  reveal.textContent = (isCorrect ? '✓ 정답! ' : '✗ 오답 — ') + '정답: ' + q.display;
+  reveal.classList.add('show');
+  if (!isCorrect) reveal.style.color = '#ef4444';
+
+  finishQuestion(q, isCorrect);
+}
+
+/* ── 공통 마무리 ── */
+function finishQuestion(q, isCorrect) {
+  state.solved++;
+  if (isCorrect) state.correct++;
+  document.getElementById('explain-' + q.id).classList.add('show');
+  updateScoreboard();
+  if (state.solved === QUIZ_DATA.length) {
+    setTimeout(showModal, 700);
+  }
+}
+
+/* ── 채점판 갱신 ── */
+function updateScoreboard() {
+  const rate = state.solved === 0 ? 0 : Math.round((state.correct / state.solved) * 100);
+  document.getElementById('sbSolved').textContent = state.solved;
+  document.getElementById('sbCorrect').textContent = state.correct;
+  document.getElementById('sbRate').textContent = rate + '%';
+  const bar = document.getElementById('sbBar');
+  bar.style.width = (state.solved / QUIZ_DATA.length * 100) + '%';
+  bar.style.backgroundColor = rate < 40 ? '#ef4444' : rate < 70 ? '#f59e0b' : '#16a34a';
+}
+
+/* ── 결과 모달 ── */
+function showModal() {
+  const score = state.correct;
+  const pct = Math.round(score / QUIZ_DATA.length * 100);
+  let grade, msg;
+  if (pct >= 90) { grade = 'A'; msg = '완벽합니다! 리밸런싱부터 CAPEX 리스크까지 완전히 이해하셨네요. "공부한 멤버와 안 한 멤버는 2~3억씩 차이 난다" — 당신은 전자입니다. 🏆'; }
+  else if (pct >= 70) { grade = 'B'; msg = '훌륭해요! 핵심 흐름은 확실히 잡으셨습니다. 틀린 문제의 해설만 다시 읽으면 A는 금방입니다. 💪'; }
+  else if (pct >= 50) { grade = 'C'; msg = '절반은 넘겼습니다. 섹터 로테이션과 7월 말 CAPEX 일정을 중심으로 리포트를 한 번 더 복습해 보세요. 📖'; }
+  else { grade = 'D'; msg = '"낚시하러 가는데 낚싯대는 준비해 오셔야죠." 분석 리포트를 정독한 뒤 다시 풀기에 도전해 보세요 — 공부가 곧 수익입니다. 🎣'; }
+  document.getElementById('mGrade').textContent = grade;
+  document.getElementById('mScore').textContent = `10문제 중 ${score}문제 정답 (${pct}%)`;
+  document.getElementById('mMsg').textContent = msg;
+  document.getElementById('modalOverlay').classList.add('show');
+}
+
+/* ── 다시 풀기 ── */
+document.getElementById('retryBtn').addEventListener('click', () => {
+  state = { solved: 0, correct: 0 };
+  document.getElementById('modalOverlay').classList.remove('show');
+  updateScoreboard();
+  render();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+/* ── 시작 ── */
+render();
+updateScoreboard();
+</script>
+</body>
+</html>
