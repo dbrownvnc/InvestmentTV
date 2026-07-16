@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>퀴즈: 요즘 칩주 변동성이 심한 이유 | CIA.chat</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#ffffff; --bg-sub:#fafafa;
+    --text:#1a1a1a; --text-sub:#777777;
+    --accent:#e11d48; --accent2:#f43f5e;
+    --border:#e5e5e5;
+    --green:#16a34a; --green-bg:#f0fdf4;
+    --red:#dc2626; --red-bg:#fef2f2;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    background:var(--bg); color:var(--text);
+    font-family:'Noto Sans KR', sans-serif; line-height:1.6;
+    max-width:100%; overflow-x:hidden; padding-bottom:60px;
+  }
+  .wrap{max-width:640px; margin:0 auto; padding:0 16px;}
+  header{
+    padding:32px 16px 20px; text-align:center;
+    border-bottom:1px solid var(--border);
+  }
+  .kicker{
+    font-size:11px; letter-spacing:3px; color:var(--accent);
+    font-weight:700; text-transform:uppercase; margin-bottom:10px;
+  }
+  h1{
+    font-family:'Playfair Display', serif; font-weight:700;
+    font-size:22px; line-height:1.4; word-break:keep-all;
+  }
+
+  /* sticky scoreboard */
+  .scoreboard{
+    position:sticky; top:0; z-index:100;
+    background:#fff; border-bottom:1px solid var(--border);
+    padding:12px 16px; box-shadow:0 2px 8px rgba(0,0,0,0.04);
+  }
+  .score-row{
+    display:flex; justify-content:space-between; align-items:center;
+    max-width:640px; margin:0 auto 8px; font-size:12.5px; font-weight:700;
+  }
+  .score-row .item{color:var(--text-sub); font-weight:500;}
+  .score-row .item b{color:var(--text); font-weight:700;}
+  .progress-bar{
+    max-width:640px; margin:0 auto; height:8px; background:#e5e5e5;
+    border-radius:4px; overflow:hidden;
+  }
+  .progress-fill{
+    height:100%; width:0%; background:#dc2626; border-radius:4px;
+    transition:width 0.3s ease, background 0.3s ease;
+  }
+
+  .qcard{
+    margin:24px 0; background:#fff; border:1px solid var(--border);
+    border-radius:12px; padding:20px 18px; overflow:hidden;
+  }
+  .qhead{
+    display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;
+  }
+  .qnum{
+    font-family:'Playfair Display', serif; font-weight:700; font-size:14px; color:var(--accent);
+  }
+  .badge{
+    font-size:10px; font-weight:700; padding:3px 9px; border-radius:20px;
+    letter-spacing:0.5px;
+  }
+  .badge.easy{background:#eff6ff; color:#2563eb;}
+  .badge.medium{background:#fff7ed; color:#ea580c;}
+  .badge.hard{background:#fef2f2; color:#dc2626;}
+  .qtext{font-size:15px; font-weight:500; margin-bottom:16px; word-break:keep-all;}
+
+  .options{display:flex; flex-direction:column; gap:8px;}
+  .opt-btn{
+    text-align:left; padding:12px 14px; border:1.5px solid var(--border);
+    border-radius:8px; background:#fff; font-family:inherit; font-size:14px;
+    cursor:pointer; transition:all 0.15s ease; display:flex; justify-content:space-between; align-items:center;
+  }
+  .opt-btn:active{transform:scale(0.98);}
+  .opt-btn.correct{background:var(--green-bg); border-color:var(--green); color:var(--green); font-weight:700;}
+  .opt-btn.wrong{background:var(--red-bg); border-color:var(--red); color:var(--red); font-weight:700;}
+  .opt-btn:disabled{cursor:default;}
+  .opt-badge{font-size:11px; font-weight:700; padding:2px 8px; border-radius:12px;}
+  .opt-badge.c{background:var(--green); color:#fff;}
+  .opt-badge.w{background:var(--red); color:#fff;}
+
+  .ox-row{display:flex; gap:12px;}
+  .ox-btn{
+    flex:1; padding:16px; font-size:20px; font-weight:900; border-radius:10px;
+    border:1.5px solid var(--border); background:#fff; cursor:pointer; font-family:inherit;
+  }
+  .ox-btn.correct{background:var(--green-bg); border-color:var(--green); color:var(--green);}
+  .ox-btn.wrong{background:var(--red-bg); border-color:var(--red); color:var(--red);}
+
+  .short-row{display:flex; gap:8px;}
+  .short-row input{
+    flex:1; padding:12px 14px; border:1.5px solid var(--border); border-radius:8px;
+    font-size:14px; font-family:inherit;
+  }
+  .short-row input:disabled{background:var(--bg-sub);}
+  .short-row button{
+    padding:12px 18px; background:var(--accent); color:#fff; border:none;
+    border-radius:8px; font-weight:700; font-size:13px; cursor:pointer; font-family:inherit;
+  }
+  .short-row button:disabled{background:#ccc; cursor:default;}
+  .short-feedback{
+    margin-top:10px; font-size:13px; font-weight:700; padding:8px 12px; border-radius:6px;
+    display:none;
+  }
+  .short-feedback.correct{background:var(--green-bg); color:var(--green); display:block;}
+  .short-feedback.wrong{background:var(--red-bg); color:var(--red); display:block;}
+
+  .explain{
+    max-height:0; overflow:hidden; transition:max-height 0.4s ease, margin-top 0.4s ease;
+    margin-top:0;
+  }
+  .explain.open{max-height:400px; margin-top:14px;}
+  .explain-inner{
+    background:var(--bg-sub); border-left:3px solid var(--accent);
+    border-radius:6px; padding:14px 16px; font-size:13px; color:#444;
+  }
+  .explain-inner .lbl{font-weight:700; color:var(--accent); margin-bottom:6px; font-size:12px;}
+
+  /* final modal */
+  .final-overlay{
+    display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5);
+    z-index:200; align-items:center; justify-content:center; padding:20px;
+  }
+  .final-overlay.show{display:flex;}
+  .final-card{
+    background:#fff; border-radius:16px; padding:36px 26px; text-align:center;
+    max-width:340px; width:100%;
+  }
+  .final-grade{
+    font-family:'Playfair Display', serif; font-size:56px; font-weight:700; color:var(--accent);
+    margin-bottom:6px;
+  }
+  .final-title{font-size:15px; font-weight:700; margin-bottom:4px;}
+  .final-sub{font-size:13px; color:var(--text-sub); margin-bottom:20px;}
+  .final-stats{
+    display:flex; gap:10px; margin-bottom:22px;
+  }
+  .final-stats .box{
+    flex:1; background:var(--bg-sub); border-radius:8px; padding:12px;
+  }
+  .final-stats .n{font-family:'Playfair Display', serif; font-weight:700; font-size:20px; color:var(--text);}
+  .final-stats .l{font-size:10.5px; color:var(--text-sub); margin-top:2px;}
+  .retry-btn{
+    width:100%; padding:14px; background:var(--accent); color:#fff; border:none;
+    border-radius:8px; font-weight:700; font-size:14px; cursor:pointer; font-family:inherit;
+  }
+
+  footer{
+    text-align:center; padding:30px 16px 10px; font-size:11.5px; color:var(--text-sub);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="kicker">Interactive Quiz</div>
+  <h1>요즘 칩주 변동성이 심한 이유</h1>
+</header>
+
+<div class="scoreboard">
+  <div class="score-row">
+    <span class="item">푼 문제 <b id="solvedCount">0</b> / 10</span>
+    <span class="item">맞힌 문제 <b id="correctCount">0</b></span>
+    <span class="item">정답률 <b id="accuracyPct">0%</b></span>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+</div>
+
+<div class="wrap" id="quizContainer"></div>
+
+<div class="final-overlay" id="finalOverlay">
+  <div class="final-card">
+    <div class="final-grade" id="finalGrade">A</div>
+    <div class="final-title" id="finalTitle">최고예요!</div>
+    <div class="final-sub" id="finalSub">모든 문제를 다 풀었습니다</div>
+    <div class="final-stats">
+      <div class="box"><div class="n" id="finalScore">10/10</div><div class="l">총점</div></div>
+      <div class="box"><div class="n" id="finalAcc">100%</div><div class="l">정답률</div></div>
+    </div>
+    <button class="retry-btn" id="retryBtn">다시 풀기</button>
+  </div>
+</div>
+
+<footer>CIA.chat</footer>
+
+<script>
+const QUIZ_DATA = [
+  {
+    id: 1, type: 'mc', difficulty: 'easy',
+    question: '최근 발표된 미국 소비자물가지수(CPI)는 어떤 흐름을 보였나요?',
+    options: ['예상보다 더 크게 올랐다', '예상과 달리 콜다운(둔화)되는 상태로 나왔다', '전월 대비 변화가 없었다', '발표가 연기되었다'],
+    answer: 1,
+    explanation: '원본 자막: "미국 경제도 예상과 달리 CPI 넘버가 약간 콜다운 되는 상태로 나왔어요"라고 언급되었습니다. 중동전쟁이 계속됨에도 물가 상승세가 예상만큼 크지 않았다는 의미입니다.'
+  },
+  {
+    id: 2, type: 'mc', difficulty: 'easy',
+    question: '요즘 반도체 대형주들의 하루 등락폭은 어느 정도라고 설명되었나요?',
+    options: ['1% 이내', '2~3% 수준', '5% 이상', '거의 변동 없음'],
+    answer: 2,
+    explanation: '원본 자막: "섹터가 특히 반도체주가 이렇게 큰 회사들이 하루에 등락폭이 5% 이상 되는 때"라고 설명되었습니다.'
+  },
+  {
+    id: 3, type: 'mc', difficulty: 'medium',
+    question: '반도체주 변동성의 가장 큰 원인으로 지목된 기업은 어디인가요?',
+    options: ['마이크론', 'SK하이닉스', 'AMD', '삼성전자'],
+    answer: 1,
+    explanation: '원본 자막: "가장 큰 원인을 한 가지 뽑아라 하면은 메모리칩 반도체에서 마켓쉐어가 가장 큰 SK하이닉스의 변동성이 크기 때문에 그래요."'
+  },
+  {
+    id: 4, type: 'mc', difficulty: 'medium',
+    question: 'SK하이닉스의 메모리 반도체 시장 점유율은 대략 얼마로 언급되었나요?',
+    options: ['약 20%', '약 35%', '50%에 가까운 수준', '약 80%'],
+    answer: 2,
+    explanation: '원본 자막: "마켓 리더잖아요. 50% 가까이 마켓 리더가 있고."라고 언급되었습니다.'
+  },
+  {
+    id: 5, type: 'mc', difficulty: 'medium',
+    question: 'SK하이닉스는 어떤 방식으로 미국 시장에 진출했나요?',
+    options: ['미국 기업과 합병', '아메리칸 디포지토리(ADR)를 통해서', '나스닥 직상장', '스팩 합병 방식'],
+    answer: 1,
+    explanation: '원본 자막: "미국에 진출해서 아메리칸 디포지토리, ADR을 통해서 들어와서 보니까 하루의 변동성이 한국을 닮아가는거야."'
+  },
+  {
+    id: 6, type: 'mc', difficulty: 'hard',
+    question: '본문에서 SK하이닉스처럼 변동성이 함께 커질 것이라고 언급된 종목 조합은 무엇인가요?',
+    options: ['애플, 테슬라, 엔비디아', '마이크론, AMD, 샌디스크', '구글, 메타, 아마존', '인텔, 퀄컴, ARM'],
+    answer: 1,
+    explanation: '원본 자막: "그게 하루 변동성이 커지니까 마이크론 뿐만 아니라 AMD도 커지겠죠... 그거보다 커진 게 샌디스크도 커지겠죠."'
+  },
+  {
+    id: 7, type: 'short', difficulty: 'medium',
+    question: 'SK하이닉스가 미국에 진출한 이후, 하루 변동성이 어느 나라의 증시를 닮아간다고 했나요? (국가명만 입력)',
+    answer: '한국',
+    explanation: '원본 자막: "하루의 변동성이 한국을 닮아가는거야."라고 언급되었습니다.'
+  },
+  {
+    id: 8, type: 'short', difficulty: 'medium',
+    question: '마이크론은 실적을 계속 무엇하고 있다고 설명되었나요? (한 단어로, 예: 상향/하향)',
+    answer: '상향',
+    explanation: '원본 자막: "마이크론 같은 경우는 상당히 많은 실적을 내고 있고 예상 실적을 아주 상향하고 있고 지금도 취미 모자라는 상태입니다."에서 실적 전망을 계속 상향 조정하고 있다고 언급되었습니다.'
+  },
+  {
+    id: 9, type: 'ox', difficulty: 'easy',
+    question: '마이크론의 펀더멘털(기업의 근본적인 체력)은 나빠지고 있는 상태다.',
+    answer: false,
+    explanation: '원본 자막: "그럼에도 불구하고 펀더멘털은 좋고 좋아지고 있지만"이라고 언급된 것처럼, 마이크론의 펀더멘털은 오히려 좋아지고 있는 상태입니다. 정답은 X입니다.'
+  },
+  {
+    id: 10, type: 'ox', difficulty: 'hard',
+    question: '옵션 시장은 변동성이 크면 클수록 오히려 이를 반기며 더 활발해진다.',
+    answer: true,
+    explanation: '원본 자막: "옵션시장은 변동성이 크면 클수록 좋아하거든요. 그러니까 극단적으로 가고 있어요. 옵션시장이."라고 언급된 것처럼, 옵션 시장은 변동성을 반깁니다. 정답은 O입니다.'
+  }
+];
+
+let state = { solved: 0, correct: 0, answered: {} };
+
+const container = document.getElementById('quizContainer');
+
+function diffLabel(d){
+  return d === 'easy' ? '쉬움' : d === 'medium' ? '보통' : '어려움';
+}
+
+function renderQuiz(){
+  container.innerHTML = '';
+  QUIZ_DATA.forEach((q, idx) => {
+    const card = document.createElement('div');
+    card.className = 'qcard';
+    card.id = 'qcard-' + q.id;
+
+    let bodyHtml = '';
+    if (q.type === 'mc') {
+      bodyHtml = `<div class="options" id="opts-${q.id}">
+        ${q.options.map((opt, i) => `<button class="opt-btn" data-idx="${i}" onclick="answerMC(${q.id},${i})"><span>${opt}</span><span class="opt-badge-slot"></span></button>`).join('')}
+      </div>`;
+    } else if (q.type === 'ox') {
+      bodyHtml = `<div class="ox-row" id="opts-${q.id}">
+        <button class="ox-btn" data-val="true" onclick="answerOX(${q.id}, true)">O</button>
+        <button class="ox-btn" data-val="false" onclick="answerOX(${q.id}, false)">X</button>
+      </div>`;
+    } else if (q.type === 'short') {
+      bodyHtml = `<div class="short-row" id="opts-${q.id}">
+        <input type="text" id="input-${q.id}" placeholder="답을 입력하세요">
+        <button onclick="answerShort(${q.id})">제출</button>
+      </div>`;
+    }
+
+    card.innerHTML = `
+      <div class="qhead">
+        <span class="qnum">Q${idx+1}</span>
+        <span class="badge ${q.difficulty}">${diffLabel(q.difficulty)}</span>
+      </div>
+      <div class="qtext">${q.question}</div>
+      ${bodyHtml}
+      <div class="explain" id="explain-${q.id}">
+        <div class="explain-inner">
+          <div class="lbl">💡 해설</div>
+          <div>${q.explanation}</div>
+        </div>
+      </div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+function updateScoreboard(){
+  document.getElementById('solvedCount').textContent = state.solved;
+  document.getElementById('correctCount').textContent = state.correct;
+  const pct = state.solved > 0 ? Math.round((state.correct / state.solved) * 100) : 0;
+  document.getElementById('accuracyPct').textContent = pct + '%';
+  const fill = document.getElementById('progressFill');
+  fill.style.width = (state.solved / QUIZ_DATA.length * 100) + '%';
+  if (pct < 40) fill.style.background = '#dc2626';
+  else if (pct < 70) fill.style.background = '#f97316';
+  else fill.style.background = '#16a34a';
+
+  if (state.solved === QUIZ_DATA.length) {
+    setTimeout(showFinal, 400);
+  }
+}
+
+function openExplain(id){
+  document.getElementById('explain-' + id).classList.add('open');
+}
+
+function markSolved(id, isCorrect){
+  if (state.answered[id]) return false;
+  state.answered[id] = true;
+  state.solved++;
+  if (isCorrect) state.correct++;
+  updateScoreboard();
+  return true;
+}
+
+function answerMC(id, chosenIdx){
+  const q = QUIZ_DATA.find(x => x.id === id);
+  if (state.answered[id]) return;
+  const isCorrect = chosenIdx === q.answer;
+  if (!markSolved(id, isCorrect)) return;
+
+  const opts = document.querySelectorAll(`#opts-${id} .opt-btn`);
+  opts.forEach((btn, i) => {
+    btn.disabled = true;
+    if (i === q.answer) {
+      btn.classList.add('correct');
+      btn.querySelector('.opt-badge-slot').innerHTML = '<span class="opt-badge c">✓ 정답!</span>';
+    } else if (i === chosenIdx) {
+      btn.classList.add('wrong');
+      btn.querySelector('.opt-badge-slot').innerHTML = '<span class="opt-badge w">✗ 오답</span>';
+    }
+  });
+  openExplain(id);
+}
+
+function answerOX(id, chosenVal){
+  const q = QUIZ_DATA.find(x => x.id === id);
+  if (state.answered[id]) return;
+  const isCorrect = chosenVal === q.answer;
+  if (!markSolved(id, isCorrect)) return;
+
+  const btns = document.querySelectorAll(`#opts-${id} .ox-btn`);
+  btns.forEach(btn => {
+    const val = btn.dataset.val === 'true';
+    btn.disabled = true;
+    if (val === q.answer) btn.classList.add('correct');
+    else if (val === chosenVal) btn.classList.add('wrong');
+  });
+  openExplain(id);
+}
+
+function answerShort(id){
+  const q = QUIZ_DATA.find(x => x.id === id);
+  if (state.answered[id]) return;
+  const input = document.getElementById('input-' + id);
+  const userVal = input.value.trim();
+  if (!userVal) return;
+  const isCorrect = userVal.replace(/\s/g,'') === q.answer.replace(/\s/g,'');
+  if (!markSolved(id, isCorrect)) return;
+
+  input.disabled = true;
+  const row = document.getElementById('opts-' + id);
+  row.querySelector('button').disabled = true;
+
+  const fb = document.createElement('div');
+  fb.className = 'short-feedback ' + (isCorrect ? 'correct' : 'wrong');
+  fb.textContent = isCorrect ? `✓ 정답! (${q.answer})` : `✗ 오답 (정답: ${q.answer})`;
+  row.parentElement.insertBefore(fb, document.getElementById('explain-' + id));
+  fb.style.display = 'block';
+
+  openExplain(id);
+}
+
+function showFinal(){
+  const total = QUIZ_DATA.length;
+  const pct = Math.round((state.correct / total) * 100);
+  let grade, title, sub;
+  if (pct >= 90) { grade='A'; title='최고예요! 완벽한 이해도입니다'; sub='칩주 변동성의 원리를 확실히 파악했어요'; }
+  else if (pct >= 70) { grade='B'; title='훌륭해요!'; sub='핵심 내용을 잘 이해하고 있어요'; }
+  else if (pct >= 50) { grade='C'; title='좋아요, 조금만 더!'; sub='본문을 다시 한번 확인해보세요'; }
+  else { grade='D'; title='다시 도전해보세요'; sub='본문을 천천히 다시 읽어보면 좋겠어요'; }
+
+  document.getElementById('finalGrade').textContent = grade;
+  document.getElementById('finalTitle').textContent = title;
+  document.getElementById('finalSub').textContent = sub;
+  document.getElementById('finalScore').textContent = `${state.correct}/${total}`;
+  document.getElementById('finalAcc').textContent = pct + '%';
+  document.getElementById('finalOverlay').classList.add('show');
+}
+
+document.getElementById('retryBtn').addEventListener('click', () => {
+  state = { solved: 0, correct: 0, answered: {} };
+  updateScoreboard();
+  document.getElementById('finalOverlay').classList.remove('show');
+  renderQuiz();
+  window.scrollTo({top: 0, behavior:'smooth'});
+});
+
+renderQuiz();
+updateScoreboard();
+</script>
+
+</body>
+</html>

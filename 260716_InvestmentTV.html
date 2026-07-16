@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>요즘 칩주 변동성이 심한 이유 | CIA.chat</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,600&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<style>
+  :root{
+    --bg:#ffffff; --bg-sub:#fafafa;
+    --text:#1a1a1a; --text-sub:#777777;
+    --accent:#e11d48; --accent2:#f43f5e;
+    --border:#e5e5e5;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    background:var(--bg); color:var(--text);
+    font-family:'Noto Sans KR', sans-serif;
+    line-height:1.75; -webkit-font-smoothing:antialiased;
+    max-width:100%; overflow-x:hidden;
+  }
+  .wrap{max-width:640px; margin:0 auto; padding:0 20px 80px;}
+  header.hero{
+    padding:56px 20px 40px; text-align:center;
+    border-bottom:1px solid var(--border);
+    background:linear-gradient(180deg,#fff 0%,var(--bg-sub) 100%);
+  }
+  .kicker{
+    font-size:12px; letter-spacing:3px; color:var(--accent);
+    font-weight:700; text-transform:uppercase; margin-bottom:14px;
+  }
+  h1{
+    font-family:'Playfair Display', serif; font-weight:700;
+    font-size:30px; line-height:1.35; letter-spacing:-0.5px;
+    margin-bottom:16px; word-break:keep-all;
+  }
+  .meta{font-size:13px; color:var(--text-sub);}
+  .meta span{margin:0 6px;}
+  section{padding:44px 0; border-bottom:1px solid var(--border);}
+  section:last-of-type{border-bottom:none;}
+  h2{
+    font-family:'Playfair Display', serif; font-size:22px; font-weight:600;
+    margin-bottom:18px; padding-left:14px; border-left:4px solid var(--accent);
+    word-break:keep-all;
+  }
+  h3{
+    font-size:16px; font-weight:700; margin:22px 0 10px;
+    color:var(--accent);
+  }
+  p{font-size:15.5px; margin-bottom:14px; word-break:keep-all;}
+  .lead{
+    font-size:17px; font-weight:500; color:var(--text);
+    padding:18px 18px; background:var(--bg-sub); border-radius:4px;
+    border-left:3px solid var(--accent2); margin-bottom:20px;
+  }
+  .term{
+    background:#fff1f2; color:var(--accent); padding:1px 6px;
+    border-radius:3px; font-weight:500; font-size:0.95em;
+  }
+  .highlight-box{
+    background:var(--bg-sub); border:1px solid var(--border);
+    border-radius:8px; padding:20px; margin:20px 0;
+  }
+  .highlight-box .label{
+    font-size:12px; font-weight:700; color:var(--accent);
+    letter-spacing:1px; text-transform:uppercase; margin-bottom:8px;
+  }
+  .stat-grid{
+    display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:20px 0;
+  }
+  .stat-card{
+    background:var(--bg-sub); border:1px solid var(--border);
+    border-radius:8px; padding:16px; text-align:center;
+  }
+  .stat-num{
+    font-family:'Playfair Display', serif; font-size:26px; font-weight:700;
+    color:var(--accent);
+  }
+  .stat-label{font-size:12px; color:var(--text-sub); margin-top:4px;}
+  .chart-container{
+    position:relative; max-height:340px; margin:24px 0;
+    background:var(--bg-sub); border-radius:8px; padding:16px;
+    border:1px solid var(--border);
+  }
+  .chart-container canvas{
+    opacity:0; transition:opacity 0.4s ease; max-height:280px;
+  }
+  .chart-container.chart-ready canvas{opacity:1;}
+  .chart-title{font-size:13px; font-weight:700; color:var(--text); margin-bottom:10px;}
+  .fade-in{opacity:0; transform:translateY(18px); transition:opacity 0.7s ease, transform 0.7s ease;}
+  .fade-in.visible{opacity:1; transform:translateY(0);}
+
+  /* simulator */
+  .sim-box{
+    background:var(--bg-sub); border:1px solid var(--border); border-radius:10px;
+    padding:22px 18px; margin:22px 0;
+  }
+  .sim-title{font-weight:700; font-size:14px; margin-bottom:4px;}
+  .sim-desc{font-size:12.5px; color:var(--text-sub); margin-bottom:16px;}
+  .sim-row{margin-bottom:18px;}
+  .sim-row label{
+    display:flex; justify-content:space-between; font-size:13px; font-weight:500; margin-bottom:8px;
+  }
+  .sim-row label .val{color:var(--accent); font-weight:700;}
+  input[type=range]{
+    width:100%; -webkit-appearance:none; height:6px; border-radius:3px;
+    background:var(--border); outline:none;
+  }
+  input[type=range]::-webkit-slider-thumb{
+    -webkit-appearance:none; width:20px; height:20px; border-radius:50%;
+    background:var(--accent); cursor:pointer; border:3px solid #fff;
+    box-shadow:0 0 0 1px var(--accent);
+  }
+  .sim-result{
+    display:flex; gap:10px; margin-top:16px;
+  }
+  .sim-result .box{
+    flex:1; background:#fff; border:1px solid var(--border); border-radius:8px;
+    padding:14px; text-align:center;
+  }
+  .sim-result .box .n{font-family:'Playfair Display', serif; font-size:22px; font-weight:700;}
+  .sim-result .box .l{font-size:11px; color:var(--text-sub); margin-top:2px;}
+  .sim-reset{
+    margin-top:14px; width:100%; padding:10px; border:1px solid var(--accent);
+    background:#fff; color:var(--accent); border-radius:6px; font-weight:700;
+    font-size:13px; cursor:pointer; font-family:inherit;
+  }
+  .sim-reset:active{background:var(--accent); color:#fff;}
+  .risk-bar{
+    height:10px; border-radius:5px; background:#e5e5e5; margin-top:10px; overflow:hidden;
+  }
+  .risk-fill{
+    height:100%; border-radius:5px; transition:width 0.3s ease, background 0.3s ease;
+  }
+
+  blockquote{
+    border-left:3px solid var(--accent); padding:12px 16px; margin:20px 0;
+    background:var(--bg-sub); font-style:italic; color:#444; font-size:14.5px;
+  }
+  .flow{
+    display:flex; flex-direction:column; gap:10px; margin:20px 0;
+  }
+  .flow-step{
+    display:flex; align-items:center; gap:12px;
+    background:var(--bg-sub); border:1px solid var(--border); border-radius:8px;
+    padding:14px;
+  }
+  .flow-num{
+    width:28px; height:28px; border-radius:50%; background:var(--accent); color:#fff;
+    display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:700;
+    flex-shrink:0;
+  }
+  .flow-text{font-size:13.5px;}
+  .flow-arrow{text-align:center; color:var(--text-sub); font-size:14px;}
+  footer{
+    text-align:center; padding:36px 20px; font-size:12px; color:var(--text-sub);
+    border-top:1px solid var(--border); margin-top:20px;
+  }
+  footer .brand{
+    font-family:'Playfair Display', serif; font-weight:700; color:var(--accent);
+    font-size:14px; margin-bottom:6px;
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="kicker">Semiconductor · Market Volatility</div>
+  <h1>요즘 칩주 변동성이 심한 이유</h1>
+  <div class="meta">
+    <span>2026.07.16</span>·<span>경제 분석</span>·<span>CIA.chat</span>
+  </div>
+</header>
+
+<div class="wrap">
+
+<section class="fade-in">
+  <p class="lead">미국 소비자물가지수(CPI, 물가가 얼마나 올랐는지 보여주는 지표)가 예상보다 낮게 나오면서 경제 자체는 큰 위기가 아니라는 분석이 나왔어요. 그런데 왜 반도체 주식, 특히 메모리칩 관련 종목들은 하루에도 5% 넘게 출렁이는 걸까요?</p>
+  <p>중동 지역 전쟁이 계속되고 있는데도, 미국의 물가 상승 속도는 예상만큼 가파르지 않았습니다. 정부 부채는 늘고 있지만, 지금 당장 경제가 위기 상황에 빠진 건 아니라는 게 최근 분석의 결론이에요.</p>
+  <p>하지만 마이크론, SK하이닉스 같은 반도체 대형주들은 완전히 다른 그림을 보여주고 있습니다. 그 이유를 하나씩 풀어볼게요.</p>
+</section>
+
+<section class="fade-in">
+  <h2>가장 큰 원인, SK하이닉스</h2>
+  <p>반도체주 변동성의 가장 큰 원인으로 지목된 건 바로 <span class="term">SK하이닉스</span>입니다. 메모리칩(데이터를 저장하는 반도체) 시장에서 거의 <strong>50%에 가까운 점유율</strong>을 가진 시장 1위 기업이에요.</p>
+
+  <div class="stat-grid">
+    <div class="stat-card">
+      <div class="stat-num">~50%</div>
+      <div class="stat-label">메모리 반도체 시장 점유율</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">5%+</div>
+      <div class="stat-label">반도체 대형주 하루 등락폭</div>
+    </div>
+  </div>
+
+  <p>SK하이닉스는 최근 <span class="term">ADR(American Depositary Receipt, 미국 시장에서 외국 주식을 거래할 수 있게 만든 증서)</span>을 통해 미국 시장에 상장했습니다. 그런데 미국에 들어오자마자 하루 변동성이 마치 <strong>한국 증시를 닮아가는 것</strong>처럼 커졌다는 게 핵심 관찰이에요.</p>
+
+  <div class="highlight-box">
+    <div class="label">왜 이런 일이?</div>
+    <p style="margin-bottom:0;">빚을 내서 투자하거나 단기 매입·매각을 반복하며 짧은 시간에 이익을 보려는 세력이 많기 때문입니다. 이런 투자자 비중이 클수록 주가는 작은 뉴스에도 크게 흔들립니다.</p>
+  </div>
+</section>
+
+<section class="fade-in">
+  <h2>변동성이 퍼지는 구조</h2>
+  <p>SK하이닉스 하나의 문제가 아니라, 이 변동성이 관련 종목 전체로 번지는 흐름을 보여줍니다.</p>
+
+  <div class="flow">
+    <div class="flow-step">
+      <div class="flow-num">1</div>
+      <div class="flow-text">SK하이닉스가 ADR로 미국 상장 → 단기 투자세력 대거 유입</div>
+    </div>
+    <div class="flow-arrow">↓</div>
+    <div class="flow-step">
+      <div class="flow-num">2</div>
+      <div class="flow-text">하루 변동성이 한국 증시 수준으로 확대</div>
+    </div>
+    <div class="flow-arrow">↓</div>
+    <div class="flow-step">
+      <div class="flow-num">3</div>
+      <div class="flow-text">삼성전자 반도체 사업도 미국 미디어·투자자 관심 속에 함께 부각</div>
+    </div>
+    <div class="flow-arrow">↓</div>
+    <div class="flow-step">
+      <div class="flow-num">4</div>
+      <div class="flow-text">마이크론, AMD, 샌디스크 등 메모리 관련주로 변동성 확산</div>
+    </div>
+  </div>
+
+  <div class="chart-container fade-in">
+    <div class="chart-title">📊 종목별 최근 체감 일간 변동성 비교 (설명 기준, 상대적 수준)</div>
+    <canvas id="volChart" height="220"></canvas>
+  </div>
+
+  <p>중요한 건, 이 종목들의 <strong>펀더멘털(기업의 실적·재무 등 근본적인 체력)</strong>은 나빠진 게 아니라는 점이에요. 마이크론은 오히려 실적을 계속 상향 조정하고 있고, 공급도 부족한 상태입니다. 그런데도 주가가 꾸준히 오르지 못하는 이유는 딱 하나, <strong>이 주식을 들고 있는 투자자들이 장기(롱텀) 투자자인지, 단타(쇼트텀) 매매자인지의 차이</strong> 때문입니다.</p>
+</section>
+
+<section class="fade-in">
+  <h2>옵션 시장이 불을 지핀다</h2>
+  <p><span class="term">옵션(option, 미래에 정해진 가격으로 사고팔 권리를 거래하는 파생상품)</span> 시장은 변동성이 클수록 더 활발해지는 특징이 있습니다. SK하이닉스가 미국에 들어오면서 이 종목을 둘러싼 옵션 거래도 폭발적으로 늘었고, 이게 다시 주가 변동성을 더 극단적으로 밀어붙이는 악순환을 만들고 있어요.</p>
+
+  <blockquote>"나쁜 뉴스가 나오면 어마어마하게 폭락하고, 좋은 뉴스가 나오면 폭등한다" — 지금의 SK하이닉스 주가 흐름을 요약하는 말입니다.</blockquote>
+
+  <p>이런 흐름을 영어로는 <span class="term">speculative(투기적)</span>하다고 표현합니다. 즉 지금 이 순간의 SK하이닉스는 안정적인 장기 투자 대상이라기보다, 단기 트레이딩의 장이 되어버렸다는 뜻이에요.</p>
+</section>
+
+<section class="fade-in">
+  <h2>🔢 변동성 시뮬레이터</h2>
+  <p>단기 투기 세력의 비중이 늘어날수록 주가 변동성이 어떻게 커지는지 직접 확인해보세요.</p>
+
+  <div class="sim-box">
+    <div class="sim-title">투기적(단기) 투자자 비중 시뮬레이터</div>
+    <div class="sim-desc">슬라이더를 움직여 단기 매매 세력 비중과 옵션 거래 활성도를 조절해보세요.</div>
+
+    <div class="sim-row">
+      <label>단기 투기 세력 비중 <span class="val" id="specVal">40%</span></label>
+      <input type="range" id="specSlider" min="0" max="100" value="40">
+    </div>
+    <div class="sim-row">
+      <label>옵션 시장 활성도 <span class="val" id="optVal">30%</span></label>
+      <input type="range" id="optSlider" min="0" max="100" value="30">
+    </div>
+
+    <div class="sim-result">
+      <div class="box">
+        <div class="n" id="dailySwing">±3.2%</div>
+        <div class="l">예상 하루 등락폭</div>
+      </div>
+      <div class="box">
+        <div class="n" id="riskLabel">중간</div>
+        <div class="l">투기적 리스크</div>
+      </div>
+    </div>
+    <div class="risk-bar"><div class="risk-fill" id="riskFill"></div></div>
+    <button class="sim-reset" id="simReset">초기값으로 리셋</button>
+  </div>
+
+  <p style="font-size:13px; color:var(--text-sub);">※ 위 수치는 본문 설명을 기반으로 개념을 이해하기 위한 단순화된 시뮬레이션이며, 실제 투자 지표가 아닙니다.</p>
+</section>
+
+<section class="fade-in">
+  <h2>그래서, 어떻게 봐야 할까</h2>
+  <p>펀더멘털은 여전히 튼튼합니다. 마이크론은 실적과 전망을 계속 올리고 있고, 공급도 부족한 상황이에요. 문제는 <strong>기업의 체력이 아니라 시장에 참여한 투자자들의 성격</strong>입니다.</p>
+
+  <div class="highlight-box">
+    <div class="label">핵심 요약</div>
+    <p style="margin-bottom:8px;">① SK하이닉스의 변동성이 관련 반도체주 전체로 번지고 있다.</p>
+    <p style="margin-bottom:8px;">② 원인은 펀더멘털이 아니라 단기 투기 세력과 옵션 시장 과열이다.</p>
+    <p style="margin-bottom:0;">③ 이런 흐름이 나타날 때는 일희일비하지 말고 중심을 잡아야 한다.</p>
+  </div>
+
+  <p>지금처럼 좋은 기업이라도 투기적 투자자 비중이 높으면 주가는 예측 불가능하게 흔들릴 수 있습니다. SK하이닉스나 삼성 반도체의 영향을 과도하게 받는 종목이라면, 상황을 계속 지켜볼 필요가 있다는 게 오늘의 교훈이에요.</p>
+</section>
+
+</div>
+
+<footer>
+  <div class="brand">CIA.chat</div>
+  <div>본 콘텐츠는 정보 제공 목적이며 투자 권유가 아닙니다.</div>
+</footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+
+  const fadeObs = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 80);
+        fadeObs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.fade-in').forEach(el => fadeObs.observe(el));
+
+  const chartConfigs = {};
+  chartConfigs['volChart'] = () => {
+    new Chart(document.getElementById('volChart'), {
+      type: 'bar',
+      data: {
+        labels: ['SK하이닉스', '마이크론', 'AMD', '샌디스크'],
+        datasets: [{
+          label: '체감 일간 변동성 수준',
+          data: [95, 70, 55, 60],
+          backgroundColor: ['#e11d48', '#1a1a1a', '#6b7280', '#2563eb'],
+          borderRadius: 6,
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          y: { beginAtZero: true, max: 100, ticks: { callback: v => v + '' } },
+          x: { grid: { display: false } }
+        }
+      }
+    });
+  };
+
+  const chartObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const canvas = e.target.querySelector('canvas');
+        if (canvas && chartConfigs[canvas.id]) {
+          chartConfigs[canvas.id]();
+          e.target.classList.add('chart-ready');
+          chartObs.unobserve(e.target);
+        }
+      }
+    });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.chart-container').forEach(el => chartObs.observe(el));
+
+  // simulator
+  const specSlider = document.getElementById('specSlider');
+  const optSlider = document.getElementById('optSlider');
+  const specVal = document.getElementById('specVal');
+  const optVal = document.getElementById('optVal');
+  const dailySwing = document.getElementById('dailySwing');
+  const riskLabel = document.getElementById('riskLabel');
+  const riskFill = document.getElementById('riskFill');
+
+  function updateSim(){
+    const spec = parseInt(specSlider.value);
+    const opt = parseInt(optSlider.value);
+    specVal.textContent = spec + '%';
+    optVal.textContent = opt + '%';
+
+    const swing = 1 + (spec/100)*6 + (opt/100)*3;
+    dailySwing.textContent = '±' + swing.toFixed(1) + '%';
+
+    const riskScore = (spec*0.6 + opt*0.4);
+    let label, color;
+    if (riskScore < 35){ label='낮음'; color='#2563eb'; }
+    else if (riskScore < 65){ label='중간'; color='#f43f5e'; }
+    else { label='높음'; color='#e11d48'; }
+    riskLabel.textContent = label;
+    riskLabel.style.color = color;
+    riskFill.style.width = riskScore + '%';
+    riskFill.style.background = color;
+  }
+
+  specSlider.addEventListener('input', updateSim);
+  optSlider.addEventListener('input', updateSim);
+  document.getElementById('simReset').addEventListener('click', () => {
+    specSlider.value = 40;
+    optSlider.value = 30;
+    updateSim();
+  });
+  updateSim();
+});
+</script>
+
+</body>
+</html>
