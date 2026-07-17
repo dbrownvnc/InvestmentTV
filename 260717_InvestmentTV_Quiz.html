@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>퀴즈 | 7월16일 멤버온리 — 30대 3개 기업 추가</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&family=Noto+Sans+KR:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#ffffff;
+  --bg-soft:#fafafa;
+  --text:#1a1a1a;
+  --text-soft:#777777;
+  --accent:#e11d48;
+  --accent-soft:#f43f5e;
+  --line:#e5e5e5;
+  --green:#16a34a;
+  --green-bg:#eafaf0;
+  --red-bg:#fdeaec;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{
+  background:var(--bg-soft);
+  color:var(--text);
+  font-family:'Noto Sans KR',sans-serif;
+  max-width:640px;
+  margin:0 auto;
+  padding-bottom:60px;
+}
+.serif{font-family:'Playfair Display',serif;}
+
+/* header */
+.top{
+  padding:36px 22px 24px;
+  background:#fff;
+  border-bottom:1px solid var(--line);
+}
+.top .kicker{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);font-weight:700;margin-bottom:10px;}
+.top h1{font-family:'Playfair Display',serif;font-weight:700;font-size:24px;line-height:1.35;margin-bottom:8px;}
+.top p{font-size:13.5px;color:var(--text-soft);}
+
+/* sticky scoreboard */
+.scoreboard{
+  position:sticky;top:0;z-index:50;
+  background:#1a1a1a;color:#fff;
+  padding:14px 22px;
+  display:flex;justify-content:space-between;align-items:center;
+  gap:10px;
+}
+.scoreboard .stat{text-align:center;flex:1;}
+.scoreboard .stat .n{font-family:'Playfair Display',serif;font-size:19px;font-weight:700;}
+.scoreboard .stat .l{font-size:10px;color:#aaa;letter-spacing:.03em;margin-top:2px;}
+.scoreboard .divider{width:1px;height:28px;background:rgba(255,255,255,.15);}
+.progress-track{height:5px;background:rgba(255,255,255,.15);border-radius:3px;overflow:hidden;margin-top:10px;}
+.progress-fill{height:100%;width:0%;background:#e11d48;transition:width .4s ease, background .4s ease;}
+
+/* questions */
+.q-list{padding:22px 16px;}
+.q-card{
+  background:#fff;border:1px solid var(--line);border-radius:8px;
+  padding:20px 18px;margin-bottom:16px;
+}
+.q-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;gap:10px;}
+.q-num{font-family:'Playfair Display',serif;font-weight:700;font-size:13px;color:var(--accent);}
+.q-badges{display:flex;gap:6px;}
+.badge{font-size:10px;padding:3px 9px;border-radius:12px;font-weight:700;letter-spacing:.02em;white-space:nowrap;}
+.badge.easy{background:#eafaf0;color:#16a34a;}
+.badge.medium{background:#fff4e0;color:#d97706;}
+.badge.hard{background:var(--red-bg);color:var(--accent);}
+.badge.type{background:var(--bg-soft);color:var(--text-soft);}
+.q-text{font-size:15px;font-weight:600;line-height:1.55;margin-bottom:14px;}
+
+/* MC options */
+.opt-list{display:flex;flex-direction:column;gap:8px;}
+.opt{
+  text-align:left;padding:12px 14px;border:1px solid var(--line);border-radius:6px;
+  background:#fff;font-size:14px;color:var(--text);cursor:pointer;font-family:'Noto Sans KR',sans-serif;
+  transition:background .15s, border-color .15s;display:flex;justify-content:space-between;align-items:center;
+}
+.opt:active{background:var(--bg-soft);}
+.opt.correct{background:var(--green-bg);border-color:var(--green);color:#0f5c2e;font-weight:700;}
+.opt.wrong{background:var(--red-bg);border-color:var(--accent);color:var(--accent);font-weight:700;}
+.opt:disabled, .opt[disabled]{cursor:default;opacity:.85;}
+.opt .tag{font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;}
+.opt.correct .tag{background:var(--green);color:#fff;}
+.opt.wrong .tag{background:var(--accent);color:#fff;}
+
+/* OX */
+.ox-list{display:flex;gap:10px;}
+.ox-btn{
+  flex:1;padding:16px;border:1px solid var(--line);border-radius:6px;background:#fff;
+  font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--text);cursor:pointer;
+}
+.ox-btn.correct{background:var(--green-bg);border-color:var(--green);color:#0f5c2e;}
+.ox-btn.wrong{background:var(--red-bg);border-color:var(--accent);color:var(--accent);}
+
+/* short answer */
+.short-row{display:flex;gap:8px;}
+.short-row input{
+  flex:1;padding:12px 14px;border:1px solid var(--line);border-radius:6px;font-size:14px;
+  font-family:'Noto Sans KR',sans-serif;
+}
+.short-row input:disabled{background:var(--bg-soft);}
+.short-row button{
+  padding:12px 18px;border:none;border-radius:6px;background:var(--accent);color:#fff;
+  font-weight:700;font-size:13px;cursor:pointer;white-space:nowrap;
+}
+.short-row button:disabled{background:var(--text-soft);}
+
+/* feedback */
+.feedback{
+  margin-top:14px;padding:14px 15px;border-radius:6px;font-size:13px;line-height:1.65;
+  display:none;
+}
+.feedback.show{display:block;}
+.feedback.correct-fb{background:var(--green-bg);border-left:3px solid var(--green);}
+.feedback.wrong-fb{background:var(--red-bg);border-left:3px solid var(--accent);}
+.feedback .fb-title{font-weight:700;margin-bottom:6px;font-size:13px;}
+.feedback .fb-title.c{color:#0f5c2e;}
+.feedback .fb-title.w{color:var(--accent);}
+.feedback .fb-answer{font-weight:700;margin-bottom:6px;}
+.feedback .fb-source{color:var(--text-soft);font-size:12px;margin-top:6px;padding-top:6px;border-top:1px dashed var(--line);}
+
+/* result modal */
+.result-wrap{display:none;padding:0 16px;}
+.result-wrap.show{display:block;}
+.result-card{
+  background:#1a1a1a;color:#fff;border-radius:10px;padding:34px 24px;text-align:center;margin-bottom:20px;
+}
+.result-card .grade{font-family:'Playfair Display',serif;font-size:56px;font-weight:800;color:var(--accent-soft);margin-bottom:6px;}
+.result-card .score{font-size:15px;color:#ddd;margin-bottom:14px;}
+.result-card .msg{font-size:13.5px;color:#aaa;line-height:1.6;}
+.retry-btn{
+  width:100%;padding:14px;border:none;border-radius:6px;background:var(--accent);color:#fff;
+  font-weight:700;font-size:14px;cursor:pointer;
+}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <div class="kicker">CIA.chat · Quiz</div>
+  <h1>7월16일 멤버온리 방송 이해도 체크</h1>
+  <p>30대 그룹 추가 종목과 오늘의 4대 하락 요인, 제대로 이해했는지 확인해보세요.</p>
+</div>
+
+<div class="scoreboard">
+  <div class="stat"><div class="n" id="solvedCount">0/10</div><div class="l">푼 문제</div></div>
+  <div class="divider"></div>
+  <div class="stat"><div class="n" id="correctCount">0</div><div class="l">맞힌 문제</div></div>
+  <div class="divider"></div>
+  <div class="stat"><div class="n" id="accuracy">0%</div><div class="l">정답률</div></div>
+</div>
+<div style="padding:0 22px 12px;background:#1a1a1a;">
+  <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+</div>
+
+<div class="q-list" id="qList"></div>
+
+<div class="result-wrap" id="resultWrap">
+  <div class="result-card">
+    <div class="grade" id="finalGrade">A</div>
+    <div class="score" id="finalScore">10 / 10 문제 정답</div>
+    <div class="msg" id="finalMsg">완벽합니다! 방송 내용을 확실히 이해하셨네요.</div>
+  </div>
+  <button class="retry-btn" id="retryBtn">다시 풀기</button>
+</div>
+
+<script>
+const QUIZ_DATA = [
+  {
+    id:1, type:'mc', difficulty:'easy',
+    question:'다음 중 오늘 미 증시 하락 이유 4가지에 해당하지 않는 것은?',
+    options:['유가 상승과 국채 이자율 상승','소매 판매 부진','연준의 전격적인 금리 인하 발표','중국 창신 메모리 IPO 소식'],
+    answer:2,
+    explanation:'오늘 하락 이유 4가지는 ① 유가·국채이자율 상승 ② TSMC 실적 호조에도 반도체 섹터 지출 우려 ③ 소매판매 부진 ④ 창신 메모리 테크놀로지 IPO 소식이었습니다. 금리 인하 발표는 언급되지 않았습니다.',
+    source:'"유가 상승과 국채이자율, 특히 10년 국채이자율이 상승했습니다... 소매 판매가 예상치를 못 했어요... 창신 메모리 기술 테크놀로지라는 회사가... IPO 나간다는 소식"'
+  },
+  {
+    id:2, type:'ox', difficulty:'easy',
+    question:'TSMC는 이번 실적 발표에서 예상 EPS를 하회했다. (O/X)',
+    answer:'X',
+    explanation:'TSMC의 EPS는 예상치를 77%나 상회했습니다. 다만 실적이 좋았음에도 반도체 섹터 전체의 지출 우려로 주가는 4% 가까이 하락했습니다.',
+    source:'"TSMC가 실적은 굉장히 예상 실적을 상위했어요... TSMC 77% EPS가 77% 했는데 주가는 4% 빠졌습니다."'
+  },
+  {
+    id:3, type:'mc', difficulty:'easy',
+    question:'비트코인이 5월 31일 이후 처음으로 어떤 지표 위에서 마감했다고 언급됐나?',
+    options:['20일 이동평균선','50일 이동평균선','120일 이동평균선','200일 이동평균선'],
+    answer:1,
+    explanation:'비트코인이 5월 30일 이후 처음으로 50일 이동평균선 위로 마감하며 단기적으로 강세 신호로 해석됐습니다.',
+    source:'"비트코인이 지금 락바름으로 갔어요. 그래서 5월 30일 이후 처음 50일 이동평균선 위로 마감이 됐습니다."'
+  },
+  {
+    id:4, type:'short', difficulty:'medium',
+    question:'S&P 500 종목 중 50일 이동평균선 위에 있는 종목의 비율은 몇 %로 언급됐나? (숫자만 입력, 예: 62)',
+    answer:'62',
+    explanation:'S&P500 중 50일 이동평균 위 비율이 62%로, 건강한 수준이라고 설명했습니다. 이는 시장의 확산도(market breadth)가 개선되고 있다는 신호입니다.',
+    source:'"S&P 500 중에 50의 이동 평균 위가 62%. 건강한 수준입니다."'
+  },
+  {
+    id:5, type:'mc', difficulty:'medium',
+    question:'이번 방송에서 데이빗 형님이 30대 그룹에 새로 추가한 3개 기업이 아닌 것은?',
+    options:['GE 버노바 (GEV)','커민스 (CMI)','마이크로소프트 (MSFT)','엔비디아 (NVDA)'],
+    answer:3,
+    explanation:'오늘 추가된 3개 기업은 GE 버노바, 커민스, 마이크로소프트입니다. 엔비디아는 "데뷔형 30대 그룹 아닙니다"라고 명확히 언급되며 제외 대상으로 다뤄졌습니다.',
+    source:'"데뷔 경기 30대 추가 오늘 3개니까... 회사 이름은 GV(GEV)... 커민스입니다... 마이크로소프트입니다... 엔비디아는 데뷔형 30대 그룹 아닙니다."'
+  },
+  {
+    id:6, type:'mc', difficulty:'medium',
+    question:'GE 버노바(GEV)의 목표 주가로 언급된 금액은?',
+    options:['$860','$1,200','$1,350','$1,500'],
+    answer:2,
+    explanation:'GEV의 목표가는 $1,350로, 현재가 대비 약 30%의 상승 여력이 있다고 설명했습니다.',
+    source:'"타겟 프라이즈가 1350%니까 지금보다 한 30% 앞사이드가 있습니다."'
+  },
+  {
+    id:7, type:'short', difficulty:'medium',
+    question:'중국 최대 D램 기업으로 언급된 창신 메모리 테크놀로지의 티커명은? (영문 4자)',
+    answer:'CXMT',
+    explanation:'창신 메모리 테크놀로지는 CXMT라는 티커로 IPO에 나올 것으로 언급됐습니다. 후베이성 우한에 본사가 있으며 D램을 설계·생산하는 중국 최대 기업입니다.',
+    source:'"장신 메모리 테크놀로지 CXMT라는 티커로 아마 IPO로 나올 것 같은데... D램 기업 중에서도 중국 최대 기업입니다."'
+  },
+  {
+    id:8, type:'mc', difficulty:'hard',
+    question:'커민스(CMI)의 DCF(현금흐름할인법) 추정 가치로 언급된 금액은?',
+    options:['$633.5','$793','$860','$499'],
+    answer:1,
+    explanation:'CMI의 내재가치(Intrinsic Value)는 $633.5, DCF는 $793으로 언급됐습니다. 목표주가 $860보다 두 값 모두 낮아, 앞으로의 이익 성장 기대가 반영된 것으로 설명했습니다.',
+    source:'"인트로시틱 밸류가 633불 DCF가 793불이니까 성장 속도가 훨씬 더 빠르다는 얘기입니다."'
+  },
+  {
+    id:9, type:'short', difficulty:'hard',
+    question:'마이크로소프트의 7월 11일 목표가 변경 내역은? "OOO불에서 OOO불로" 형식으로 답하세요.',
+    answer:'467에서 499로',
+    explanation:'마이크로소프트의 목표가는 7월 11일 기준 $467에서 $499로 상향 조정됐습니다.',
+    source:'"7월 11일 목표가 변경이 467불에서 499불로 변경이 됐습니다."'
+  },
+  {
+    id:10, type:'mc', difficulty:'medium',
+    question:'빌 게이츠의 현재 마이크로소프트 지분율은 대략 몇 %로 언급됐나?',
+    options:['약 1%','약 5%','약 9%','약 15%'],
+    answer:0,
+    explanation:'빌 게이츠의 지분은 지난 6개월간 크게 매도되어 현재 1%대에 불과하며, 이 때문에 그의 개인 이슈가 회사에 미치는 영향이 제한적이라고 재평가해 마이크로소프트를 다시 편입했습니다.',
+    source:'"빌 게이츠가 지난 6개월 동안 마이크로소프트를 상당히 많이 팔았습니다... 지금 1%대 정도밖에 남아있지 않아요."'
+  }
+];
+
+let state = { solved:0, correct:0 };
+
+const diffLabel = { easy:'쉬움', medium:'보통', hard:'어려움' };
+const typeLabel = { mc:'객관식', ox:'OX', short:'단답형' };
+
+function renderQuestions(){
+  const list = document.getElementById('qList');
+  list.innerHTML = '';
+  QUIZ_DATA.forEach((q, idx) => {
+    const card = document.createElement('div');
+    card.className = 'q-card';
+    card.id = 'card-' + q.id;
+
+    let bodyHtml = '';
+    if (q.type === 'mc') {
+      bodyHtml = `<div class="opt-list" id="opts-${q.id}">` +
+        q.options.map((opt, i) => `<button class="opt" data-idx="${i}" onclick="answerMC(${q.id}, ${i})"><span>${opt}</span></button>`).join('') +
+        `</div>`;
+    } else if (q.type === 'ox') {
+      bodyHtml = `<div class="ox-list" id="opts-${q.id}">
+        <button class="ox-btn" data-val="O" onclick="answerOX(${q.id}, 'O')">O</button>
+        <button class="ox-btn" data-val="X" onclick="answerOX(${q.id}, 'X')">X</button>
+      </div>`;
+    } else if (q.type === 'short') {
+      bodyHtml = `<div class="short-row" id="opts-${q.id}">
+        <input type="text" id="input-${q.id}" placeholder="답을 입력하세요">
+        <button onclick="answerShort(${q.id})">제출</button>
+      </div>`;
+    }
+
+    card.innerHTML = `
+      <div class="q-head">
+        <div class="q-num">Q${idx+1}</div>
+        <div class="q-badges">
+          <span class="badge type">${typeLabel[q.type]}</span>
+          <span class="badge ${q.difficulty}">${diffLabel[q.difficulty]}</span>
+        </div>
+      </div>
+      <div class="q-text">${q.question}</div>
+      ${bodyHtml}
+      <div class="feedback" id="fb-${q.id}"></div>
+    `;
+    list.appendChild(card);
+  });
+}
+
+function normalize(s){
+  return s.toString().trim().toLowerCase().replace(/\s+/g,'').replace(/[.,]/g,'');
+}
+
+function showFeedback(q, isCorrect, correctText){
+  const fb = document.getElementById('fb-' + q.id);
+  fb.classList.add('show', isCorrect ? 'correct-fb' : 'wrong-fb');
+  fb.innerHTML = `
+    <div class="fb-title ${isCorrect ? 'c' : 'w'}">${isCorrect ? '✓ 정답!' : '✗ 오답'}</div>
+    ${!isCorrect ? `<div class="fb-answer">정답: ${correctText}</div>` : ''}
+    <div>${q.explanation}</div>
+    <div class="fb-source">📌 원본 근거: ${q.source}</div>
+  `;
+}
+
+function updateScoreboard(){
+  document.getElementById('solvedCount').textContent = state.solved + '/10';
+  document.getElementById('correctCount').textContent = state.correct;
+  const acc = state.solved ? Math.round((state.correct/state.solved)*100) : 0;
+  document.getElementById('accuracy').textContent = acc + '%';
+  const fill = document.getElementById('progressFill');
+  fill.style.width = (state.solved/10*100) + '%';
+  if (acc < 40) fill.style.background = '#e11d48';
+  else if (acc < 70) fill.style.background = '#d97706';
+  else fill.style.background = '#16a34a';
+
+  if (state.solved === 10) {
+    setTimeout(showResult, 300);
+  }
+}
+
+function answerMC(qid, idx){
+  const q = QUIZ_DATA.find(x => x.id === qid);
+  const opts = document.querySelectorAll(`#opts-${qid} .opt`);
+  if (opts[0].disabled) return;
+  const isCorrect = idx === q.answer;
+  opts.forEach((btn, i) => {
+    btn.disabled = true;
+    if (i === q.answer) btn.classList.add('correct');
+    if (i === idx && i !== q.answer) btn.classList.add('wrong');
+  });
+  state.solved++;
+  if (isCorrect) state.correct++;
+  showFeedback(q, isCorrect, q.options[q.answer]);
+  updateScoreboard();
+}
+
+function answerOX(qid, val){
+  const q = QUIZ_DATA.find(x => x.id === qid);
+  const btns = document.querySelectorAll(`#opts-${qid} .ox-btn`);
+  if (btns[0].disabled) return;
+  const isCorrect = val === q.answer;
+  btns.forEach(btn => {
+    btn.disabled = true;
+    if (btn.dataset.val === q.answer) btn.classList.add('correct');
+    if (btn.dataset.val === val && val !== q.answer) btn.classList.add('wrong');
+  });
+  state.solved++;
+  if (isCorrect) state.correct++;
+  showFeedback(q, isCorrect, q.answer);
+  updateScoreboard();
+}
+
+function answerShort(qid){
+  const q = QUIZ_DATA.find(x => x.id === qid);
+  const input = document.getElementById('input-' + qid);
+  const btn = input.nextElementSibling;
+  if (input.disabled) return;
+  const userVal = input.value;
+  if (!userVal.trim()) { input.focus(); return; }
+  const isCorrect = normalize(userVal) === normalize(q.answer);
+  input.disabled = true;
+  btn.disabled = true;
+  input.style.borderColor = isCorrect ? '#16a34a' : '#e11d48';
+  input.style.background = isCorrect ? '#eafaf0' : '#fdeaec';
+  state.solved++;
+  if (isCorrect) state.correct++;
+  showFeedback(q, isCorrect, q.answer);
+  updateScoreboard();
+}
+
+function showResult(){
+  const wrap = document.getElementById('resultWrap');
+  wrap.classList.add('show');
+  const pct = Math.round((state.correct/10)*100);
+  let grade, msg;
+  if (pct >= 90) { grade='A'; msg='완벽합니다! 방송 내용을 확실히 이해하셨네요.'; }
+  else if (pct >= 70) { grade='B'; msg='잘하셨어요! 조금만 더 복습하면 완벽합니다.'; }
+  else if (pct >= 50) { grade='C'; msg='기본은 갖췄어요. 지난 방송을 한 번 더 보시길 추천합니다.'; }
+  else { grade='D'; msg='공부가 더 필요합니다. 원본 방송을 다시 확인해보세요.'; }
+  document.getElementById('finalGrade').textContent = grade;
+  document.getElementById('finalScore').textContent = `${state.correct} / 10 문제 정답 (${pct}%)`;
+  document.getElementById('finalMsg').textContent = msg;
+  wrap.scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+document.getElementById('retryBtn').addEventListener('click', () => {
+  state = { solved:0, correct:0 };
+  document.getElementById('resultWrap').classList.remove('show');
+  updateScoreboard();
+  renderQuestions();
+  window.scrollTo({top:0, behavior:'smooth'});
+});
+
+renderQuestions();
+updateScoreboard();
+</script>
+
+</body>
+</html>

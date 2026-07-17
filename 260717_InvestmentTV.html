@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>3일 연속 하락, 그래도 지켜야 할 것들 | CIA.chat</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,500&family=Noto+Sans+KR:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<style>
+:root{
+  --bg:#ffffff;
+  --bg-soft:#fafafa;
+  --text:#1a1a1a;
+  --text-soft:#777777;
+  --accent:#e11d48;
+  --accent-soft:#f43f5e;
+  --line:#e5e5e5;
+  --blue:#2563eb;
+  --gray:#6b7280;
+  --black:#1a1a1a;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Noto Sans KR',sans-serif;
+  line-height:1.75;
+  font-weight:400;
+  -webkit-font-smoothing:antialiased;
+  max-width:640px;
+  margin:0 auto;
+  overflow-x:hidden;
+}
+.serif{font-family:'Playfair Display',serif;}
+
+/* ---------- fade / chart pattern ---------- */
+.fade-in{opacity:0;transform:translateY(18px);transition:opacity .7s ease, transform .7s ease;}
+.fade-in.visible{opacity:1;transform:translateY(0);}
+.chart-container{position:relative;max-height:340px;}
+.chart-container canvas{opacity:0;transition:opacity .4s ease;max-height:300px;}
+.chart-container.chart-ready canvas{opacity:1;}
+
+/* ---------- masthead ---------- */
+.masthead{
+  padding:52px 24px 30px;
+  border-bottom:1px solid var(--line);
+}
+.masthead .kicker{
+  font-size:12px;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  color:var(--accent);
+  font-weight:700;
+  margin-bottom:14px;
+}
+.masthead h1{
+  font-family:'Playfair Display',serif;
+  font-weight:700;
+  font-size:34px;
+  line-height:1.28;
+  letter-spacing:-.01em;
+  margin-bottom:16px;
+}
+.masthead .sub{
+  color:var(--text-soft);
+  font-size:15px;
+  line-height:1.65;
+}
+.masthead .meta{
+  display:flex;
+  gap:14px;
+  margin-top:22px;
+  font-size:12px;
+  color:var(--text-soft);
+  letter-spacing:.02em;
+}
+.masthead .meta span:not(:last-child)::after{content:'·';margin-left:14px;color:var(--line);}
+
+/* ---------- section ---------- */
+section{padding:44px 24px;border-bottom:1px solid var(--line);}
+section.dark{background:var(--black);color:#fff;}
+section.dark .eyebrow{color:var(--accent-soft);}
+section.soft{background:var(--bg-soft);}
+.eyebrow{
+  font-family:'Playfair Display',serif;
+  font-style:italic;
+  color:var(--accent);
+  font-size:14px;
+  margin-bottom:8px;
+}
+h2.title{
+  font-family:'Playfair Display',serif;
+  font-weight:700;
+  font-size:25px;
+  line-height:1.35;
+  margin-bottom:18px;
+  letter-spacing:-.01em;
+}
+p{margin-bottom:14px;font-size:15.5px;color:var(--text);}
+section.dark p{color:#e5e5e5;}
+.lead{font-size:16.5px;font-weight:500;}
+
+/* ---------- risk list ---------- */
+.risk-list{list-style:none;counter-reset:risk;margin-top:20px;}
+.risk-item{
+  display:flex;gap:16px;padding:18px 0;border-top:1px solid rgba(255,255,255,.12);
+  counter-increment:risk;
+}
+.risk-item:first-child{border-top:1px solid rgba(255,255,255,.12);}
+.risk-num{
+  font-family:'Playfair Display',serif;font-style:italic;font-weight:600;
+  font-size:22px;color:var(--accent-soft);min-width:34px;
+}
+.risk-body h3{font-size:15.5px;font-weight:700;margin-bottom:6px;color:#fff;}
+.risk-body p{font-size:14px;color:#bbb;margin-bottom:0;}
+
+/* ---------- table ---------- */
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:2px;}
+table{width:100%;border-collapse:collapse;font-size:13px;min-width:520px;}
+thead th{
+  background:var(--accent);color:#fff;text-align:left;padding:10px 12px;
+  font-weight:600;font-size:12px;letter-spacing:.02em;white-space:nowrap;
+}
+tbody td{padding:10px 12px;border-top:1px solid var(--line);background:var(--bg-soft);white-space:nowrap;}
+tbody tr:nth-child(odd) td{background:#fff;}
+.pos{color:var(--accent);font-weight:700;}
+
+/* ---------- pill / badge ---------- */
+.badge{
+  display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;
+  letter-spacing:.02em;
+}
+.badge.buy{background:#fde8ec;color:var(--accent);}
+
+/* ---------- stock card ---------- */
+.stock-card{
+  background:#fff;border:1px solid var(--line);border-radius:4px;padding:22px;margin-bottom:18px;
+}
+.stock-card .head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;}
+.stock-card h3{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;}
+.stock-card .ticker{font-size:12px;color:var(--text-soft);letter-spacing:.05em;}
+.kv-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px 16px;margin-top:14px;}
+.kv{border-top:1px solid var(--line);padding-top:8px;}
+.kv .k{font-size:11px;color:var(--text-soft);margin-bottom:2px;}
+.kv .v{font-size:14.5px;font-weight:700;}
+.kv .v.accent{color:var(--accent);}
+
+/* ---------- pros cons ---------- */
+.pc-grid{display:grid;grid-template-columns:1fr;gap:14px;margin-top:16px;}
+.pc-box{border-radius:4px;padding:16px 18px;}
+.pc-box.pro{background:#fdeef0;border-left:3px solid var(--accent);}
+.pc-box.con{background:var(--bg-soft);border-left:3px solid var(--gray);}
+.pc-box h4{font-size:13px;font-weight:700;margin-bottom:8px;}
+.pc-box ul{padding-left:18px;font-size:13.5px;color:var(--text-soft);}
+.pc-box li{margin-bottom:5px;}
+
+/* ---------- simulator ---------- */
+.sim-box{
+  background:var(--bg-soft);border:1px solid var(--line);border-radius:6px;padding:22px 20px;margin-top:18px;
+}
+.sim-row{margin-bottom:18px;}
+.sim-row label{display:flex;justify-content:space-between;font-size:13px;font-weight:600;margin-bottom:8px;}
+.sim-row label .val{color:var(--accent);font-family:'Playfair Display',serif;font-weight:700;}
+input[type=range]{
+  -webkit-appearance:none;width:100%;height:4px;border-radius:2px;background:var(--line);outline:none;
+}
+input[type=range]::-webkit-slider-thumb{
+  -webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:var(--accent);cursor:pointer;
+  border:3px solid #fff;box-shadow:0 0 0 1px var(--accent);
+}
+input[type=range]::-moz-range-thumb{
+  width:20px;height:20px;border-radius:50%;background:var(--accent);cursor:pointer;border:3px solid #fff;box-shadow:0 0 0 1px var(--accent);
+}
+.sim-result{
+  display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:18px;
+}
+.sim-result .box{background:#fff;border:1px solid var(--line);border-radius:4px;padding:14px;text-align:center;}
+.sim-result .box .lbl{font-size:11px;color:var(--text-soft);margin-bottom:4px;}
+.sim-result .box .num{font-family:'Playfair Display',serif;font-size:24px;font-weight:700;}
+.sim-note{font-size:12px;color:var(--text-soft);margin-top:14px;line-height:1.6;}
+.reset-btn{
+  margin-top:16px;width:100%;padding:11px;border:1px solid var(--accent);background:#fff;color:var(--accent);
+  border-radius:4px;font-family:'Noto Sans KR',sans-serif;font-weight:600;font-size:13px;cursor:pointer;
+  transition:background .2s, color .2s;
+}
+.reset-btn:active{background:var(--accent);color:#fff;}
+
+/* ---------- quote ---------- */
+.quote-block{
+  border-left:3px solid var(--accent);padding:18px 20px;margin:20px 0;background:var(--bg-soft);
+  font-family:'Playfair Display',serif;font-style:italic;font-size:16px;line-height:1.7;
+}
+.quote-block cite{display:block;margin-top:10px;font-style:normal;font-size:12px;color:var(--text-soft);font-family:'Noto Sans KR',sans-serif;}
+
+/* ---------- footer ---------- */
+footer{padding:36px 24px 60px;text-align:center;}
+footer .brand{font-family:'Playfair Display',serif;font-weight:700;font-size:16px;letter-spacing:.02em;margin-bottom:8px;}
+footer p{font-size:11.5px;color:var(--text-soft);line-height:1.7;}
+
+.divider{width:36px;height:2px;background:var(--accent);margin:18px 0;}
+.small-note{font-size:12.5px;color:var(--text-soft);background:var(--bg-soft);border-radius:4px;padding:12px 14px;margin-top:14px;}
+</style>
+</head>
+<body>
+
+<div class="masthead fade-in">
+  <div class="kicker">CIA.chat · Market Report</div>
+  <h1>3일 연속 하락장, 그래도 <span style="color:var(--accent)">덜 떨어지는 것</span>이 실력이다</h1>
+  <p class="sub">중국 메모리 반도체의 부상과 유가 상승이 겹치며 반도체주가 폭락한 하루. 30대 그룹에 GE 버노바, 커민스, 마이크로소프트가 새로 추가됐다.</p>
+  <div class="meta">
+    <span>2026.07.17</span>
+    <span>반도체 · 매크로</span>
+    <span>7월 16일 멤버온리 방송</span>
+  </div>
+</div>
+
+<section class="dark fade-in">
+  <div class="eyebrow">Today's Risk</div>
+  <h2 class="title" style="color:#fff">오늘 미 증시, 왜 하락했나 — 4가지 이유</h2>
+  <p class="lead">미 증시가 3일 연속 하락했다. 특히 반도체주는 폭락에 가까웠다. 원인은 하나가 아니라 네 가지가 겹쳤다.</p>
+  <ul class="risk-list">
+    <li class="risk-item">
+      <div class="risk-num">01</div>
+      <div class="risk-body">
+        <h3>유가 상승과 국채 이자율 상승</h3>
+        <p>이란과의 갈등이 다시 불거지며 유가와 10년물 국채 이자율이 함께 올랐다. 아직 물가가 오른 건 아니지만 "오를 수도 있다"는 공포심이 투자 심리를 위축시켰다.</p>
+      </div>
+    </li>
+    <li class="risk-item">
+      <div class="risk-num">02</div>
+      <div class="risk-body">
+        <h3>TSMC 실적 서프라이즈에도 반도체 섹터 매도</h3>
+        <p>TSMC(대만)는 예상 실적(EPS)을 77%나 상회했지만 주가는 오히려 4% 빠졌다. 실적이 좋아도 "반도체 섹터 전체의 지출이 너무 크다"는 우려가 더 크게 작용했다.</p>
+      </div>
+    </li>
+    <li class="risk-item">
+      <div class="risk-num">03</div>
+      <div class="risk-body">
+        <h3>소매 판매 부진, 소비 둔화 우려</h3>
+        <p>6월 소매 판매(자동차 제외)가 시장 예상치를 하회했다. 미국 경제의 70%를 차지하는 소비 지표라 투자자들이 예민하게 반응했다.</p>
+      </div>
+    </li>
+    <li class="risk-item">
+      <div class="risk-num">04</div>
+      <div class="risk-body">
+        <h3>중국 창신 메모리(ChangXin Memory Technologies) IPO 소식</h3>
+        <p>중국 최대 D램(메모리 반도체, 데이터를 저장하는 반도체 칩) 기업 CXMT가 IPO를 준비한다는 소식. 기술력은 SK하이닉스·마이크론에 못 미치지만, 중국 내 1위·세계 4위권으로 추정되며 위협 요인으로 부상했다.</p>
+      </div>
+    </li>
+  </ul>
+  <p class="small-note" style="background:rgba(255,255,255,.08);color:#ccc;">💡 CXMT는 아직 첨단 공정(10나노 이하)에서 미국·한국 기업을 따라오기 어렵다. 다만 국가 차원의 지원과 기술 유출을 통해 격차를 빠르게 좁히고 있다는 평가다.</p>
+</section>
+
+<section class="fade-in">
+  <div class="eyebrow">Market Breadth</div>
+  <h2 class="title">겉보기보다 시장은 건강하다 — 확산도 개선</h2>
+  <p>지수만 보면 무섭지만, 시장 전체의 폭(market breadth, 얼마나 많은 종목이 함께 오르는지)은 오히려 개선되고 있다. S&P500 종목 중 50일 이동평균선 위에 있는 비율이 62%로 건강한 수준이다.</p>
+  <div class="chart-container fade-in" style="margin:20px 0;">
+    <canvas id="breadthChart" height="220"></canvas>
+  </div>
+  <p>소형주가 강세를 보이고 동일가중지수가 상승하는 것은 "쏠림"이 완화되고 있다는 신호다. 반도체·IT가 아니어도 금융·헬스케어 등 다른 섹터에서 돈을 벌 기회가 많다는 뜻이다. 다만 여전히 메가캡 실적과 반도체 가이던스가 당분간 시장 방향을 좌우할 것이다.</p>
+</section>
+
+<section class="soft fade-in">
+  <div class="eyebrow">Stocks on the Move</div>
+  <h2 class="title">오늘 움직인 종목들</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>종목</th><th>변동</th><th>이유</th></tr></thead>
+      <tbody>
+        <tr><td>TSMC (TSM)</td><td class="pos">-4%</td><td>실적 호조에도 반도체 섹터 지출 우려로 매도</td></tr>
+        <tr><td>SOX 지수</td><td class="pos">-2% (고점대비 -15%)</td><td>SK하이닉스 미 IPO 이후 폭락 지속 + CXMT 소식</td></tr>
+        <tr><td>UnitedHealth (UNH)</td><td class="pos">+6%</td><td>실적 상회 + 연간 가이던스 상향</td></tr>
+        <tr><td>AtaiBeckley (ATAI)</td><td class="pos">+34%</td><td>Eli Lilly가 28억 달러에 인수 발표</td></tr>
+        <tr><td>Abbott Labs (ABT)</td><td class="pos">+4%</td><td>실적 상회 + 2026년 EPS 가이던스 상향</td></tr>
+        <tr><td>Google</td><td class="pos">-4%</td><td>제미나이 3.5 프로 출시가 60~120일 지연 전망</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="fade-in">
+  <div class="eyebrow">Simulation</div>
+  <h2 class="title">섹터 비중, 얼마나 갖고 있어야 덜 떨어질까</h2>
+  <p>"떨어질 때 덜 떨어지는 것"이 "오를 때 많이 오르는 것"만큼 중요하다는 게 오늘 방송의 핵심 메시지다. 반도체·IT 비중을 얼마나 가져가느냐에 따라 최근 하락장에서 포트폴리오가 얼마나 방어됐을지 직접 확인해보자.</p>
+  <div class="sim-box">
+    <div class="sim-row">
+      <label>반도체·IT 섹터 비중 <span class="val" id="itWeightLabel">50%</span></label>
+      <input type="range" id="itWeight" min="0" max="100" value="50" step="5">
+    </div>
+    <div class="sim-result">
+      <div class="box">
+        <div class="lbl">예상 포트폴리오 하락률</div>
+        <div class="num" id="portDrop">-9.0%</div>
+      </div>
+      <div class="box">
+        <div class="lbl">SOX 지수 대비</div>
+        <div class="num" id="vsSox" style="color:var(--gray)">덜 하락</div>
+      </div>
+    </div>
+    <p class="sim-note">가정: 반도체·IT 섹터는 최근 고점 대비 -15%(SOX), 그 외 섹터(인더스트리얼·헬스케어·금융 등)는 평균 -3% 수준 하락했다고 가정한 단순 가중평균 시뮬레이션. 실제 방송에서 90% 이상을 반도체·IT에 몰아둔 멤버는 20~30%대 하락을 겪었다.</p>
+    <button class="reset-btn" id="resetSim">50%로 초기화</button>
+  </div>
+</section>
+
+<section class="dark fade-in">
+  <div class="eyebrow">M&A Watch</div>
+  <h2 class="title" style="color:#fff">인수합병(M&A) 잠재 후보군</h2>
+  <p>사모펀드와 벤처캐피탈의 '드라이파우더(투자 대기 자금)'가 사상 최고 수준이다. 특히 AI 인프라·칩 분야에 자금이 집중되고 있다.</p>
+  <div class="table-wrap" style="border-color:rgba(255,255,255,.15);">
+    <table>
+      <thead><tr><th>기업</th><th>전문 분야</th><th>잠재 인수 후보</th></tr></thead>
+      <tbody style="color:#111;">
+        <tr><td>Groq</td><td>초고속 추론 칩</td><td>Big Tech, Broadcom, AMD</td></tr>
+        <tr><td>SambaNova</td><td>풀스택 AI 시스템</td><td>Intel, Google, PE 펀드</td></tr>
+        <tr><td>Cerebras</td><td>웨이퍼 스케일 칩</td><td>전략적 구매자</td></tr>
+        <tr><td>d-Matrix</td><td>인메모리 컴퓨팅</td><td>NVIDIA 생태계 기업</td></tr>
+        <tr><td>Tenstorrent</td><td>RISC-V AI 칩</td><td>AMD, Intel</td></tr>
+        <tr><td>SiFive</td><td>RISC-V 프로세서</td><td>Intel, Qualcomm</td></tr>
+        <tr><td>Revolution Medicines</td><td>정밀 종양학</td><td>대형 제약사</td></tr>
+        <tr><td>AeroVironment</td><td>무인 항공기(드론), 국방</td><td>Lockheed Martin, RTX, Northrop</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p style="margin-top:16px;">그 외 눈여겨볼 후보: <b style="color:#fff">Perplexity</b>(AI 검색), <b style="color:#fff">Scale AI</b>(데이터 레이블링), <b style="color:#fff">11Labs</b>(AI 음성 합성), <b style="color:#fff">Tempus</b>(AI 정밀의학), <b style="color:#fff">Databricks</b>, <b style="color:#fff">CoreWeave</b>(AI 클라우드), <b style="color:#fff">Anduril</b>(AI 국방, 팔란티어 경쟁사).</p>
+</section>
+
+<section class="fade-in">
+  <div class="eyebrow">Bitcoin</div>
+  <h2 class="title">비트코인, 50일선 위로 복귀</h2>
+  <p>비트코인이 5월 31일 이후 처음으로 50일 이동평균선 위에서 마감했다. 이번 주 인플레이션 지표(CPI)가 예상보다 양호했고 달러가 약세를 보이며 단기적으로 강세 신호가 나오고 있다. 투자자 평균 매입가는 7만 8천 달러에서 7만 6천 달러로 낮아졌다. 8만 달러대를 다시 넘어설 수 있을지가 관건이다.</p>
+  <p style="font-size:13px;color:var(--text-soft);">직접 매수보다는 현물 ETF 활용을 권장하며, 그 중에서도 블랙록 IBIT가 2026년 누적 기준 최대 자금 유입으로 시장 점유율 1위를 지키고 있다.</p>
+</section>
+
+<section class="soft fade-in">
+  <div class="eyebrow">Earnings Calendar</div>
+  <h2 class="title">다음 주 주요 실적 발표</h2>
+  <p>흑자 전환 종목은 발표 후 상승 속도가 유독 빠른 경우가 많다. 이번엔 인텔(INTC)이 그 후보다.</p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>종목</th><th>시가총액</th><th>컨센서스 EPS</th><th>전년 EPS</th><th>YoY</th></tr></thead>
+      <tbody>
+        <tr><td>INTC</td><td>$517.6B</td><td>$0.10</td><td>-$0.26</td><td class="pos">흑자전환</td></tr>
+        <tr><td>RTX</td><td>$263.8B</td><td>$1.66</td><td>$1.56</td><td class="pos">+6.4%</td></tr>
+        <tr><td>TMUS</td><td>$203.0B</td><td>$2.52</td><td>$2.84</td><td>-11.3%</td></tr>
+        <tr><td>TMO</td><td>$198.9B</td><td>$5.71</td><td>$5.36</td><td class="pos">+6.5%</td></tr>
+        <tr><td>SAP</td><td>$191.5B</td><td>$2.00</td><td>$1.70</td><td class="pos">+17.6%</td></tr>
+        <tr><td>UNP</td><td>$171.2B</td><td>$3.20</td><td>$3.03</td><td class="pos">+5.6%</td></tr>
+        <tr><td>TTE</td><td>$169.5B</td><td>$3.07</td><td>$1.57</td><td class="pos">+95.5%</td></tr>
+        <tr><td>LMT</td><td>$118.6B</td><td>$7.29</td><td>$7.29</td><td>0.0%</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="fade-in">
+  <div class="eyebrow">30대 그룹 추가 ①</div>
+  <span class="badge buy" style="margin-bottom:14px;display:inline-block;">신규 편입</span>
+  <h2 class="title">GE 버노바 (GEV) — AI 전력 인프라의 핵심</h2>
+  <p>인더스트리얼(산업재) 섹터, 라지캡 블렌드(대형주 중 성장·가치를 함께 지닌 성격) 종목. AI 데이터센터가 폭증하며 가장 먼저 필요한 것은 결국 <b>전기</b>다. 신규 원전은 10년씩 걸리는 반면, 가스터빈과 SMR(소형모듈원전)은 지금 당장 대응 가능한 대안이다.</p>
+  <div class="stock-card">
+    <div class="head">
+      <div><h3>GE Vernova</h3><div class="ticker">NYSE : GEV</div></div>
+    </div>
+    <div class="kv-grid">
+      <div class="kv"><div class="k">목표 주가</div><div class="v accent">$1,350</div></div>
+      <div class="kv"><div class="k">2026년 예상 매출</div><div class="v">$45.6B</div></div>
+      <div class="kv"><div class="k">수주 잔고</div><div class="v">$163B</div></div>
+      <div class="kv"><div class="k">2026 EPS → 2027 EPS</div><div class="v">$16.05 → $25.00</div></div>
+      <div class="kv"><div class="k">자유현금흐름(2026E)</div><div class="v">약 $7B</div></div>
+      <div class="kv"><div class="k">연 배당</div><div class="v accent">$1 → $2 (2배 인상)</div></div>
+    </div>
+  </div>
+  <p style="font-size:13.5px;color:var(--text-soft);">부문별로는 전동화(Electrification)가 약 20%로 가장 빠르게 성장 중이며, 파워 부문 16~18%, 풍력(Wind)은 두 자릿수 감소가 지속되고 있다. Adjusted EBITDA 마진은 9.6%로 전년 대비 390bp 개선됐다.</p>
+  <div class="pc-grid">
+    <div class="pc-box pro">
+      <h4 style="color:var(--accent)">강점</h4>
+      <ul>
+        <li>AI 데이터센터 전력 수요 폭증 수혜</li>
+        <li>가스터빈 세계적 리더십 + $163B 대규모 수주 잔고</li>
+        <li>SMR(소형모듈원전) 장기 성장 잠재력, 미 정부 최대 $40B 지원 가능성</li>
+      </ul>
+    </div>
+    <div class="pc-box con">
+      <h4>주요 리스크</h4>
+      <ul>
+        <li>데이터센터 투자 규모 축소 가능성</li>
+        <li>공급망 차질</li>
+        <li>풍력 사업 회복 지연, 관세로 인한 원가 상승</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="soft fade-in">
+  <div class="eyebrow">30대 그룹 추가 ②</div>
+  <span class="badge buy" style="margin-bottom:14px;display:inline-block;">신규 편입</span>
+  <h2 class="title">커민스 (CMI) — 배당과 함께 가는 발전기 강자</h2>
+  <p>인더스트리얼 섹터, 라지캡 밸류(성장보다 가치에 무게를 둔 대형주) 종목. 발전기(파워 제너레이터), 에너지 저장장치(BESS), 디젤 엔진을 만드는 회사로, 기관 보유율이 84%까지 늘어나는 중이다.</p>
+  <div class="stock-card">
+    <div class="head">
+      <div><h3>Cummins</h3><div class="ticker">NYSE : CMI</div></div>
+    </div>
+    <div class="kv-grid">
+      <div class="kv"><div class="k">목표 주가</div><div class="v accent">$860</div></div>
+      <div class="kv"><div class="k">내재가치(Intrinsic Value)</div><div class="v">$633.5</div></div>
+      <div class="kv"><div class="k">DCF</div><div class="v">$793</div></div>
+      <div class="kv"><div class="k">P/E (Forward)</div><div class="v">34.58 (22.74)</div></div>
+      <div class="kv"><div class="k">연 배당</div><div class="v">$8.80</div></div>
+      <div class="kv"><div class="k">배당수익률</div><div class="v accent">1.32%</div></div>
+    </div>
+  </div>
+  <p style="font-size:13.5px;color:var(--text-soft);">목표가가 현재 내재가치·DCF보다 높다는 것은 앞으로 벌어들일 이익(포워드 PE 기준)이 지금보다 훨씬 커질 것으로 본다는 뜻이다. 배당을 꾸준히 주는 종목은 대체로 변동성이 낮은 편이다.</p>
+</section>
+
+<section class="fade-in">
+  <div class="eyebrow">30대 그룹 추가 ③</div>
+  <span class="badge buy" style="margin-bottom:14px;display:inline-block;">재편입</span>
+  <h2 class="title">마이크로소프트 (MSFT) — 다시 담는 이유</h2>
+  <p>빌 게이츠의 앱스타인(엡스타인) 파일 관련 소식이 나온 뒤 한때 편출했던 종목. 하지만 빌 게이츠의 마이크로소프트 지분은 이미 1%대에 불과해 그의 개인 행보가 회사에 미치는 영향이 미미하다고 재평가, 다시 편입했다.</p>
+  <div class="stock-card">
+    <div class="head">
+      <div><h3>Microsoft</h3><div class="ticker">NASDAQ : MSFT</div></div>
+    </div>
+    <div class="kv-grid">
+      <div class="kv"><div class="k">매출 성장(FY26)</div><div class="v">17%</div></div>
+      <div class="kv"><div class="k">AI 매출(연환산)</div><div class="v accent">$370억 (+123%)</div></div>
+      <div class="kv"><div class="k">M365 Copilot 유료석</div><div class="v">2,000만+ (+250%)</div></div>
+      <div class="kv"><div class="k">영업마진</div><div class="v">46.3%</div></div>
+      <div class="kv"><div class="k">EPS 2026→2027→2028</div><div class="v">$16.77→$19.17→$22.44</div></div>
+      <div class="kv"><div class="k">목표가 변경(7/11)</div><div class="v accent">$467 → $499</div></div>
+    </div>
+  </div>
+  <p style="font-size:13.5px;color:var(--text-soft);">내재가치 $659, DCF $861로 현재가보다 높게 평가된다. 2026년 капекс(설비투자)는 약 $190B로 대규모 AI 인프라 투자가 예정돼 있다. GitHub Copilot 기업 가입자는 거의 3배 증가했다.</p>
+
+  <div class="chart-container fade-in" style="margin:22px 0;">
+    <canvas id="valuationChart" height="220"></canvas>
+  </div>
+
+  <h3 style="font-family:'Playfair Display',serif;font-size:17px;margin:22px 0 10px;">마이크로소프트 vs 엔비디아, 지금 시점 비교</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>항목</th><th>MSFT</th><th>NVDA</th></tr></thead>
+      <tbody>
+        <tr><td>시가총액</td><td>약 $4.49조</td><td>약 $3.8~4.0조</td></tr>
+        <tr><td>기관투자자 비중</td><td>73%</td><td>68%</td></tr>
+        <tr><td>P/E (현재/Forward)</td><td>34.6 / 22.7</td><td>48~52 / 32~35</td></tr>
+        <tr><td>연 배당</td><td class="pos">$8.80</td><td>$0.16</td></tr>
+        <tr><td>배당수익률</td><td class="pos">1.32%</td><td>0.03%</td></tr>
+        <tr><td>주주 성향</td><td>가치 + 장기 안정 중심</td><td>성장 + 모멘텀 중심</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p style="margin-top:14px;">엔비디아는 여전히 고평가 구간이고 변동성도 크다. 반면 마이크로소프트는 배당이 압도적으로 많고 주주 구성도 안정적이라, 포트폴리오 중앙에 안정적으로 놓기에 적합하다는 평가다.</p>
+</section>
+
+<section class="dark fade-in">
+  <div class="eyebrow">형님 생각</div>
+  <h2 class="title" style="color:#fff">이루고 싶은 것을 다 이루는 게 답은 아니다</h2>
+  <div class="quote-block" style="background:rgba(255,255,255,.06);border-left-color:var(--accent-soft);color:#eee;">
+    이루고 싶은 것을 이루었다면 반드시 그만큼의 것을 잃고, 이루고 싶은 것을 이루지 못했다면 그만큼 소중한 것을 버리지 않아도 된 것입니다. 은퇴(Re-Tire)는 신발을 갈아 신는 것이지 가는 길을 멈추는 것이 아닙니다. 역경 없이 편히 평생을 살 수 있는 자가 축복받은 자가 아니라, 역경을 이긴 자가 축복받은 자입니다.
+    <cite>— 투자는 인생 TV</cite>
+  </div>
+  <p>월드컵 선수들이 국적과 상관없이 경기 전후 함께 모여 기도하는 모습에서, 0.0001%의 엘리트조차 인간이 넘을 수 없는 한계를 인정한다는 것을 배울 수 있다는 이야기다. 끊임없이 노력해온 완성도 높은 사람들일수록 오히려 자신의 한계를 인정하는 겸손을 갖고 있다는 메시지.</p>
+</section>
+
+<footer class="fade-in">
+  <div class="divider" style="margin:0 auto 18px;"></div>
+  <div class="brand">CIA.chat</div>
+  <p>본 콘텐츠는 정보 제공을 목적으로 하며 투자 권유가 아닙니다.<br>모든 투자 상품은 원금 손실 가능성이 있으며 예금자보호법에 따라 보호되지 않습니다.<br>© 2026 CIA.chat. All rights reserved.</p>
+</footer>
+
+<script>
+const fadeObs = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), i * 80);
+      fadeObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.12 });
+document.querySelectorAll('.fade-in').forEach(el => fadeObs.observe(el));
+
+const chartConfigs = {};
+
+chartConfigs['breadthChart'] = () => {
+  new Chart(document.getElementById('breadthChart'), {
+    type: 'doughnut',
+    data: {
+      labels: ['50일선 위 종목', '50일선 아래 종목'],
+      datasets: [{
+        data: [62, 38],
+        backgroundColor: ['#e11d48', '#e5e5e5'],
+        borderWidth: 0
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      cutout: '68%',
+      plugins: {
+        legend: { position: 'bottom', labels: { font: { family: "'Noto Sans KR'", size: 11 }, color: '#1a1a1a' } },
+        tooltip: { callbacks: { label: (ctx) => ctx.label + ': ' + ctx.parsed + '%' } }
+      }
+    }
+  });
+};
+
+chartConfigs['valuationChart'] = () => {
+  new Chart(document.getElementById('valuationChart'), {
+    type: 'bar',
+    data: {
+      labels: ['현재가($459)', '목표가', '내재가치', 'DCF'],
+      datasets: [{
+        label: 'MSFT 가치평가 ($)',
+        data: [459, 499, 659, 861],
+        backgroundColor: ['#6b7280', '#e11d48', '#f43f5e', '#2563eb'],
+        borderRadius: 4
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        y: { beginAtZero: false, ticks: { font: { size: 10 } }, grid: { color: '#e5e5e5' } },
+        x: { ticks: { font: { size: 10 } }, grid: { display: false } }
+      }
+    }
+  });
+};
+
+const chartObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const canvas = e.target.querySelector('canvas');
+      if (canvas && chartConfigs[canvas.id]) {
+        chartConfigs[canvas.id]();
+        e.target.classList.add('chart-ready');
+        chartObs.unobserve(e.target);
+      }
+    }
+  });
+}, { threshold: 0.15 });
+document.querySelectorAll('.chart-container').forEach(el => chartObs.observe(el));
+
+// ---- Simulator ----
+const itWeight = document.getElementById('itWeight');
+const itWeightLabel = document.getElementById('itWeightLabel');
+const portDrop = document.getElementById('portDrop');
+const vsSox = document.getElementById('vsSox');
+
+function updateSim(){
+  const w = parseInt(itWeight.value, 10);
+  itWeightLabel.textContent = w + '%';
+  const itDrop = 15; // SOX 고점대비 하락률 가정
+  const otherDrop = 3; // 그 외 섹터 평균 하락률 가정
+  const blended = (w/100)*itDrop + ((100-w)/100)*otherDrop;
+  portDrop.textContent = '-' + blended.toFixed(1) + '%';
+  const diff = itDrop - blended;
+  if (diff > 0.3) {
+    vsSox.textContent = 'SOX 대비 ' + diff.toFixed(1) + '%p 방어';
+    vsSox.style.color = '#e11d48';
+  } else {
+    vsSox.textContent = 'SOX와 유사';
+    vsSox.style.color = '#6b7280';
+  }
+}
+itWeight.addEventListener('input', updateSim);
+document.getElementById('resetSim').addEventListener('click', () => {
+  itWeight.value = 50;
+  updateSim();
+});
+updateSim();
+</script>
+
+</body>
+</html>
