@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>7월 20일 시장포커스 · 이해도 퀴즈 10문제</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,500&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#ffffff;--bg2:#fafafa;--text:#1a1a1a;--muted:#777777;
+  --accent:#e11d48;--accent2:#f43f5e;--line:#e5e5e5;
+  --ok:#15803d;--okbg:#e7f6ec;--bad:#e11d48;--badbg:#fdeaef;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg2);color:var(--text);font-family:'Noto Sans KR',sans-serif;line-height:1.7;-webkit-font-smoothing:antialiased}
+.wrap{max-width:680px;margin:0 auto;padding:0 16px 80px}
+
+/* header */
+.head{text-align:center;padding:44px 10px 26px}
+.head .eb{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--accent);font-weight:700;margin-bottom:12px}
+.head h1{font-family:'Playfair Display',serif;font-size:30px;font-weight:900;line-height:1.2}
+.head p{color:var(--muted);font-size:13.5px;margin-top:10px}
+
+/* sticky scoreboard */
+.board{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.96);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding:12px 16px;margin:0 -16px 26px}
+.board .row{max-width:648px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:12.5px}
+.board .stat b{font-family:'Playfair Display';font-size:19px;font-weight:900;color:var(--accent)}
+.board .stat span{color:var(--muted);margin-left:3px}
+.bar{max-width:648px;margin:9px auto 0;height:7px;background:var(--line);border-radius:5px;overflow:hidden}
+.bar .fill{height:100%;width:0;background:var(--bad);border-radius:5px;transition:width .4s ease,background .4s ease}
+
+/* card */
+.q{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:22px 20px;margin-bottom:18px;box-shadow:0 1px 2px rgba(0,0,0,.03)}
+.q .meta{display:flex;align-items:center;gap:8px;margin-bottom:14px}
+.q .no{font-family:'Playfair Display';font-style:italic;font-weight:700;color:var(--accent);font-size:16px}
+.q .badge{font-size:10.5px;letter-spacing:.5px;padding:3px 9px;border-radius:20px;font-weight:700}
+.b-e{background:#e7f6ec;color:var(--ok)}
+.b-m{background:#fff3e0;color:#c2680c}
+.b-h{background:var(--badbg);color:var(--accent)}
+.b-t{background:#eef;color:var(--accent);border:1px solid #dde}
+.q .qt{font-size:16px;font-weight:500;line-height:1.6;margin-bottom:16px}
+
+/* options */
+.opts{display:grid;gap:9px}
+.opt{text-align:left;width:100%;background:var(--bg2);border:1.5px solid var(--line);border-radius:9px;padding:12px 14px;font-family:inherit;font-size:14.5px;color:var(--text);cursor:pointer;transition:.15s;display:flex;align-items:center;gap:10px}
+.opt:hover:not(:disabled){border-color:var(--accent);background:#fff}
+.opt .k{width:22px;height:22px;flex:none;border-radius:50%;border:1.5px solid var(--muted);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--muted)}
+.opt:disabled{cursor:default}
+.opt.correct{background:var(--okbg);border-color:var(--ok)}
+.opt.correct .k{background:var(--ok);border-color:var(--ok);color:#fff}
+.opt.wrong{background:var(--badbg);border-color:var(--bad)}
+.opt.wrong .k{background:var(--bad);border-color:var(--bad);color:#fff}
+.opt .tagr{margin-left:auto;font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px}
+.opt.correct .tagr{background:var(--ok);color:#fff}
+.opt.wrong .tagr{background:var(--bad);color:#fff}
+
+/* OX */
+.ox{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ox .opt{justify-content:center;font-size:18px;font-weight:700;padding:16px}
+
+/* short answer */
+.sa{display:flex;gap:8px}
+.sa input{flex:1;border:1.5px solid var(--line);border-radius:9px;padding:12px 14px;font-family:inherit;font-size:15px;outline:none}
+.sa input:focus{border-color:var(--accent)}
+.sa button{background:var(--accent);color:#fff;border:none;border-radius:9px;padding:0 18px;font-family:inherit;font-weight:700;font-size:14px;cursor:pointer}
+.sa button:disabled{background:var(--muted);cursor:default}
+.sa-hint{font-size:11.5px;color:var(--muted);margin-top:7px}
+
+/* explanation */
+.exp{margin-top:14px;background:var(--bg2);border-left:4px solid var(--accent);border-radius:0 8px 8px 0;padding:13px 15px;font-size:13.5px;line-height:1.65;display:none}
+.exp.show{display:block;animation:fade .35s ease}
+.exp .et{font-weight:700;color:var(--accent);font-size:12.5px;margin-bottom:5px;letter-spacing:.5px}
+.exp .src{margin-top:8px;font-size:12px;color:var(--muted);font-style:italic}
+@keyframes fade{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+
+/* result modal */
+.mask{position:fixed;inset:0;background:rgba(26,26,26,.7);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;z-index:100;padding:20px}
+.mask.show{display:flex;animation:fade .3s ease}
+.modal{background:var(--bg);border-radius:16px;max-width:400px;width:100%;padding:34px 26px;text-align:center}
+.modal .grade{font-family:'Playfair Display';font-size:74px;font-weight:900;line-height:1;color:var(--accent)}
+.modal .sc{font-size:15px;color:var(--muted);margin-top:8px}
+.modal .sc b{color:var(--text);font-size:22px;font-family:'Playfair Display'}
+.modal .msg{margin-top:16px;font-size:14.5px;line-height:1.6}
+.modal .again{margin-top:24px;background:var(--accent);color:#fff;border:none;border-radius:9px;padding:13px 26px;font-family:inherit;font-weight:700;font-size:14.5px;cursor:pointer;width:100%}
+.modal .again:hover{background:var(--accent2)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="head">
+    <div class="eb">투자는인생tv · 2026.07.20</div>
+    <h1>시장포커스 이해도 퀴즈</h1>
+    <p>총 10문제 · 클릭하면 즉시 채점되고 해설이 열립니다</p>
+  </header>
+
+  <div class="board">
+    <div class="row">
+      <div class="stat"><b id="bSolved">0</b><span>/ 10 푼 문제</span></div>
+      <div class="stat"><b id="bCorrect">0</b><span>맞힘</span></div>
+      <div class="stat"><b id="bRate">0%</b><span>정답률</span></div>
+    </div>
+    <div class="bar"><div class="fill" id="bFill"></div></div>
+  </div>
+
+  <div id="quiz"></div>
+</div>
+
+<div class="mask" id="mask">
+  <div class="modal">
+    <div class="grade" id="mGrade">A</div>
+    <div class="sc"><b id="mScore">0</b> / 10 정답</div>
+    <div class="msg" id="mMsg"></div>
+    <button class="again" id="mAgain">다시 풀기</button>
+  </div>
+</div>
+
+<script>
+const QUIZ_DATA=[
+  {id:1,type:'mc',difficulty:'쉬움',
+   question:"오늘 장 초반 유가가 흔들리고 주요 지수가 상승 출발한 배경으로 언급된 것은?",
+   options:["중동 긴장 완화(이란 외교 가능성 시사)","미국 금리 전격 인하","한국 반도체 수출 급증","달러 강세 전환"],
+   answer:0,
+   explanation:"자막에서 '중동 긴장 완화 소식이 있죠. 외교 가능성이 있다는 말이 나오는 것 같습니다. 그래서 유가가 흔들리고 주요 지수 상승 출발'이라고 설명합니다.",
+   src:"원본: '중동 긴장 완화 소식… 유가가 흔들리고 주요 지수 상승 출발'"},
+
+  {id:2,type:'mc',difficulty:'보통',
+   question:"슬라이드에 따르면 7월 29일 FOMC 금리 인상 확률은 지난주 30%에서 이번 주 몇 %로 하락했나?",
+   options:["25%","10%","5%","0%"],
+   answer:1,
+   explanation:"'Fed 및 거시 동향' 슬라이드에 '7월 29일 FOMC 금리 인상 확률: 10% (지난주 30% → 큰 하락)'으로 명시돼 있습니다.",
+   src:"슬라이드: 'FOMC 금리 인상 확률 10% (지난주 30% → 큰 하락)'"},
+
+  {id:3,type:'ox',difficulty:'쉬움',
+   question:"David Lee는 한국 정부의 '레버리지 ETF 신규 상장 중단' 조치를 긍정적으로 평가했다.",
+   answer:1, // 0=O, 1=X
+   explanation:"X입니다. 자막에서 '저로서는 이해를 못하는 겁니다. 레버리지를 정부가 이래라저래라 할 건가요?'라며 부정적으로 평가했습니다.",
+   src:"원본: '레버리지를 정부가 이래라저래라 할 건가요?… 이해하기도 싫고'"},
+
+  {id:4,type:'mc',difficulty:'보통',
+   question:"6월 2일 S&P 500이 사상 최고치를 경신했을 당시, IT 섹터는 200일 이동평균 대비 어느 수준까지 과열됐나?",
+   options:["+10% 이상","+15% 이상","+27% 이상","+50% 이상"],
+   answer:2,
+   explanation:"슬라이드에 '6월 2일 S&P 500 사상 최고치 경신 당시, IT 섹터는 200일 이동평균 대비 +27% 이상 (장기 평균의 2배 이상 과열)'이라고 나옵니다.",
+   src:"슬라이드: 'IT 섹터는 200일 이동평균 대비 +27% 이상'"},
+
+  {id:5,type:'sa',difficulty:'보통',
+   question:"SOX(반도체 지수)의 S&P 500 비중은 2020년 4%에서 2026년 현재 몇 %로 커졌나? (숫자만, 예: 19)",
+   answer:["19","19%"],
+   explanation:"자막에서 'SOX가 2020년에 4%였는데 지금 현재 19%로 금융 섹터 12.2%보다 큰 비중이 됐다'고 설명합니다.",
+   src:"원본: 'SIOX가 2020년에 4%였는데 지금 현재 19%로'"},
+
+  {id:6,type:'mc',difficulty:'어려움',
+   question:"David Lee가 반도체 빅사이클의 CAPEX가 최대로 올라가는 '마지막 해'로 지목한 연도는?",
+   options:["2026년","2027년","2028년","2030년"],
+   answer:1,
+   explanation:"'반도체가 빅사이클을 타고 있지만 2027년이 마지막이에요… 2027년이 AI 투자의 마지막, 올라가는 CAPEX가 최대한 올라가는 마지막 해'라고 말합니다.",
+   src:"원본: '반도체가 빅사이클을 타고 있지만 2027년이 마지막이에요'"},
+
+  {id:7,type:'ox',difficulty:'보통',
+   question:"방송에 따르면, 기존 방식으로 1kg을 우주에 올리는 운반 비용은 약 $54,000이다.",
+   answer:0, // O
+   explanation:"O입니다. '1kg을 우주에 올리는데 운반비용이 5만 4천불이 들어갑니다'라고 설명하며, 재사용이 가능해지면 이 비용이 사실상 0에 수렴한다고 했습니다.",
+   src:"원본: '1kg을 우주에 올리는데 운반비용이 5만 4천불'"},
+
+  {id:8,type:'mc',difficulty:'보통',
+   question:"Meta가 컴퓨트 임대(네오클라우드) 사업 확대와 관련해 $100억 규모 딜 가능성이 언급된 AI 기업은?",
+   options:["OpenAI","앤스로픽(Anthropic)","xAI","구글 딥마인드"],
+   answer:1,
+   explanation:"'기업포커스' 슬라이드에서 'Meta를 Neocloud 사로 컴퓨트 임대 사업 확대 (앤스로픽과 $100억 규모 딜 가능성)'으로 나옵니다. 의류 브랜드 앤트로폴로지(Anthropologie)와는 다른 회사입니다.",
+   src:"슬라이드: 'Anthropic과 $100억 규모 딜 가능성'"},
+
+  {id:9,type:'sa',difficulty:'어려움',
+   question:"방송 전망상 S&P 500이 7,420 아래로 하락하면 추가 조정 가능성이 있는 지수 레벨은? (숫자만, 예: 7000)",
+   answer:["7000","7,000"],
+   explanation:"'형님의견' 슬라이드에 'S&P 500 전망 7,420 아래로 하락 시 7,000까지 추가 조정 가능성'이라고 명시돼 있습니다. 단, 내부 지표는 여전히 강세장 로테이션이라 전반적 약세 전환은 아니라고 판단했습니다.",
+   src:"슬라이드: '7,420 아래로 하락 시 7,000까지 추가 조정 가능성'"},
+
+  {id:10,type:'mc',difficulty:'쉬움',
+   question:"방송에서 반복된 David Lee의 투자 철학을 완성하시오: '투자는 리스크 관리, 투기는 ___'",
+   options:["법정관리","자산관리","위기관리","시간관리"],
+   answer:0,
+   explanation:"화면 하단 자막과 본문에서 '투자는 리스크 관리, 투기는 법정관리'라는 문구가 반복적으로 강조됩니다.",
+   src:"원본/화면: '투자는 리스크 관리 투기는 법정관리'"}
+];
+
+const KEYS=['A','B','C','D'];
+const state={solved:0,correct:0};
+const answered=new Array(QUIZ_DATA.length).fill(false);
+const quizEl=document.getElementById('quiz');
+
+function badgeClass(d){return d==='쉬움'?'b-e':d==='보통'?'b-m':'b-h';}
+
+QUIZ_DATA.forEach((q,idx)=>{
+  const card=document.createElement('div');
+  card.className='q';
+  const typeLabel=q.type==='mc'?'객관식':q.type==='ox'?'OX':'단답형';
+  let inner=`<div class="meta"><span class="no">Q${String(q.id).padStart(2,'0')}</span>
+    <span class="badge ${badgeClass(q.difficulty)}">${q.difficulty}</span>
+    <span class="badge b-t">${typeLabel}</span></div>
+    <div class="qt">${q.question}</div>`;
+
+  if(q.type==='mc'){
+    inner+=`<div class="opts" id="opts-${idx}">`+
+      q.options.map((o,i)=>`<button class="opt" data-i="${i}"><span class="k">${KEYS[i]}</span><span>${o}</span></button>`).join('')+`</div>`;
+  }else if(q.type==='ox'){
+    inner+=`<div class="ox" id="opts-${idx}">
+      <button class="opt" data-i="0"><span class="k">O</span></button>
+      <button class="opt" data-i="1"><span class="k">X</span></button></div>`;
+  }else{
+    inner+=`<div class="sa" id="opts-${idx}">
+      <input type="text" placeholder="정답 입력" id="in-${idx}">
+      <button data-i="submit">제출</button></div>
+      <div class="sa-hint">숫자만 입력하세요 (예: ${q.answer[0]})</div>`;
+  }
+  inner+=`<div class="exp" id="exp-${idx}"><div class="et">💡 해설</div><div>${q.explanation}</div><div class="src">${q.src}</div></div>`;
+  card.innerHTML=inner;
+  quizEl.appendChild(card);
+
+  if(q.type==='mc'||q.type==='ox'){
+    card.querySelectorAll('.opt').forEach(btn=>{
+      btn.addEventListener('click',()=>gradeChoice(idx,+btn.dataset.i));
+    });
+  }else{
+    const inp=card.querySelector('input');
+    const sub=card.querySelector('button');
+    sub.addEventListener('click',()=>gradeShort(idx));
+    inp.addEventListener('keydown',e=>{if(e.key==='Enter')gradeShort(idx);});
+  }
+});
+
+function gradeChoice(idx,choice){
+  if(answered[idx])return;
+  answered[idx]=true;
+  const q=QUIZ_DATA[idx];
+  const correct=q.answer;
+  const opts=document.querySelectorAll(`#opts-${idx} .opt`);
+  const isRight=choice===correct;
+  opts.forEach((o,i)=>{
+    o.disabled=true;
+    if(i===correct){o.classList.add('correct');o.insertAdjacentHTML('beforeend','<span class="tagr">✓ 정답</span>');}
+    else if(i===choice){o.classList.add('wrong');o.insertAdjacentHTML('beforeend','<span class="tagr">✗ 오답</span>');}
+  });
+  finish(idx,isRight);
+}
+
+function gradeShort(idx){
+  if(answered[idx])return;
+  const q=QUIZ_DATA[idx];
+  const inp=document.getElementById(`in-${idx}`);
+  const val=(inp.value||'').trim().toLowerCase().replace(/\s|,/g,'');
+  if(!val)return;
+  answered[idx]=true;
+  const accepts=q.answer.map(a=>a.toLowerCase().replace(/\s|,/g,''));
+  const isRight=accepts.includes(val);
+  inp.disabled=true;
+  const sub=inp.nextElementSibling;
+  sub.disabled=true;
+  sub.textContent=isRight?'✓ 정답':'✗ 오답';
+  sub.style.background=isRight?'var(--ok)':'var(--bad)';
+  finish(idx,isRight);
+}
+
+function finish(idx,isRight){
+  document.getElementById(`exp-${idx}`).classList.add('show');
+  state.solved++;
+  if(isRight)state.correct++;
+  updateBoard();
+  if(state.solved===QUIZ_DATA.length)setTimeout(showResult,450);
+}
+
+function updateBoard(){
+  document.getElementById('bSolved').textContent=state.solved;
+  document.getElementById('bCorrect').textContent=state.correct;
+  const rate=state.solved?Math.round(state.correct/state.solved*100):0;
+  document.getElementById('bRate').textContent=rate+'%';
+  const fill=document.getElementById('bFill');
+  fill.style.width=(state.solved/QUIZ_DATA.length*100)+'%';
+  fill.style.background=rate<40?'var(--bad)':rate<70?'#ea580c':'var(--ok)';
+}
+
+function showResult(){
+  const n=state.correct;
+  let g,msg;
+  if(n>=9){g='A';msg='완벽에 가깝습니다! 방송 핵심을 완전히 이해하셨네요. 목요일 리스크 편도 놓치지 마세요.';}
+  else if(n>=7){g='B';msg='훌륭합니다! 큰 흐름을 잘 잡으셨어요. 놓친 문제의 해설만 다시 확인해 보세요.';}
+  else if(n>=5){g='C';msg='기본은 잡으셨습니다. 섹터 로테이션과 레버리지 리스크 부분을 복습하면 좋겠어요.';}
+  else{g='D';msg='해설을 찬찬히 다시 읽어보세요. 리포트를 한 번 더 보고 도전하면 훨씬 나아집니다!';}
+  document.getElementById('mGrade').textContent=g;
+  document.getElementById('mScore').textContent=n;
+  document.getElementById('mMsg').textContent=msg;
+  document.getElementById('mask').classList.add('show');
+}
+
+document.getElementById('mAgain').addEventListener('click',()=>location.reload());
+document.getElementById('mask').addEventListener('click',e=>{if(e.target.id==='mask')e.currentTarget.classList.remove('show');});
+
+updateBoard();
+</script>
+</body>
+</html>
